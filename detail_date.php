@@ -1,31 +1,29 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <title>試合詳細</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a href="index.php">イベント一覧に戻る</a>
+<hr>
 <?php
 
 require_once(dirname(__FILE__).'/model/dao/GameInfoDao.php');
 require_once(dirname(__FILE__).'/model/dao/DetailDao.php');
 
-$gameInfo = null;
 $gameInfoDao = new GameInfoDao();
 // 試合情報取得
-if (isset($_GET['id'])) {
-    $gameInfo = $gameInfoDao->getGameInfo($_GET['id']);
+if (isset($_GET['date'])) {
+    $gameInfoList = $gameInfoDao->getGameInfoListByDate($_GET['date']);
 }
-
-if (empty($gameInfo)) {
-    $gameInfo['id'] = '';
-    $gameInfo['title'] = '';
-    $gameInfo['game_date'] = '';
-    $gameInfo['start_time'] ='';
-    $gameInfo['end_time'] ='';
-    $gameInfo['place'] ='';
-    $gameInfo['detail'] ='';
-}
-
+?>
+<?php foreach ($gameInfoList as $gameInfo): ?>
+<?php
 // 参加者情報取得
-$detail = null;
-if(!empty($gameInfo['id'])) {
-    $detailDao = new DetailDao();
-    $detail = $detailDao->getDetail($gameInfo['id']);
-}
+$detailDao = new DetailDao();
+$detail = $detailDao->getDetail($gameInfo['id']);
 
 if(empty($detail)) {
     $detail = array('count' => 0
@@ -37,15 +35,7 @@ if(empty($detail)) {
         , 'kou_men' => 0);
 }
 ?>
-<!DOCTYPE html>
-<html lang="jp">
-<head>
-    <meta charset="UTF-8">
-    <title>試合詳細</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-<a href="index.php">イベント一覧に戻る</a>
+
 <p><?php echo $gameInfo['title'] ?></p>
 <p>日付：<?php echo $gameInfo['game_date'] ?></p>
 <p>時間：<?php echo $gameInfo['start_time'] ?>～<?php echo $gameInfo['end_time'] ?></p>
@@ -58,7 +48,6 @@ if(empty($detail)) {
 <p>高校生：女性 <?php echo $detail['kou_women'] ?>人、男性 <?php echo $detail['kou_men'] ?>人</p>
 
 <br>
-<hr>
 <form id="join_form" action="join.php" method="post">
     <p>【応募フォーム】</p>
     <input type="hidden" id="game_id" name="game_id" value="<?php echo $gameInfo['id'] ?>">
@@ -82,11 +71,9 @@ if(empty($detail)) {
     </p>
     <button type="submit">参加</button>
 </form>
-<script>
-    var gameId = document.getElementById("game_id").value;
-    if(gameId === null || gameId === '') {
-        document.getElementById("join_form").classList.add('hidden');
-    }
-</script>
+
+<hr>
+
+<?php endforeach; ?>
 </body>
 </html>

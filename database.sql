@@ -1,7 +1,8 @@
 -- create database open_court;
 
 -- 試合情報
--- drop table game_info; 
+-- drop view v_participant;
+drop table game_info; 
 create table game_info (
     id serial primary key
     , title varchar(50)
@@ -9,11 +10,13 @@ create table game_info (
     , start_time varchar(10)
     , end_time varchar(10)
     , place varchar(100)
+    , detail varchar(1000)
 );
 
 -- テストデータ
-insert into game_info (title, game_date, start_time, end_time, place) values ('オープンコート那覇', '2020-02-01', '17:00', '19:00', '那覇市民体育館');
-
+insert into game_info (title, game_date, start_time, end_time, place, detail) values 
+  ('オープンコート那覇', '2020-02-01', '17:00', '19:00', '那覇市民体育館', '詳細')
+, ('オープンコート北中', '2020-02-01', '20:00', '22:00', '北中市民体育館', '詳細');
 -- 参加者
 -- drop table participant;
 create table participant (
@@ -26,9 +29,10 @@ create table participant (
 );
 
 -- テストデータ
-insert into participant (game_id, occupation, sex, name) values (1, 1, 1, 'aaa', '');
-insert into participant (game_id, occupation, sex, name) values (1, 2, 1, 'bbb', '');
-insert into participant (game_id, occupation, sex, name) values (1, 1, 2, 'ccc', '同伴2名');
+insert into participant (game_id, occupation, sex, name) values 
+(1, 1, 1, 'aaa', '')
+, (1, 2, 1, 'bbb', '')
+, (1, 1, 2, 'ccc', '同伴2名');
 
 -- 参加者確認用ビュー
 -- drop view v_participant;

@@ -1,11 +1,11 @@
-<?php require_once(dirname(__FILE__).'/model/dao/GameInfoDao.php');?>
-<?php require("calendar.php"); ?>
+<?php require_once('../model/dao/GameInfoDao.php');?>
+<?php require("../calendar.php"); ?>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>オープンコートイベントカレンダー</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 <h2>イベントカレンダー</h2>
@@ -31,7 +31,7 @@
  
         <td>
         <?php $cnt++; ?>
-        <a href="detail_date.php?date=<?php echo $year . '/' . sprintf('%02d', $month) . '/' . sprintf('%02d', $value['day']); ?>">
+        <a href="gamemodinfo.php?date=<?php echo $year . '/' . sprintf('%02d', $month) . '/' . sprintf('%02d', $value['day']); ?>">
             <?php echo $value['day']; ?>
         </a>
         </td>
@@ -45,6 +45,7 @@
     <?php endforeach; ?>
     </tr>
 </table>
+<a href="gameinfomod.php">新規イベント登録</a>
 <h2>今月のイベント一覧</h2>
 <?php
 $gameInfoPDO = new GameInfoDao();
@@ -54,7 +55,7 @@ $gameInfoList = $gameInfoPDO->getGameInfoList($year, $month);
 <?php foreach ($gameInfoList as $gameInfo): ?>
     <hr>
 <li>
-    <a href="detail.php?id=<?php echo $gameInfo['id']; ?>">
+    <a href="gameinfomod.php?id=<?php echo $gameInfo['id']; ?>">
 <?php echo $gameInfo['title']; ?><br>
 日時：<?php echo $gameInfo['game_date']; ?>  <?php echo $gameInfo['start_time']; ?>～<?php echo $gameInfo['end_time']; ?><br>
 場所：<?php echo $gameInfo['place']; ?>

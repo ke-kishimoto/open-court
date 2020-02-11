@@ -7,6 +7,7 @@ $detail = new Participant(
     , $_POST['occupation']
     , $_POST['sex']
     , $_POST['name']
+    , $_POST['remark']
 );
 
 $detailDao = new DetailDao();
@@ -22,6 +23,6 @@ $detailDao->insert($detail);
 </head>
 <body>
     <p>参加登録完了しました。</p>
-    <p><a href="index.php">TOPに戻る</a></p>
+    <p><a href="index.php">イベント一覧に戻る</a></p>
 </body>
 </html>
