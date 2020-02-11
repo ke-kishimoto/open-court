@@ -1,3 +1,5 @@
+<?php require_once(dirname(__FILE__).'/model/dao/GameInfoDao.php');?>
+<?php require("calendar.php"); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,10 +8,11 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<?php require("calendar.php"); ?>
-<?php echo $year; ?>年<?php echo $month; ?>月のカレンダー
-<br>
-<br>
+<?php echo $year; ?>年<?php echo $month; ?>月
+<div>
+<a href=".?year=<?php echo $pre_year; ?>&month=<?php echo $lastmonth; ?>"><?php echo $lastmonth; ?>月</a>
+<a href=".?year=<?php echo $next_year; ?>&month=<?php echo $nextmonth; ?>"><?php echo $nextmonth; ?>月</a>
+</div>
 <table>
     <tr>
         <th>日</th>
@@ -41,4 +44,16 @@
     <?php endforeach; ?>
     </tr>
 </table>
+<h2>今月のイベント一覧</h2>
+<?php
+$gameInfoPDO = new GameInfoDao();
+$gameInfoList = $gameInfoPDO->getGameInfoList($year, $month);
+?>
+<ul>
+<?php foreach ($gameInfoList as $gameInfo): ?>
+<li>
+日時：<?php echo $gameInfo['game_date']; ?>
+</li>
+<?php endforeach; ?>
+</ul>
 </html>

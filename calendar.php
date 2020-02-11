@@ -1,9 +1,17 @@
 <?php
  
 // 現在の年月を取得
-$year = date('Y');
-$month = date('n');
- 
+// $year = date('Y');
+$year = isset($_GET['year']) ? intval($_GET['year']) : date('Y') ;
+// $month = date('n');
+$month = isset($_GET['month']) ? intval($_GET['month']) : date('n');
+$lastmonth = $month === 1 ? 12 : $month - 1;
+$nextmonth = $month === 12 ? 1 : $month + 1;
+// $lastmonth = date('n',strtotime('-1 month'));
+// $nextmonth = date('n',strtotime('+1 month'));
+$pre_year = $month === 1 ? $year - 1 : $year;
+$next_year = $month === 12 ? $year + 1 : $year;
+
 // 月末日を取得
 $last_day = date('j', mktime(0, 0, 0, $month + 1, 0, $year));
  
