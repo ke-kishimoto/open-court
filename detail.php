@@ -80,6 +80,10 @@ if(empty($detail)) {
         名前：
         <input type="text" name="name" required>
     </p>
+    <p>
+        備考：
+        <textarea name="remark"></textarea>
+    </p>
     <button type="submit">参加</button>
 </form>
 <script>
