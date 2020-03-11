@@ -1,6 +1,7 @@
 <?php
 require_once(dirname(__FILE__).'/model/entity/Participant.php');
 require_once(dirname(__FILE__).'/model/dao/DetailDao.php');
+require_once(dirname(__FILE__).'/controller/Api.php');
 
 $detail = new Participant(
     $_POST['game_id']
@@ -13,6 +14,8 @@ $detail = new Participant(
 $detailDao = new DetailDao();
 $detailDao->insert($detail);
 
+$api = new Api();
+$api->line_notify($detail, $_POST['title'], $_POST['date']);
 ?>
 
 <!DOCTYPE html>

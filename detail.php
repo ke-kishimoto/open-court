@@ -84,6 +84,8 @@ if(empty($detail)) {
         備考：
         <textarea name="remark"></textarea>
     </p>
+    <input type="hidden" name="title" value="<?php echo $gameInfo['title'] ?>">
+    <input type="hidden" name="date" value="<?php echo $gameInfo['game_date'] ?>">
     <button type="submit">参加</button>
 </form>
 <script>
