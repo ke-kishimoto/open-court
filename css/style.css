@@ -20,6 +20,11 @@ table td {
     padding: 5px;
 }
 
+.month {
+    /* 前月と次月を左右に分ける */
+    display: flex;
+    justify-content: space-between;
+}
 .hidden {
     display: none;
 }

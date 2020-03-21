@@ -53,4 +53,13 @@ class DetailDao {
         $prepare->execute();
         return $prepare->fetch();
     }
+
+    // 参加者の削除
+    public function deleteByGameId(int $gameId) {
+        $pdo = new OpenCourtPDO();
+        $sql = "delete from participant where game_id = :gameId";
+        $prepare = $pdo->prepare($sql);
+        $prepare->bindValue(':gameId', $gameId, PDO::PARAM_INT);
+        $prepare->execute();
+    }
 }

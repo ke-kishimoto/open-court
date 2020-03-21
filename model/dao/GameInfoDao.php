@@ -1,6 +1,7 @@
 <?php
 
 require_once(dirname(__FILE__).'/OpenCourtPDO.php');
+require_once(dirname(__FILE__).'/DetailDao.php');
 
 class GameInfoDao {
 
@@ -77,5 +78,17 @@ class GameInfoDao {
         $prepare->bindValue(':place', $gameinfo->place, PDO::PARAM_STR);
         $prepare->bindValue(':detail', $gameinfo->detail, PDO::PARAM_STR);
         $prepare->execute();
+    }
+
+    public function delete(int $id){
+        $pdo = new OpenCourtPDO();
+        // 先に参加者情報を削除しておく
+        $detailDao = New DetailDao();
+        $detailDao->deleteByGameId($id);
+        $sql = "delete from game_info where id = :id";
+        $prepare = $pdo->prepare($sql);
+        $prepare->bindValue(':id', $id, PDO::PARAM_INT);
+        $prepare->execute();
+
     }
 }
