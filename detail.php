@@ -41,10 +41,12 @@ if(empty($detail)) {
 <html lang="jp">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>試合詳細</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="container">
 <a href="index.php">イベント一覧に戻る</a>
 <p><?php echo $gameInfo['title'] ?></p>
 <p>日付：<?php echo $gameInfo['game_date'] ?></p>
@@ -59,35 +61,53 @@ if(empty($detail)) {
 
 <br>
 <hr>
-<form id="join_form" action="join.php" method="post">
+<div>
+<form id="join_form" action="join.php" method="post" class="form-group">
     <p>【応募フォーム】</p>
     <input type="hidden" id="game_id" name="game_id" value="<?php echo $gameInfo['id'] ?>">
-    <p>
+    <!-- <p>
         職種：
         社会人<input type="radio" name="occupation" value="1" required>
         &nbsp;&nbsp;
         大学・専門<input type="radio" name="occupation" value="2">
         &nbsp;&nbsp;
         高校生<input type="radio" name="occupation" value="3">
-    </p>
+    </p> -->
     <p>
+    職種
+    <select name="occupation" class="custom-select mr-sm-2">
+        <option value="1">社会人</option>
+        <option value="2">大学・専門学校</option>
+        <option value="3">高校</option>
+      </select>
+    </p>
+    
+    <!-- <p>
         性別：
         男性<input type="radio" name="sex" value="1" required>
         &nbsp;&nbsp;
         女性<input type="radio" name="sex" value="2">
+    </p> -->
+    <p>
+    性別
+    <select name="sex" class="custom-select mr-sm-2">
+        <option value="1">男性</option>
+        <option value="2">女性</option>
+    </select>
     </p>
     <p>
-        名前：
-        <input type="text" name="name" required>
+        名前
+        <input class="form-control" type="text" name="name" required>
     </p>
     <p>
-        備考：
-        <textarea name="remark"></textarea>
+        備考
+        <textarea class="form-control" name="remark"></textarea>
     </p>
     <input type="hidden" name="title" value="<?php echo $gameInfo['title'] ?>">
     <input type="hidden" name="date" value="<?php echo $gameInfo['game_date'] ?>">
-    <button type="submit">参加</button>
+    <button class="btn btn-primary" type="submit">参加</button>
 </form>
+</div>
 <script>
     var gameId = document.getElementById("game_id").value;
     if(gameId === null || gameId === '') {

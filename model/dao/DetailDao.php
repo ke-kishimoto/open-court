@@ -17,7 +17,33 @@ class DetailDao {
         $prepare->execute();
     }
 
-    // 参加者情報取得
+    // 参加者一覧取得
+    public function getParticipantList(int $gameId) {
+        $pdo = new OpenCourtPDO();
+        $sql = "select 
+        name
+        , case 
+            when occupation =  1 then '社会人'
+            when occupation =  2 then '大学・専門学校'
+            when occupation =  3 then '高校'
+            else 'その他' 
+         end occupation
+        , case
+            when sex = 1 then '男性'
+            when sex = 2 then '女性'
+          end sex
+        , remark
+        from participant 
+        where game_id = :gameId 
+        order by occupation, sex, id";
+        $prepare = $pdo->prepare($sql);
+        $prepare->bindValue(':gameId', $gameId, PDO::PARAM_INT);
+
+        $prepare->execute();
+        return $prepare->fetchAll();
+    }
+
+    // 参加者集計情報取得
     public function getDetail(int $gameId) {
         $pdo = new OpenCourtPDO();
         $sql = 'select * from v_participant where game_id = :gameId';
@@ -26,6 +52,5 @@ class DetailDao {
 
         $prepare->execute();
         return $prepare->fetch();
-
     }
 }

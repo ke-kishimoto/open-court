@@ -4,10 +4,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>オープンコートイベントカレンダー</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
 </head>
-<body>
+<body class="container">
 <h2>イベントカレンダー</h2>
 <?php echo $year; ?>年<?php echo $month; ?>月
 <div>
@@ -45,7 +47,9 @@
     <?php endforeach; ?>
     </tr>
 </table>
-<a href="gameinfomod.php">新規イベント登録</a>
+<p>
+    <a href="gameinfomod.php" class="btn btn-secondary">新規イベント登録</a>
+</p>
 <h2>今月のイベント一覧</h2>
 <?php
 $gameInfoPDO = new GameInfoDao();

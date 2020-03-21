@@ -2,6 +2,14 @@
 table {
     width: 100%;
 }
+table tr {
+    height: 60px;
+}
+@media(max-width:480px) {
+table tr {
+    height: 40px;
+}
+}
 table th {
     background: #EEEEEE;
 }
