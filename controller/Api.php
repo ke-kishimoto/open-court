@@ -9,7 +9,7 @@ define('LINE_API_TOKEN','99FzrFtUEzMpTcOrZtUK3AaoJqqYMoWWTyNOdq5mQHR');
 class Api 
 {
     // LINE通知用のfunction
-    public function line_notify(Participant $participant, $title, $date){   
+    public function reserve_notify(Participant $participant, $title, $date){   
         
         if ($participant->occupation === '1') {
             $occupation = '社会人';
@@ -36,20 +36,36 @@ class Api
         $message .=  "備考 : " . $participant->remark . "\n";
         $message .= "--------------------\n";
 
+        return $this->line_notify($message);
+    }
+
+    // 参加人数が上限に達したときの通知
+    public function limit_notify($title, $date, $limit, $count) {
+        $message = "参加人数が上限に達しました\n";
+        $message .=  "イベント : " . $title . "\n";
+        $message .=  "日付 : " . $date . "\n";
+        $message .=  "上限 : " . $limit . "\n";
+        $message .=  "参加人数 : " . $count . "\n";
+
+        return $this->line_notify($message);
+    }
+
+    // LINE通知用のfunction
+    private function line_notify($message) {
         // 連想配列作ってるだけ
         $data = array(
-                            "message" => $message
-                        );
+            "message" => $message
+        );
         // URL エンコードされたクエリ文字列を生成する
         $data = http_build_query($data, "", "&");
 
         $options = array(
             'http'=>array(
-                'method'=>'POST',
-                'header'=>"Authorization: Bearer " . LINE_API_TOKEN. "\r\n"
-                        . "Content-Type: application/x-www-form-urlencoded\r\n"
-                        . "Content-Length: ".strlen($data)  . "\r\n" ,
-                'content' => $data
+            'method'=>'POST',
+            'header'=>"Authorization: Bearer " . LINE_API_TOKEN. "\r\n"
+            . "Content-Type: application/x-www-form-urlencoded\r\n"
+            . "Content-Length: ".strlen($data)  . "\r\n" ,
+            'content' => $data
             )
         );
         $context = stream_context_create($options);

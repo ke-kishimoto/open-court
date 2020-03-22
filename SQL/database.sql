@@ -46,7 +46,7 @@ create view v_participant as
 , max(end_time) end_time
 , max(place) place
 , max(limit_number) limit_number
-, count(*) count
+, count(*) + sum(companion) count
 , sum(
     case 
         when occupation = 1 and sex = 1 then 1 + companion -- とりあえず参加者に加えておく

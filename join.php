@@ -1,4 +1,5 @@
 <?php
+// 参加予約の
 require_once(dirname(__FILE__).'/model/entity/Participant.php');
 require_once(dirname(__FILE__).'/model/dao/DetailDao.php');
 require_once(dirname(__FILE__).'/controller/Api.php');
@@ -16,7 +17,14 @@ $detailDao = new DetailDao();
 $detailDao->insert($detail);
 
 $api = new Api();
-$api->line_notify($detail, $_POST['title'], $_POST['date']);
+// 予約の通知
+$api->reserve_notify($detail, $_POST['title'], $_POST['date']);
+
+$detail = $detailDao->getDetail($_POST['game_id']);
+if ($detail['count'] >= $detail['limit_number']) {
+    // 上限に達した通知
+    $api->limit_notify($_POST['title'], $_POST['date'], $detail['limit_number'], $detail['count']);
+}
 ?>
 
 <!DOCTYPE html>
