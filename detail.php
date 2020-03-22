@@ -1,7 +1,7 @@
 <?php
 
 require_once(dirname(__FILE__).'/model/dao/GameInfoDao.php');
-require_once(dirname(__FILE__).'/model/dao/DetailDao.php');
+require_once('./model/dao/DetailDao.php');
 
 $gameInfo = null;
 $gameInfoDao = new GameInfoDao();
@@ -17,25 +17,10 @@ if (empty($gameInfo)) {
     $gameInfo['start_time'] ='';
     $gameInfo['end_time'] ='';
     $gameInfo['place'] ='';
+    $gameInfo['limit_number'] = 0;
     $gameInfo['detail'] ='';
 }
 
-// 参加者情報取得
-$detail = null;
-if(!empty($gameInfo['id'])) {
-    $detailDao = new DetailDao();
-    $detail = $detailDao->getDetail($gameInfo['id']);
-}
-
-if(empty($detail)) {
-    $detail = array('count' => 0
-        , 'sya_women' => 0
-        , 'sya_men' => 0
-        , 'dai_women' => 0
-        , 'dai_men' => 0
-        , 'kou_women' => 0
-        , 'kou_men' => 0);
-}
 ?>
 <!DOCTYPE html>
 <html lang="jp">
@@ -54,10 +39,7 @@ if(empty($detail)) {
 <p>場所：<?php echo $gameInfo['place'] ?></p>
 <p>詳細：<?php echo $gameInfo['detail'] ?></p>
 
-<p>【参加予定  <?php echo $detail['count'] ?>人】</p>
-<p>社会人：女性 <?php echo $detail['sya_women'] ?>人、男性 <?php echo $detail['sya_men'] ?>人
-<p>大学・専門：女性 <?php echo $detail['dai_women'] ?>人、男性 <?php echo $detail['dai_men'] ?>人</p>
-<p>高校生：女性 <?php echo $detail['kou_women'] ?>人、男性 <?php echo $detail['kou_men'] ?>人</p>
+<?php include('./participationInfo.php'); ?>
 
 <br>
 <hr>

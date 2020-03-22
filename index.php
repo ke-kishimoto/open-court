@@ -11,7 +11,7 @@
 </head>
 <body class="container">
 <h2>イベントカレンダー</h2>
-<?php echo $year; ?>年<?php echo $month; ?>月
+<span id="year"><?php echo $year; ?></span>年<span id="this-month"><?php echo $month; ?></span>月
 <div  class="month">
 <a href=".?year=<?php echo $pre_year; ?>&month=<?php echo $lastmonth; ?>"><?php echo $lastmonth; ?>月</a>
 <a href=".?year=<?php echo $next_year; ?>&month=<?php echo $nextmonth; ?>"><?php echo $nextmonth; ?>月</a>
@@ -33,10 +33,9 @@
  
         <td class="days">
         <?php $cnt++; ?>
-        <!-- <a class="days" href="detail_date.php?date=<?php echo $year . '/' . sprintf('%02d', $month) . '/' . sprintf('%02d', $value['day']); ?>">
+        <a class="days" href="detail_date.php?date=<?php echo $year . '/' . sprintf('%02d', $month) . '/' . sprintf('%02d', $value['day']); ?>">
             <?php echo $value['day']; ?>
-        </a> -->
-        <?php echo $value['day']; ?>
+        </a>
         </td>
  
     <?php if ($cnt == 7): ?>
@@ -73,23 +72,23 @@ $gameInfoList = $gameInfoPDO->getGameInfoList($year, $month);
     'use strict';
     $(function() {
         $('.days').on('click', function(event) {
-            // event.preventDefault(),
+            event.preventDefault(),
             $.ajax({
                 url:'./controller/EventList.php',
                 type:'POST',
                 data:{
-                    'date':$(this).text()
+                    'date':$('#year').text() + '/' + ('00' + $('#this-month').text()).slice(-2) + '/' +( '00' + $(this).text().trim()).slice(-2),
+                    'type':''
+                    // 'date':$(this).attr('href')
                 }
             })
              // Ajaxリクエストが成功した時発動
             .done( (data) => {
                 $('#event-list').html(data);
-                console.log(data);
             })
             // Ajaxリクエストが失敗した時発動
             .fail( (data) => {
                 $('#event-list').html(data);
-                console.log(data);
             })
             // Ajaxリクエストが成功・失敗どちらでも発動
             .always( (data) => {

@@ -10,13 +10,14 @@ create table game_info (
     , start_time varchar(10)
     , end_time varchar(10)
     , place varchar(100)
+    , limit_number int
     , detail varchar(1000)
 );
 
 -- テストデータ
-insert into game_info (title, game_date, start_time, end_time, place, detail) values 
-  ('オープンコート那覇', '2020-02-01', '17:00', '19:00', '那覇市民体育館', '詳細')
-, ('オープンコート北中', '2020-02-01', '20:00', '22:00', '北中市民体育館', '詳細');
+insert into game_info (title, game_date, start_time, end_time, place, limit_number, detail) values 
+  ('オープンコート那覇', '2020-02-01', '17:00', '19:00', '那覇市民体育館', 25, '詳細')
+, ('オープンコート北中', '2020-02-01', '20:00', '22:00', '北中市民体育館', 30, '詳細');
 -- 参加者
 -- drop table participant;
 create table participant (
@@ -43,6 +44,7 @@ create view v_participant as
 , max(start_time) start_time
 , max(end_time) end_time
 , max(place) place
+, max(limit_number) limit_number
 , count(*) count
 , sum(
     case 

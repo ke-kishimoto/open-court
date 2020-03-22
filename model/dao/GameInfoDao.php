@@ -52,14 +52,15 @@ class GameInfoDao {
 
     public function insert(GameInfo $gameinfo) {
         $pdo = new OpenCourtPDO();
-        $sql = 'insert into game_info (title, game_date, start_time, end_time, place, detail) 
-            values(:title, :game_date, :start_time, :end_time, :place, :detail)';
+        $sql = 'insert into game_info (title, game_date, start_time, end_time, place, limit_number, detail) 
+            values(:title, :game_date, :start_time, :end_time, :place, :limit_number, :detail)';
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':title', $gameinfo->title, PDO::PARAM_STR);
         $prepare->bindValue(':game_date', $gameinfo->gameDate, PDO::PARAM_STR);
         $prepare->bindValue(':start_time', $gameinfo->startTime, PDO::PARAM_STR);
         $prepare->bindValue(':end_time', $gameinfo->endTime, PDO::PARAM_STR);
         $prepare->bindValue(':place', $gameinfo->place, PDO::PARAM_STR);
+        $prepare->bindValue(':limit_number', $gameinfo->limitNumber, PDO::PARAM_INT);
         $prepare->bindValue(':detail', $gameinfo->detail, PDO::PARAM_STR);
         $prepare->execute();
     }
@@ -67,7 +68,12 @@ class GameInfoDao {
     public function update(GameInfo $gameinfo) {
         $pdo = new OpenCourtPDO();
         $sql = 'update game_info set title = :title
-        , game_date = :game_date, start_time = :start_time, end_time = :end_time, place = :place, detail = :detail
+        , game_date = :game_date
+        , start_time = :start_time
+        , end_time = :end_time
+        , place = :place
+        , limit_number = :limit_number
+        , detail = :detail
         where id = :id';
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':id', $gameinfo->id, PDO::PARAM_INT);
@@ -76,6 +82,7 @@ class GameInfoDao {
         $prepare->bindValue(':start_time', $gameinfo->startTime, PDO::PARAM_STR);
         $prepare->bindValue(':end_time', $gameinfo->endTime, PDO::PARAM_STR);
         $prepare->bindValue(':place', $gameinfo->place, PDO::PARAM_STR);
+        $prepare->bindValue(':limit_number', $gameinfo->limitNumber, PDO::PARAM_INT);
         $prepare->bindValue(':detail', $gameinfo->detail, PDO::PARAM_STR);
         $prepare->execute();
     }

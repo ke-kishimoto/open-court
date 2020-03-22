@@ -1,3 +1,5 @@
+<!-- このファイルは不要 -->
+
 <!DOCTYPE html>
 <html lang="jp">
 <head>

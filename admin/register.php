@@ -12,6 +12,7 @@ if (isset($_POST['register'])) {
         , $_POST['start_time']
         , $_POST['end_time']
         , $_POST['place']
+        , $_POST['limit_number']
         , $_POST['detail']
     );
     

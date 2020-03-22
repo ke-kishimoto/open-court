@@ -16,28 +16,16 @@ if (empty($gameInfo)) {
     $gameInfo['start_time'] ='';
     $gameInfo['end_time'] ='';
     $gameInfo['place'] ='';
+    $gameInfo['limit_number'] = 0;
     $gameInfo['detail'] ='';
 }
 
 // 参加者情報取得
-$detail = null;
 $participantList = null;
 if(!empty($gameInfo['id'])) {
     $detailDao = new DetailDao();
-    $detail = $detailDao->getDetail($gameInfo['id']);
     $participantList = $detailDao->getParticipantList($gameInfo['id']);
 }
-
-if(empty($detail)) {
-    $detail = array('count' => 0
-        , 'sya_women' => 0
-        , 'sya_men' => 0
-        , 'dai_women' => 0
-        , 'dai_men' => 0
-        , 'kou_women' => 0
-        , 'kou_men' => 0);
-}
-
 
 ?>
 <!DOCTYPE html>
@@ -70,6 +58,9 @@ if(empty($detail)) {
             場所<input class="form-control" type="text" name="place" required value="<?php echo $gameInfo['place'] ?>">
         </p>
         <p>
+            人数上限<input class="form-control" type="number" name="limit_number" required value="<?php echo $gameInfo['limit_number'] ?>">
+        </p>
+        <p>
             詳細<textarea class="form-control" name="detail"><?php echo $gameInfo['detail'] ?></textarea>
         </p>
         <p>
@@ -80,11 +71,7 @@ if(empty($detail)) {
 
     <hr>
     <div>
-        <h3>集計情報</h3>
-        <p>【参加予定  <?php echo $detail['count'] ?>人】</p>
-        <p>社会人：女性 <?php echo $detail['sya_women'] ?>人、男性 <?php echo $detail['sya_men'] ?>人
-        <p>大学・専門：女性 <?php echo $detail['dai_women'] ?>人、男性 <?php echo $detail['dai_men'] ?>人</p>
-        <p>高校生：女性 <?php echo $detail['kou_women'] ?>人、男性 <?php echo $detail['kou_men'] ?>人</p>
+        <?php include('../participationInfo.php'); ?>
     </div>
     <hr>
     <div>
