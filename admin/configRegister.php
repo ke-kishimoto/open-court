@@ -3,15 +3,26 @@ require_once('../model/entity/Config.php');
 require_once('../model/dao/ConfigDao.php');
 use entity\Config;
 use dao\ConfigDao;
-// 登録・修正''
-$config = new Config(
-    $_POST['id']
-    , $_POST['line_token']
-);
-    
-$configDao = new ConfigDao();
-$configDao->update($config);
 
+session_start();
+
+if (isset($_POST["csrf_token"]) 
+ && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
+    // 登録・修正
+    $config = new Config(
+        $_POST['id']
+        , $_POST['line_token']
+    );
+        
+    $configDao = new ConfigDao();
+    $configDao->update($config);
+
+    unset($_SESSION['csrf_token']);
+
+    // header('Location: ./');
+} else {
+    header('Location: ./index.php');
+}
 ?>
 
 <!DOCTYPE html>

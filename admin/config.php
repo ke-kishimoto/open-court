@@ -5,6 +5,16 @@ use dao\ConfigDao;
 $configDao = new ConfigDao();
 // いずれユーザーIDにする
 $config = $configDao->getConfig(1);
+
+// CSFR対策
+session_start();
+
+// 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
+$toke_byte = openssl_random_pseudo_bytes(16);
+$csrf_token = bin2hex($toke_byte);
+// 生成したトークンをセッションに保存します
+$_SESSION['csrf_token'] = $csrf_token;
+
 ?>
 
 <!DOCTYPE html>
@@ -21,6 +31,7 @@ $config = $configDao->getConfig(1);
 <form action="configRegister.php" method="post" class="form-group">
     <!-- その内ユーザーIDに修正 -->
     <input type="hidden" name="id" value="1">
+    <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
     <p>
         LINEトークン<input class="form-control" type="text" name="line_token"  required value="<?php echo $config['line_token'] ?>">
     </p>

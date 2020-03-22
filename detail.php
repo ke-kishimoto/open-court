@@ -21,6 +21,15 @@ if (empty($gameInfo)) {
     $gameInfo['detail'] ='';
 }
 
+// CSFR対策
+session_start();
+
+// 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
+$toke_byte = openssl_random_pseudo_bytes(16);
+$csrf_token = bin2hex($toke_byte);
+// 生成したトークンをセッションに保存します
+$_SESSION['csrf_token'] = $csrf_token;
+
 ?>
 <!DOCTYPE html>
 <html lang="jp">
@@ -47,6 +56,7 @@ if (empty($gameInfo)) {
 <form id="join_form" action="join.php" method="post" class="form-group">
     <p>【応募フォーム】</p>
     <input type="hidden" id="game_id" name="game_id" value="<?php echo $gameInfo['id'] ?>">
+    <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
     <!-- <p>
         職種：
         社会人<input type="radio" name="occupation" value="1" required>

@@ -2,30 +2,40 @@
 // 参加予約の
 require_once(dirname(__FILE__).'/model/entity/Participant.php');
 require_once(dirname(__FILE__).'/model/dao/DetailDao.php');
+require_once(dirname(__FILE__).'/model/dao/ConfigDao.php');
 require_once(dirname(__FILE__).'/controller/Api.php');
 use entity\Participant;
 use dao\DetailDao;
 
-$detail = new Participant(
-    $_POST['game_id']
-    , $_POST['occupation']
-    , $_POST['sex']
-    , $_POST['name']
-    , $_POST['companion']
-    , $_POST['remark']
-);
+session_start();
 
-$detailDao = new DetailDao();
-$detailDao->insert($detail);
+if (isset($_POST["csrf_token"]) 
+ && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 
-$api = new Api();
-// 予約の通知
-$api->reserve_notify($detail, $_POST['title'], $_POST['date']);
+    $detail = new Participant(
+        $_POST['game_id']
+        , $_POST['occupation']
+        , $_POST['sex']
+        , $_POST['name']
+        , $_POST['companion']
+        , $_POST['remark']
+    );
 
-$detail = $detailDao->getDetail($_POST['game_id']);
-if ($detail['count'] >= $detail['limit_number']) {
-    // 上限に達した通知
-    $api->limit_notify($_POST['title'], $_POST['date'], $detail['limit_number'], $detail['count']);
+    $detailDao = new DetailDao();
+    $detailDao->insert($detail);
+
+    $api = new Api();
+    // 予約の通知
+    $api->reserve_notify($detail, $_POST['title'], $_POST['date']);
+
+    $detail = $detailDao->getDetail($_POST['game_id']);
+    if ($detail['count'] >= $detail['limit_number']) {
+        // 上限に達した通知
+        $api->limit_notify($_POST['title'], $_POST['date'], $detail['limit_number'], $detail['count']);
+    }
+    unset($_SESSION['csrf_token']);
+} else {
+    header('Location: ./index.php');
 }
 ?>
 

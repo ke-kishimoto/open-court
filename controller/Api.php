@@ -1,12 +1,12 @@
 <?php
 
 define('LINE_API_URL', 'https://notify-api.line.me/api/notify');
-// 個人用
-define('LINE_API_TOKEN','99FzrFtUEzMpTcOrZtUK3AaoJqqYMoWWTyNOdq5mQHR'); 
+// // 個人用
+// define('LINE_API_TOKEN','99FzrFtUEzMpTcOrZtUK3AaoJqqYMoWWTyNOdq5mQHR'); 
 // // 開発グループLINE用
 // define('LINE_API_TOKEN','SVcGMVbQUmk2xKoiP5PWbSV8tTine4q9BaglYgmB0AY'); 
-
 use entity\Participant;
+use dao\ConfigDao;
 
 class Api 
 {
@@ -61,10 +61,15 @@ class Api
         // URL エンコードされたクエリ文字列を生成する
         $data = http_build_query($data, "", "&");
 
+        $configDao = new ConfigDao();
+
+        // いずれはuserIDにする
+        $config = $configDao->getConfig(1);
+
         $options = array(
             'http'=>array(
             'method'=>'POST',
-            'header'=>"Authorization: Bearer " . LINE_API_TOKEN. "\r\n"
+            'header'=>"Authorization: Bearer " . $config['line_token']. "\r\n"
             . "Content-Type: application/x-www-form-urlencoded\r\n"
             . "Content-Length: ".strlen($data)  . "\r\n" ,
             'content' => $data
