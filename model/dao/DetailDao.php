@@ -7,12 +7,15 @@ class DetailDao {
     // 参加者登録
     public function insert(Participant $participant) {
         $pdo = new OpenCourtPDO();
-        $sql = 'insert into participant (game_id, occupation, sex, name, remark) values(:gameId, :occupation, :sex, :name, :remark)';
+        $sql = 'insert into participant 
+        (game_id, occupation, sex, name, companion, remark) 
+        values(:gameId, :occupation, :sex, :name, :companion, :remark)';
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':gameId', $participant->gameId, PDO::PARAM_INT);
         $prepare->bindValue(':occupation', $participant->occupation, PDO::PARAM_INT);
         $prepare->bindValue(':sex', $participant->sex, PDO::PARAM_INT);
         $prepare->bindValue(':name', $participant->name, PDO::PARAM_STR);
+        $prepare->bindValue(':companion', $participant->companion, PDO::PARAM_INT);
         $prepare->bindValue(':remark', $participant->remark, PDO::PARAM_STR);
         $prepare->execute();
     }

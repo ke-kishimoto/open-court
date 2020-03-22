@@ -1,7 +1,6 @@
 <?php
 
 $detail = null;
-
 if(!empty($gameInfo['id'])) {
     $detailDao = new DetailDao();
     $detail = $detailDao->getDetail($gameInfo['id']);

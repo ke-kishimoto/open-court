@@ -31,7 +31,7 @@ create table participant (
 );
 
 -- テストデータ
-insert into participant (game_id, occupation, sex, name, companion) values 
+insert into participant (game_id, occupation, sex, name, remark, companion) values 
 (1, 1, 1, 'aaa', '', 0)
 , (1, 2, 1, 'bbb', '', 0)
 , (1, 1, 2, 'ccc', '同伴2名', 2);

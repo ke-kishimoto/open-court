@@ -82,6 +82,10 @@ if (empty($gameInfo)) {
         <input class="form-control" type="text" name="name" required>
     </p>
     <p>
+        同伴者
+        <input class="form-control" type="number" name="companion" required min="0">
+    </p>
+    <p>
         備考
         <textarea class="form-control" name="remark"></textarea>
     </p>

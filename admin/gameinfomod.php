@@ -58,7 +58,7 @@ if(!empty($gameInfo['id'])) {
             場所<input class="form-control" type="text" name="place" required value="<?php echo $gameInfo['place'] ?>">
         </p>
         <p>
-            人数上限<input class="form-control" type="number" name="limit_number" required value="<?php echo $gameInfo['limit_number'] ?>">
+            人数上限<input class="form-control" type="number" name="limit_number" min="1" required value="<?php echo $gameInfo['limit_number'] ?>">
         </p>
         <p>
             詳細<textarea class="form-control" name="detail"><?php echo $gameInfo['detail'] ?></textarea>

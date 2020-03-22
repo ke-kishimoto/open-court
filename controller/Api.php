@@ -11,12 +11,28 @@ class Api
     // LINE通知用のfunction
     public function line_notify(Participant $participant, $title, $date){   
         
+        if ($participant->occupation === '1') {
+            $occupation = '社会人';
+        } elseif ($participant->occupation === '2') {
+            $occupation = '大学・専門学校';
+        } elseif ($participant->occupation === '3') {
+            $occupation = '高校生';
+        }
+
+        if($participant->sex === '1') {
+            $sex = '男性';
+        } else {
+            $sex = '女性';
+        }
+
         $message = "予約が入りました\n";
         $message .=  "イベント : " . $title . "\n";
         $message .=  "日付 : " . $date . "\n";
         $message .= "--------------------\n";
         $message .=  "名前 : " . $participant->name . "\n";
-        $message .=  "職種 : " . $participant->occupation . "\n";
+        $message .=  "職種 : " . $occupation . "\n";
+        $message .=  "性別 : " . $sex . "\n";
+        $message .=  "同伴 : " . $participant->companion . "人\n";
         $message .=  "備考 : " . $participant->remark . "\n";
         $message .= "--------------------\n";
 
