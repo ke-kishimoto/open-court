@@ -51,7 +51,7 @@ $_SESSION['csrf_token'] = $csrf_token;
     <a href="index.php">イベント一覧ページに戻る</a>
     <h2>イベント情報</h2>
     <form action="register.php" method="post" class="form-group">
-        <input type="hidden" id="id" name="id" value="<?php echo $gameInfo['id'] ?>">
+        <input type="hidden" id="id" name="id" value="<?php echo $gameInfo['id']; ?>">
         <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
         <p>
             タイトル<input class="form-control" type="text" name="title"  required value="<?php echo $gameInfo['title'] ?>">
@@ -98,10 +98,11 @@ $_SESSION['csrf_token'] = $csrf_token;
                 <?php echo htmlspecialchars($participant['remark']); ?>
             </p>
             <p>
-                <a class="btn btn-secondary" href="participant.php?id=<?php echo $participant['id'] ?>">修正</a>
+                <a class="btn btn-secondary" href="participant.php?id=<?php echo $participant['id']; ?>&game_id=<?php echo $gameInfo['id']; ?>">修正</a>
             </p>
             <hr>
         <?php endforeach; ?>
+        <a  class="btn btn-primary" href="participant.php?game_id=<?php echo $gameInfo['id']; ?>">参加者追加</a>
     </div>
     <a href="index.php">イベント一覧ページに戻る</a>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

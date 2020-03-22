@@ -12,15 +12,19 @@ if (isset($_POST["csrf_token"])
     $detailDao = new DetailDao();
     if (isset($_POST['register'])) {
         $participant = new Participant(
-            0 // ゲームIDはアップデートしないので固定で0とする
+            $_POST['game_id']
             , $_POST['occupation']
             , $_POST['sex']
             , $_POST['name']
             , $_POST['companion']
             , $_POST['remark']
         );
-        $participant->id = $_POST['id']; // IDはコンストラクタにないので固定でセット
-        $detailDao->update($participant);
+        if($_POST['id'] !== '') {
+            $participant->id = $_POST['id']; // IDはコンストラクタにないので固定でセット
+            $detailDao->update($participant);
+        } else {
+            $detailDao->insert($participant);
+        }
     } else {
         $detailDao->delete($_POST['id']);
     }

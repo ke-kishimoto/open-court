@@ -2,7 +2,18 @@
 require_once('../model/dao/DetailDao.php');
 use dao\DetailDao;
 $detailDao = new DetailDao();
-$participant = $detailDao->getParticipant($_GET['id']);
+if(isset($_GET['id'])) {
+    $participant = $detailDao->getParticipant($_GET['id']);
+} else {
+    $participant['id'] = '';
+    $participant['name'] = '';
+    $participant['occupation'] = 1;
+    $participant['occupation_name'] = '社会人';
+    $participant['sex'] = 1;
+    $participant['sex_name'] = '男性';
+    $participant['companion'] = 0;
+    $participant['remark'] = '';
+}
 
 // CSFR対策
 session_start();
@@ -28,6 +39,7 @@ $_SESSION['csrf_token'] = $csrf_token;
 <h3>参加者情報修正</h3>
 <form action="participantRegister.php" method="post" class="form-group">
     <input type="hidden" id="id" name="id" value="<?php echo $participant['id'] ?>">
+    <input type="hidden" name="game_id" value="<?php echo $_GET['game_id'] ?>">
     <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
     <p>
     職種
@@ -63,6 +75,7 @@ $_SESSION['csrf_token'] = $csrf_token;
         <button id="btn-delete" class="btn btn-secondary" type="submit" name="delete">削除</button>
     </p>
 </form>
-<!-- <a href="#">戻る</a> -->
+<p><a href="./gameinfomod.php?id=<?php echo $_GET['game_id'] ?>">イベント情報ページに戻る</a></p>
+<p><a href="index.php">イベント一覧に戻る</a></p>
 </body>
 </html>
