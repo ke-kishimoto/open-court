@@ -33,7 +33,6 @@ if (isset($_POST['register'])) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>

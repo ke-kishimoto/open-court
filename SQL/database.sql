@@ -89,12 +89,11 @@ create view v_participant as
   group by g.id);
 
 -- 設定
+-- 後々はユーザー単位にしたいな
 -- drop table config;
 create table config(
     id int primary key
     , line_token varchar(200)
 );
 
-insert into config(id, line_token) {
-    
-}
+insert into config(id, line_token) values (1, 'SVcGMVbQUmk2xKoiP5PWbSV8tTine4q9BaglYgmB0AY');
