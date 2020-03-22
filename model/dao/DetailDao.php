@@ -26,21 +26,73 @@ class DetailDao {
         $prepare->execute();
     }
 
-    // 参加者一覧取得
-    public function getParticipantList(int $gameId) {
+    public function update(Participant $participant) {
         $pdo = new OpenCourtPDO();
-        $sql = "select 
-        name
+        $sql = 'update participant set
+        name = :name
+        , occupation = :occupation
+        , sex = :sex
+        , companion = :companion
+        , remark = :remark
+        where id = :id';
+        $prepare = $pdo->prepare($sql);
+        $prepare->bindValue(':occupation', $participant->occupation, PDO::PARAM_INT);
+        $prepare->bindValue(':sex', $participant->sex, PDO::PARAM_INT);
+        $prepare->bindValue(':name', $participant->name, PDO::PARAM_STR);
+        $prepare->bindValue(':companion', $participant->companion, PDO::PARAM_INT);
+        $prepare->bindValue(':remark', $participant->remark, PDO::PARAM_STR);
+        $prepare->bindValue(':id', $participant->id, PDO::PARAM_INT);
+        $prepare->execute();
+    }
+
+    public function delete(int $id) {
+        $pdo = new OpenCourtPDO();
+        $sql = 'delete from participant where id = :id';
+        $prepare = $pdo->prepare($sql);
+        $prepare->bindValue(':id', $id, PDO::PARAM_INT);
+        $prepare->execute();
+    }
+
+    // 参加者登録
+    public function getParticipant(int $id) {
+        $pdo = new OpenCourtPDO();
+        $sql = "select * 
         , case 
             when occupation =  1 then '社会人'
             when occupation =  2 then '大学・専門学校'
             when occupation =  3 then '高校'
             else 'その他' 
-         end occupation
+         end occupation_name
         , case
             when sex = 1 then '男性'
             when sex = 2 then '女性'
-          end sex
+          end sex_name
+        from participant where id = :id";
+        $prepare = $pdo->prepare($sql);
+        $prepare->bindValue(':id', $id, PDO::PARAM_INT);
+        $prepare->execute();
+        return $prepare->fetch();
+    }
+
+    // 参加者一覧取得
+    public function getParticipantList(int $gameId) {
+        $pdo = new OpenCourtPDO();
+        $sql = "select
+        id 
+        , name
+        , occupation
+        , case 
+            when occupation =  1 then '社会人'
+            when occupation =  2 then '大学・専門学校'
+            when occupation =  3 then '高校'
+            else 'その他' 
+         end occupation_name
+        , sex
+        , case
+            when sex = 1 then '男性'
+            when sex = 2 then '女性'
+          end sex_name
+        , companion
         , remark
         from participant 
         where game_id = :gameId 
