@@ -33,11 +33,11 @@ if (empty($gameInfo)) {
 </head>
 <body class="container">
 <a href="index.php">イベント一覧に戻る</a>
-<p><?php echo $gameInfo['title'] ?></p>
-<p>日付：<?php echo $gameInfo['game_date'] ?></p>
-<p>時間：<?php echo $gameInfo['start_time'] ?>～<?php echo $gameInfo['end_time'] ?></p>
-<p>場所：<?php echo $gameInfo['place'] ?></p>
-<p>詳細：<?php echo $gameInfo['detail'] ?></p>
+<p><?php echo htmlspecialchars($gameInfo['title']) ?></p>
+<p>日付：<?php echo htmlspecialchars($gameInfo['game_date']) ?></p>
+<p>時間：<?php echo htmlspecialchars($gameInfo['start_time']) ?>～<?php echo htmlspecialchars($gameInfo['end_time']) ?></p>
+<p>場所：<?php echo htmlspecialchars($gameInfo['place']) ?></p>
+<p>詳細：<?php echo htmlspecialchars($gameInfo['detail']) ?></p>
 
 <?php include('./participationInfo.php'); ?>
 

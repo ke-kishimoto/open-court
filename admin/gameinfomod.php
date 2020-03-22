@@ -78,12 +78,12 @@ if(!empty($gameInfo['id'])) {
         <h3>参加者詳細</h3>
         <?php foreach ((array)$participantList as $participant): ?>
             <p>
-            <?php echo $participant['name']; ?>&nbsp;&nbsp;
-            <?php echo $participant['occupation']; ?>&nbsp;&nbsp;
-            <?php echo $participant['sex']; ?>
+            <?php echo htmlspecialchars($participant['name']); ?>&nbsp;&nbsp;
+            <?php echo htmlspecialchars($participant['occupation']); ?>&nbsp;&nbsp;
+            <?php echo htmlspecialchars($participant['sex']); ?>
             </p>
             <p>
-            <?php echo $participant['remark']; ?>
+            <?php echo htmlspecialchars($participant['remark']); ?>
             </p>
             <hr>
         <?php endforeach; ?>

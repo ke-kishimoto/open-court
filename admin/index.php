@@ -60,9 +60,9 @@ $gameInfoList = $gameInfoPDO->getGameInfoList($year, $month);
         <hr>
         <li>
             <a href="gameinfomod.php?id=<?php echo $gameInfo['id']; ?>">
-                <?php echo $gameInfo['title']; ?><br>
-                日時：<?php echo $gameInfo['game_date']; ?>  <?php echo $gameInfo['start_time']; ?>～<?php echo $gameInfo['end_time']; ?><br>
-                場所：<?php echo $gameInfo['place']; ?>
+                <?php echo htmlspecialchars($gameInfo['title']); ?><br>
+                日時：<?php echo htmlspecialchars($gameInfo['game_date']); ?>  <?php echo htmlspecialchars($gameInfo['start_time']); ?>～<?php echo htmlspecialchars($gameInfo['end_time']); ?><br>
+                場所：<?php echo htmlspecialchars($gameInfo['place']); ?>
             </a>
         </li>
     <?php endforeach; ?>
