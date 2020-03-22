@@ -1,7 +1,12 @@
 <?php
+namespace dao;
 
 require_once(dirname(__FILE__).'/OpenCourtPDO.php');
 require_once(dirname(__FILE__).'/DetailDao.php');
+
+use dao\OpenCourtPDO;
+use PDO;
+use entity\GameInfo;
 
 class GameInfoDao {
 

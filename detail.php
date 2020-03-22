@@ -2,7 +2,7 @@
 
 require_once(dirname(__FILE__).'/model/dao/GameInfoDao.php');
 require_once('./model/dao/DetailDao.php');
-
+use dao\GameInfoDao;
 $gameInfo = null;
 $gameInfoDao = new GameInfoDao();
 // 試合情報取得

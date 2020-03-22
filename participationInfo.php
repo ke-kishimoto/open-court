@@ -1,5 +1,5 @@
 <?php
-
+use dao\DetailDao;
 $detail = null;
 if(!empty($gameInfo['id'])) {
     $detailDao = new DetailDao();

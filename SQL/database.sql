@@ -87,3 +87,14 @@ create view v_participant as
   inner join participant p
   on g.id = p.game_id
   group by g.id);
+
+-- 設定
+-- drop table config;
+create table config(
+    id int primary key
+    , line_token varchar(200)
+);
+
+insert into config(id, line_token) {
+    
+}

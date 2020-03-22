@@ -1,4 +1,7 @@
 <?php
+
+namespace entity;
+
 class Participant {
     public $id;
     public $gameId;

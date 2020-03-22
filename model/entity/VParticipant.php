@@ -1,4 +1,7 @@
 <?
+
+namespace entity;
+
 class VParticipant {
     public $gameDate;
     public $startTime;

@@ -1,7 +1,8 @@
 <?php
-
 require_once('../model/dao/GameInfoDao.php');
 require_once('../model/dao/DetailDao.php');
+use dao\DetailDao;
+use dao\GameInfoDao;
 
 $gameInfo = null;
 $gameInfoDao = new GameInfoDao();

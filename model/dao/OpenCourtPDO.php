@@ -1,4 +1,9 @@
 <?php
+// DB接続用
+namespace dao;
+
+use PDO;
+
 class OpenCourtPDO extends PDO{
 
     // // Heroku用

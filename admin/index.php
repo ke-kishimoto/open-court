@@ -1,5 +1,6 @@
 <?php require_once('../model/dao/GameInfoDao.php');?>
 <?php require("../calendar.php"); ?>
+<?php use dao\GameInfoDao;?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,6 +50,9 @@
 </table>
 <p>
     <a href="gameinfomod.php" class="btn btn-secondary">新規イベント登録</a>
+</p>
+<p>
+    <a href="config.php" class="btn btn-info">通知設定の変更</a>
 </p>
 <h2>イベント一覧</h2>
 <?php

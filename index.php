@@ -1,5 +1,8 @@
-<?php require_once(dirname(__FILE__).'/model/dao/GameInfoDao.php');?>
-<?php require("calendar.php"); ?>
+<?php 
+require_once(dirname(__FILE__).'/model/dao/GameInfoDao.php');
+require("calendar.php"); 
+use dao\GameInfoDao;
+?>
 <!DOCTYPE html>
 <html>
 <head>

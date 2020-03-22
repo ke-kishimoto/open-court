@@ -1,6 +1,12 @@
 <?php
 
+namespace dao;
+
 require_once(dirname(__FILE__).'/OpenCourtPDO.php');
+
+use dao\OpenCourtPDO;
+use PDO;
+use entity\Participant;
 
 class DetailDao {
 
