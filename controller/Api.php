@@ -6,6 +6,8 @@ define('LINE_API_TOKEN','99FzrFtUEzMpTcOrZtUK3AaoJqqYMoWWTyNOdq5mQHR');
 // // 開発グループLINE用
 // define('LINE_API_TOKEN','SVcGMVbQUmk2xKoiP5PWbSV8tTine4q9BaglYgmB0AY'); 
 
+use entity\Participant;
+
 class Api 
 {
     // LINE通知用のfunction

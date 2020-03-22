@@ -3,6 +3,8 @@
 require_once(dirname(__FILE__).'/model/entity/Participant.php');
 require_once(dirname(__FILE__).'/model/dao/DetailDao.php');
 require_once(dirname(__FILE__).'/controller/Api.php');
+use entity\Participant;
+use dao\DetailDao;
 
 $detail = new Participant(
     $_POST['game_id']

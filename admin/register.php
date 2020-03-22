@@ -1,7 +1,8 @@
 <?php
 require_once('../model/entity/GameInfo.php');
 require_once('../model/dao/GameInfoDao.php');
-
+use entity\GameInfo;
+use dao\GameInfoDao;
 $msg = '';
 if (isset($_POST['register'])) {
     // 登録・修正''
