@@ -63,6 +63,10 @@ $_SESSION['csrf_token'] = $csrf_token;
         <input class="form-control" type="text" name="name" value="<?php echo $participant['name'] ?>" required>
     </p>
     <p>
+        メール
+        <input class="form-control" type="email" name="email">
+    </p>
+    <p>
         同伴者
         <input class="form-control" type="number" name="companion" value="<?php echo $participant['companion'] ?>" required min="0">
     </p>
