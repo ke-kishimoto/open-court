@@ -6,6 +6,7 @@ class GameInfo {
 
     public $id;
     public $title;
+    public $shortTitle;
     public $gameDate;
     public $startTime;
     public $endTime;
@@ -13,9 +14,10 @@ class GameInfo {
     public $limitNumber;
     public $detail;
 
-    public function __construct($title, $gameDate, $startTime, $endTime, $place, $limitNumber, $detail)
+    public function __construct($title, $shortTitle, $gameDate, $startTime, $endTime, $place, $limitNumber, $detail)
     {
         $this->title = $title;
+        $this->shortTitle = $shortTitle;
         $this->gameDate = $gameDate;
         $this->startTime = $startTime;
         $this->endTime = $endTime;

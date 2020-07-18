@@ -6,7 +6,7 @@
 create table game_info (
     id serial primary key
     , title varchar(50)
-    , shrot_title varchar(20)
+    , short_title varchar(20)
     , game_date date
     , start_time varchar(10)
     , end_time varchar(10)

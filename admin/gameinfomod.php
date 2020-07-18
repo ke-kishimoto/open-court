@@ -13,6 +13,7 @@ if (isset($_GET['id'])) {
 if (empty($gameInfo)) {
     $gameInfo['id'] = '';
     $gameInfo['title'] = '';
+    $gameInfo['short_title'] = '';
     $gameInfo['game_date'] = '';
     $gameInfo['start_time'] ='';
     $gameInfo['end_time'] ='';
@@ -55,6 +56,9 @@ $_SESSION['csrf_token'] = $csrf_token;
         <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
         <p>
             タイトル<input class="form-control" type="text" name="title"  required value="<?php echo $gameInfo['title'] ?>">
+        </p>
+        <p>
+            タイトル略称<input class="form-control" type="text" name="short_title"  required value="<?php echo $gameInfo['short_title'] ?>">
         </p>
         <p>
             日程<input class="form-control" type="date" name="game_date" required value="<?php echo $gameInfo['game_date'] ?>">

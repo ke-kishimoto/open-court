@@ -54,10 +54,11 @@ class GameInfoDao {
 
     public function insert(GameInfo $gameinfo) {
         $pdo = DaoFactory::getConnection();
-        $sql = 'insert into game_info (title, game_date, start_time, end_time, place, limit_number, detail) 
-            values(:title, :game_date, :start_time, :end_time, :place, :limit_number, :detail)';
+        $sql = 'insert into game_info (title, short_title, game_date, start_time, end_time, place, limit_number, detail) 
+            values(:title, :short_title, :game_date, :start_time, :end_time, :place, :limit_number, :detail)';
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':title', $gameinfo->title, PDO::PARAM_STR);
+        $prepare->bindValue(':short_title', $gameinfo->shortTitle, PDO::PARAM_STR);
         $prepare->bindValue(':game_date', $gameinfo->gameDate, PDO::PARAM_STR);
         $prepare->bindValue(':start_time', $gameinfo->startTime, PDO::PARAM_STR);
         $prepare->bindValue(':end_time', $gameinfo->endTime, PDO::PARAM_STR);

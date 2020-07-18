@@ -15,6 +15,7 @@ if (isset($_POST["csrf_token"])
         $msg = '登録';
         $gameInfo = new GameInfo(
             $_POST['title']
+            , $_POST['short_title']
             , $_POST['game_date']
             , $_POST['start_time']
             , $_POST['end_time']
