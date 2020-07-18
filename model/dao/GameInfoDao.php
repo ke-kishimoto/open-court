@@ -1,17 +1,17 @@
 <?php
 namespace dao;
 
-require_once(dirname(__FILE__).'/OpenCourtPDO.php');
+require_once(dirname(__FILE__).'/DaoFactory.php');
 require_once(dirname(__FILE__).'/DetailDao.php');
 
-use dao\OpenCourtPDO;
+use dao\DaoFactory;
 use PDO;
 use entity\GameInfo;
 
 class GameInfoDao {
 
     public function getGameInfoId($date) {
-        $pdo = new OpenCourtPDO();
+        $pdo = DaoFactory::getConnection();
         $sql = 'select id from game_info where game_date = :gameDate';
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':gameDate', $date);
@@ -22,7 +22,7 @@ class GameInfoDao {
     }
 
     public function getGameInfo($id) {
-        $pdo = new OpenCourtPDO();
+        $pdo = DaoFactory::getConnection();
         $sql = 'select * from game_info where id = :id';
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':id', $id);
@@ -32,7 +32,7 @@ class GameInfoDao {
     }
 
     public function getGameInfoList($year, $month) {
-        $pdo = new OpenCourtPDO();
+        $pdo = DaoFactory::getConnection();
         // PostgreSQL用
         // $sql = "select * from game_info where date_part('year', game_date) = :year and date_part('month', game_date) = :month";
         // // MySQL用
@@ -46,7 +46,7 @@ class GameInfoDao {
     }
 
     public function getGameInfoListByDate($date) {
-        $pdo = new OpenCourtPDO();
+        $pdo = DaoFactory::getConnection();
         $sql = "select * from game_info where game_date = :date";
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':date', $date);
@@ -56,7 +56,7 @@ class GameInfoDao {
     }
 
     public function insert(GameInfo $gameinfo) {
-        $pdo = new OpenCourtPDO();
+        $pdo = DaoFactory::getConnection();
         $sql = 'insert into game_info (title, game_date, start_time, end_time, place, limit_number, detail) 
             values(:title, :game_date, :start_time, :end_time, :place, :limit_number, :detail)';
         $prepare = $pdo->prepare($sql);
@@ -71,7 +71,7 @@ class GameInfoDao {
     }
 
     public function update(GameInfo $gameinfo) {
-        $pdo = new OpenCourtPDO();
+        $pdo = DaoFactory::getConnection();
         $sql = 'update game_info set title = :title
         , game_date = :game_date
         , start_time = :start_time
@@ -93,7 +93,7 @@ class GameInfoDao {
     }
 
     public function delete(int $id){
-        $pdo = new OpenCourtPDO();
+        $pdo = DaoFactory::getConnection();
         // 先に参加者情報を削除しておく
         $detailDao = New DetailDao();
         $detailDao->deleteByGameId($id);

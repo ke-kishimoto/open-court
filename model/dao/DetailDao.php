@@ -2,9 +2,10 @@
 
 namespace dao;
 
-require_once(dirname(__FILE__).'/OpenCourtPDO.php');
+require_once(dirname(__FILE__).'/DaoFactory.php');
 
-use dao\OpenCourtPDO;
+use dao\DaoFactory;
+
 use PDO;
 use entity\Participant;
 
@@ -12,7 +13,7 @@ class DetailDao {
 
     // 参加者登録
     public function insert(Participant $participant) {
-        $pdo = new OpenCourtPDO();
+        $pdo = DaoFactory::getConnection();
         $sql = 'insert into participant 
         (game_id, occupation, sex, name, email, companion, remark) 
         values(:gameId, :occupation, :sex, :name, :email, :companion, :remark)';
@@ -28,7 +29,7 @@ class DetailDao {
     }
 
     public function update(Participant $participant) {
-        $pdo = new OpenCourtPDO();
+        $pdo = DaoFactory::getConnection();
         $sql = 'update participant set
         name = :name
         , occupation = :occupation
@@ -47,7 +48,7 @@ class DetailDao {
     }
 
     public function delete(int $id) {
-        $pdo = new OpenCourtPDO();
+        $pdo = DaoFactory::getConnection();
         $sql = 'delete from participant where id = :id';
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
@@ -56,7 +57,7 @@ class DetailDao {
 
     // 参加者登録
     public function getParticipant(int $id) {
-        $pdo = new OpenCourtPDO();
+        $pdo = DaoFactory::getConnection();
         $sql = "select * 
         , case 
             when occupation =  1 then '社会人'
@@ -77,7 +78,7 @@ class DetailDao {
 
     // 参加者一覧取得
     public function getParticipantList(int $gameId) {
-        $pdo = new OpenCourtPDO();
+        $pdo = DaoFactory::getConnection();
         $sql = "select
         id 
         , name
@@ -107,7 +108,7 @@ class DetailDao {
 
     // 参加者集計情報取得
     public function getDetail(int $gameId) {
-        $pdo = new OpenCourtPDO();
+        $pdo = DaoFactory::getConnection();
         $sql = 'select * from v_participant where game_id = :gameId';
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':gameId', $gameId, PDO::PARAM_INT);
@@ -118,7 +119,7 @@ class DetailDao {
 
     // 参加者の削除
     public function deleteByGameId(int $gameId) {
-        $pdo = new OpenCourtPDO();
+        $pdo = DaoFactory::getConnection();
         $sql = "delete from participant where game_id = :gameId";
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':gameId', $gameId, PDO::PARAM_INT);

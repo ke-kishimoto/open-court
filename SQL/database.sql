@@ -6,6 +6,7 @@
 create table game_info (
     id serial primary key
     , title varchar(50)
+    , shrot_title varchar(20)
     , game_date date
     , start_time varchar(10)
     , end_time varchar(10)
@@ -36,7 +37,7 @@ create table participant (
 );
 
 -- テストデータ
-insert into participant (game_id, occupation, sex, name, remark, companion) values 
+insert into participant (game_id, occupation, sex, name, email, remark, companion) values 
 (1, 1, 1, 'aaa', 'aaas@gmail.com', '', 0)
 , (1, 2, 1, 'bbb', 'aaas@gmail.com', '', 0)
 , (1, 1, 2, 'ccc', 'aaas@gmail.com', '同伴2名', 2);

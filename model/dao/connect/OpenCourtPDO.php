@@ -15,9 +15,9 @@ class OpenCourtPDO extends PDO{
     // const PASSWORD = 'axiz';
 
     // ローカルMySQL用
-    const DSN = 'mysql:dbname=open_court;host=127.0.0.1';
+    const DSN = 'mysql:dbname=open_court;host=127.0.0.1:8889';
     const USER = 'root';
-    const PASSWORD = '';
+    const PASSWORD = 'root';
     
     public function __construct()
     {
