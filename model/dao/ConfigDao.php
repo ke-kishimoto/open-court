@@ -1,16 +1,16 @@
 <?php
 
 namespace dao;
-require_once(dirname(__FILE__).'/OpenCourtPDO.php');
+require_once(dirname(__FILE__).'/DaoFactory.php');
 
-use dao\OpenCourtPDO;
+use dao\DaoFactory;
 use PDO;
 use entity\Config;
 
 class ConfigDao {
 
     public function getConfig($id) {
-        $pdo = new OpenCourtPDO();
+        $pdo = DaoFactory::getConnection();
         $sql = 'select * from config where id = :id';
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
@@ -19,7 +19,7 @@ class ConfigDao {
     }
 
     public function update(Config $config) {
-        $pdo = new OpenCourtPDO();
+        $pdo = DaoFactory::getConnection();
         $sql = 'update config set 
         line_token = :line_token
         where id = :id';
