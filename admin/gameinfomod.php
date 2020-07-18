@@ -1,7 +1,6 @@
 <?php
 require_once('../model/dao/GameInfoDao.php');
 require_once('../model/dao/DetailDao.php');
-use dao\DetailDao;
 use dao\GameInfoDao;
 
 $gameInfo = null;
@@ -20,13 +19,6 @@ if (empty($gameInfo)) {
     $gameInfo['place'] ='';
     $gameInfo['limit_number'] = 0;
     $gameInfo['detail'] ='';
-}
-
-// 参加者情報取得
-$participantList = null;
-if(!empty($gameInfo['id'])) {
-    $detailDao = new DetailDao();
-    $participantList = $detailDao->getParticipantList($gameInfo['id']);
 }
 
 // CSFR対策
@@ -90,24 +82,7 @@ $_SESSION['csrf_token'] = $csrf_token;
     </div>
     <hr>
     <div>
-        <h3>参加者詳細</h3>
-        <?php foreach ((array)$participantList as $participant): ?>
-            <p>
-                <?php echo htmlspecialchars($participant['name']); ?>&nbsp;&nbsp;
-                <?php echo htmlspecialchars($participant['email']); ?>&nbsp;&nbsp;
-                <?php echo htmlspecialchars($participant['occupation_name']); ?>&nbsp;&nbsp;
-                <?php echo htmlspecialchars($participant['sex_name']); ?>&nbsp;&nbsp;
-                同伴：<?php echo htmlspecialchars($participant['companion']); ?>人
-            </p>
-            <p>
-                <?php echo htmlspecialchars($participant['remark']); ?>
-            </p>
-            <p>
-                <a class="btn btn-secondary" href="participant.php?id=<?php echo $participant['id']; ?>&game_id=<?php echo $gameInfo['id']; ?>">修正</a>
-            </p>
-            <hr>
-        <?php endforeach; ?>
-        <a  class="btn btn-primary" href="participant.php?game_id=<?php echo $gameInfo['id']; ?>">参加者追加</a>
+    <?php include('../participationDetailInfo.php'); ?>
     </div>
     <a href="index.php">イベント一覧ページに戻る</a>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

@@ -3,6 +3,7 @@
 require_once(dirname(__FILE__).'/model/dao/GameInfoDao.php');
 require_once('./model/dao/DetailDao.php');
 use dao\GameInfoDao;
+
 $gameInfo = null;
 $gameInfoDao = new GameInfoDao();
 // 試合情報取得
@@ -50,6 +51,8 @@ $_SESSION['csrf_token'] = $csrf_token;
 
 <?php include('./participationInfo.php'); ?>
 
+<?php include('./participationDetailInfo.php'); ?>
+
 <br>
 <hr>
 <div>
@@ -57,14 +60,6 @@ $_SESSION['csrf_token'] = $csrf_token;
     <p>【応募フォーム】</p>
     <input type="hidden" id="game_id" name="game_id" value="<?php echo $gameInfo['id'] ?>">
     <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
-    <!-- <p>
-        職種：
-        社会人<input type="radio" name="occupation" value="1" required>
-        &nbsp;&nbsp;
-        大学・専門<input type="radio" name="occupation" value="2">
-        &nbsp;&nbsp;
-        高校生<input type="radio" name="occupation" value="3">
-    </p> -->
     <p>
     職種
     <select name="occupation" class="custom-select mr-sm-2">
@@ -74,12 +69,6 @@ $_SESSION['csrf_token'] = $csrf_token;
       </select>
     </p>
     
-    <!-- <p>
-        性別：
-        男性<input type="radio" name="sex" value="1" required>
-        &nbsp;&nbsp;
-        女性<input type="radio" name="sex" value="2">
-    </p> -->
     <p>
     性別
     <select name="sex" class="custom-select mr-sm-2">
