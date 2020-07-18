@@ -17,6 +17,7 @@ if (isset($_POST["csrf_token"])
         , $_POST['occupation']
         , $_POST['sex']
         , $_POST['name']
+        , $_POST['email']
         , $_POST['companion']
         , $_POST['remark']
     );

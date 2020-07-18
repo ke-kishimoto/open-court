@@ -29,16 +29,17 @@ create table participant (
     , game_id int
     , occupation int   -- 職種  1：社会、2：大学生、3：高校生
     , sex int -- 性別  1：男、2：女
-    , name varchar(50)
+    , name varchar(50)   -- 参加者名
+    , email varchar(50)  -- メール
     , companion int -- 同伴者
     , remark varchar(200)
 );
 
 -- テストデータ
 insert into participant (game_id, occupation, sex, name, remark, companion) values 
-(1, 1, 1, 'aaa', '', 0)
-, (1, 2, 1, 'bbb', '', 0)
-, (1, 1, 2, 'ccc', '同伴2名', 2);
+(1, 1, 1, 'aaa', 'aaas@gmail.com', '', 0)
+, (1, 2, 1, 'bbb', 'aaas@gmail.com', '', 0)
+, (1, 1, 2, 'ccc', 'aaas@gmail.com', '同伴2名', 2);
 
 -- 参加者確認用ビュー
 -- drop view v_participant;
@@ -101,3 +102,5 @@ create table config(
 );
 
 insert into config(id, line_token) values (1, 'SVcGMVbQUmk2xKoiP5PWbSV8tTine4q9BaglYgmB0AY');
+
+-- 

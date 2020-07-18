@@ -90,6 +90,7 @@ $_SESSION['csrf_token'] = $csrf_token;
         <?php foreach ((array)$participantList as $participant): ?>
             <p>
                 <?php echo htmlspecialchars($participant['name']); ?>&nbsp;&nbsp;
+                <?php echo htmlspecialchars($participant['email']); ?>&nbsp;&nbsp;
                 <?php echo htmlspecialchars($participant['occupation_name']); ?>&nbsp;&nbsp;
                 <?php echo htmlspecialchars($participant['sex_name']); ?>&nbsp;&nbsp;
                 同伴：<?php echo htmlspecialchars($participant['companion']); ?>人

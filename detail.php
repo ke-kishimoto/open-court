@@ -92,8 +92,13 @@ $_SESSION['csrf_token'] = $csrf_token;
         <input class="form-control" type="text" name="name" required>
     </p>
     <p>
+        メール
+        <input class="form-control" type="email" name="email">
+    </p>
+    <p>
         同伴者
         <input class="form-control" type="number" name="companion" required min="0">
+        例）社会人男性○名、高校生〇名
     </p>
     <p>
         備考
