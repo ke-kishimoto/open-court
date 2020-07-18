@@ -12,9 +12,14 @@ use dao\MampPDO;
 
 class DaoFactory {
 
+    // 環境の切り替え
     // const ENVIROMENT = 'Heroku';
     // const ENVIROMENT = 'XAMPP';
     const ENVIROMENT = 'MAMP';
+
+    // DBの切り替え
+    // const DBTYPE = 'PostgreSQL';
+    const DBTYPE = 'MySQL';
     
     public static function getConnection() {
         
@@ -26,6 +31,14 @@ class DaoFactory {
             return new MampPDO();
         }
     } 
+
+    public static function getGameInfoListSQL() {
+        if (DaoFactory::DBTYPE === 'MySQL') {
+            return "select * from game_info where year(game_date) = :year and month(game_date) = :month";
+        } elseif (DaoFactory::DBTYPE === 'PostgreSQL') {
+            return "select * from game_info where date_part('year', game_date) = :year and date_part('month', game_date) = :month";
+        }
+    }
 
 }
 

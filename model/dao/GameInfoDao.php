@@ -33,10 +33,7 @@ class GameInfoDao {
 
     public function getGameInfoList($year, $month) {
         $pdo = DaoFactory::getConnection();
-        // PostgreSQL用
-        // $sql = "select * from game_info where date_part('year', game_date) = :year and date_part('month', game_date) = :month";
-        // // MySQL用
-        $sql = "select * from game_info where year(game_date) = :year and month(game_date) = :month";
+        $sql = DaoFactory::getGameInfoListSQL();
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':year', $year);
         $prepare->bindValue(':month', $month);
