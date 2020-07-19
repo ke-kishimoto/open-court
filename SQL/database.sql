@@ -1,6 +1,8 @@
 -- create database open_court;
 
--- 試合情報
+-- イベント情報　
+-- テーブル名game_infoじゃなくて、event_infoとかにすればよかったかな.
+-- そのうちリファクタリング対象
 -- drop view v_participant;
 -- drop table game_info; 
 create table game_info (
@@ -23,6 +25,22 @@ insert into game_info (title, game_date, start_time, end_time, place, limit_numb
 , ('オープンコート北谷', '2020-03-10', '20:00', '22:00', '体育館', 20, 'わーーー')
 , ('オープンコート西原', '2020-03-15', '20:00', '22:00', '西原体育館', 30, 'バスケする')
 ;
+
+-- イベントのテンプレ
+create table event_template (
+    id serial primary key
+    , template_name varchar(30)
+    , title varchar(50)
+    , short_title varchar(20)
+    , place varchar(100)
+    , limit_number int
+    , detail varchar(1000)
+);
+
+-- テストデータ
+insert into event_template (template_name, title, short_title, place, limit_number, detail) values
+('テンプレテスト', 'テンプレタイトル', 'ショートタイトル', 'プレイス', 10, 'テンプレ詳細');
+
 -- 参加者
 -- drop table participant;
 create table participant (

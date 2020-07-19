@@ -52,6 +52,9 @@
     <a href="gameinfomod.php" class="btn btn-secondary">新規イベント登録</a>
 </p>
 <p>
+    <a href="eventTemplateMod.php" class="btn btn-info">テンプレート設定</a>
+</p>
+<p>
     <a href="config.php" class="btn btn-info">通知設定の変更</a>
 </p>
 <h2>イベント一覧</h2>

@@ -71,6 +71,7 @@ class GameInfoDao {
     public function update(GameInfo $gameinfo) {
         $pdo = DaoFactory::getConnection();
         $sql = 'update game_info set title = :title
+        , short_title = :short_title
         , game_date = :game_date
         , start_time = :start_time
         , end_time = :end_time
@@ -81,6 +82,7 @@ class GameInfoDao {
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':id', $gameinfo->id, PDO::PARAM_INT);
         $prepare->bindValue(':title', $gameinfo->title, PDO::PARAM_STR);
+        $prepare->bindValue(':short_title', $gameinfo->shortTitle, PDO::PARAM_STR);
         $prepare->bindValue(':game_date', $gameinfo->gameDate, PDO::PARAM_STR);
         $prepare->bindValue(':start_time', $gameinfo->startTime, PDO::PARAM_STR);
         $prepare->bindValue(':end_time', $gameinfo->endTime, PDO::PARAM_STR);
