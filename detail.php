@@ -87,10 +87,9 @@ $_SESSION['csrf_token'] = $csrf_token;
     <p>
         同伴者
         <input class="form-control" type="number" name="companion" required min="0">
-        例）社会人男性○名、高校生〇名
     </p>
     <p>
-        備考
+        備考　例）社会人男性〇名、高校生〇名
         <textarea class="form-control" name="remark"></textarea>
     </p>
     <input type="hidden" name="title" value="<?php echo $gameInfo['title'] ?>">

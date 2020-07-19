@@ -60,6 +60,18 @@ insert into participant (game_id, occupation, sex, name, email, remark, companio
 , (1, 2, 1, 'bbb', 'aaas@gmail.com', '', 0)
 , (1, 1, 2, 'ccc', 'aaas@gmail.com', '同伴2名', 2);
 
+-- 設定
+-- 後々はユーザー単位にしたいな
+-- drop table config;
+create table config(
+    id int primary key
+    , line_token varchar(200)
+);
+
+------------------------------------------------------------------------------------------
+--- ビュー
+------------------------------------------------------------------------------------------
+
 -- 参加者確認用ビュー
 -- drop view v_participant;
 create view v_participant as 
@@ -112,14 +124,4 @@ create view v_participant as
   on g.id = p.game_id
   group by g.id);
 
--- 設定
--- 後々はユーザー単位にしたいな
--- drop table config;
-create table config(
-    id int primary key
-    , line_token varchar(200)
-);
 
-insert into config(id, line_token) values (1, 'SVcGMVbQUmk2xKoiP5PWbSV8tTine4q9BaglYgmB0AY');
-
--- 
