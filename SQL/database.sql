@@ -125,3 +125,20 @@ create view v_participant as
   group by g.id);
 
 
+
+
+SELECT 
+g.id 
+, max(g.title) 
+, max(g.short_title) 
+, max(g.game_date) 
+, max(g.start_time) 
+, max(g.end_time) 
+, CASE 
+    when max(g.limit_number) <= count(*) + sum(companion) then '満員' 
+    else concat('残り', max(g.limit_number) - count(*) - sum(companion), '人') 
+  END 
+from game_info g 
+join participant p 
+on g.id = p.game_id 
+group by g.id
