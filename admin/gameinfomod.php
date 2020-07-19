@@ -1,7 +1,13 @@
 <?php
 require_once('../model/dao/GameInfoDao.php');
 require_once('../model/dao/DetailDao.php');
+require_once('../model/dao/EventTemplateDao.php');
+use dao\EventTemplateDao;
 use dao\GameInfoDao;
+
+// テンプレ一覧
+$eventTemplateDao = new EventTemplateDao();
+$eventTemplateList = $eventTemplateDao->getEventTemplateList();
 
 $gameInfo = null;
 $gameInfoDao = new GameInfoDao();
@@ -47,10 +53,18 @@ $_SESSION['csrf_token'] = $csrf_token;
         <input type="hidden" id="id" name="id" value="<?php echo $gameInfo['id']; ?>">
         <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
         <p>
-            タイトル<input class="form-control" type="text" name="title"  required value="<?php echo $gameInfo['title'] ?>">
+            <select name="template" id="template">
+            <option value=""></option>
+            <?php foreach ($eventTemplateList as $eventTemplate): ?>
+                <option value="<?php echo $eventTemplate['id'] ?>"><?php echo $eventTemplate['template_name'] ?></option>
+            <?php endforeach ?>
+            </select>
         </p>
         <p>
-            タイトル略称<input class="form-control" type="text" name="short_title"  required value="<?php echo $gameInfo['short_title'] ?>">
+            タイトル<input class="form-control" type="text" id="title" name="title"  required value="<?php echo $gameInfo['title'] ?>">
+        </p>
+        <p>
+            タイトル略称<input class="form-control" type="text" id="short_title" name="short_title"  required value="<?php echo $gameInfo['short_title'] ?>">
         </p>
         <p>
             日程<input class="form-control" type="date" name="game_date" required value="<?php echo $gameInfo['game_date'] ?>">
@@ -62,13 +76,13 @@ $_SESSION['csrf_token'] = $csrf_token;
             終了時間<input class="form-control" type="time" name="end_time" required value="<?php echo $gameInfo['end_time'] ?>">
         </p>
         <p>
-            場所<input class="form-control" type="text" name="place" required value="<?php echo $gameInfo['place'] ?>">
+            場所<input class="form-control" type="text" id="place" name="place" required value="<?php echo $gameInfo['place'] ?>">
         </p>
         <p>
-            人数上限<input class="form-control" type="number" name="limit_number" min="1" required value="<?php echo $gameInfo['limit_number'] ?>">
+            人数上限<input class="form-control" type="number" id="limit_number" name="limit_number" min="1" required value="<?php echo $gameInfo['limit_number'] ?>">
         </p>
         <p>
-            詳細<textarea class="form-control" name="detail"><?php echo $gameInfo['detail'] ?></textarea>
+            詳細<textarea class="form-control" id="detail" name="detail"><?php echo $gameInfo['detail'] ?></textarea>
         </p>
         <p>
             <button class="btn btn-primary" type="submit" name="register">登録</button>
@@ -88,6 +102,7 @@ $_SESSION['csrf_token'] = $csrf_token;
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
         'use strict';
         $(function(){ 
@@ -101,6 +116,31 @@ $_SESSION['csrf_token'] = $csrf_token;
                     return confirm('削除してもよろしいですか');
                 });
             }
+            $('#template').change(function() {
+                $.ajax({
+                url:'../controller/GetEventTemplate.php',
+                type:'POST',
+                data:{
+                    'id':$('#template').val()
+                }
+                })
+                // Ajaxリクエストが成功した時発動
+                .done( (data) => {
+                    console.log(data);
+                    $('#template_name').val(data.template_name);
+                    $('#title').val(data.title);
+                    $('#short_title').val(data.short_title);
+                    $('#place').val(data.place);
+                    $('#limit_number').val(data.limit_number);
+                    $('#detail').val(data.detail);
+                })
+                // Ajaxリクエストが失敗した時発動
+                .fail( (data) => {
+                })
+                // Ajaxリクエストが成功・失敗どちらでも発動
+                .always( (data) => {
+                })
+            })
         });
     
     </script>

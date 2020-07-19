@@ -28,10 +28,10 @@ $_SESSION['csrf_token'] = $csrf_token;
 <body class="container">
     <a href="index.php">イベント一覧ページに戻る</a>
     <h2>テンプレート</h2>
-    <form action="register.php" method="post" class="form-group">
+    <form action="templateRegister.php" method="post" class="form-group">
         <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
         <p>
-            <select name="template" id="template">
+            <select name="id" id="template">
             <option value=""></option>
             <?php foreach ($eventTemplateList as $eventTemplate): ?>
                 <option value="<?php echo $eventTemplate['id'] ?>"><?php echo $eventTemplate['template_name'] ?></option>
@@ -91,12 +91,9 @@ $_SESSION['csrf_token'] = $csrf_token;
                 })
                 // Ajaxリクエストが失敗した時発動
                 .fail( (data) => {
-                    // $('#event-list').html(data);
-                    console.log(data);
                 })
                 // Ajaxリクエストが成功・失敗どちらでも発動
                 .always( (data) => {
-
                 })
             })
         });

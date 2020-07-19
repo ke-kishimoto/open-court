@@ -59,6 +59,7 @@ class EventTemplateDao {
         $prepare->bindValue(':place', $eventTemplate->place, PDO::PARAM_STR);
         $prepare->bindValue(':limit_number', $eventTemplate->limitNumber, PDO::PARAM_INT);
         $prepare->bindValue(':detail', $eventTemplate->detail, PDO::PARAM_STR);
+        $prepare->bindValue(':id', $eventTemplate->id);
         $prepare->execute();
     }
 
