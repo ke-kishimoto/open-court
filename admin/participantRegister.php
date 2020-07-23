@@ -10,6 +10,12 @@ if (isset($_POST["csrf_token"])
  && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 
     $detailDao = new DetailDao();
+    if($detailDao->limitCheck($_POST['game_id'], 1)) {
+        $waitingFlg = 0;
+    } else {
+        $waitingFlg = 1;
+    }
+    
     if (isset($_POST['register'])) {
         $participant = new Participant(
             $_POST['game_id']
@@ -17,7 +23,7 @@ if (isset($_POST["csrf_token"])
             , $_POST['sex']
             , $_POST['name']
             , $_POST['email']
-            , $_POST['companion']
+            , $waitingFlg
             , $_POST['remark']
         );
         if($_POST['id'] !== '') {

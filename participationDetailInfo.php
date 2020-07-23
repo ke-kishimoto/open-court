@@ -25,4 +25,3 @@ if(!empty($gameInfo['id'])) {
     </p>
     <hr>
 <?php endforeach; ?>
-<a  class="btn btn-primary" href="participant.php?game_id=<?php echo $gameInfo['id']; ?>">参加者追加</a>

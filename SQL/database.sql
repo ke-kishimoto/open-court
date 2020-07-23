@@ -50,15 +50,35 @@ create table participant (
     , sex int -- 性別  1：男、2：女
     , name varchar(50)   -- 参加者名
     , email varchar(50)  -- メール
-    , companion int -- 同伴者
+    , waiting_flg int -- キャンセル待ちフラグ 0：通常、1：キャンセル待ち
     , remark varchar(200)
 );
 
 -- テストデータ
-insert into participant (game_id, occupation, sex, name, email, remark, companion) values 
-(1, 1, 1, 'aaa', 'aaas@gmail.com', '', 0)
-, (1, 2, 1, 'bbb', 'aaas@gmail.com', '', 0)
-, (1, 1, 2, 'ccc', 'aaas@gmail.com', '同伴2名', 2);
+delete from participant;
+insert into participant (game_id, occupation, sex, name, email, waiting_flg, remark) values 
+(1, 1, 1, 'aaa', 'aaas@gmail.com', 0, '')
+, (1, 2, 1, 'bbb', 'aaas@gmail.com', 0, '')
+, (1, 1, 2, 'ccc', 'aaas@gmail.com', 0, '同伴2名')
+, (2, 1, 2, 'ccc', 'aaas@gmail.com', 0, '同伴2名')
+;
+
+-- 同伴者
+-- drop table companion;
+create table companion (
+    id serial primary key
+    , participant_id int -- 参加者id
+    , occupation int   -- 職種  1：社会、2：大学生、3：高校生
+    , sex int -- 性別  1：男、2：女
+    , name varchar(50)   -- 参加者名
+);
+
+-- テストデータ
+insert into companion (participant_id, occupation, sex, name) values 
+(1, 1, 1, '同伴aaa')
+, (1, 2, 1, '同伴bbb')
+, (1, 1, 2, '同伴ccc');
+
 
 -- 設定
 -- 後々はユーザー単位にしたいな
@@ -69,7 +89,7 @@ create table config(
 );
 
 ------------------------------------------------------------------------------------------
---- ビュー
+--- 確認用SQL
 ------------------------------------------------------------------------------------------
 
 -- 参加者確認用ビュー
@@ -125,20 +145,24 @@ create view v_participant as
   group by g.id);
 
 
-
-
-SELECT 
+-- イベント参加人数が定員に達しているかを確認
+select 
 g.id 
-, max(g.title) 
-, max(g.short_title) 
-, max(g.game_date) 
-, max(g.start_time) 
-, max(g.end_time) 
-, CASE 
-    when max(g.limit_number) <= count(*) + sum(companion) then '満員' 
-    else concat('残り', max(g.limit_number) - count(*) - sum(companion), '人') 
-  END 
+, max(g.title) title
+, max(g.short_title) short_title
+, max(g.game_date) game_date
+, max(g.start_time) start_time
+, max(g.end_time) end_time
+, max(g.limit_number) limit_number
+, count(p.id) + coalesce(sum(cnt), 0) participants_number
+, case 
+    when max(g.limit_number) <= count(*) + sum(cnt) then '定員に達しました' 
+    else concat('残り', max(g.limit_number) - count(p.id) - coalesce(sum(cnt), 0), '人') 
+  end current_status
 from game_info g 
-join participant p 
+left join (select *
+            , (select count(*) from companion where participant_id = participant.id) cnt
+            from participant) p
 on g.id = p.game_id 
-group by g.id
+group by g.id;
+

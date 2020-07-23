@@ -9,17 +9,17 @@ class Participant {
     public $sex;
     public $name;
     public $email;
-    public $companion;
+    public $waitingFlg;
     public $remark;
 
-    public function __construct($gameId, $occupation, $sex, $name, $email, $companion, $remark)
+    public function __construct($gameId, $occupation, $sex, $name, $email, $waitingFlg, $remark)
     {
         $this->gameId = $gameId;
         $this->occupation = $occupation;
         $this->sex = $sex;
         $this->name = $name;
         $this->email = $email;
-        $this->companion = $companion;
+        $this->waitingFlg = $waitingFlg;
         $this->remark = $remark;
     }
 }

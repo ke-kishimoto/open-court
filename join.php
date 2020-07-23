@@ -12,17 +12,23 @@ session_start();
 if (isset($_POST["csrf_token"]) 
  && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 
+    $detailDao = new DetailDao();
+    if($detailDao->limitCheck($_POST['game_id'], 1)) {
+        $waitingFlg = 0;
+    } else {
+        $waitingFlg = 1;
+    }
+
     $detail = new Participant(
         $_POST['game_id']
         , $_POST['occupation']
         , $_POST['sex']
         , $_POST['name']
         , $_POST['email']
-        , $_POST['companion']
+        , $waitingFlg 
         , $_POST['remark']
     );
-
-    $detailDao = new DetailDao();
+    
     $detailDao->insert($detail);
 
     $api = new Api();

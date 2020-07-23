@@ -34,9 +34,9 @@ class DaoFactory {
 
     public static function getGameInfoListSQL() {
         if (DaoFactory::DBTYPE === 'MySQL') {
-            return "select * from game_info where year(game_date) = :year and month(game_date) = :month";
+            return "where year(game_date) = :year and month(game_date) = :month ";
         } elseif (DaoFactory::DBTYPE === 'PostgreSQL') {
-            return "select * from game_info where date_part('year', game_date) = :year and date_part('month', game_date) = :month";
+            return "where date_part('year', game_date) = :year and date_part('month', game_date) = :month ";
         }
     }
 

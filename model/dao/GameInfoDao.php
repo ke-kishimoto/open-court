@@ -33,7 +33,26 @@ class GameInfoDao {
 
     public function getGameInfoList($year, $month) {
         $pdo = DaoFactory::getConnection();
-        $sql = DaoFactory::getGameInfoListSQL();
+        $sql = "select 
+        g.id 
+        , max(g.title) title
+        , max(g.short_title) short_title
+        , max(g.game_date) game_date
+        , max(g.start_time) start_time
+        , max(g.end_time) end_time
+        , max(g.limit_number) limit_number
+        , count(p.id) + coalesce(sum(cnt), 0) participants_number
+        , case 
+            when max(g.limit_number) <= count(*) + sum(cnt) then '定員に達しました' 
+            else concat('残り', max(g.limit_number) - count(p.id) - coalesce(sum(cnt), 0), '人') 
+          end current_status
+        from game_info g 
+        left join (select *
+                    , (select count(*) from companion where participant_id = participant.id) cnt
+                    from participant) p
+        on g.id = p.game_id ";
+        $sql .= DaoFactory::getGameInfoListSQL();
+        $sql .= "group by g.id order by max(g.game_date)";
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':year', $year);
         $prepare->bindValue(':month', $month);
