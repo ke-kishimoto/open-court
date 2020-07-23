@@ -95,7 +95,8 @@ $_SESSION['csrf_token'] = $csrf_token;
     </div>
     <hr>
     <div>
-    <h4>参加者詳細</h4>
+    <details>
+    <summary>参加者詳細</summary>
     <?php foreach ((array)$participantList as $participant): ?>
         <?php if($participant['main'] === '1'): ?>
             <hr>
@@ -117,6 +118,7 @@ $_SESSION['csrf_token'] = $csrf_token;
             </p>
         <?php endif ?>
     <?php endforeach; ?>
+    </details>
     </div>
     <a  class="btn btn-primary" href="participant.php?game_id=<?php echo $gameInfo['id']; ?>">参加者追加</a>
     <a href="index.php">イベント一覧ページに戻る</a>

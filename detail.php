@@ -54,8 +54,9 @@ $_SESSION['csrf_token'] = $csrf_token;
 <p>詳細：<?php echo htmlspecialchars($gameInfo['detail']) ?></p>
 
 <?php include('./participationInfo.php'); ?>
-
-<h4>参加者詳細</h4>
+<br>
+<details>
+<summary>参加者詳細</summary>
 <?php foreach ((array)$participantList as $participant): ?>
     <?php if($participant['main'] === '1'): ?>
         <hr>
@@ -68,6 +69,7 @@ $_SESSION['csrf_token'] = $csrf_token;
         <?php echo htmlspecialchars($participant['sex_name']); ?>&nbsp;&nbsp;
     </p>
 <?php endforeach; ?>
+</details>
 
 <br>
 <hr>
@@ -109,6 +111,7 @@ $_SESSION['csrf_token'] = $csrf_token;
         <input class="form-control" type="number" name="companion" required min="0"> -->
         <input id="companion" name="companion" type="hidden" value="0">
         <button class="btn btn-secondary" id="btn-add" type="button">同伴者追加</button>
+        <button class="btn btn-danger" id="btn-del" type="button">同伴者削除</button>
     </p>
     <input type="hidden" name="title" value="<?php echo $gameInfo['title'] ?>">
     <input type="hidden" name="date" value="<?php echo $gameInfo['game_date'] ?>">
@@ -124,25 +127,27 @@ $_SESSION['csrf_token'] = $csrf_token;
 </script>
 <script>
     $(function() {
-        // $('#btn-add').on('click', function() {
-        //     var num = Number($('#companion').val()) + 1;
-        //     $(this).after($('#occupation').attr('id', 'occupation-' + num).attr('name', 'occupation-' + num));
-        //     $(this).after($('#sex').attr('id', 'sex-' + num).attr('name', 'sex-' + num));
-        //     $(this).after($('#name').attr('id', 'name-' + num).attr('name', 'name-' + num));
-        //     $('#companion').val(num);
-        // });
-    })
-    $('#btn-add').on('click', function() {
+        $('#btn-add').on('click', function() {
             var num = Number($('#companion').val());
             var current = $('#douhan-' + num);
             num++;
             var div = $('<div>').attr('id', 'douhan-' + num).text(num + '人目');
             div.append($('#occupation').clone().attr('id', 'occupation-' + num).attr('name', 'occupation-' + num));
             div.append($('#sex').clone().attr('id', 'sex-' + num).attr('name', 'sex-' + num));
-            div.append($('#name').clone().attr('id', 'name-' + num).attr('name', 'name-' + num));
+            div.append($('#name').clone().attr('id', 'name-' + num).attr('name', 'name-' + num).val(''));
+            div.append($('<br>'));
             current.after(div);
             $('#companion').val(num);
         });
+        $('#btn-del').on('click', function() {
+            var num = Number($('#companion').val());
+            if(num > 0) {
+                $('#douhan-' + num).remove();
+                num--;
+            }
+            $('#companion').val(num);
+        });
+    })
 </script>
 </body>
 </html>

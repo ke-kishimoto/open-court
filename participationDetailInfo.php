@@ -8,7 +8,8 @@ if(!empty($gameInfo['id'])) {
     $participantList = $detailDao->getParticipantList($gameInfo['id']);
 }
 ?>
-<h4>参加者詳細</h4>
+<details>
+<summary>参加者詳細</summary>
 <?php foreach ((array)$participantList as $participant): ?>
     <?php if($participant['main'] === '1'): ?>
         <hr>
@@ -24,3 +25,4 @@ if(!empty($gameInfo['id'])) {
         <a class="btn btn-secondary" href="participant.php?id=<?php echo $participant['id']; ?>&game_id=<?php echo $gameInfo['id']; ?>">修正</a>
     </p>
 <?php endforeach; ?>
+</details>

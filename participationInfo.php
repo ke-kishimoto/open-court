@@ -22,10 +22,12 @@ if(empty($detail)) {
 ?>
 
 <div>
-    <h4>参加情報</h4>
+    <details>
+    <summary>参加情報</summary>
     <p>【参加予定  <?php echo $detail['cnt'] ?>人】【上限  <?php echo $gameInfo['limit_number'] ?>人】</p>
     <p>社会人：女性 <?php echo $detail['sya_women'] ?>人、男性 <?php echo $detail['sya_men'] ?>人
     <p>大学・専門：女性 <?php echo $detail['dai_women'] ?>人、男性 <?php echo $detail['dai_men'] ?>人</p>
     <p>高校生：女性 <?php echo $detail['kou_women'] ?>人、男性 <?php echo $detail['kou_men'] ?>人</p>
     <p>キャンセル待ち：<?php echo $waiting['cnt'] ?>人</p>
+    </details>
 </div>

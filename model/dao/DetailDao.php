@@ -114,7 +114,7 @@ class DetailDao {
         from companion
         where participant_id in (select id from participant where game_id = :game_id)
         ) p
-        order by id, main";
+        order by id, main desc";
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
 
@@ -183,6 +183,12 @@ class DetailDao {
     // イベントごと削除する場合の参加者の削除
     public function deleteByGameId(int $gameId) {
         $pdo = DaoFactory::getConnection();
+        // // 同伴者の削除
+        // $sql = "delete from companion where participant_id in (select id from participant where game_id = :game_id)";
+        // $prepare = $pdo->prepare($sql);
+        // $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
+        // $prepare->execute();
+        // 参加者の削除
         $sql = "delete from participant where game_id = :game_id";
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
