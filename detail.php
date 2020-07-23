@@ -15,6 +15,7 @@ if (isset($_GET['id'])) {
     $gameInfo = $gameInfoDao->getGameInfo($_GET['id']);
     $detailDao = new DetailDao();
     $limitFlg = $detailDao->limitCheck($gameInfo['id'], 0);
+    $participantList = $detailDao->getParticipantList($gameInfo['id']);
     if($limitFlg) {
         $btnClass = "btn btn-warning";
         $btnLiteral = "キャンセル待ちとして登録";
@@ -54,7 +55,19 @@ $_SESSION['csrf_token'] = $csrf_token;
 
 <?php include('./participationInfo.php'); ?>
 
-<?php include('./participationDetailInfo.php'); ?>
+<h4>参加者詳細</h4>
+<?php foreach ((array)$participantList as $participant): ?>
+    <?php if($participant['main'] === '1'): ?>
+        <hr>
+    <?php endif ?>
+    <p>
+        <?php echo htmlspecialchars($participant['waiting_name']); ?>
+        <?php echo htmlspecialchars($participant['companion_name']); ?>&nbsp;&nbsp;
+        <?php echo htmlspecialchars($participant['name']); ?>&nbsp;&nbsp;
+        <?php echo htmlspecialchars($participant['occupation_name']); ?>&nbsp;&nbsp;
+        <?php echo htmlspecialchars($participant['sex_name']); ?>&nbsp;&nbsp;
+    </p>
+<?php endforeach; ?>
 
 <br>
 <hr>

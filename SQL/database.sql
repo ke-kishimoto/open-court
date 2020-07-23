@@ -92,57 +92,86 @@ create table config(
 --- 確認用SQL
 ------------------------------------------------------------------------------------------
 
--- 参加者確認用ビュー
--- drop view v_participant;
-create view v_participant as 
-(select 
-  max(g.id) game_id
-, max(game_date) game_date
-, max(start_time) start_time
-, max(end_time) end_time
-, max(place) place
-, max(limit_number) limit_number
-, count(*) + sum(companion) count
+-- 参加者集計用
+select 
+count(*) cnt
 , sum(
     case 
-        when occupation = 1 and sex = 1 then 1 + companion -- とりあえず参加者に加えておく
+        when occupation = 1 and sex = 1 then 1
         else 0
     end
 ) sya_men  -- 社会人男
 ,  sum(
     case 
-        when occupation = 1 and sex = 2 then 1 + companion
+        when occupation = 1 and sex = 2 then 1
         else 0
     end
 ) sya_women  -- 社会人女
 , sum(
     case 
-        when occupation = 2 and sex = 1 then 1 + companion
+        when occupation = 2 and sex = 1 then 1
         else 0
     end
 ) dai_men  -- 大学生男
 ,  sum(
     case 
-        when occupation = 2 and sex = 2 then 1 + companion
+        when occupation = 2 and sex = 2 then 1
         else 0
     end
 ) dai_women  -- 大学生女
 , sum(
     case 
-        when occupation = 3 and sex = 1 then 1 + companion
+        when occupation = 3 and sex = 1 then 1
         else 0
     end
 ) kou_men  -- 高校生男
 ,  sum(
     case 
-        when occupation = 3 and sex = 2 then 1 + companion
+        when occupation = 3 and sex = 2 then 1
         else 0
     end
 ) kou_women  -- 高校生女
-  from game_info g
-  inner join participant p
-  on g.id = p.game_id
-  group by g.id);
+from 
+(select occupation, sex 
+from participant
+where game_id = :game_id
+and waiting_flg = :waiting_flg
+union all
+select occupation, sex
+from companion
+where participant_id in (select id from participant where game_id = :game_id and waiting_flg = :waiting_flg)
+) p
+
+-- 参加者一覧
+select 
+main
+, name
+, case 
+    when occupation =  1 then '社会人'
+    when occupation =  2 then '大学・専門学校'
+    when occupation =  3 then '高校'
+    else 'その他' 
+  end occupation_name
+, case
+    when sex = 1 then '男性'
+    when sex = 2 then '女性'
+  end sex_name 
+, case
+    when waiting_flg = 1 then 'キャンセル待ち' 
+    else ''
+  end waiting_name
+, remark
+from 
+(
+select id, 1 main ,name, occupation, sex, waiting_flg, remark
+from participant
+where game_id = :game_id
+union all
+select participant_id, 0 ,name, occupation, sex, 0, ''
+from companion
+where participant_id in (select id from participant where game_id = :game_id)
+) p
+order by id, main;
 
 
 -- イベント参加人数が定員に達しているかを確認

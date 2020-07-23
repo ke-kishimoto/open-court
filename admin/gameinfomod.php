@@ -4,6 +4,7 @@ require_once('../model/dao/DetailDao.php');
 require_once('../model/dao/EventTemplateDao.php');
 use dao\EventTemplateDao;
 use dao\GameInfoDao;
+use dao\DetailDao;
 
 // テンプレ一覧
 $eventTemplateDao = new EventTemplateDao();
@@ -16,15 +17,13 @@ if (isset($_GET['id'])) {
     $gameInfo = $gameInfoDao->getGameInfo($_GET['id']);
 }
 if (empty($gameInfo)) {
-    $gameInfo['id'] = '';
-    $gameInfo['title'] = '';
-    $gameInfo['short_title'] = '';
-    $gameInfo['game_date'] = '';
-    $gameInfo['start_time'] ='';
-    $gameInfo['end_time'] ='';
-    $gameInfo['place'] ='';
-    $gameInfo['limit_number'] = 0;
-    $gameInfo['detail'] ='';
+   header('Location: index.php');
+}
+// 参加者情報取得
+$participantList = null;
+if(!empty($gameInfo['id'])) {
+    $detailDao = new DetailDao();
+    $participantList = $detailDao->getParticipantList($gameInfo['id']);
 }
 
 // CSFR対策
@@ -96,7 +95,28 @@ $_SESSION['csrf_token'] = $csrf_token;
     </div>
     <hr>
     <div>
-    <?php include('../participationDetailInfo.php'); ?>
+    <h4>参加者詳細</h4>
+    <?php foreach ((array)$participantList as $participant): ?>
+        <?php if($participant['main'] === '1'): ?>
+            <hr>
+        <?php endif ?>
+        <p>
+            <?php echo htmlspecialchars($participant['waiting_name']); ?>
+            <?php echo htmlspecialchars($participant['companion_name']); ?>  &nbsp;&nbsp;
+            <?php echo htmlspecialchars($participant['name']); ?>  &nbsp;&nbsp;
+            <?php echo htmlspecialchars($participant['occupation_name']); ?>  &nbsp;&nbsp;
+            <?php echo htmlspecialchars($participant['sex_name']); ?>  &nbsp;&nbsp;
+        </p>
+        <?php if($participant['main'] === '1'): ?>
+            <p>
+                <?php echo htmlspecialchars($participant['email']); ?>
+                <?php echo htmlspecialchars($participant['remark']); ?>
+            </p>
+            <p>
+                <a class="btn btn-secondary" href="participant.php?id=<?php echo $participant['id']; ?>&game_id=<?php echo $gameInfo['id']; ?>">修正</a>
+            </p>
+        <?php endif ?>
+    <?php endforeach; ?>
     </div>
     <a  class="btn btn-primary" href="participant.php?game_id=<?php echo $gameInfo['id']; ?>">参加者追加</a>
     <a href="index.php">イベント一覧ページに戻る</a>

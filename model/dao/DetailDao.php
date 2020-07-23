@@ -28,6 +28,7 @@ class DetailDao {
         $prepare->execute();
     }
 
+    // 参加者の更新
     public function update(Participant $participant) {
         $pdo = DaoFactory::getConnection();
         $sql = 'update participant set
@@ -47,6 +48,7 @@ class DetailDao {
         $prepare->execute();
     }
 
+    // 参加者の削除
     public function delete(int $id) {
         $pdo = DaoFactory::getConnection();
         $sql = 'delete from participant where id = :id';
@@ -55,7 +57,7 @@ class DetailDao {
         $prepare->execute();
     }
 
-    // 参加者登録
+    // 参加者情報取得
     public function getParticipant(int $id) {
         $pdo = DaoFactory::getConnection();
         $sql = "select * 
@@ -79,27 +81,40 @@ class DetailDao {
     // 参加者一覧取得
     public function getParticipantList(int $gameId) {
         $pdo = DaoFactory::getConnection();
-        $sql = "select
-        id 
+        $sql = "select 
+        id
+        , main
         , name
-        , occupation
+        , case
+            when main = 0 then '同伴'
+            else ''
+          end
         , case 
             when occupation =  1 then '社会人'
             when occupation =  2 then '大学・専門学校'
             when occupation =  3 then '高校'
             else 'その他' 
-         end occupation_name
-        , sex
+          end occupation_name
         , case
             when sex = 1 then '男性'
             when sex = 2 then '女性'
-          end sex_name
-        , waiting_flg
-        , companion
+          end sex_name 
+        , case
+            when waiting_flg = 1 then 'キャンセル待ち' 
+            else ''
+          end waiting_name
         , remark
-        from participant 
-        where game_id = :game_id 
-        order by occupation, sex, id";
+        from 
+        (
+        select id, 1 main ,name, occupation, sex, waiting_flg, remark, email
+        from participant
+        where game_id = :game_id
+        union all
+        select participant_id, 0 ,name, occupation, sex, 0, '', ''
+        from companion
+        where participant_id in (select id from participant where game_id = :game_id)
+        ) p
+        order by id, main";
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
 
@@ -108,17 +123,64 @@ class DetailDao {
     }
 
     // 参加者集計情報取得
-    public function getDetail(int $gameId) {
+    public function getDetail(int $gameId, int $waitingFlg) {
         $pdo = DaoFactory::getConnection();
-        $sql = 'select * from v_participant where game_id = :game_id';
+        $sql = 'select 
+        count(*) cnt
+        , sum(
+            case 
+                when occupation = 1 and sex = 1 then 1
+                else 0
+            end
+        ) sya_men  -- 社会人男
+        ,  sum(
+            case 
+                when occupation = 1 and sex = 2 then 1
+                else 0
+            end
+        ) sya_women  -- 社会人女
+        , sum(
+            case 
+                when occupation = 2 and sex = 1 then 1
+                else 0
+            end
+        ) dai_men  -- 大学生男
+        ,  sum(
+            case 
+                when occupation = 2 and sex = 2 then 1
+                else 0
+            end
+        ) dai_women  -- 大学生女
+        , sum(
+            case 
+                when occupation = 3 and sex = 1 then 1
+                else 0
+            end
+        ) kou_men  -- 高校生男
+        ,  sum(
+            case 
+                when occupation = 3 and sex = 2 then 1
+                else 0
+            end
+        ) kou_women  -- 高校生女
+        from 
+        (select occupation, sex 
+        from participant
+        where game_id = :game_id
+        and waiting_flg = :waiting_flg
+        union all
+        select occupation, sex
+        from companion
+        where participant_id in (select id from participant where game_id = :game_id and waiting_flg = :waiting_flg)
+        ) p';
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
-
+        $prepare->bindValue(':waiting_flg', $waitingFlg, PDO::PARAM_INT);
         $prepare->execute();
         return $prepare->fetch();
     }
 
-    // 参加者の削除
+    // イベントごと削除する場合の参加者の削除
     public function deleteByGameId(int $gameId) {
         $pdo = DaoFactory::getConnection();
         $sql = "delete from participant where game_id = :game_id";

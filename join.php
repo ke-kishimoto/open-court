@@ -17,7 +17,7 @@ if (isset($_POST["csrf_token"])
  && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 
     $detailDao = new DetailDao();
-    if($detailDao->limitCheck($_POST['game_id'], 1)) {
+    if($detailDao->limitCheck($_POST['game_id'], 1 + $_POST['companion'])) {
         $waitingFlg = 1;
     } else {
         $waitingFlg = 0;
@@ -50,11 +50,10 @@ if (isset($_POST["csrf_token"])
     $api = new Api();
     $api->reserve_notify($detail, $_POST['title'], $_POST['date']);
 
-    $detail = $detailDao->getDetail($_POST['game_id']);
-    if ($detail['count'] >= $detail['limit_number']) {
-        // 上限に達した通知
-        $api->limit_notify($_POST['title'], $_POST['date'], $detail['limit_number'], $detail['count']);
-    }
+    // if ($waitingFlg) {
+    //     // 上限に達した通知
+    //     $api->limit_notify($_POST['title'], $_POST['date'], $detail['limit_number'], $detail['count']);
+    // }
     unset($_SESSION['csrf_token']);
 } else {
     header('Location: ./index.php');
