@@ -99,10 +99,12 @@ class DetailDao {
             when sex = 1 then '男性'
             when sex = 2 then '女性'
           end sex_name 
+        , waiting_flg
         , case
             when waiting_flg = 1 then 'キャンセル待ち' 
             else ''
           end waiting_name
+        , email
         , remark
         from 
         (
@@ -237,5 +239,16 @@ class DetailDao {
         $prepare->execute();
         $info = $prepare->fetch();
         return $info['id'];
+    }
+
+    // キャンセル待ちフラグの更新
+    public function updateWaitingFlg(int $id) {
+        $pdo = DaoFactory::getConnection();
+        $sql = 'update participant set
+        waitig_flg = case when waitig_flg = 0 then 1 else 0 end
+        where id = :id';
+        $prepare = $pdo->prepare($sql);
+        $prepare->bindValue(':id', $id, PDO::PARAM_INT);
+        $prepare->execute();
     }
 }

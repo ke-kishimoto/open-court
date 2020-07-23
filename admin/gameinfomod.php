@@ -100,7 +100,13 @@ $_SESSION['csrf_token'] = $csrf_token;
     <?php foreach ((array)$participantList as $participant): ?>
         <?php if($participant['main'] === '1'): ?>
             <hr>
+            <p>
+                <a class="btn btn-secondary" href="participant.php?id=<?php echo $participant['id']; ?>&game_id=<?php echo $gameInfo['id']; ?>">修正</a>
+                <button type="button" class="btn btn-<?php echo $participant['waiting_flg'] === '1' ? 'success' : 'warning' ?>">
+                <?php echo $participant['waiting_flg'] === '1' ? 'キャンセル待ちを解除' : 'キャンセル待ちに変更' ?></button>
+            </p>
         <?php endif ?>
+       
         <p>
             <?php echo htmlspecialchars($participant['waiting_name']); ?>
             <?php echo htmlspecialchars($participant['companion_name']); ?>  &nbsp;&nbsp;
@@ -113,9 +119,7 @@ $_SESSION['csrf_token'] = $csrf_token;
                 <?php echo htmlspecialchars($participant['email']); ?>
                 <?php echo htmlspecialchars($participant['remark']); ?>
             </p>
-            <p>
-                <a class="btn btn-secondary" href="participant.php?id=<?php echo $participant['id']; ?>&game_id=<?php echo $gameInfo['id']; ?>">修正</a>
-            </p>
+            
         <?php endif ?>
     <?php endforeach; ?>
     </details>
