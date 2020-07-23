@@ -3,23 +3,26 @@
 require_once(dirname(__FILE__).'/model/dao/GameInfoDao.php');
 require_once('./model/dao/DetailDao.php');
 use dao\GameInfoDao;
+use dao\DetailDao;
 
 $gameInfo = null;
+$limitFlg = false;
+$btnClass = "btn btn-primary";
+$btnLiteral = "登録";
 $gameInfoDao = new GameInfoDao();
 // 試合情報取得
 if (isset($_GET['id'])) {
     $gameInfo = $gameInfoDao->getGameInfo($_GET['id']);
+    $detailDao = new DetailDao();
+    $limitFlg = $detailDao->limitCheck($gameInfo['id'], 0);
+    if($limitFlg) {
+        $btnClass = "btn btn-warning";
+        $btnLiteral = "キャンセル待ちとして登録";
+    }
 }
 
 if (empty($gameInfo)) {
-    $gameInfo['id'] = '';
-    $gameInfo['title'] = '';
-    $gameInfo['game_date'] = '';
-    $gameInfo['start_time'] ='';
-    $gameInfo['end_time'] ='';
-    $gameInfo['place'] ='';
-    $gameInfo['limit_number'] = 0;
-    $gameInfo['detail'] ='';
+    header('Location: index.php');
 }
 
 // CSFR対策
@@ -62,7 +65,7 @@ $_SESSION['csrf_token'] = $csrf_token;
     <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
     <p>
     職種
-    <select name="occupation" class="custom-select mr-sm-2">
+    <select id="occupation" name="occupation" class="custom-select mr-sm-2">
         <option value="1">社会人</option>
         <option value="2">大学・専門学校</option>
         <option value="3">高校</option>
@@ -71,37 +74,62 @@ $_SESSION['csrf_token'] = $csrf_token;
     
     <p>
     性別
-    <select name="sex" class="custom-select mr-sm-2">
+    <select id="sex" name="sex" class="custom-select mr-sm-2">
         <option value="1">男性</option>
         <option value="2">女性</option>
     </select>
     </p>
     <p>
         名前
-        <input class="form-control" type="text" name="name" required>
+        <input id="name" class="form-control" type="text" name="name" required>
     </p>
     <p>
         メール
         <input class="form-control" type="email" name="email">
     </p>
     <p>
-        同伴者
-        <input class="form-control" type="number" name="companion" required min="0">
-    </p>
-    <p>
-        備考　例）社会人男性〇名、高校生〇名
+        備考
         <textarea class="form-control" name="remark"></textarea>
+    </p>
+    <p id="douhan-0">
+        <!-- 同伴者
+        <input class="form-control" type="number" name="companion" required min="0"> -->
+        <input id="companion" name="companion" type="hidden" value="0">
+        <button class="btn btn-secondary" id="btn-add" type="button">同伴者追加</button>
     </p>
     <input type="hidden" name="title" value="<?php echo $gameInfo['title'] ?>">
     <input type="hidden" name="date" value="<?php echo $gameInfo['game_date'] ?>">
-    <button class="btn btn-primary" type="submit">参加</button>
+    <button class="<?php echo $btnClass ?>" type="submit"><?php echo $btnLiteral ?></button>
 </form>
 </div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
     var gameId = document.getElementById("game_id").value;
     if(gameId === null || gameId === '') {
         document.getElementById("join_form").classList.add('hidden');
     }
+</script>
+<script>
+    $(function() {
+        // $('#btn-add').on('click', function() {
+        //     var num = Number($('#companion').val()) + 1;
+        //     $(this).after($('#occupation').attr('id', 'occupation-' + num).attr('name', 'occupation-' + num));
+        //     $(this).after($('#sex').attr('id', 'sex-' + num).attr('name', 'sex-' + num));
+        //     $(this).after($('#name').attr('id', 'name-' + num).attr('name', 'name-' + num));
+        //     $('#companion').val(num);
+        // });
+    })
+    $('#btn-add').on('click', function() {
+            var num = Number($('#companion').val());
+            var current = $('#douhan-' + num);
+            num++;
+            var div = $('<div>').attr('id', 'douhan-' + num).text(num + '人目');
+            div.append($('#occupation').clone().attr('id', 'occupation-' + num).attr('name', 'occupation-' + num));
+            div.append($('#sex').clone().attr('id', 'sex-' + num).attr('name', 'sex-' + num));
+            div.append($('#name').clone().attr('id', 'name-' + num).attr('name', 'name-' + num));
+            current.after(div);
+            $('#companion').val(num);
+        });
 </script>
 </body>
 </html>

@@ -1,11 +1,15 @@
 <?php
 // 参加予約の
 require_once(dirname(__FILE__).'/model/entity/Participant.php');
+require_once(dirname(__FILE__).'/model/entity/Companion.php');
 require_once(dirname(__FILE__).'/model/dao/DetailDao.php');
 require_once(dirname(__FILE__).'/model/dao/ConfigDao.php');
+require_once(dirname(__FILE__).'/model/dao/CompanionDao.php');
 require_once(dirname(__FILE__).'/controller/Api.php');
 use entity\Participant;
+use entity\Companion;
 use dao\DetailDao;
+use dao\CompanionDao;
 
 session_start();
 
@@ -14,9 +18,9 @@ if (isset($_POST["csrf_token"])
 
     $detailDao = new DetailDao();
     if($detailDao->limitCheck($_POST['game_id'], 1)) {
-        $waitingFlg = 0;
-    } else {
         $waitingFlg = 1;
+    } else {
+        $waitingFlg = 0;
     }
 
     $detail = new Participant(
@@ -31,8 +35,19 @@ if (isset($_POST["csrf_token"])
     
     $detailDao->insert($detail);
 
-    $api = new Api();
+    // 同伴者の登録
+    if($_POST['companion'] > 0) {
+        $id = $detailDao->getParticipantId($detail);
+        $companionDao = new CompanionDao();
+        for($i = 1; $i <= $_POST['companion']; $i++) {
+            $companion = new Companion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
+            $companionDao->insert($companion);
+        }
+    }
+
+
     // 予約の通知
+    $api = new Api();
     $api->reserve_notify($detail, $_POST['title'], $_POST['date']);
 
     $detail = $detailDao->getDetail($_POST['game_id']);

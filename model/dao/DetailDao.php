@@ -141,11 +141,33 @@ class DetailDao {
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
         $prepare->execute();
         $info = $prepare->fetch();
-        if ($info['num'] + $participants_number >= 0) {
+        // 上限に達していたらtrue
+        if ($info['num'] + $participants_number < 0) {
             return true;
         } else {
             return false;
         }
+    }
 
+    // 参加者idの取得
+    public function getParticipantId(Participant $participant) {
+        $pdo = DaoFactory::getConnection();
+        $sql = 'select max(id) id
+                from participant 
+                where game_id = :game_id
+                and occupation = :occupation 
+                and sex = :sex
+                and name = :name
+                and email = :email';
+        $prepare = $pdo->prepare($sql);
+        $prepare->bindValue(':game_id', $participant->gameId, PDO::PARAM_INT);
+        $prepare->bindValue(':occupation', $participant->occupation, PDO::PARAM_INT);
+        $prepare->bindValue(':sex', $participant->sex, PDO::PARAM_INT);
+        $prepare->bindValue(':name', $participant->name, PDO::PARAM_INT);
+        $prepare->bindValue(':email', $participant->email, PDO::PARAM_INT);
+
+        $prepare->execute();
+        $info = $prepare->fetch();
+        return $info['id'];
     }
 }

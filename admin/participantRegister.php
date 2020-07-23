@@ -11,9 +11,9 @@ if (isset($_POST["csrf_token"])
 
     $detailDao = new DetailDao();
     if($detailDao->limitCheck($_POST['game_id'], 1)) {
-        $waitingFlg = 0;
-    } else {
         $waitingFlg = 1;
+    } else {
+        $waitingFlg = 0;
     }
     
     if (isset($_POST['register'])) {
