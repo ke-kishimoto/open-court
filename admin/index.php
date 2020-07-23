@@ -15,6 +15,7 @@
 <span id="year"><?php echo $year; ?></span>年<span id="this-month"><?php echo $month; ?></span>月
 <div class="month">
 <a href=".?year=<?php echo $pre_year; ?>&month=<?php echo $lastmonth; ?>"><?php echo $lastmonth; ?>月</a>
+<a href=".?year=<?php echo $year; ?>&month=<?php echo $month; ?>"><?php echo $month; ?>月</a>
 <a href=".?year=<?php echo $next_year; ?>&month=<?php echo $nextmonth; ?>"><?php echo $nextmonth; ?>月</a>
 </div>
 <table>
