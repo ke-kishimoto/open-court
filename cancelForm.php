@@ -18,7 +18,16 @@
         登録時のメールアドレスを入力してください。
         <input class="form-control" type="email" name="email" required>
     </p>
-        <button class="btn btn-primary" type="submit">予約キャンセル</button>
+        <button id="btn-cancel" class="btn btn-primary" type="submit">参加キャンセル</button>
     </form>
+    <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        'use strict';
+        $(function(){ 
+            $('#btn-cancel').on('click', function() {
+                return confirm('参加をキャンセルしてもよろしいですか');
+            });
+        })
+    </script> -->
 </body>
 </html>

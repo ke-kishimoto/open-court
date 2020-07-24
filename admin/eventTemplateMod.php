@@ -71,6 +71,9 @@ $_SESSION['csrf_token'] = $csrf_token;
     <script>
         'use strict';
         $(function(){ 
+            $('#btn-delete').on('click', function() {
+                return confirm('削除してもよろしいですか');
+            });
             $('#template').change(function() {
                 $.ajax({
                 url:'../controller/GetEventTemplate.php',

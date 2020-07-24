@@ -108,6 +108,9 @@ $_SESSION['csrf_token'] = $csrf_token;
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
     $(function() {
+        $('#btn-delete').on('click', function() {
+            return confirm('削除してもよろしいですか');
+        });
         $('#btn-add').on('click', function() {
             var num = Number($('#companion').val());
             var current = $('#douhan-' + num);
