@@ -10,10 +10,20 @@ use entity\GameInfo;
 
 class GameInfoDao {
 
+    private $pdo;
+    public function __construct() {
+        $this->pdo = DaoFactory::getConnection();
+    }
+    public function getPdo() {
+        return $this->pdo;
+    }
+    public function setPdo(PDO $pdo) {
+        $this->pdo = $pdo;
+    }
+
     public function getGameInfoId($date) {
-        $pdo = DaoFactory::getConnection();
         $sql = 'select id from game_info where game_date = :gameDate';
-        $prepare = $pdo->prepare($sql);
+        $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':gameDate', $date);
         $prepare->execute();
 
@@ -22,9 +32,8 @@ class GameInfoDao {
     }
 
     public function getGameInfo($id) {
-        $pdo = DaoFactory::getConnection();
         $sql = 'select * from game_info where id = :id';
-        $prepare = $pdo->prepare($sql);
+        $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':id', $id);
         $prepare->execute();
 
@@ -32,7 +41,6 @@ class GameInfoDao {
     }
 
     public function getGameInfoList($year, $month) {
-        $pdo = DaoFactory::getConnection();
         $sql = "select 
         g.id 
         , max(g.title) title
@@ -56,7 +64,7 @@ class GameInfoDao {
         ";
         $sql .= DaoFactory::getGameInfoListSQL();
         $sql .= "group by g.id order by max(g.game_date)";
-        $prepare = $pdo->prepare($sql);
+        $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':year', $year);
         $prepare->bindValue(':month', $month);
         $prepare->execute();
@@ -65,9 +73,8 @@ class GameInfoDao {
     }
 
     public function getGameInfoListByDate($date) {
-        $pdo = DaoFactory::getConnection();
         $sql = "select * from game_info where game_date = :date";
-        $prepare = $pdo->prepare($sql);
+        $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':date', $date);
         $prepare->execute();
 
@@ -75,10 +82,9 @@ class GameInfoDao {
     }
 
     public function insert(GameInfo $gameinfo) {
-        $pdo = DaoFactory::getConnection();
         $sql = 'insert into game_info (title, short_title, game_date, start_time, end_time, place, limit_number, detail) 
             values(:title, :short_title, :game_date, :start_time, :end_time, :place, :limit_number, :detail)';
-        $prepare = $pdo->prepare($sql);
+        $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':title', $gameinfo->title, PDO::PARAM_STR);
         $prepare->bindValue(':short_title', $gameinfo->shortTitle, PDO::PARAM_STR);
         $prepare->bindValue(':game_date', $gameinfo->gameDate, PDO::PARAM_STR);
@@ -91,7 +97,6 @@ class GameInfoDao {
     }
 
     public function update(GameInfo $gameinfo) {
-        $pdo = DaoFactory::getConnection();
         $sql = 'update game_info set title = :title
         , short_title = :short_title
         , game_date = :game_date
@@ -101,7 +106,7 @@ class GameInfoDao {
         , limit_number = :limit_number
         , detail = :detail
         where id = :id';
-        $prepare = $pdo->prepare($sql);
+        $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':id', $gameinfo->id, PDO::PARAM_INT);
         $prepare->bindValue(':title', $gameinfo->title, PDO::PARAM_STR);
         $prepare->bindValue(':short_title', $gameinfo->shortTitle, PDO::PARAM_STR);
@@ -115,12 +120,11 @@ class GameInfoDao {
     }
 
     public function delete(int $id){
-        $pdo = DaoFactory::getConnection();
         // 先に参加者情報を削除しておく
         $detailDao = New DetailDao();
         $detailDao->deleteByGameId($id);
         $sql = "delete from game_info where id = :id";
-        $prepare = $pdo->prepare($sql);
+        $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
 

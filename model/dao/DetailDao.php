@@ -11,13 +11,23 @@ use entity\Participant;
 
 class DetailDao {
 
+    private $pdo;
+    public function __construct() {
+        $this->pdo = DaoFactory::getConnection();
+    }
+    public function getPdo() {
+        return $this->pdo;
+    }
+    public function setPdo(PDO $pdo) {
+        $this->pdo = $pdo;
+    }
+
     // 参加者登録
     public function insert(Participant $participant) {
-        $pdo = DaoFactory::getConnection();
         $sql = 'insert into participant 
         (game_id, occupation, sex, name, email, waiting_flg, remark) 
         values(:game_id, :occupation, :sex, :name, :email, :waiting_flg, :remark)';
-        $prepare = $pdo->prepare($sql);
+        $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':game_id', $participant->gameId, PDO::PARAM_INT);
         $prepare->bindValue(':occupation', $participant->occupation, PDO::PARAM_INT);
         $prepare->bindValue(':sex', $participant->sex, PDO::PARAM_INT);
@@ -30,7 +40,6 @@ class DetailDao {
 
     // 参加者の更新
     public function update(Participant $participant) {
-        $pdo = DaoFactory::getConnection();
         $sql = 'update participant set
         name = :name
         , occupation = :occupation
@@ -38,7 +47,7 @@ class DetailDao {
         , email = :email
         , remark = :remark
         where id = :id';
-        $prepare = $pdo->prepare($sql);
+        $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':occupation', $participant->occupation, PDO::PARAM_INT);
         $prepare->bindValue(':sex', $participant->sex, PDO::PARAM_INT);
         $prepare->bindValue(':name', $participant->name, PDO::PARAM_STR);
@@ -50,16 +59,14 @@ class DetailDao {
 
     // 参加者の削除
     public function delete(int $id) {
-        $pdo = DaoFactory::getConnection();
         $sql = 'delete from participant where id = :id';
-        $prepare = $pdo->prepare($sql);
+        $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
     }
 
     // 参加者情報取得
     public function getParticipant(int $id) {
-        $pdo = DaoFactory::getConnection();
         $sql = "select * 
         , case 
             when occupation =  1 then '社会人'
@@ -72,7 +79,7 @@ class DetailDao {
             when sex = 2 then '女性'
           end sex_name
         from participant where id = :id";
-        $prepare = $pdo->prepare($sql);
+        $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
         return $prepare->fetch();
@@ -80,7 +87,6 @@ class DetailDao {
 
     // 参加者一覧取得
     public function getParticipantList(int $gameId) {
-        $pdo = DaoFactory::getConnection();
         $sql = "select 
         id
         , main
@@ -117,7 +123,7 @@ class DetailDao {
         where participant_id in (select id from participant where game_id = :game_id)
         ) p
         order by id, main desc";
-        $prepare = $pdo->prepare($sql);
+        $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
 
         $prepare->execute();
@@ -126,7 +132,6 @@ class DetailDao {
 
     // 参加者集計情報取得
     public function getDetail(int $gameId) {
-        $pdo = DaoFactory::getConnection();
         $sql = 'select 
         count(*) cnt
         , sum(
@@ -175,7 +180,7 @@ class DetailDao {
         from companion
         where participant_id in (select id from participant where game_id = :game_id and waiting_flg = :waiting_flg)
         ) p';
-        $prepare = $pdo->prepare($sql);
+        $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
         $prepare->bindValue(':waiting_flg', 0, PDO::PARAM_INT); // 参加予定
         $prepare->execute();
@@ -191,7 +196,6 @@ class DetailDao {
 
     // イベントごと削除する場合の参加者の削除
     public function deleteByGameId(int $gameId) {
-        $pdo = DaoFactory::getConnection();
         // // 同伴者の削除
         // $sql = "delete from companion where participant_id in (select id from participant where game_id = :game_id)";
         // $prepare = $pdo->prepare($sql);
@@ -199,14 +203,13 @@ class DetailDao {
         // $prepare->execute();
         // 参加者の削除
         $sql = "delete from participant where game_id = :game_id";
-        $prepare = $pdo->prepare($sql);
+        $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
         $prepare->execute();
     }
 
     // 参加者の上限チェック
     public function limitCheck(int $gameId, int $participants_number) {
-        $pdo = DaoFactory::getConnection();
         $sql = "select (max(g.limit_number) - coalesce(count(p.id), 0) - coalesce(sum(cnt), 0)) num
                 from game_info g 
                 left join (select *
@@ -216,7 +219,7 @@ class DetailDao {
                 on g.id = p.game_id 
                 and waiting_flg = 0
                 where g.id = :game_id ";
-        $prepare = $pdo->prepare($sql);
+        $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
         $prepare->execute();
         $info = $prepare->fetch();
@@ -230,12 +233,11 @@ class DetailDao {
 
     // 参加者idの取得
     public function getParticipantId(Participant $participant) {
-        $pdo = DaoFactory::getConnection();
         $sql = 'select max(id) id
                 from participant 
                 where game_id = :game_id
                 and email = :email';
-        $prepare = $pdo->prepare($sql);
+        $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':game_id', $participant->gameId, PDO::PARAM_INT);
         $prepare->bindValue(':email', $participant->email, PDO::PARAM_STR);
 
@@ -246,11 +248,10 @@ class DetailDao {
 
     // キャンセル待ちフラグの更新
     public function updateWaitingFlg(int $id) {
-        $pdo = DaoFactory::getConnection();
         $sql = 'update participant set
         waiting_flg = case when waiting_flg = 0 then 1 else 0 end
         where id = :id';
-        $prepare = $pdo->prepare($sql);
+        $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
         return $this->getParticipant($id);
@@ -274,15 +275,14 @@ class DetailDao {
         if ($id == null) {
             return 0;
         }
-        $pdo = DaoFactory::getConnection();
         // 同伴者削除
         $sql = 'delete from companion where participant_id = :participant_id';
-        $prepare = $pdo->prepare($sql);
+        $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':participant_id', $id, PDO::PARAM_INT);
         $prepare->execute();
         // 参加者削除
         $sql = 'delete from participant where game_id = :game_id and email = :email';
-        $prepare = $pdo->prepare($sql);
+        $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
         $prepare->bindValue(':email', $email, PDO::PARAM_STR);
         $prepare->execute();
