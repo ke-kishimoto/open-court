@@ -15,46 +15,53 @@ if (isset($_POST["csrf_token"])
 
     $detailDao = new DetailDao();
     $companionDao = new CompanionDao();
-    if($detailDao->limitCheck($_POST['game_id'], 1)) {
-        $waitingFlg = 1;
-    } else {
-        $waitingFlg = 0;
+    $companionDao->setPdo($detailDao->getPdo());
+    try {
+        $detailDao->getPdo()->beginTransaction();
+        if($detailDao->limitCheck($_POST['game_id'], 1)) {
+            $waitingFlg = 1;
+        } else {
+            $waitingFlg = 0;
+        }
+
+        // 同伴者を削除しておく
+        if ($_POST['id'] !== '') {
+            $companionDao->deleteByparticipantId($_POST['id']);
+        }
+        if (isset($_POST['register'])) {
+            $participant = new Participant(
+                $_POST['game_id']
+                , $_POST['occupation']
+                , $_POST['sex']
+                , $_POST['name']
+                , $_POST['email']
+                , $waitingFlg
+                , $_POST['remark']
+            );
+            if($_POST['id'] !== '') {
+                $participant->id = $_POST['id']; // IDはコンストラクタにないので固定でセット
+                $detailDao->update($participant);
+                $id = $participant->id;
+            } else {
+                $detailDao->insert($participant);
+                $id = $detailDao->getParticipantId($participant);
+            }
+            // 同伴者の登録
+            if($_POST['companion'] > 0) {
+                for($i = 1; $i <= $_POST['companion']; $i++) {
+                    $companion = new Companion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
+                    $companionDao->insert($companion);
+                }
+            }
+        } else {
+            $detailDao->delete($_POST['id']);
+        }
+        $detailDao->getPdo()->commit();
+    } catch(Exception $ex) {
+        $detailDao->getPdo()->rollBack();
     }
     
-    // 同伴者を削除しておく
-    if ($_POST['id'] !== '') {
-        $companionDao->deleteByparticipantId($_POST['id']);
-    }
-    if (isset($_POST['register'])) {
-        $participant = new Participant(
-            $_POST['game_id']
-            , $_POST['occupation']
-            , $_POST['sex']
-            , $_POST['name']
-            , $_POST['email']
-            , $waitingFlg
-            , $_POST['remark']
-        );
-        if($_POST['id'] !== '') {
-            $participant->id = $_POST['id']; // IDはコンストラクタにないので固定でセット
-            $detailDao->update($participant);
-            $id = $participant->id;
-        } else {
-            $detailDao->insert($participant);
-            $id = $detailDao->getParticipantId($participant);
-        }
-        // 同伴者の登録
-        if($_POST['companion'] > 0) {
-            for($i = 1; $i <= $_POST['companion']; $i++) {
-                $companion = new Companion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
-                $companionDao->insert($companion);
-            }
-        }
-    } else {
-        $detailDao->delete($_POST['id']);
-    }
     unset($_SESSION['csrf_token']);
-
 } else {
     header('Location: ./index.php');
 }

@@ -35,7 +35,13 @@ if (isset($_POST["csrf_token"])
         $gameInfoDao = new GameInfoDao();
         if($_POST['id'] != '') {
             $msg = '削除';
-            $gameInfoDao->delete($_POST['id']);
+            try {
+                $gameInfoDao->getPdo()->beginTransaction();
+                $gameInfoDao->delete($_POST['id']);
+                $gameInfoDao->getPdo()->commit();
+            }catch (Exception $ex) {
+                $gameInfoDao->getPdo()->rollBack();
+            }
         }
     }
     unset($_SESSION['csrf_token']);

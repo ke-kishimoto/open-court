@@ -122,6 +122,7 @@ class GameInfoDao {
     public function delete(int $id){
         // 先に参加者情報を削除しておく
         $detailDao = New DetailDao();
+        $detailDao->setPdo($this->pdo);
         $detailDao->deleteByGameId($id);
         $sql = "delete from game_info where id = :id";
         $prepare = $this->pdo->prepare($sql);

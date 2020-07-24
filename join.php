@@ -37,17 +37,24 @@ if (isset($_POST["csrf_token"])
             , $waitingFlg 
             , $_POST['remark']
         );
+        try {
+            // トランザクション開始
+            $detailDao->getPdo()->beginTransaction();
+            $detailDao->insert($detail);
         
-        $detailDao->insert($detail);
-    
-        // 同伴者の登録
-        if($_POST['companion'] > 0) {
-            $id = $detailDao->getParticipantId($detail);
-            $companionDao = new CompanionDao();
-            for($i = 1; $i <= $_POST['companion']; $i++) {
-                $companion = new Companion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
-                $companionDao->insert($companion);
+            // 同伴者の登録
+            if($_POST['companion'] > 0) {
+                $id = $detailDao->getParticipantId($detail);
+                $companionDao = new CompanionDao();
+                $companionDao->setPdo($detailDao->getPdo());
+                for($i = 1; $i <= $_POST['companion']; $i++) {
+                    $companion = new Companion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
+                    $companionDao->insert($companion);
+                }
             }
+            $detailDao->getPdo()->commit();
+        } catch(Exception $ex) {
+            $detailDao->getPdo()->rollBack();
         }
         
         // 予約の通知
