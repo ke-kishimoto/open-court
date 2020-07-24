@@ -1,5 +1,9 @@
 -- create database open_court;
 
+-- MAMP
+-- /Applications/MAMP/Library/bin/
+-- ./mysql -u root -p
+
 -- イベント情報　
 -- テーブル名game_infoじゃなくて、event_infoとかにすればよかったかな.
 -- そのうちリファクタリング対象
@@ -16,15 +20,6 @@ create table game_info (
     , detail varchar(1000)
 );
 
--- テストデータ
-insert into game_info (title, game_date, start_time, end_time, place, limit_number, detail) values 
-  ('オープンコート那覇', '2020-02-01', '17:00', '19:00', '那覇市民体育館', 25, '詳細')
-, ('オープンコート北中', '2020-02-01', '20:00', '22:00', '北中市民体育館', 30, '詳細')
-, ('オープンコート沖縄市', '2020-03-01', '20:00', '22:00', '沖縄市民体育館', 15, '詳細・・・')
-, ('オープンコート北谷', '2020-03-10', '20:00', '22:00', '体育館', 20, 'わーーー')
-, ('オープンコート西原', '2020-03-15', '20:00', '22:00', '西原体育館', 30, 'バスケする')
-;
-
 -- イベントのテンプレ
 -- drop table event_template; 
 create table event_template (
@@ -36,10 +31,6 @@ create table event_template (
     , limit_number int
     , detail varchar(1000)
 );
-
--- テストデータ
-insert into event_template (template_name, title, short_title, place, limit_number, detail) values
-('テンプレテスト', 'テンプレタイトル', 'ショートタイトル', 'プレイス', 10, 'テンプレ詳細');
 
 -- 参加者
 -- drop table participant;
@@ -53,15 +44,8 @@ create table participant (
     , waiting_flg int -- キャンセル待ちフラグ 0：通常、1：キャンセル待ち
     , remark varchar(200)
 );
-
--- テストデータ
-delete from participant;
-insert into participant (game_id, occupation, sex, name, email, waiting_flg, remark) values 
-(1, 1, 1, 'aaa', 'aaas@gmail.com', 0, '')
-, (1, 2, 1, 'bbb', 'aaas@gmail.com', 0, '')
-, (1, 1, 2, 'ccc', 'aaas@gmail.com', 0, '同伴2名')
-, (2, 1, 2, 'ccc', 'aaas@gmail.com', 0, '同伴2名')
-;
+-- インデックス
+create index participant_idx_game on participant (game_id); 
 
 -- 同伴者
 -- drop table companion;
@@ -72,13 +56,8 @@ create table companion (
     , sex int -- 性別  1：男、2：女
     , name varchar(50)   -- 参加者名
 );
-
--- テストデータ
-insert into companion (participant_id, occupation, sex, name) values 
-(1, 1, 1, '同伴aaa')
-, (1, 2, 1, '同伴bbb')
-, (1, 1, 2, '同伴ccc');
-
+-- インデックス
+create index companion_idx_participant on companion (participant_id);
 
 -- 設定
 -- 後々はユーザー単位にしたいな
@@ -87,111 +66,3 @@ create table config(
     id int primary key
     , line_token varchar(200)
 );
-
-------------------------------------------------------------------------------------------
---- 確認用SQL
-------------------------------------------------------------------------------------------
-
--- 参加者集計用
-select 
-count(*) cnt
-, sum(
-    case 
-        when occupation = 1 and sex = 1 then 1
-        else 0
-    end
-) sya_men  -- 社会人男
-,  sum(
-    case 
-        when occupation = 1 and sex = 2 then 1
-        else 0
-    end
-) sya_women  -- 社会人女
-, sum(
-    case 
-        when occupation = 2 and sex = 1 then 1
-        else 0
-    end
-) dai_men  -- 大学生男
-,  sum(
-    case 
-        when occupation = 2 and sex = 2 then 1
-        else 0
-    end
-) dai_women  -- 大学生女
-, sum(
-    case 
-        when occupation = 3 and sex = 1 then 1
-        else 0
-    end
-) kou_men  -- 高校生男
-,  sum(
-    case 
-        when occupation = 3 and sex = 2 then 1
-        else 0
-    end
-) kou_women  -- 高校生女
-from 
-(select occupation, sex 
-from participant
-where game_id = :game_id
-and waiting_flg = :waiting_flg
-union all
-select occupation, sex
-from companion
-where participant_id in (select id from participant where game_id = :game_id and waiting_flg = :waiting_flg)
-) p
-
--- 参加者一覧
-select 
-main
-, name
-, case 
-    when occupation =  1 then '社会人'
-    when occupation =  2 then '大学・専門学校'
-    when occupation =  3 then '高校'
-    else 'その他' 
-  end occupation_name
-, case
-    when sex = 1 then '男性'
-    when sex = 2 then '女性'
-  end sex_name 
-, case
-    when waiting_flg = 1 then 'キャンセル待ち' 
-    else ''
-  end waiting_name
-, remark
-from 
-(
-select id, 1 main ,name, occupation, sex, waiting_flg, remark
-from participant
-where game_id = :game_id
-union all
-select participant_id, 0 ,name, occupation, sex, 0, ''
-from companion
-where participant_id in (select id from participant where game_id = :game_id)
-) p
-order by id, main;
-
-
--- イベント参加人数が定員に達しているかを確認
-select 
-g.id 
-, max(g.title) title
-, max(g.short_title) short_title
-, max(g.game_date) game_date
-, max(g.start_time) start_time
-, max(g.end_time) end_time
-, max(g.limit_number) limit_number
-, count(p.id) + coalesce(sum(cnt), 0) participants_number
-, case 
-    when max(g.limit_number) <= count(*) + sum(cnt) then '定員に達しました' 
-    else concat('残り', max(g.limit_number) - count(p.id) - coalesce(sum(cnt), 0), '人') 
-  end current_status
-from game_info g 
-left join (select *
-            , (select count(*) from companion where participant_id = participant.id) cnt
-            from participant) p
-on g.id = p.game_id 
-group by g.id;
-
