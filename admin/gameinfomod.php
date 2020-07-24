@@ -17,7 +17,19 @@ if (isset($_GET['id'])) {
     $gameInfo = $gameInfoDao->getGameInfo($_GET['id']);
 }
 if (empty($gameInfo)) {
-   header('Location: index.php');
+//    header('Location: index.php');
+$gameInfo = array(
+    'id' => ''
+    , 'title' => ''
+    , 'short_title' => ''
+    , 'game_date' => ''
+    , 'start_time' => ''
+    , 'end_time' => ''
+    , 'place' => ''
+    , 'limit_number' => 0
+    , 'detail' => ''
+
+);
 }
 // 参加者情報取得
 $participantList = null;
@@ -116,8 +128,10 @@ $_SESSION['csrf_token'] = $csrf_token;
         </p>
         <?php if($participant['main'] === '1'): ?>
             <p>
-                <?php echo htmlspecialchars($participant['email']); ?>
-                <?php echo htmlspecialchars($participant['remark']); ?>
+                連絡先：<?php echo htmlspecialchars($participant['email']); ?>
+            </p>
+            <p>
+                備考：<?php echo htmlspecialchars($participant['remark']); ?>
             </p>
             
         <?php endif ?>

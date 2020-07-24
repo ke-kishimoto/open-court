@@ -40,6 +40,7 @@ class GameInfoDao {
         , max(g.game_date) game_date
         , max(g.start_time) start_time
         , max(g.end_time) end_time
+        , max(g.place) place
         , max(g.limit_number) limit_number
         , count(p.id) + coalesce(sum(cnt), 0) participants_number
         , case 

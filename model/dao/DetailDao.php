@@ -35,14 +35,14 @@ class DetailDao {
         name = :name
         , occupation = :occupation
         , sex = :sex
-        , companion = :companion
+        , email = :email
         , remark = :remark
         where id = :id';
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':occupation', $participant->occupation, PDO::PARAM_INT);
         $prepare->bindValue(':sex', $participant->sex, PDO::PARAM_INT);
         $prepare->bindValue(':name', $participant->name, PDO::PARAM_STR);
-        $prepare->bindValue(':companion', $participant->companion, PDO::PARAM_INT);
+        $prepare->bindValue(':email', $participant->email, PDO::PARAM_STR);
         $prepare->bindValue(':remark', $participant->remark, PDO::PARAM_STR);
         $prepare->bindValue(':id', $participant->id, PDO::PARAM_INT);
         $prepare->execute();
@@ -88,7 +88,7 @@ class DetailDao {
         , case
             when main = 0 then '同伴'
             else ''
-          end
+          end companion_name
         , case 
             when occupation =  1 then '社会人'
             when occupation =  2 then '大学・専門学校'

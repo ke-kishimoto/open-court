@@ -3,7 +3,6 @@
 -- イベント情報　
 -- テーブル名game_infoじゃなくて、event_infoとかにすればよかったかな.
 -- そのうちリファクタリング対象
--- drop view v_participant;
 -- drop table game_info; 
 create table game_info (
     id serial primary key
@@ -27,6 +26,7 @@ insert into game_info (title, game_date, start_time, end_time, place, limit_numb
 ;
 
 -- イベントのテンプレ
+-- drop table event_template; 
 create table event_template (
     id serial primary key
     , template_name varchar(30)

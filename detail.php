@@ -134,7 +134,7 @@ $_SESSION['csrf_token'] = $csrf_token;
             var div = $('<div>').attr('id', 'douhan-' + num).text(num + '人目');
             div.append($('#occupation').clone().attr('id', 'occupation-' + num).attr('name', 'occupation-' + num));
             div.append($('#sex').clone().attr('id', 'sex-' + num).attr('name', 'sex-' + num));
-            div.append($('#name').clone().attr('id', 'name-' + num).attr('name', 'name-' + num).val(''));
+            div.append($('#name').clone().attr('id', 'name-' + num).attr('name', 'name-' + num).attr('placeholder', '名前').val(''));
             div.append($('<br>'));
             current.after(div);
             $('#companion').val(num);

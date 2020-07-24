@@ -9,7 +9,17 @@ if(isset($_GET['id'])) {
     $companionDao = new CompanionDao();
     $companionList = $companionDao->getCompanionList($participant['id']);
 } else {
-   header('Location: index.php');
+//    header('Location: index.php');
+    $participant['id'] = '';
+    $participant['name'] = '';
+    $participant['occupation'] = 1;
+    $participant['occupation_name'] = '社会人';
+    $participant['sex'] = 1;
+    $participant['sex_name'] = '男性';
+    $participant['companion'] = 0;
+    $participant['remark'] = '';
+
+    $companionList = array();
 }
 
 // CSFR対策
@@ -66,7 +76,7 @@ $_SESSION['csrf_token'] = $csrf_token;
         <textarea class="form-control" name="remark"><?php echo $participant['remark'] ?></textarea>
     <div id="douhan-0">
         </p>
-            <input id="companion" name="companion" type="hidden" value="<?php echo count($companionList) ?>">
+            <input id="companion" name="companion" type="hidden" value="<?php echo count((array)$companionList) ?>">
             <button class="btn btn-secondary" id="btn-add" type="button">同伴者追加</button>
             <button class="btn btn-danger" id="btn-del" type="button">同伴者削除</button>
         </p>
@@ -104,7 +114,7 @@ $_SESSION['csrf_token'] = $csrf_token;
             var div = $('<div>').attr('id', 'douhan-' + num).text(num + '人目');
             div.append($('#occupation').clone().attr('id', 'occupation-' + num).attr('name', 'occupation-' + num));
             div.append($('#sex').clone().attr('id', 'sex-' + num).attr('name', 'sex-' + num));
-            div.append($('#name').clone().attr('id', 'name-' + num).attr('name', 'name-' + num).val(''));
+            div.append($('#name').clone().attr('id', 'name-' + num).attr('name', 'name-' + num).attr('placeholder', '名前').val(''));
             div.append($('<br>'));
             current.after(div);
             $('#companion').val(num);

@@ -22,7 +22,9 @@ if (isset($_POST["csrf_token"])
     }
     
     // 同伴者を削除しておく
-    $companionDao->deleteByparticipantId($_POST['id']);
+    if ($_POST['id'] !== '') {
+        $companionDao->deleteByparticipantId($_POST['id']);
+    }
     if (isset($_POST['register'])) {
         $participant = new Participant(
             $_POST['game_id']
