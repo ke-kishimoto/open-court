@@ -125,7 +125,7 @@ class DetailDao {
     }
 
     // 参加者集計情報取得
-    public function getDetail(int $gameId, int $waitingFlg) {
+    public function getDetail(int $gameId) {
         $pdo = DaoFactory::getConnection();
         $sql = 'select 
         count(*) cnt
@@ -177,9 +177,16 @@ class DetailDao {
         ) p';
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
-        $prepare->bindValue(':waiting_flg', $waitingFlg, PDO::PARAM_INT);
+        $prepare->bindValue(':waiting_flg', 0, PDO::PARAM_INT); // 参加予定
         $prepare->execute();
-        return $prepare->fetch();
+        // return $prepare->fetch();
+        $info = $prepare->fetch();
+        $prepare->bindValue(':waiting_flg', 1, PDO::PARAM_INT);  // キャンセル待ち
+        $prepare->execute();
+        $waitingInfo = $prepare->fetch();
+        $info['waiting_cnt'] = $waitingInfo['cnt'];
+        return $info;
+
     }
 
     // イベントごと削除する場合の参加者の削除
@@ -203,16 +210,18 @@ class DetailDao {
         $sql = "select (max(g.limit_number) - count(p.id) - coalesce(sum(cnt))) num
                 from game_info g 
                 left join (select *
-                            , (select count(*) from companion where participant_id = participant.id) cnt
+                            , (select count(*) from companion 
+                               where participant_id = participant.id) cnt
                             from participant) p
                 on g.id = p.game_id 
-                where game_id = :game_id ";
+                and waiting_flg = 0
+                where g.id = :game_id ";
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
         $prepare->execute();
         $info = $prepare->fetch();
         // 上限に達していたらtrue
-        if ($info['num'] + $participants_number < 0) {
+        if ($info['num'] - $participants_number < 0) {
             return true;
         } else {
             return false;
@@ -245,10 +254,11 @@ class DetailDao {
     public function updateWaitingFlg(int $id) {
         $pdo = DaoFactory::getConnection();
         $sql = 'update participant set
-        waitig_flg = case when waitig_flg = 0 then 1 else 0 end
+        waiting_flg = case when waiting_flg = 0 then 1 else 0 end
         where id = :id';
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
+        return $this->getParticipant($id);
     }
 }

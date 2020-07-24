@@ -114,7 +114,7 @@ $_SESSION['csrf_token'] = $csrf_token;
             <hr>
             <p>
                 <a class="btn btn-secondary" href="participant.php?id=<?php echo $participant['id']; ?>&game_id=<?php echo $gameInfo['id']; ?>">修正</a>
-                <button type="button" class="btn btn-<?php echo $participant['waiting_flg'] === '1' ? 'success' : 'warning' ?>">
+                <button type="button" class="waiting btn btn-<?php echo $participant['waiting_flg'] === '1' ? 'warning' : 'success' ?>" value="<?php echo $participant['id'] ?>">
                 <?php echo $participant['waiting_flg'] === '1' ? 'キャンセル待ちを解除' : 'キャンセル待ちに変更' ?></button>
             </p>
         <?php endif ?>
@@ -162,12 +162,11 @@ $_SESSION['csrf_token'] = $csrf_token;
                 url:'../controller/GetEventTemplate.php',
                 type:'POST',
                 data:{
-                    'id':$('#template').val()
+                    'id':$('#template').val(),
                 }
                 })
                 // Ajaxリクエストが成功した時発動
                 .done( (data) => {
-                    console.log(data);
                     $('#template_name').val(data.template_name);
                     $('#title').val(data.title);
                     $('#short_title').val(data.short_title);
@@ -182,6 +181,39 @@ $_SESSION['csrf_token'] = $csrf_token;
                 .always( (data) => {
                 })
             })
+            // キャンセル待ち⇔解除の処理
+            $('.waiting').on('click', function() {
+               $.ajax({
+                url:'../controller/UpdateWaitingFlg.php',
+                type:'POST',
+                data:{
+                    'id':$(this).val(),
+                    'game_id':$('#id').val(),
+                }
+               })
+               .done( (data) => {
+                    $('#cnt').text(data.cnt);
+                    $('#sya_women').text(data.sya_women);
+                    $('#sya_men').text(data.sya_men);
+                    $('#dai_women').text(data.dai_women);
+                    $('#dai_men').text(data.dai_men);
+                    $('#kou_women').text(data.kou_women);
+                    $('#kou_men').text(data.kou_men);
+                    $('#waiting_cnt').text(data.waiting_cnt);
+                    if(data.waiting_flg === '0') {
+                        $(this).attr('class', 'warning btn btn-success').text('キャンセル待ちに変更');
+                    } else {
+                        $(this).attr('class', 'warning btn btn-warning').text('キャンセル待ちを解除');
+                    }
+
+                })
+                // Ajaxリクエストが失敗した時発動
+                .fail( (data) => {
+                })
+                // Ajaxリクエストが成功・失敗どちらでも発動
+                .always( (data) => {
+                })
+            });
         });
     
     </script>

@@ -34,7 +34,7 @@ class Api
         $message .=  "名前 : " . $participant->name . "\n";
         $message .=  "職種 : " . $occupation . "\n";
         $message .=  "性別 : " . $sex . "\n";
-        $message .=  "同伴 : " . $participant->companion . "人\n";
+        $message .=  "連絡先 : " . $participant->email . "\n";
         $message .=  "備考 : " . $participant->remark . "\n";
         $message .= "--------------------\n";
 

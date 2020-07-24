@@ -44,8 +44,7 @@ if (isset($_POST["csrf_token"])
             $companionDao->insert($companion);
         }
     }
-
-
+    
     // 予約の通知
     $api = new Api();
     $api->reserve_notify($detail, $_POST['title'], $_POST['date']);
