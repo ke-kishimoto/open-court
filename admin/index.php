@@ -6,14 +6,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>オープンコートイベントカレンダー</title>
+    <title>イベントカレンダー</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="container">
 <?php include('./header.php') ?>
-<p>イベントカレンダー</p>
-<span id="year"><?php echo $year; ?></span>年<span id="this-month"><?php echo $month; ?></span>月
+<p>イベントカレンダー【<span id="year"><?php echo $year; ?></span>年<span id="this-month"><?php echo $month; ?></span>月】</p>
 <div class="month">
 <a href=".?year=<?php echo $pre_year; ?>&month=<?php echo $lastmonth; ?>"><?php echo $lastmonth; ?>月</a>
 <a href=".?year=<?php echo $year; ?>&month=<?php echo $month; ?>"><?php echo $month; ?>月</a>
@@ -36,9 +35,13 @@
  
         <td>
         <?php $cnt++; ?>
-        <a class="days" href="gamemodinfo.php?date=<?php echo $year . '/' . sprintf('%02d', $month) . '/' . sprintf('%02d', $value['day']); ?>">
+        <?php if($value['link']): ?>
+            <a class="days" href="detail_date.php?date=<?php echo $year . '/' . sprintf('%02d', $month) . '/' . sprintf('%02d', $value['day']); ?>">
+                <?php echo $value['day']; ?>
+            </a>
+        <?php else: ?>
             <?php echo $value['day']; ?>
-        </a>
+        <?php endif ?>
         </td>
  
     <?php if ($cnt == 7): ?>
@@ -96,7 +99,6 @@ $gameInfoList = $gameInfoPDO->getGameInfoList($year, $month);
              // Ajaxリクエストが成功した時発動
             .done( (data) => {
                 $('#event-list').html(data);
-                console.log(data);
             })
             // Ajaxリクエストが失敗した時発動
             .fail( (data) => {

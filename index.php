@@ -14,8 +14,8 @@ use dao\GameInfoDao;
 </head>
 <body class="container">
 <?php include('./header.php') ?>
-<p>イベントカレンダー</p>
-<span id="year"><?php echo $year; ?></span>年<span id="this-month"><?php echo $month; ?></span>月
+<p>イベントカレンダー【<span id="year"><?php echo $year; ?></span>年<span id="this-month"><?php echo $month; ?></span>月】</p>
+
 <div  class="month">
 <a href=".?year=<?php echo $pre_year; ?>&month=<?php echo $lastmonth; ?>"><?php echo $lastmonth; ?>月</a>
 <a href=".?year=<?php echo $year; ?>&month=<?php echo $month; ?>"><?php echo $month; ?>月</a>
@@ -38,9 +38,13 @@ use dao\GameInfoDao;
  
         <td class="days">
         <?php $cnt++; ?>
-        <a class="days" href="detail_date.php?date=<?php echo $year . '/' . sprintf('%02d', $month) . '/' . sprintf('%02d', $value['day']); ?>">
+        <?php if($value['link']): ?>
+            <a class="days" href="detail_date.php?date=<?php echo $year . '/' . sprintf('%02d', $month) . '/' . sprintf('%02d', $value['day']); ?>">
+                <?php echo $value['day']; ?>
+            </a>
+        <?php else: ?>
             <?php echo $value['day']; ?>
-        </a>
+        <?php endif ?>
         </td>
  
     <?php if ($cnt == 7): ?>

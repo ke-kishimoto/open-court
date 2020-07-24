@@ -1,5 +1,9 @@
 <?php
- 
+require_once(dirname(__FILE__).'/model/dao/GameInfoDao.php');
+use dao\GameInfoDao;
+
+$gameInfoDao = new GameInfoDao();
+
 // 現在の年月を取得
 // $year = date('Y');
 $year = isset($_GET['year']) ? intval($_GET['year']) : date('Y') ;
@@ -32,14 +36,21 @@ for ($i = 1; $i < $last_day + 1; $i++) {
  
             // 前半に空文字をセット
             $calendar[$j]['day'] = '';
+            $calendar[$j]['link'] = false;
             $j++;
  
         }
  
     }
  
+    $info = $gameInfoDao->getGameInfoListByDate($year . '-' . $month . '-' . $i);
     // 配列に日付をセット
     $calendar[$j]['day'] = $i;
+    if (!empty($info)) {
+        $calendar[$j]['link'] = true;
+    } else {
+        $calendar[$j]['link'] = false;
+    }
     $j++;
  
     // 月末日の場合
@@ -50,6 +61,7 @@ for ($i = 1; $i < $last_day + 1; $i++) {
  
             // 後半に空文字をセット
             $calendar[$j]['day'] = '';
+            $calendar[$j]['link'] = false;
             $j++;
         }
     }
