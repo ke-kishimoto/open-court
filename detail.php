@@ -46,7 +46,7 @@ $_SESSION['csrf_token'] = $csrf_token;
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="container">
-<a href="index.php">イベント一覧に戻る</a>
+<?php include('./header.php') ?>
 <p><?php echo htmlspecialchars($gameInfo['title']) ?></p>
 <p>日付：<?php echo htmlspecialchars($gameInfo['game_date']) ?></p>
 <p>時間：<?php echo htmlspecialchars($gameInfo['start_time']) ?>～<?php echo htmlspecialchars($gameInfo['end_time']) ?></p>
@@ -63,6 +63,7 @@ $_SESSION['csrf_token'] = $csrf_token;
     <?php endif ?>
     <p>
         <?php echo htmlspecialchars($participant['waiting_name']); ?>
+        <?php echo $participant['waiting_flg'] === '1' ? '<br>' : ''; ?>
         <?php echo htmlspecialchars($participant['companion_name']); ?>&nbsp;&nbsp;
         <?php echo htmlspecialchars($participant['name']); ?>&nbsp;&nbsp;
         <?php echo htmlspecialchars($participant['occupation_name']); ?>&nbsp;&nbsp;

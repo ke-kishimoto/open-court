@@ -101,7 +101,7 @@ class DetailDao {
           end sex_name 
         , waiting_flg
         , case
-            when waiting_flg = 1 then 'キャンセル待ち' 
+            when waiting_flg = 1 then '【キャンセル待ち】' 
             else ''
           end waiting_name
         , email

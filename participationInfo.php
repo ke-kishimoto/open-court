@@ -24,7 +24,8 @@ if(empty($detail)) {
 
 <div>
     <details>
-    <summary>参加情報</summary>
+    <summary>参加者集計情報</summary>
+    <br>
     <p>【参加予定  <span id="cnt"><?php echo $detail['cnt'] ?></span>人】【上限  <?php echo $gameInfo['limit_number'] ?>人】</p>
     <p>社会人：女性 <span id="sya_women"><?php echo $detail['sya_women'] ?></span>人、男性 <span id="sya_men"><?php echo $detail['sya_men'] ?></span>人
     <p>大学・専門：女性 <span id="dai_women"><?php echo $detail['dai_women'] ?></span>人、男性 <span id="dai_men"><?php echo $detail['dai_men'] ?></span>人</p>

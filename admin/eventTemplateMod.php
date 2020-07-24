@@ -26,8 +26,8 @@ $_SESSION['csrf_token'] = $csrf_token;
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="container">
-    <a href="index.php">イベント一覧ページに戻る</a>
-    <h2>テンプレート</h2>
+    <?php include('./header.php') ?>
+    <p>テンプレート</p>
     <form action="templateRegister.php" method="post" class="form-group">
         <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
         <p>

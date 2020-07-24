@@ -13,7 +13,8 @@ use dao\GameInfoDao;
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="container">
-<h2>イベントカレンダー</h2>
+<?php include('./header.php') ?>
+<p>イベントカレンダー</p>
 <span id="year"><?php echo $year; ?></span>年<span id="this-month"><?php echo $month; ?></span>月
 <div  class="month">
 <a href=".?year=<?php echo $pre_year; ?>&month=<?php echo $lastmonth; ?>"><?php echo $lastmonth; ?>月</a>
@@ -51,7 +52,7 @@ use dao\GameInfoDao;
     <?php endforeach; ?>
     </tr>
 </table>
-<h2>イベント一覧</h2>
+<p>イベント一覧</p>
 <?php
 $gameInfoPDO = new GameInfoDao();
 $gameInfoList = $gameInfoPDO->getGameInfoList($year, $month);

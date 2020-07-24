@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-    <p><a href="index.php">イベント一覧に戻る</a></p>
+<body class="container">
+    <?php include('./header.php') ?>
     <form action="cancel.php" method="post">
         <input type="hidden" name="game_id" value="<?php echo $_GET['gameid'] ?>">
     <p>

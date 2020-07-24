@@ -50,7 +50,8 @@ if (isset($_POST["csrf_token"])
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>完了</title>
 </head>
-<body>
+<body class="container">
+    <?php include('./header.php') ?>
     <p><?php echo $msg ?>完了しました。</p>
     <p><a href="index.php">イベント一覧に戻る</a></p>
 </body>

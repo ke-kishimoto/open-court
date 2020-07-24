@@ -23,9 +23,10 @@ if ($rowCount === 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>キャンセル完了</title>
 </head>
-<body>
-    <p><a href="index.php">イベント一覧に戻る</a></p>
+<body class="container">
+<?php include('./header.php') ?>
     <p><?php echo $msg ?></p>
+    <p><a href="index.php">イベント一覧に戻る</a></p>
 </body>
 </html>
 

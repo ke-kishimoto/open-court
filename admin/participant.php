@@ -38,12 +38,13 @@ $_SESSION['csrf_token'] = $csrf_token;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>参加者情報情報修正</title>
+    <title>参加者登録</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="container">
-<h3>参加者情報修正</h3>
+<?php include('./header.php') ?>
+<p>参加者登録</p>
 <form action="participantRegister.php" method="post" class="form-group">
     <input type="hidden" id="id" name="id" value="<?php echo $participant['id'] ?>">
     <input type="hidden" name="game_id" value="<?php echo $_GET['game_id'] ?>">

@@ -28,3 +28,13 @@ table td {
 .hidden {
     display: none;
 }
+/* ロゴ */
+.logo {
+    font-size: 18px;
+    text-decoration: none;
+    color: black;
+}
+/* ヘッダー */
+header {
+   
+}

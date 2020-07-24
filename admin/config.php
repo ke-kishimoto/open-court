@@ -27,11 +27,21 @@ $_SESSION['csrf_token'] = $csrf_token;
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="container">
-<a href="index.php">イベント一覧ページに戻る</a>
+<?php include('./header.php') ?>
 <form action="configRegister.php" method="post" class="form-group">
     <!-- その内ユーザーIDに修正 -->
     <input type="hidden" name="id" value="1">
     <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
+    <p>
+        参加者からの予約があった際にLINEへ通知を送るための設定画面です。<br> 
+        1. <a href="https://notify-bot.line.me/ja/">LINE notify</a>へアクセスし、ログインしてください。<br>
+        2. ログイン後は「マイページ」⇒「トークンの発行」を選択します。<br>
+        3. 通知設定が来るようにしたいグループを選択し、トークン名を発行ボタンを押下します。<br>
+        4. 発行されたトークンをコピーし、入力フォームに貼り付けて更新を押下します。
+    </p>
+    <p>
+        
+    </p>
     <p>
         LINEトークン<input class="form-control" type="text" name="line_token"  required value="<?php echo $config['line_token'] ?>">
     </p>
