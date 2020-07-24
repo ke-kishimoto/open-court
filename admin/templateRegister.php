@@ -23,7 +23,8 @@ if (isset($_POST["csrf_token"])
         );
         
         $eventTemplateDao = new EventTemplateDao();
-        if($_POST['id'] == '' || $_POST['new'] == true) {
+        
+        if($_POST['id'] == '' || isset($_POST['new'])) {
             $eventTemplateDao->insert($eventTemplate);
         } else {
             $eventTemplate->id = $_POST['id'];

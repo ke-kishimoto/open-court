@@ -44,14 +44,16 @@ class GameInfoDao {
         , max(g.limit_number) limit_number
         , count(p.id) + coalesce(sum(cnt), 0) participants_number
         , case 
-            when max(g.limit_number) <= count(*) + sum(cnt) then '定員に達しました' 
-            else concat('残り', max(g.limit_number) - count(p.id) - coalesce(sum(cnt), 0), '人') 
+            when max(g.limit_number) <= coalesce(count(*), 0) + coalesce(sum(cnt), 0) then '定員に達しました' 
+            else concat('残り', max(g.limit_number) - coalesce(count(p.id), 0) - coalesce(sum(cnt), 0), '人') 
           end current_status
         from game_info g 
         left join (select *
                     , (select count(*) from companion where participant_id = participant.id) cnt
-                    from participant) p
-        on g.id = p.game_id ";
+                    from participant
+                    where waiting_flg = 0) p
+        on g.id = p.game_id 
+        ";
         $sql .= DaoFactory::getGameInfoListSQL();
         $sql .= "group by g.id order by max(g.game_date)";
         $prepare = $pdo->prepare($sql);

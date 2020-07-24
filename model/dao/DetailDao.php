@@ -207,7 +207,7 @@ class DetailDao {
     // 参加者の上限チェック
     public function limitCheck(int $gameId, int $participants_number) {
         $pdo = DaoFactory::getConnection();
-        $sql = "select (max(g.limit_number) - count(p.id) - coalesce(sum(cnt))) num
+        $sql = "select (max(g.limit_number) - coalesce(count(p.id), 0) - coalesce(sum(cnt), 0)) num
                 from game_info g 
                 left join (select *
                             , (select count(*) from companion 

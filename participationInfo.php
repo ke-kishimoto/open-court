@@ -9,14 +9,16 @@ if(!empty($gameInfo['id'])) {
 }
 
 if(empty($detail)) {
-    $detail = array('count' => 0
+    $detail = array('cnt' => 0
         , 'limit_number' => 0
         , 'sya_women' => 0
         , 'sya_men' => 0
         , 'dai_women' => 0
         , 'dai_men' => 0
         , 'kou_women' => 0
-        , 'kou_men' => 0);
+        , 'kou_men' => 0
+        , 'waiting_cnt' => 0
+    );
 }
 ?>
 

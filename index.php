@@ -67,7 +67,7 @@ $gameInfoList = $gameInfoPDO->getGameInfoList($year, $month);
                     <?php echo htmlspecialchars($gameInfo['end_time']); ?><br>
                 場所：<?php echo htmlspecialchars($gameInfo['place']); ?><br>
                 参加状況<br>
-                定員：<?php echo htmlspecialchars($gameInfo['limit_number']); ?> 人、<?php echo htmlspecialchars($gameInfo['current_status']); ?>
+                【定員：<?php echo htmlspecialchars($gameInfo['limit_number']); ?> 人】【<?php echo htmlspecialchars($gameInfo['current_status']); ?>】
             </a>
         </li>
     <?php endforeach; ?>

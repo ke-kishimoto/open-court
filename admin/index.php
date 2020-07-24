@@ -50,7 +50,7 @@
     </tr>
 </table>
 <p>
-    <a href="gameinfomod.php" class="btn btn-secondary">新規イベント登録</a>
+    <a href="gameinfomod.php" class="btn btn-info">新規イベント登録</a>
 </p>
 <p>
     <a href="eventTemplateMod.php" class="btn btn-info">テンプレート設定</a>
