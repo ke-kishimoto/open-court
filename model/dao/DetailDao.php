@@ -234,14 +234,10 @@ class DetailDao {
         $sql = 'select max(id) id
                 from participant 
                 where game_id = :game_id
-                and occupation = :occupation 
-                and sex = :sex
                 and name = :name
                 and email = :email';
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':game_id', $participant->gameId, PDO::PARAM_INT);
-        $prepare->bindValue(':occupation', $participant->occupation, PDO::PARAM_INT);
-        $prepare->bindValue(':sex', $participant->sex, PDO::PARAM_INT);
         $prepare->bindValue(':name', $participant->name, PDO::PARAM_INT);
         $prepare->bindValue(':email', $participant->email, PDO::PARAM_INT);
 
@@ -260,5 +256,28 @@ class DetailDao {
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
         return $this->getParticipant($id);
+    }
+
+    // メールアドレスによる削除処理
+    public function deleteByMailAddress(int $gameId, string $email) {
+        // 存在チェック
+        $participant = new Participant($gameId, '', '', '', $email, 0, '');
+        $id = $this->getParticipantId($participant);
+        if ($id == null) {
+            return 0;
+        }
+        $pdo = DaoFactory::getConnection();
+        // 同伴者削除
+        $sql = 'delete from companion where participant_id = :participant_id';
+        $prepare = $pdo->prepare($sql);
+        $prepare->bindValue(':participant_id', $id, PDO::PARAM_INT);
+        $prepare->execute();
+        // 参加者削除
+        $sql = 'delete from participant where game_id = :game_id and email = :email';
+        $prepare = $pdo->prepare($sql);
+        $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
+        $prepare->bindValue(':email', $email, PDO::PARAM_STR);
+        $prepare->execute();
+        return $prepare->rowCount();
     }
 }

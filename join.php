@@ -1,5 +1,5 @@
 <?php
-// 参加予約の
+// 参加予約の登録
 require_once(dirname(__FILE__).'/model/entity/Participant.php');
 require_once(dirname(__FILE__).'/model/entity/Companion.php');
 require_once(dirname(__FILE__).'/model/dao/DetailDao.php');

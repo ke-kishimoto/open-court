@@ -116,6 +116,7 @@ $_SESSION['csrf_token'] = $csrf_token;
     <input type="hidden" name="title" value="<?php echo $gameInfo['title'] ?>">
     <input type="hidden" name="date" value="<?php echo $gameInfo['game_date'] ?>">
     <button class="<?php echo $btnClass ?>" type="submit"><?php echo $btnLiteral ?></button>
+    <a class="btn btn-danger" href="cancelForm.php?gameid=<?php echo $gameInfo['id'] ?>" >参加のキャンセル</a>
 </form>
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
