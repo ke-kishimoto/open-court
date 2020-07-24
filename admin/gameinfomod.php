@@ -92,10 +92,10 @@ $_SESSION['csrf_token'] = $csrf_token;
                 日程<input class="form-control" type="date" name="game_date" required value="<?php echo $gameInfo['game_date'] ?>">
             </p>
             <p>
-                開始時間<input class="form-control" type="time" name="start_time" required value="<?php echo $gameInfo['start_time'] ?>">
+                開始時間<input class="form-control" type="time" step="600" name="start_time" required value="<?php echo $gameInfo['start_time'] ?>">
             </p>
             <p>
-                終了時間<input class="form-control" type="time" name="end_time" required value="<?php echo $gameInfo['end_time'] ?>">
+                終了時間<input class="form-control" type="time" step="600" name="end_time" required value="<?php echo $gameInfo['end_time'] ?>">
             </p>
             <p>
                 場所<input class="form-control" type="text" id="place" name="place" required value="<?php echo $gameInfo['place'] ?>">

@@ -12,47 +12,55 @@ use dao\DetailDao;
 use dao\CompanionDao;
 
 session_start();
-
+$msg = '';
 if (isset($_POST["csrf_token"]) 
  && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 
     $detailDao = new DetailDao();
-    if($detailDao->limitCheck($_POST['game_id'], 1 + $_POST['companion'])) {
-        $waitingFlg = 1;
+    // メールアドレスによる重複チェック
+    if($_POST['email'] !== '' && $detailDao->existsCheck($_POST['game_id'], $_POST['email'])) {
+        $msg = '既に登録済みのため登録できません。';
     } else {
-        $waitingFlg = 0;
-    }
-
-    $detail = new Participant(
-        $_POST['game_id']
-        , $_POST['occupation']
-        , $_POST['sex']
-        , $_POST['name']
-        , $_POST['email']
-        , $waitingFlg 
-        , $_POST['remark']
-    );
-    
-    $detailDao->insert($detail);
-
-    // 同伴者の登録
-    if($_POST['companion'] > 0) {
-        $id = $detailDao->getParticipantId($detail);
-        $companionDao = new CompanionDao();
-        for($i = 1; $i <= $_POST['companion']; $i++) {
-            $companion = new Companion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
-            $companionDao->insert($companion);
+        // キャンセル待ちになるかどうかのチェック
+        if($detailDao->limitCheck($_POST['game_id'], 1 + $_POST['companion'])) {
+            $waitingFlg = 1;
+        } else {
+            $waitingFlg = 0;
         }
-    }
     
-    // 予約の通知
-    $api = new Api();
-    $api->reserve_notify($detail, $_POST['title'], $_POST['date']);
+        $detail = new Participant(
+            $_POST['game_id']
+            , $_POST['occupation']
+            , $_POST['sex']
+            , $_POST['name']
+            , $_POST['email']
+            , $waitingFlg 
+            , $_POST['remark']
+        );
+        
+        $detailDao->insert($detail);
+    
+        // 同伴者の登録
+        if($_POST['companion'] > 0) {
+            $id = $detailDao->getParticipantId($detail);
+            $companionDao = new CompanionDao();
+            for($i = 1; $i <= $_POST['companion']; $i++) {
+                $companion = new Companion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
+                $companionDao->insert($companion);
+            }
+        }
+        
+        // 予約の通知
+        $api = new Api();
+        $api->reserve_notify($detail, $_POST['title'], $_POST['date']);
 
-    // if ($waitingFlg) {
-    //     // 上限に達した通知
-    //     $api->limit_notify($_POST['title'], $_POST['date'], $detail['limit_number'], $detail['count']);
-    // }
+        // if ($waitingFlg) {
+        //     // 上限に達した通知
+        //     $api->limit_notify($_POST['title'], $_POST['date'], $detail['limit_number'], $detail['count']);
+        // }
+        $msg = '参加登録完了しました。';  
+    }
+
     unset($_SESSION['csrf_token']);
 } else {
     header('Location: ./index.php');
@@ -68,7 +76,7 @@ if (isset($_POST["csrf_token"])
 </head>
 <body class="container">
     <?php include('./header.php') ?>
-    <p>参加登録完了しました。</p>
+    <p><?php echo $msg ?></p>
     <p><a href="index.php">イベント一覧に戻る</a></p>
 </body>
 </html>

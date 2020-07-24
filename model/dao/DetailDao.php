@@ -234,12 +234,10 @@ class DetailDao {
         $sql = 'select max(id) id
                 from participant 
                 where game_id = :game_id
-                and name = :name
                 and email = :email';
         $prepare = $pdo->prepare($sql);
         $prepare->bindValue(':game_id', $participant->gameId, PDO::PARAM_INT);
-        $prepare->bindValue(':name', $participant->name, PDO::PARAM_INT);
-        $prepare->bindValue(':email', $participant->email, PDO::PARAM_INT);
+        $prepare->bindValue(':email', $participant->email, PDO::PARAM_STR);
 
         $prepare->execute();
         $info = $prepare->fetch();
@@ -256,6 +254,16 @@ class DetailDao {
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
         return $this->getParticipant($id);
+    }
+
+    // メールアドレスによる存在チェック
+    public function existsCheck(int $gameId, string $email) {
+        $participant = new Participant($gameId, '', '', '', $email, 0, '');
+        $id = $this->getParticipantId($participant);
+        if (isset($id)) {
+            return true;
+        }
+        return false;
     }
 
     // メールアドレスによる削除処理

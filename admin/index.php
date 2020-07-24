@@ -74,7 +74,9 @@ $gameInfoList = $gameInfoPDO->getGameInfoList($year, $month);
             <a href="gameinfomod.php?id=<?php echo $gameInfo['id']; ?>">
                 <?php echo htmlspecialchars($gameInfo['title']); ?><br>
                 日時：<?php echo htmlspecialchars($gameInfo['game_date']); ?>  <?php echo htmlspecialchars($gameInfo['start_time']); ?>～<?php echo htmlspecialchars($gameInfo['end_time']); ?><br>
-                場所：<?php echo htmlspecialchars($gameInfo['place']); ?>
+                場所：<?php echo htmlspecialchars($gameInfo['place']); ?><br>
+                参加状況<br>
+                【定員：<?php echo htmlspecialchars($gameInfo['limit_number']); ?> 人】【<?php echo htmlspecialchars($gameInfo['current_status']); ?>】
             </a>
         </li>
     <?php endforeach; ?>
