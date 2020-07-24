@@ -86,7 +86,10 @@ class DetailDao {
     }
 
     // 参加者一覧取得
-    public function getParticipantList(int $gameId) {
+    public function getParticipantList(int $gameId, int $occupation = 0, int $sex = 0, int $waitingFlg = -1) {
+        $andOcc = $occupation > 0 ? ' and occupation = :occupation ' : '';
+        $andSex = $sex > 0 ? ' and sex = :sex ' : '';
+        $andwaitingFlg = $waitingFlg > -1 ? ' and waiting_flg = :waiting_flg'  : '';
         $sql = "select 
         id
         , main
@@ -116,16 +119,25 @@ class DetailDao {
         (
         select id, 1 main ,name, occupation, sex, waiting_flg, remark, email
         from participant
-        where game_id = :game_id
-        union all
+        where game_id = :game_id " 
+        . $andOcc . $andSex . $andwaitingFlg .
+        " union all
         select participant_id, 0 ,name, occupation, sex, 0, '', ''
         from companion
-        where participant_id in (select id from participant where game_id = :game_id)
+        where participant_id in (select id from participant where game_id = :game_id" . $andOcc . $andSex . $andwaitingFlg . ")
         ) p
         order by id, main desc";
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
-
+        if($occupation > 0) {
+            $prepare->bindValue(':occupation', $occupation, PDO::PARAM_INT);
+        }
+        if($sex > 0) {
+            $prepare->bindValue(':sex', $sex, PDO::PARAM_INT);
+        }
+        if($andwaitingFlg > -1) {
+            $prepare->bindValue(':waiting_flg', $waitingFlg, PDO::PARAM_INT);
+        }
         $prepare->execute();
         return $prepare->fetchAll();
     }

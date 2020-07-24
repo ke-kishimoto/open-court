@@ -115,7 +115,7 @@ $_SESSION['csrf_token'] = $csrf_token;
 
     <hr>
     <div class="<?php echo $participantDisp ?>">
-        <?php include('../participationInfo.php'); ?>
+        <?php include('./participationInfo.php'); ?>
     </div>
     <hr>
     <details class="<?php echo $participantDisp ?>">
