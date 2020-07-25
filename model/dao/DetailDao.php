@@ -124,8 +124,9 @@ class DetailDao {
         " union all
         select participant_id, 0 ,name, occupation, sex, 0, '', ''
         from companion
-        where participant_id in (select id from participant where game_id = :game_id" . $andOcc . $andSex . $andwaitingFlg . ")
-        ) p
+        where participant_id in (select id from participant where game_id = :game_id" . $andwaitingFlg . ")"
+        . $andOcc . $andSex .
+        ") p
         order by id, main desc";
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
