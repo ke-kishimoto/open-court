@@ -123,12 +123,12 @@ $_SESSION['csrf_token'] = $csrf_token;
         <br>
         <a class="btn btn-primary" href="participant.php?game_id=<?php echo $gameInfo['id']; ?>">参加者追加</a>
         <?php foreach ((array)$participantList as $participant): ?>
-            <?php if($participant['main'] === '1'): ?>
+            <?php if($participant['main'] == '1'): ?>
                 <hr>
                 <p>
                     <a class="btn btn-secondary" href="participant.php?id=<?php echo $participant['id']; ?>&game_id=<?php echo $gameInfo['id']; ?>">修正</a>
-                    <button type="button" class="waiting btn btn-<?php echo $participant['waiting_flg'] === '1' ? 'warning' : 'success' ?>" value="<?php echo $participant['id'] ?>">
-                    <?php echo $participant['waiting_flg'] === '1' ? 'キャンセル待ちを解除' : 'キャンセル待ちに変更' ?></button>
+                    <button type="button" class="waiting btn btn-<?php echo $participant['waiting_flg'] == '1' ? 'warning' : 'success' ?>" value="<?php echo $participant['id'] ?>">
+                    <?php echo $participant['waiting_flg'] == '1' ? 'キャンセル待ちを解除' : 'キャンセル待ちに変更' ?></button>
                     <span class="duplication"><?php echo $participant['chk'] ?></span>
                 </p>
             <?php endif ?>
@@ -140,7 +140,7 @@ $_SESSION['csrf_token'] = $csrf_token;
                 <?php echo htmlspecialchars($participant['occupation_name']); ?>  &nbsp;&nbsp;
                 <?php echo htmlspecialchars($participant['sex_name']); ?>  &nbsp;&nbsp;
             </p>
-            <?php if($participant['main'] === '1'): ?>
+            <?php if($participant['main'] == '1'): ?>
                 <p>
                     連絡先：<?php echo htmlspecialchars($participant['email']); ?>
                 </p>
@@ -211,7 +211,7 @@ $_SESSION['csrf_token'] = $csrf_token;
                     $('#kou_women').text(data.kou_women);
                     $('#kou_men').text(data.kou_men);
                     $('#waiting_cnt').text(data.waiting_cnt);
-                    if(data.waiting_flg === '0') {
+                    if(data.waiting_flg == '0') {
                         $(this).attr('class', 'warning btn btn-success').text('キャンセル待ちに変更');
                     } else {
                         $(this).attr('class', 'warning btn btn-warning').text('キャンセル待ちを解除');

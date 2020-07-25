@@ -52,16 +52,16 @@ $_SESSION['csrf_token'] = $csrf_token;
     <p>
     職種
     <select id="occupation" name="occupation" class="custom-select mr-sm-2">
-        <option value="1" <?php echo $participant['occupation'] === '1' ? 'selected' : '' ?> >社会人</option>
-        <option value="2" <?php echo $participant['occupation'] === '2' ? 'selected' : '' ?> >大学・専門学校</option>
-        <option value="3" <?php echo $participant['occupation'] === '3' ? 'selected' : '' ?> >高校</option>
+        <option value="1" <?php echo $participant['occupation'] == '1' ? 'selected' : '' ?> >社会人</option>
+        <option value="2" <?php echo $participant['occupation'] == '2' ? 'selected' : '' ?> >大学・専門学校</option>
+        <option value="3" <?php echo $participant['occupation'] == '3' ? 'selected' : '' ?> >高校</option>
       </select>
     </p>
     <p>
     性別
     <select id="sex" name="sex" class="custom-select mr-sm-2">
-        <option value="1" <?php echo $participant['sex'] === '1' ? 'selected' : '' ?> >男性</option>
-        <option value="2" <?php echo $participant['sex'] === '2' ? 'selected' : '' ?> >女性</option>
+        <option value="1" <?php echo $participant['sex'] == '1' ? 'selected' : '' ?> >男性</option>
+        <option value="2" <?php echo $participant['sex'] == '2' ? 'selected' : '' ?> >女性</option>
     </select>
     </p>
     <p>
@@ -85,14 +85,14 @@ $_SESSION['csrf_token'] = $csrf_token;
     <?php for($i = 0;$i < count($companionList); $i++): ?>
         <div id="douhan-<?php echo $i+1 ?>"> 
             <select id="occupation-<?php echo $i+1 ?>" name="occupation-<?php echo $i+1 ?>" class="custom-select mr-sm-2">
-                <option value="1" <?php echo $companionList[$i]['occupation'] === '1' ? 'selected' : '' ?> >社会人</option>
-                <option value="2" <?php echo $companionList[$i]['occupation'] === '2' ? 'selected' : '' ?> >大学・専門学校</option>
-                <option value="3" <?php echo $companionList[$i]['occupation'] === '3' ? 'selected' : '' ?> >高校</option>
+                <option value="1" <?php echo $companionList[$i]['occupation'] == '1' ? 'selected' : '' ?> >社会人</option>
+                <option value="2" <?php echo $companionList[$i]['occupation'] == '2' ? 'selected' : '' ?> >大学・専門学校</option>
+                <option value="3" <?php echo $companionList[$i]['occupation'] == '3' ? 'selected' : '' ?> >高校</option>
             </select>
         
             <select id="sex-<?php echo $i ?>" name="sex-<?php echo $i+1 ?>" class="custom-select mr-sm-2">
-                <option value="1" <?php echo $companionList[$i]['sex'] === '1' ? 'selected' : '' ?> >男性</option>
-                <option value="2" <?php echo $companionList[$i]['sex'] === '2' ? 'selected' : '' ?> >女性</option>
+                <option value="1" <?php echo $companionList[$i]['sex'] == '1' ? 'selected' : '' ?> >男性</option>
+                <option value="2" <?php echo $companionList[$i]['sex'] == '2' ? 'selected' : '' ?> >女性</option>
             </select>
             <input id="name-<?php echo $i+1 ?>" class="form-control" type="text" name="name-<?php echo $i+1 ?>" required value="<?php echo $companionList[$i]['name'] ?>">
         </div>

@@ -13,15 +13,15 @@ class Api
     // LINE通知用のfunction
     public function reserve_notify(Participant $participant, $title, $date, $companion){   
         
-        if ($participant->occupation === '1') {
+        if ($participant->occupation == '1') {
             $occupation = '社会人';
-        } elseif ($participant->occupation === '2') {
+        } elseif ($participant->occupation == '2') {
             $occupation = '大学・専門学校';
-        } elseif ($participant->occupation === '3') {
+        } elseif ($participant->occupation == '3') {
             $occupation = '高校生';
         }
 
-        if($participant->sex === '1') {
+        if($participant->sex == '1') {
             $sex = '男性';
         } else {
             $sex = '女性';
