@@ -8,6 +8,15 @@ use PDO;
 use entity\Config;
 
 class ConfigDao {
+
+    private static $systemTitle;
+    public static function getSystemTitle() {
+        return ConfigDao::$systemTitle;
+    }
+    public static function setSystemTitle(string $systemTitle) {
+        ConfigDao::$systemTitle = $systemTitle;
+    }
+
     private $pdo;
     public function __construct() {
         $this->pdo = DaoFactory::getConnection();
@@ -30,10 +39,12 @@ class ConfigDao {
     public function update(Config $config) {
         $sql = 'update config set 
         line_token = :line_token
+        , system_title = :system_title
         where id = :id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':id', $config->id, PDO::PARAM_INT);
         $prepare->bindValue(':line_token', $config->lineToken, PDO::PARAM_STR);
+        $prepare->bindValue(':system_title', $config->systemTitle, PDO::PARAM_STR);
         $prepare->execute();
     }
 }

@@ -65,4 +65,5 @@ create index companion_idx_participant on companion (participant_id);
 create table config(
     id int primary key
     , line_token varchar(200)
+    , system_title varchar(30)
 );

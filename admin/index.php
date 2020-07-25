@@ -60,7 +60,7 @@
     <a href="eventTemplateMod.php" class="btn btn-info">テンプレート設定</a>
 </p>
 <p>
-    <a href="config.php" class="btn btn-info">通知設定の変更</a>
+    <a href="config.php" class="btn btn-info">システム設定</a>
 </p>
 <p>イベント一覧</p>
 <?php
