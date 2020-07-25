@@ -3,8 +3,10 @@
 namespace dao;
 
 require_once(dirname(__FILE__).'/DaoFactory.php');
+require_once(dirname(__FILE__).'/GameInfoDao.php');
 
 use dao\DaoFactory;
+use dao\GameInfoDao;
 
 use PDO;
 use entity\Participant;
@@ -87,6 +89,9 @@ class DetailDao {
 
     // 参加者一覧取得
     public function getParticipantList(int $gameId, int $occupation = 0, int $sex = 0, int $waitingFlg = -1) {
+        // イベントの日付を取得しておく
+        $gameInfoDao = new GameInfoDao();
+        $gameInfo = $gameInfoDao->getGameInfo($gameId);
         $andOcc = $occupation > 0 ? ' and occupation = :occupation ' : '';
         $andSex = $sex > 0 ? ' and sex = :sex ' : '';
         $andwaitingFlg = $waitingFlg > -1 ? ' and waiting_flg = :waiting_flg'  : '';
@@ -115,14 +120,19 @@ class DetailDao {
           end waiting_name
         , email
         , remark
+        , chk
         from 
         (
         select id, 1 main ,name, occupation, sex, waiting_flg, remark, email
-        from participant
+        , (select '重複あり' from participant where game_id 
+                        in (select id from game_info where id <> p.game_id and game_date = :game_date)
+                        and (email = p.email or name = p.name)
+            ) chk
+        from participant p
         where game_id = :game_id " 
         . $andOcc . $andSex . $andwaitingFlg .
         " union all
-        select participant_id, 0 ,name, occupation, sex, 0, '', ''
+        select participant_id, 0 ,name, occupation, sex, 0, '', '', ''
         from companion
         where participant_id in (select id from participant where game_id = :game_id" . $andwaitingFlg . ")"
         . $andOcc . $andSex .
@@ -139,6 +149,7 @@ class DetailDao {
         if($andwaitingFlg > -1) {
             $prepare->bindValue(':waiting_flg', $waitingFlg, PDO::PARAM_INT);
         }
+        $prepare->bindValue(':game_date', $gameInfo['game_date']);
         $prepare->execute();
         return $prepare->fetchAll();
     }

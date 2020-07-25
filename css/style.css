@@ -38,7 +38,11 @@ table td {
     text-decoration: none;
     color: black;
 }
-/* ヘッダー */
-header {
-   
+
+.duplication {
+    background-color: yellow;
 }
+/* ヘッダー */
+/* header {
+   
+} */

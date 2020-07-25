@@ -11,7 +11,7 @@ use dao\ConfigDao;
 class Api 
 {
     // LINE通知用のfunction
-    public function reserve_notify(Participant $participant, $title, $date){   
+    public function reserve_notify(Participant $participant, $title, $date, $companion){   
         
         if ($participant->occupation === '1') {
             $occupation = '社会人';
@@ -36,6 +36,7 @@ class Api
         $message .=  "性別 : " . $sex . "\n";
         $message .=  "連絡先 : " . $participant->email . "\n";
         $message .=  "備考 : " . $participant->remark . "\n";
+        $message .=  "同伴者数 : " . $companion . "\n";
         $message .= "--------------------\n";
 
         return $this->line_notify($message);

@@ -129,6 +129,7 @@ $_SESSION['csrf_token'] = $csrf_token;
                     <a class="btn btn-secondary" href="participant.php?id=<?php echo $participant['id']; ?>&game_id=<?php echo $gameInfo['id']; ?>">修正</a>
                     <button type="button" class="waiting btn btn-<?php echo $participant['waiting_flg'] === '1' ? 'warning' : 'success' ?>" value="<?php echo $participant['id'] ?>">
                     <?php echo $participant['waiting_flg'] === '1' ? 'キャンセル待ちを解除' : 'キャンセル待ちに変更' ?></button>
+                    <span class="duplication"><?php echo $participant['chk'] ?></span>
                 </p>
             <?php endif ?>
         

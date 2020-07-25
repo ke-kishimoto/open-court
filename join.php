@@ -59,7 +59,7 @@ if (isset($_POST["csrf_token"])
         
         // 予約の通知
         $api = new Api();
-        $api->reserve_notify($detail, $_POST['title'], $_POST['date']);
+        $api->reserve_notify($detail, $_POST['title'], $_POST['date'], $_POST['companion']);
 
         // if ($waitingFlg) {
         //     // 上限に達した通知
