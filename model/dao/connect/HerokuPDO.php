@@ -7,7 +7,7 @@ use PDO;
 class HerokuPDO extends PDO{
 
     // Heroku用
-    const DATABASE_URL = '';
+    const DATABASE_URL = 'postgres://pxxsmjadcejqnv:8a68cb4f3e311442d688439ea25d780f7e580d0263da70afe65181f20c1a705b@ec2-174-129-255-15.compute-1.amazonaws.com:5432/dd2fk9n2pggjn7';
 
     public function __construct()
     {
