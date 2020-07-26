@@ -55,6 +55,11 @@ class GameInfoDao {
             when max(g.limit_number) <= coalesce(count(*), 0) + coalesce(sum(cnt), 0) then '定員に達しました' 
             else concat('残り', max(g.limit_number) - coalesce(count(p.id), 0) - coalesce(sum(cnt), 0), '人') 
           end current_status
+        , case 
+            when max(g.limit_number) <= (coalesce(count(*), 0) + coalesce(sum(cnt), 0)) then '✖️'
+            when ceil(max(g.limit_number) / 4) > (max(g.limit_number) - coalesce(count(*), 0) - coalesce(sum(cnt), 0)) then '△'
+            else '○'
+          end mark
         from game_info g 
         left join (select *
                     , (select count(*) from companion where participant_id = participant.id) cnt

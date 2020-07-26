@@ -1,6 +1,17 @@
 <?php require_once('../model/dao/GameInfoDao.php');?>
 <?php require("../calendar.php"); ?>
 <?php use dao\GameInfoDao;?>
+<?php 
+$week = [
+    '日', //0
+    '月', //1
+    '火', //2
+    '水', //3
+    '木', //4
+    '金', //5
+    '土', //6
+  ];
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,10 +84,11 @@ $gameInfoList = $gameInfoPDO->getGameInfoList($year, $month);
         <li>
             <a href="gameinfomod.php?id=<?php echo $gameInfo['id']; ?>">
                 <?php echo htmlspecialchars($gameInfo['title']); ?><br>
-                日時：<?php echo htmlspecialchars($gameInfo['game_date']); ?>  <?php echo htmlspecialchars($gameInfo['start_time']); ?>～<?php echo htmlspecialchars($gameInfo['end_time']); ?><br>
+                日時：<?php echo htmlspecialchars(date('n月d日（', strtotime($gameInfo['game_date'])) . $week[date('w', strtotime($gameInfo['game_date']))] . '）'); ?>  
+                <?php echo htmlspecialchars($gameInfo['start_time']); ?>～<?php echo htmlspecialchars($gameInfo['end_time']); ?><br>
                 場所：<?php echo htmlspecialchars($gameInfo['place']); ?><br>
-                参加状況<br>
-                【定員：<?php echo htmlspecialchars($gameInfo['limit_number']); ?> 人】【<?php echo htmlspecialchars($gameInfo['current_status']); ?>】
+                参加状況：【参加予定：現在<?php echo htmlspecialchars($gameInfo['participants_number']); ?>名】定員：<?php echo htmlspecialchars($gameInfo['limit_number']); ?> 人<br>
+                空き状況：<?php echo htmlspecialchars($gameInfo['mark']); ?>
             </a>
         </li>
     <?php endforeach; ?>
