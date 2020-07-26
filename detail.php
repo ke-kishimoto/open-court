@@ -102,7 +102,7 @@ $_SESSION['csrf_token'] = $csrf_token;
 <hr>
 
 <details>
-    <summary>参加者詳細</summary>
+    <summary>参加者リスト</summary>
     <?php foreach ((array)$participantList as $participant): ?>
         <?php if($participant['main'] === '1'): ?>
             <hr>
@@ -145,7 +145,7 @@ $_SESSION['csrf_token'] = $csrf_token;
             <input id="name" class="form-control" type="text" name="name" required>
         </p>
         <p>
-            メール
+            メール ※新規の方は必須
             <input class="form-control" type="email" name="email">
         </p>
         <p>
