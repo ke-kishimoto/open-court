@@ -81,7 +81,7 @@ $_SESSION['csrf_token'] = $csrf_token;
 
 <div>
     <details>
-    <summary>参加者集計情報</summary>
+    <summary>現在の状況</summary>
     <br>
     <p>【参加予定  <span id="cnt"><?php echo $detail['cnt'] ?></span>人】【上限  <?php echo $gameInfo['limit_number'] ?>人】</p>
     <p>社会人：
