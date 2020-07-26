@@ -4,14 +4,27 @@ require_once(dirname(__FILE__).'/model/dao/DetailDao.php');
 require_once(dirname(__FILE__).'/model/dao/ConfigDao.php');
 require_once(dirname(__FILE__).'/controller/Api.php');
 use dao\DetailDao;
+use dao\GameInfoDao;
+use entity\Participant;
 
 $detailDao = new DetailDao();
-$rowCount = $detailDao->deleteByMailAddress($_POST['game_id'], $_POST['email']);
+// LINE通知用に参加者情報とイベント情報を取得
+$participant = new Participant($_POST['game_id'], 0, 0, '', $_POST['email'], 0, '');
+$id = $detailDao->getParticipantId($participant);
 
-if ($rowCount === 0) {
+
+if ($id == null)  {
     $msg = '入力されたメールアドレスによる登録がなかったためキャンセルできませんでした。
             恐れ入りますがやり直りをお願いします。';
 } else {
+    $participant = $detailDao->getParticipant($id);
+    $gameInfoDao = new GameInfoDao();
+    $gameInfo = $gameInfoDao->getGameInfo($_POST['game_id']);
+
+    $rowCount = $detailDao->deleteByMailAddress($_POST['game_id'], $_POST['email']);
+
+    $api = new Api();
+    $api->cancel_notify($participant, $gameInfo['title'], $gameInfo['game_date']);
     $msg = '予約のキャンセルが完了しました。';
 }
 

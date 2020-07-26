@@ -11,7 +11,7 @@ use dao\ConfigDao;
 class Api 
 {
     // LINE通知用のfunction
-    public function reserve_notify(Participant $participant, $title, $date, $companion){   
+    public function reserve_notify(Participant $participant, $title, $date, $companion = 0){   
         
         if ($participant->occupation == '1') {
             $occupation = '社会人';
@@ -41,6 +41,17 @@ class Api
 
         return $this->line_notify($message);
     }
+
+    public function cancel_notify($participant, $title, $date){
+        $message = "予約がキャンセルされました\n";
+        $message .=  "イベント : " . $title . "\n";
+        $message .=  "日付 : " . $date . "\n";
+        $message .= "--------------------\n";
+        $message .=  "名前 : " . $participant['name'] . "\n";
+        $message .= "--------------------\n";
+
+        return $this->line_notify($message);
+    }  
 
     // 参加人数が上限に達したときの通知
     public function limit_notify($title, $date, $limit, $count) {
