@@ -46,6 +46,7 @@ class ConfigDao {
         $prepare->bindValue(':line_token', $config->lineToken, PDO::PARAM_STR);
         $prepare->bindValue(':system_title', $config->systemTitle, PDO::PARAM_STR);
         $prepare->execute();
+        $_SESSION['system_title'] = $config->systemTitle;
     }
 }
 
