@@ -62,6 +62,7 @@ if (isset($_POST["csrf_token"])
 <body class="container">
     <?php include('./header.php') ?>
     <p><?php echo $msg ?>イベント登録完了しました。</p>
-    <p><a href="index.php">イベント一覧に戻る</a></p>
+    <p><a href="gameinfomod.php" class="btn btn-primary">続けてイベントを登録する</a></p>
+    <p><a href="index.php" class="btn btn-primary">イベント一覧に戻る</a></p>
 </body>
 </html>
