@@ -67,3 +67,26 @@ create table config(
     , line_token varchar(200)
     , system_title varchar(30)
 );
+
+-- ユーザー
+-- drop table users;
+create table users(
+  id serial primary key
+  , admin_flg int  -- 0:一般利用者、1:管理者　使う分からんけど
+  , email varchar(50) unique
+  , name varchar(50)
+  , password varchar(200) -- ハッシュ化して保存
+  , occupation int   -- 職種  1：社会、2：大学生、3：高校生
+  , sex int -- 性別  1：男、2：女
+  , remark varchar(200)
+);
+
+-- ユーザーに付随する同伴者の初期値
+-- drop table default_companion;
+create table default_companion(
+    id serial primary key 
+    , user_id int -- ユーザーid
+    , occupation int   -- 職種  1：社会、2：大学生、3：高校生
+    , sex int -- 性別  1：男、2：女
+    , name varchar(50)   -- 参加者名
+);
