@@ -14,12 +14,12 @@ use dao\GameInfoDao;
 </head>
 <body class="container">
 <?php include('./header.php') ?>
-<p>イベントカレンダー【<span id="year"><?php echo $year; ?></span>年<span id="this-month"><?php echo $month; ?></span>月】</p>
+<p>イベントカレンダー【<span id="year"><?php echo htmlspecialchars($year); ?></span>年<span id="this-month"><?php echo htmlspecialchars($month); ?></span>月】</p>
 
 <div  class="month">
-<a href=".?year=<?php echo $pre_year; ?>&month=<?php echo $lastmonth; ?>"><?php echo $lastmonth; ?>月</a>
-<a href=".?year=<?php echo $year; ?>&month=<?php echo $month; ?>"><?php echo $month; ?>月</a>
-<a href=".?year=<?php echo $next_year; ?>&month=<?php echo $nextmonth; ?>"><?php echo $nextmonth; ?>月</a>
+<a href=".?year=<?php echo htmlspecialchars($pre_year); ?>&month=<?php echo htmlspecialchars($lastmonth); ?>"><?php echo htmlspecialchars($lastmonth); ?>月</a>
+<a href=".?year=<?php echo htmlspecialchars($year); ?>&month=<?php echo htmlspecialchars($month); ?>"><?php echo htmlspecialchars($month); ?>月</a>
+<a href=".?year=<?php echo htmlspecialchars($next_year); ?>&month=<?php echo htmlspecialchars($nextmonth); ?>"><?php echo htmlspecialchars($nextmonth); ?>月</a>
 </div>
 <table>
     <tr>
@@ -40,10 +40,10 @@ use dao\GameInfoDao;
         <?php $cnt++; ?>
         <?php if($value['link']): ?>
             <a class="days" href="detail_date.php?date=<?php echo $year . '/' . sprintf('%02d', $month) . '/' . sprintf('%02d', $value['day']); ?>">
-                <?php echo $value['day']; ?>
+                <?php echo htmlspecialchars($value['day']); ?>
             </a>
         <?php else: ?>
-            <?php echo $value['day']; ?>
+            <?php echo htmlspecialchars($value['day']); ?>
         <?php endif ?>
         </td>
  
@@ -74,7 +74,7 @@ $week = [
     <?php foreach ($gameInfoList as $gameInfo): ?>
         <hr>
         <li>
-            <a href="detail.php?id=<?php echo $gameInfo['id']; ?>">
+            <a href="detail.php?id=<?php echo htmlspecialchars($gameInfo['id']); ?>">
                 <?php echo htmlspecialchars($gameInfo['title']); ?><br>
                 日時：<?php echo htmlspecialchars(date('n月d日（', strtotime($gameInfo['game_date'])) . $week[date('w', strtotime($gameInfo['game_date']))] . '）'); ?>  
                 <?php echo htmlspecialchars($gameInfo['start_time']); ?> ～ <?php echo htmlspecialchars($gameInfo['end_time']); ?><br>

@@ -68,7 +68,7 @@ $_SESSION['csrf_token'] = $csrf_token;
 <body class="container">
 <?php include('./header.php') ?>
 <?php if($pastEvent) {
-    echo '<p>※終了したイベントのため応募できません</p>';
+    echo htmlspecialchars('<p>※終了したイベントのため応募できません</p>');
 }
 ?>
 <p><?php echo htmlspecialchars($gameInfo['title']) ?></p>
@@ -83,19 +83,19 @@ $_SESSION['csrf_token'] = $csrf_token;
     <details>
     <summary>現在の状況</summary>
     <br>
-    <p>【参加予定  <span id="cnt"><?php echo $detail['cnt'] ?></span>人】【上限  <?php echo $gameInfo['limit_number'] ?>人】</p>
+    <p>【参加予定  <span id="cnt"><?php echo htmlspecialchars($detail['cnt']) ?></span>人】【上限  <?php echo htmlspecialchars($gameInfo['limit_number']) ?>人】</p>
     <p>社会人：
-        女性 <span id="sya_women"><?php echo $detail['sya_women'] ?></span>人、
-        男性 <span id="sya_men"><?php echo $detail['sya_men'] ?></span>人
+        女性 <span id="sya_women"><?php echo htmlspecialchars($detail['sya_women']) ?></span>人、
+        男性 <span id="sya_men"><?php echo htmlspecialchars($detail['sya_men']) ?></span>人
     <p>大学・専門：
-        女性 <span id="dai_women"><?php echo $detail['dai_women'] ?></span>人、
-        男性 <span id="dai_men"><?php echo $detail['dai_men'] ?></span>人
+        女性 <span id="dai_women"><?php echo htmlspecialchars($detail['dai_women']) ?></span>人、
+        男性 <span id="dai_men"><?php echo htmlspecialchars($detail['dai_men']) ?></span>人
     </p>
     <p>高校生：
-        女性 <span id="kou_women"><?php echo $detail['kou_women'] ?></span>人、
-        男性 <span id="kou_men"><?php echo $detail['kou_men'] ?></span>人
+        女性 <span id="kou_women"><?php echo htmlspecialchars($detail['kou_women']) ?></span>人、
+        男性 <span id="kou_men"><?php echo htmlspecialchars($detail['kou_men']) ?></span>人
     </p>
-    <p>キャンセル待ち：<span id="waiting_cnt"><?php echo $detail['waiting_cnt'] ?></span>人</p>
+    <p>キャンセル待ち：<span id="waiting_cnt"><?php echo htmlspecialchars($detail['waiting_cnt']) ?></span>人</p>
     </details>
 </div>
 
@@ -123,7 +123,7 @@ $_SESSION['csrf_token'] = $csrf_token;
 <div class="<?php echo $pastEvent === true ? 'hidden' : '' ?>">
     <form id="join_form" action="join.php" method="post" class="form-group">
         <p>【応募フォーム】</p>
-        <input type="hidden" id="game_id" name="game_id" value="<?php echo $gameInfo['id'] ?>">
+        <input type="hidden" id="game_id" name="game_id" value="<?php echo htmlspecialchars($gameInfo['id']) ?>">
         <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
         <p>
             職種
@@ -161,10 +161,10 @@ $_SESSION['csrf_token'] = $csrf_token;
             <button class="btn btn-secondary" id="btn-add" type="button">同伴者追加</button>
             <button class="btn btn-danger" id="btn-del" type="button">同伴者削除</button>
         </p>
-        <input type="hidden" name="title" value="<?php echo $gameInfo['title'] ?>">
-        <input type="hidden" name="date" value="<?php echo $gameInfo['game_date'] ?>">
-        <button class="<?php echo $btnClass ?>" type="submit"><?php echo $btnLiteral ?></button>
-        <a class="btn btn-danger" href="cancelForm.php?gameid=<?php echo $gameInfo['id'] ?>" >参加のキャンセル</a>
+        <input type="hidden" name="title" value="<?php echo htmlspecialchars($gameInfo['title']) ?>">
+        <input type="hidden" name="date" value="<?php echo htmlspecialchars($gameInfo['game_date']) ?>">
+        <button class="<?php echo htmlspecialchars($btnClass) ?>" type="submit"><?php echo htmlspecialchars($btnLiteral) ?></button>
+        <a class="btn btn-danger" href="cancelForm.php?gameid=<?php echo htmlspecialchars($gameInfo['id']) ?>" >参加のキャンセル</a>
     </form>
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

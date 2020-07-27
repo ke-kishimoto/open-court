@@ -9,6 +9,6 @@ if (!isset($_SESSION['system_title'])) {
 
 ?>
 <header>
-    <div><a class="logo" href="./index.php"><?php echo $_SESSION['system_title'] ?></a></div>
+    <div><a class="logo" href="./index.php"><?php echo htmlspecialchars($_SESSION['system_title']) ?></a></div>
     <hr>
 </header>

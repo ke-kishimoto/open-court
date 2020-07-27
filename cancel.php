@@ -40,7 +40,7 @@ if ($id == null)  {
 </head>
 <body class="container">
 <?php include('./header.php') ?>
-    <p><?php echo $msg ?></p>
+    <p><?php echo htmlspecialchars($msg) ?></p>
     <p><a href="index.php">イベント一覧に戻る</a></p>
 </body>
 </html>

@@ -13,7 +13,7 @@
 <body class="container">
     <?php include('./header.php') ?>
     <form action="cancel.php" method="post">
-        <input type="hidden" name="game_id" value="<?php echo $_GET['gameid'] ?>">
+        <input type="hidden" name="game_id" value="<?php echo htmlspecialchars($_GET['gameid']) ?>">
     <p>
         登録時のメールアドレスを入力してください。
         <input class="form-control" type="email" name="email" required>
