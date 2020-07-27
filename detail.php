@@ -146,11 +146,11 @@ $_SESSION['csrf_token'] = $csrf_token;
         </p>
         <p>
             メール ※新規の方は必須
-            <input class="form-control" type="email" name="email">
+            <input class="form-control" type="email" name="email" maxlength="50">
         </p>
         <p>
             備考
-            <textarea class="form-control" name="remark"></textarea>
+            <textarea class="form-control" name="remark" maxlength="200"></textarea>
         </p>
         <p id="douhan-0">
             <!-- 同伴者

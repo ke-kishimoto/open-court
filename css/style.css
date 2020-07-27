@@ -1,3 +1,9 @@
+@import url(http://fonts.googleapis.com/earlyaccess/notosansjp.css);
+html,body{
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 100%;
+}
+
 /* カレンダー用 */
 table {
     width: 100%;
@@ -5,17 +11,31 @@ table {
 table tr {
     height: 60px;
 }
+.link{
+    background: rgba(26,115,232,0.9);
+    cursor: pointer;
+    transition: 0.1s;
+}
+.link:hover{
+    background: rgba(26,115,232,1);
+}
+.days__link{
+    color: #FFF;
+}
+.days__link:hover{
+    color: #FFF;
+}
 @media(max-width:480px) {
 table tr {
     height: 40px;
 }
 }
 table th {
-    background: #EEEEEE;
+    background: #EEE;
 }
 table th,
 table td {
-    border: 1px solid #CCCCCC;
+    border: 1px solid #CCC;
     text-align: center;
     padding: 5px;
 }
@@ -43,6 +63,15 @@ table td {
     background-color: yellow;
 }
 /* ヘッダー */
-/* header {
-   
-} */
+header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0,0,0,.3);
+    padding: 10px !important;
+}
+.nav{
+    font-size: 10px;
+}
+.nav > a:first-child{
+    margin-right: 10px;
+}

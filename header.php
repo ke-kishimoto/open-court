@@ -9,6 +9,11 @@ if (!isset($_SESSION['system_title'])) {
 
 ?>
 <header>
-    <div><a class="logo" href="./index.php"><?php echo htmlspecialchars($_SESSION['system_title']) ?></a></div>
-    <hr>
+    <div>
+        <a class="logo" href="./index.php"><?php echo htmlspecialchars($_SESSION['system_title']) ?></a>
+    </div>
+    <div class="nav">
+        <a class="btn btn-sm btn-outline-dark" href="#" role="button">新規登録</a>
+        <a class="btn btn-sm btn-outline-dark" href="#" role="button">ログイン</a>
+    </div>
 </header>
