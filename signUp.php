@@ -1,25 +1,74 @@
 <?php
+// 新規登録
+require_once(dirname(__FILE__).'/model/entity/Users.php');
+require_once(dirname(__FILE__).'/model/entity/DefaultCompanion.php');
 require_once(dirname(__FILE__).'/model/dao/SignUpDao.php');
+require_once(dirname(__FILE__).'/model/dao/DefaultCompanionDao.php');
+use entity\Users;
+use entity\DefaultCompanion;
 use dao\SignUpDao;
+use dao\DefaultCompanionDao;
+
 $limitFlg = false;
 $btnClass = 'btn btn-primary';
 $btnLiteral = '登録';
 
 session_start();
 if (!empty($_POST)) {
-
+  $errMsg = '';
   $signUpDao = new SignUpDao();
 
   //パスワードチェック
   if (($_POST['password']) != ($_POST['rePassword'])) {
       $errMsg = 'パスワード(再入力)が同じでありません';
   // メールアドレスによる重複チェック
-  }else if(!$signUpDao->existsCheck($_POST['email'])){
+  }else if($signUpDao->existsCheck($_POST['email'])){
       $errMsg = '既に登録済みです';
+  }
+
+  if(empty($errMsg)){
+    $adminFlg = 0;
+    $users = new Users(
+      $adminFlg
+      , $_POST['email']
+      , $_POST['name']
+      , password_hash($_POST['password'], PASSWORD_DEFAULT)
+      , $_POST['occupation']
+      , $_POST['sex']
+      , $_POST['remark']
+    );
+
+    console_log( $_POST['occupation-' . 1] );
+    console_log( $_POST['sex-' . 1] );
+    console_log( $_POST['name-' . 1] );
+
+    try {
+        // トランザクション開始
+        $signUpDao->getPdo()->beginTransaction();
+        $signUpDao->insert($users);
+    
+        // 同伴者の登録
+        if($_POST['companion'] > 0) {
+            $id = $signUpDao->getUsersId($users);
+            $defaultCompanionDao = new DefaultCompanionDao();
+            $defaultCompanionDao->setPdo($signUpDao->getPdo());
+            for($i = 1; $i <= $_POST['companion']; $i++) {
+                $defaultCompanion = new DefaultCompanion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
+                $defaultCompanionDao->insert($defaultCompanion);
+            }
+        }
+        $signUpDao->getPdo()->commit();
+    } catch(Exception $ex) {
+        $signUpDao->getPdo()->rollBack();
+    }
   }
 } 
 session_destroy();
-
+function console_log( $data ){
+    echo '<script>';
+    echo 'console.log('. json_encode( $data ) .')';
+    echo '</script>';
+}
 ?>
 <!DOCTYPE html>
 <html lang="jp">
@@ -38,7 +87,7 @@ session_destroy();
       <span class="explain-tit">新規登録</span>
       <p>イベントへ応募時、以下の入力項目がデフォルトで設定されます</p>
   </div>
-    <form id="join_form" action="signUp.php" method="post" class="form-group">
+    <form id="signUp_form" action="signUp.php" method="post" class="form-group">
         <p style="color: red;"><?php if(!empty($errMsg)){echo $errMsg;};?></p>
         <p>
             職種
@@ -87,12 +136,6 @@ session_destroy();
     </form>
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script>
-    var gameId = document.getElementById("game_id").value;
-    if(gameId === null || gameId === '') {
-        document.getElementById("join_form").classList.add('hidden');
-    }
-</script>
 <script>
     $(function() {
         $('#btn-add').on('click', function() {

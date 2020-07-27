@@ -2,7 +2,6 @@
 
 namespace dao;
 require_once(dirname(__FILE__).'/DaoFactory.php');
-require_once(dirname(__FILE__).'/../entity/Users.php');
 
 use dao\DaoFactory;
 use PDO;
@@ -21,7 +20,23 @@ class SignUpDao {
         $this->pdo = $pdo;
     }
 
-    // 参加者idの取得
+    // 参加者登録
+    public function insert(Users $users) {
+      $sql = 'insert into users 
+      (admin_flg, email, name, password, occupation, sex, remark) 
+      values(:admin_flg, :email, :name, :password, :occupation, :sex, :remark)';
+      $prepare = $this->pdo->prepare($sql);
+      $prepare->bindValue(':admin_flg', $users->adminFlg, PDO::PARAM_INT);
+      $prepare->bindValue(':email', $users->email, PDO::PARAM_STR);
+      $prepare->bindValue(':name', $users->name, PDO::PARAM_STR);
+      $prepare->bindValue(':password', $users->password, PDO::PARAM_STR);
+      $prepare->bindValue(':occupation', $users->occupation, PDO::PARAM_INT);
+      $prepare->bindValue(':sex', $users->sex, PDO::PARAM_INT);
+      $prepare->bindValue(':remark', $users->remark, PDO::PARAM_STR);
+      $prepare->execute();
+    }
+
+    // Usersのidの取得
     public function getUsersId(Users $users) {
         $sql = 'select max(id) id
                 from users 
