@@ -44,16 +44,18 @@ $week = [
     <?php $cnt = 0; ?>
     <?php foreach ($calendar as $key => $value): ?>
  
-        <td>
         <?php $cnt++; ?>
         <?php if($value['link']): ?>
-            <a class="days" href="detail_date.php?date=<?php echo $year . '/' . sprintf('%02d', $month) . '/' . sprintf('%02d', $value['day']); ?>">
-                <?php echo $value['day']; ?>
-            </a>
+            <td class="link">
+                <a class="days__link" href="detail_date.php?date=<?php echo $year . '/' . sprintf('%02d', $month) . '/' . sprintf('%02d', $value['day']); ?>">
+                    <?php echo htmlspecialchars($value['day']); ?>
+                </a>
+            </td>
         <?php else: ?>
-            <?php echo $value['day']; ?>
+            <td>
+            <?php echo htmlspecialchars($value['day']); ?>
+            </td>
         <?php endif ?>
-        </td>
  
     <?php if ($cnt == 7): ?>
     </tr>
@@ -100,7 +102,7 @@ $gameInfoList = $gameInfoPDO->getGameInfoList($year, $month);
 <script>
     'use strict';
     $(function() {
-        $('.days').on('click', function(event) {
+        $('.link').on('click', function(event) {
             event.preventDefault(),
             $.ajax({
                 url:'../controller/EventList.php',

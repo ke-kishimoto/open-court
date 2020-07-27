@@ -68,10 +68,36 @@ header {
     justify-content: space-between;
     border-bottom: 1px solid rgba(0,0,0,.3);
     padding: 10px !important;
+    margin-bottom: 15px;
 }
 .nav{
     font-size: 10px;
 }
 .nav > a:first-child{
     margin-right: 10px;
+}
+
+/* 新規登録 */
+.explain-box {
+    position: relative;
+    margin: 39px 0 2em;
+    padding: 0.5em 1em;
+    border: solid 3px #62c1ce;
+}
+.explain-box .explain-tit {
+    position: absolute;
+    display: inline-block;
+    top: -27px;
+    left: -3px;
+    padding: 0 9px;
+    height: 25px;
+    line-height: 25px;
+    font-size: 17px;
+    background: #62c1ce;
+    color: #ffffff;
+    border-radius: 5px 5px 0 0;
+}
+.explain-box p {
+    margin: 0; 
+    padding: 0;
 }

@@ -68,7 +68,7 @@ $_SESSION['csrf_token'] = $csrf_token;
 <body class="container">
 <?php include('./header.php') ?>
 <?php if($pastEvent) {
-    echo htmlspecialchars('<p>※終了したイベントのため応募できません</p>');
+    echo ('<p style="color: red;">※終了したイベントのため応募できません</p>');
 }
 ?>
 <p><?php echo htmlspecialchars($gameInfo['title']) ?></p>
