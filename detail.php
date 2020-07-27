@@ -142,7 +142,7 @@ $_SESSION['csrf_token'] = $csrf_token;
         </p>
         <p>
             名前
-            <input id="name" class="form-control" type="text" name="name" required>
+            <input id="name" class="form-control" type="text" name="name" required maxlength="50">
         </p>
         <p>
             メール ※新規の方は必須
@@ -157,6 +157,7 @@ $_SESSION['csrf_token'] = $csrf_token;
             <input class="form-control" type="number" name="companion" required min="0"> 
             -->
             <input id="companion" name="companion" type="hidden" value="0">
+            <p id="douhanErrMsg" style="color: red; display: none;">同伴者は10人までです</p>
             <button class="btn btn-secondary" id="btn-add" type="button">同伴者追加</button>
             <button class="btn btn-danger" id="btn-del" type="button">同伴者削除</button>
         </p>
@@ -177,6 +178,10 @@ $_SESSION['csrf_token'] = $csrf_token;
     $(function() {
         $('#btn-add').on('click', function() {
             var num = Number($('#companion').val());
+            if(num > 9){
+                $('#douhanErrMsg').css('display','block');
+                return
+            }
             var current = $('#douhan-' + num);
             num++;
             var div = $('<div>').attr('id', 'douhan-' + num).text(num + '人目');
