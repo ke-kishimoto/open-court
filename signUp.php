@@ -15,38 +15,36 @@ $btnLiteral = '登録';
 
 session_start();
 if (!empty($_POST)) {
-  $errMsg = '';
-  $signUpDao = new SignUpDao();
+    $errMsg = '';
+    $signUpDao = new SignUpDao();
 
-  //パスワードチェック
-  if (($_POST['password']) != ($_POST['rePassword'])) {
-      $errMsg = 'パスワード(再入力)が同じでありません';
-  // メールアドレスによる重複チェック
-  }else if($signUpDao->existsCheck($_POST['email'])){
-      $errMsg = '既に登録済みです';
-  }
+    //パスワードチェック
+    if (($_POST['password']) != ($_POST['rePassword'])) {
+        $errMsg = 'パスワード(再入力)が同じでありません';
+    // メールアドレスによる重複チェック
+    }else if($signUpDao->existsCheck($_POST['email'])){
+        $errMsg = '既に登録済みです';
+    }
 
-  if(empty($errMsg)){
+    if(!empty($errMsg))
+        return;
+
     $adminFlg = 0;
     $users = new Users(
-      $adminFlg
-      , $_POST['email']
-      , $_POST['name']
-      , password_hash($_POST['password'], PASSWORD_DEFAULT)
-      , $_POST['occupation']
-      , $_POST['sex']
-      , $_POST['remark']
+        $adminFlg
+        , $_POST['email']
+        , $_POST['name']
+        , password_hash($_POST['password'], PASSWORD_DEFAULT)
+        , $_POST['occupation']
+        , $_POST['sex']
+        , $_POST['remark']
     );
-
-    console_log( $_POST['occupation-' . 1] );
-    console_log( $_POST['sex-' . 1] );
-    console_log( $_POST['name-' . 1] );
 
     try {
         // トランザクション開始
         $signUpDao->getPdo()->beginTransaction();
         $signUpDao->insert($users);
-    
+
         // 同伴者の登録
         if($_POST['companion'] > 0) {
             $id = $signUpDao->getUsersId($users);
@@ -58,10 +56,12 @@ if (!empty($_POST)) {
             }
         }
         $signUpDao->getPdo()->commit();
+
+        //todo:登録完了ページか、メッセージ表示を作る
+        $errMsg = '登録完了';
     } catch(Exception $ex) {
         $signUpDao->getPdo()->rollBack();
     }
-  }
 } 
 session_destroy();
 function console_log( $data ){
@@ -130,8 +130,6 @@ function console_log( $data ){
             <button class="btn btn-secondary" id="btn-add" type="button">同伴者追加</button>
             <button class="btn btn-danger" id="btn-del" type="button">同伴者削除</button>
         </p>
-        <input type="hidden" name="title" value="<?php echo htmlspecialchars($gameInfo['title']) ?>">
-        <input type="hidden" name="date" value="<?php echo htmlspecialchars($gameInfo['game_date']) ?>">
         <button class="<?php echo htmlspecialchars($btnClass) ?>" type="submit"><?php echo htmlspecialchars($btnLiteral) ?></button>
     </form>
 </div>
