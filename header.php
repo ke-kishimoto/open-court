@@ -14,6 +14,6 @@ if (!isset($_SESSION['system_title'])) {
     </div>
     <div class="nav">
         <a class="btn btn-sm btn-outline-dark" href="signUp.php" role="button">新規登録</a>
-        <a class="btn btn-sm btn-outline-dark" href="#" role="button">ログイン</a>
+        <a class="btn btn-sm btn-outline-dark" href="signIn.php" role="button">ログイン</a>
     </div>
 </header>
