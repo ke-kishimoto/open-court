@@ -1,10 +1,10 @@
 <?php
+// session_start();
 require_once('../model/entity/EventTemplate.php');
 require_once('../model/dao/EventTemplateDao.php');
 use entity\EventTemplate;
 use dao\EventTemplateDao;
 
-session_start();
 
 if (isset($_POST["csrf_token"]) 
  && $_POST["csrf_token"] === $_SESSION['csrf_token']) {

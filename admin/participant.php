@@ -1,4 +1,5 @@
 <?php
+// session_start();
 require_once('../model/dao/DetailDao.php');
 require_once('../model/dao/CompanionDao.php');
 use dao\DetailDao;
@@ -22,8 +23,6 @@ if(isset($_GET['id'])) {
     $companionList = array();
 }
 
-// CSFR対策
-session_start();
 
 // 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
 $toke_byte = openssl_random_pseudo_bytes(16);

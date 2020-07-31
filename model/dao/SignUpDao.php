@@ -58,4 +58,14 @@ class SignUpDao {
         }
         return false;
     }
+
+    // ユーザー取得（メールアドレス）
+    public function getUserByEmail(string $email) {
+        $sql = 'select * from users 
+        where email = :email';
+        $prepare = $this->pdo->prepare($sql);
+        $prepare->bindValue(':email', $email, PDO::PARAM_STR);
+        $prepare->execute();
+        return $prepare->fetch();
+    }
 }

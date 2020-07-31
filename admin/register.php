@@ -1,10 +1,10 @@
 <?php
+// session_start();
 require_once('../model/entity/GameInfo.php');
 require_once('../model/dao/GameInfoDao.php');
 use entity\GameInfo;
 use dao\GameInfoDao;
 
-session_start();
 
 if (isset($_POST["csrf_token"]) 
  && $_POST["csrf_token"] === $_SESSION['csrf_token']) {

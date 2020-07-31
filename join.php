@@ -1,4 +1,5 @@
 <?php
+// session_start();
 // 参加予約の登録
 require_once(dirname(__FILE__).'/model/entity/Participant.php');
 require_once(dirname(__FILE__).'/model/entity/Companion.php');
@@ -11,7 +12,6 @@ use entity\Companion;
 use dao\DetailDao;
 use dao\CompanionDao;
 
-session_start();
 $msg = '';
 if (isset($_POST["csrf_token"]) 
  && $_POST["csrf_token"] === $_SESSION['csrf_token']) {

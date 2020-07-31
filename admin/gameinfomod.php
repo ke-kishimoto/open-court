@@ -1,4 +1,5 @@
 <?php
+// session_start();
 require_once('../model/dao/GameInfoDao.php');
 require_once('../model/dao/DetailDao.php');
 require_once('../model/dao/EventTemplateDao.php');
@@ -41,9 +42,6 @@ if(!empty($gameInfo['id'])) {
     $detailDao = new DetailDao();
     $participantList = $detailDao->getParticipantList($gameInfo['id']);
 }
-
-// CSFR対策
-session_start();
 
 // 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
 $toke_byte = openssl_random_pseudo_bytes(16);

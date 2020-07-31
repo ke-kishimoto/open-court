@@ -1,4 +1,5 @@
 <?php
+// session_start();
 // 新規登録
 require_once(dirname(__FILE__).'/model/entity/Users.php');
 require_once(dirname(__FILE__).'/model/entity/DefaultCompanion.php');
@@ -13,7 +14,6 @@ $limitFlg = false;
 $btnClass = 'btn btn-primary';
 $btnLiteral = '登録';
 
-session_start();
 if (!empty($_POST)) {
     $errMsg = '';
     $signUpDao = new SignUpDao();

@@ -1,4 +1,5 @@
 <?php
+// session_start();
 require_once('../model/dao/EventTemplateDao.php');
 use dao\EventTemplateDao;
 
@@ -6,8 +7,6 @@ use dao\EventTemplateDao;
 $eventTemplateDao = new EventTemplateDao();
 $eventTemplateList = $eventTemplateDao->getEventTemplateList();
 
-// CSFR対策
-session_start();
 
 // 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
 $toke_byte = openssl_random_pseudo_bytes(16);

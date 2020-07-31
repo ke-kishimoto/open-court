@@ -1,4 +1,5 @@
 <?php
+// session_start();
 require_once('../model/entity/Participant.php');
 require_once('../model/dao/CompanionDao.php');
 require_once('../model/dao/DetailDao.php');
@@ -8,7 +9,6 @@ use entity\Participant;
 use dao\DetailDao;
 use dao\CompanionDao;
 
-session_start();
 
 if (isset($_POST["csrf_token"]) 
  && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
