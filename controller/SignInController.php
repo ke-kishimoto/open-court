@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-require_once('../model/dao/SignUpDao.php');
-use dao\SignUpDao;
+require_once('../model/dao/UsersDao.php');
+use dao\UsersDao;
 
-$signUpDao = new SignUpDao();
+$signUpDao = new UsersDao();
 
 $user = $signUpDao->getUserByEmail($_POST['email']);
 

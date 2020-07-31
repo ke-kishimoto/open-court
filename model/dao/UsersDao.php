@@ -7,7 +7,7 @@ use dao\DaoFactory;
 use PDO;
 use entity\Users;
 
-class SignUpDao {
+class UsersDao {
 
     private $pdo;
     public function __construct() {
@@ -20,7 +20,7 @@ class SignUpDao {
         $this->pdo = $pdo;
     }
 
-    // 参加者登録
+    // ユーザー登録
     public function insert(Users $users) {
       $sql = 'insert into users 
       (admin_flg, email, name, password, occupation, sex, remark) 
@@ -36,7 +36,7 @@ class SignUpDao {
       $prepare->execute();
     }
 
-    // Usersのidの取得
+    // ユーザーのidの取得
     public function getUsersId(Users $users) {
         $sql = 'select max(id) id
                 from users 
@@ -68,4 +68,36 @@ class SignUpDao {
         $prepare->execute();
         return $prepare->fetch();
     }
-}
+    // パスワードのチェック
+    // パスワードのハッシュ化は「password_hash()」で行っているのですが、
+    // 毎回ランダムなハッシュ値になってしまうようで、
+    // 比較には「password_verify()」を使用しなければならないみたいです。
+    // 参照：https://qiita.com/rana_kualu/items/3ef57485be1103362f56
+    public function comparePassword(Users $users) {
+        $sql = 'select password
+                from users 
+                where email = :email';
+        $prepare = $this->pdo->prepare($sql);
+        $prepare->bindValue(':email', $users->email, PDO::PARAM_STR);
+        $prepare->execute();
+        $info = $prepare->fetch();
+        if(password_verify($users->email, $info['password'])){
+            return true;
+        } else
+            return false;
+    }
+    
+    // ログイン
+    public function login(Users $users) {
+        $this->existsCheck($users->email);
+        $this->comparePassword($users);
+        $sql = 'select *
+                from users 
+                where email = :email';
+        $prepare = $this->pdo->prepare($sql);
+        $prepare->bindValue(':email', $users->email, PDO::PARAM_STR);
+        $prepare->execute();
+        $users = $prepare->fetch();
+    }
+}  
+

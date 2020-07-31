@@ -3,11 +3,11 @@
 // 新規登録
 require_once(dirname(__FILE__).'/model/entity/Users.php');
 require_once(dirname(__FILE__).'/model/entity/DefaultCompanion.php');
-require_once(dirname(__FILE__).'/model/dao/SignUpDao.php');
+require_once(dirname(__FILE__).'/model/dao/UsersDao.php');
 require_once(dirname(__FILE__).'/model/dao/DefaultCompanionDao.php');
 use entity\Users;
 use entity\DefaultCompanion;
-use dao\SignUpDao;
+use dao\UsersDao;
 use dao\DefaultCompanionDao;
 
 $limitFlg = false;
@@ -16,51 +16,50 @@ $btnLiteral = '登録';
 
 if (!empty($_POST)) {
     $errMsg = '';
-    $signUpDao = new SignUpDao();
+    $usersDao = new UsersDao();
 
     //パスワードチェック
     if (($_POST['password']) != ($_POST['rePassword'])) {
         $errMsg = 'パスワード(再入力)が同じでありません';
     // メールアドレスによる重複チェック
-    }else if($signUpDao->existsCheck($_POST['email'])){
+    }else if($usersDao->existsCheck($_POST['email'])){
         $errMsg = '既に登録済みです';
     }
 
-    if(!empty($errMsg))
-        return;
-
-    $adminFlg = 0;
-    $users = new Users(
-        $adminFlg
-        , $_POST['email']
-        , $_POST['name']
-        , password_hash($_POST['password'], PASSWORD_DEFAULT)
-        , $_POST['occupation']
-        , $_POST['sex']
-        , $_POST['remark']
-    );
-
-    try {
-        // トランザクション開始
-        $signUpDao->getPdo()->beginTransaction();
-        $signUpDao->insert($users);
-
-        // 同伴者の登録
-        if($_POST['companion'] > 0) {
-            $id = $signUpDao->getUsersId($users);
-            $defaultCompanionDao = new DefaultCompanionDao();
-            $defaultCompanionDao->setPdo($signUpDao->getPdo());
-            for($i = 1; $i <= $_POST['companion']; $i++) {
-                $defaultCompanion = new DefaultCompanion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
-                $defaultCompanionDao->insert($defaultCompanion);
+    if(empty($errMsg)){
+        $adminFlg = 0;
+        $users = new Users(
+            $adminFlg
+            , $_POST['email']
+            , $_POST['name']
+            , password_hash($_POST['password'], PASSWORD_DEFAULT)
+            , $_POST['occupation']
+            , $_POST['sex']
+            , $_POST['remark']
+        );
+    
+        try {
+            // トランザクション開始
+            $usersDao->getPdo()->beginTransaction();
+            $usersDao->insert($users);
+    
+            // 同伴者の登録
+            if($_POST['companion'] > 0) {
+                $id = $usersDao->getUsersId($users);
+                $defaultCompanionDao = new DefaultCompanionDao();
+                $defaultCompanionDao->setPdo($usersDao->getPdo());
+                for($i = 1; $i <= $_POST['companion']; $i++) {
+                    $defaultCompanion = new DefaultCompanion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
+                    $defaultCompanionDao->insert($defaultCompanion);
+                }
             }
+            $usersDao->getPdo()->commit();
+    
+            //todo:登録完了ページか、メッセージ表示を作る
+            $errMsg = '登録完了';
+        } catch(Exception $ex) {
+            $usersDao->getPdo()->rollBack();
         }
-        $signUpDao->getPdo()->commit();
-
-        //todo:登録完了ページか、メッセージ表示を作る
-        $errMsg = '登録完了';
-    } catch(Exception $ex) {
-        $signUpDao->getPdo()->rollBack();
     }
 } 
 session_destroy();
