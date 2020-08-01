@@ -50,6 +50,9 @@
 <p>
     <a href="Config.php" class="btn btn-info">システム設定</a>
 </p>
+<p>
+    <a href="UserList.php" class="btn btn-info">ユーザーリスト</a>
+</p>
 <p>イベント一覧</p>
 
 <ul id="event-list">

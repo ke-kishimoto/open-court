@@ -80,6 +80,27 @@ class UsersDao {
         return $info['id'];
     }
 
+    public function getUserList(){
+        $sql = "select 
+        id
+        , name 
+        , email
+        , case 
+            when occupation =  1 then '社会人'
+            when occupation =  2 then '大学・専門学校'
+            when occupation =  3 then '高校'
+            else 'その他' 
+          end occupation_name
+        , case
+            when sex = 1 then '男性'
+            when sex = 2 then '女性'
+          end sex_name   
+        from users order by id";
+        $prepare = $this->pdo->prepare($sql);
+        $prepare->execute();
+        return $prepare->fetchAll();
+    }
+
     // メールアドレスによる存在チェック
     public function existsCheck(string $email) {
         $users = new Users('',$email, '', '', '', '', '');
