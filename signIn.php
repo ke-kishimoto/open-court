@@ -1,54 +1,15 @@
 <?php
-// session_start();
-// ログイン
 
 $btnClass = 'btn btn-primary';
 $btnLiteral = 'ログイン';
 
-// // 自動ログインは未実装
-// require_once(dirname(__FILE__).'/model/entity/Users.php');
-// require_once(dirname(__FILE__).'/model/entity/DefaultCompanion.php');
-// require_once(dirname(__FILE__).'/model/dao/UsersDao.php');
-// require_once(dirname(__FILE__).'/model/dao/DefaultCompanionDao.php');
-// use entity\Users;
-// use entity\DefaultCompanion;
-// use dao\UsersDao;
-// use dao\DefaultCompanionDao;
+if(isset($_SESSION['errMsg'])) {
+    $errMsg = $_SESSION['errMsg'];
+    unset($_SESSION['errMsg']);
+} else {
+    $errMsg = '';
+}
 
-// $limitFlg = false;
-// $btnClass = 'btn btn-primary';
-// $btnLiteral = 'ログイン';
-
-// if (!empty($_POST)) {
-//     $errMsg = '';
-//     $UsersDao = new UsersDao();
-
-//     $adminFlg = 0;
-//     $users = new Users(
-//         $adminFlg
-//         , $_POST['email']
-//         , ''
-//         , $_POST['password']
-//         , ''
-//         , ''
-//         , ''
-//     );
-
-//     //存在チェック
-//     if($usersDao->existsCheck($_POST['email']) 
-//     && $usersDao->comparePassword($users)){
-
-//     }else{
-        
-//     }
-
-// } 
-// session_destroy();
-// function console_log( $data ){
-//     echo '<script>';
-//     echo 'console.log('. json_encode( $data ) .')';
-//     echo '</script>';
-// }
 ?>
 <!DOCTYPE html>
 <html lang="jp">

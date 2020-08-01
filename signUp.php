@@ -20,20 +20,28 @@ if(!empty($_GET) && !empty($_SESSION['user'])) {
     $id = $_GET['id'];
     $passChange = '';
 } else {
-    $user = array(
-        'id' => ''
-        , 'name' => ''
-        , 'occupation' => '1'
-        , 'sex' => '1'
-        , 'email' => ''
-        , 'password' => ''
-        , 'remark' =>''
-    );
+    if(!isset($user)) {
+        $user = array(
+            'id' => ''
+            , 'name' => ''
+            , 'occupation' => '1'
+            , 'sex' => '1'
+            , 'email' => ''
+            , 'password' => ''
+            , 'remark' =>''
+        );
+    }
     $companions = [];
     $title = '新規登録';
     $mode = 'new';
     $id = '';
     $passChange = 'hidden';
+}
+if(isset($_SESSION['errMsg'])) {
+    $errMsg = $_SESSION['errMsg'];
+    unset($_SESSION['errMsg']);
+} else {
+    $errMsg = '';
 }
 
 ?>

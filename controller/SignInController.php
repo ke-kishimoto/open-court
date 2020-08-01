@@ -13,11 +13,11 @@ if($user) {
         $_SESSION['user'] = $user;
         header('Location: ../index.php');
     } else {
-        // $errMsg = 'メールアドレス、またはパスワードが異なります';
+        $_SESSION['errMsg'] = 'メールアドレス、またはパスワードが異なります';
         header('Location: ../SignIn.php');
     }
 } else {
-    // $errMsg = 'メールアドレス、またはパスワードが異なります';
+    $_SESSION['errMsg'] = 'メールアドレス、またはパスワードが異なります';
     header('Location: ../SignIn.php');
 }
 ?>
