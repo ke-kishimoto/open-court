@@ -21,7 +21,7 @@ class DefaultCompanionDao {
     }
 
     public function getDefaultCompanionList(int $userId) {
-        $sql = 'select * from defalut_companion where user_id = :user_id';
+        $sql = 'select * from default_companion where user_id = :user_id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':user_id', $userId, PDO::PARAM_INT);
         $prepare->execute();
@@ -41,9 +41,9 @@ class DefaultCompanionDao {
     }
 
     public function deleteByuserId(int $userId) {
-        $sql = 'delete from defalut_companion where user_id = :user_id';
+        $sql = 'delete from default_companion where user_id = :user_id';
         $prepare = $this->pdo->prepare($sql);
-        $prepare->bindValue(':participant_id', $userId, PDO::PARAM_INT);
+        $prepare->bindValue(':user_id', $userId, PDO::PARAM_INT);
         $prepare->execute();
     }
 

@@ -36,6 +36,22 @@ class UsersDao {
       $prepare->execute();
     }
 
+    // ユーザー情報の更新
+    public function update(Users $users) {
+        $sql = 'update users set name = :name
+        , email = :email, occupation = :occupation, sex = :sex, remark = :remark 
+        where id = :id';
+        $prepare = $this->pdo->prepare($sql);
+        $prepare->bindValue(':email', $users->email, PDO::PARAM_STR);
+        $prepare->bindValue(':name', $users->name, PDO::PARAM_STR);
+        $prepare->bindValue(':occupation', $users->occupation, PDO::PARAM_INT);
+        $prepare->bindValue(':sex', $users->sex, PDO::PARAM_INT);
+        $prepare->bindValue(':remark', $users->remark, PDO::PARAM_STR);
+        $prepare->bindValue(':id', $users->id, PDO::PARAM_INT);
+        $prepare->execute();
+
+    }
+
     // ユーザーのidの取得
     public function getUsersId(Users $users) {
         $sql = 'select max(id) id
@@ -61,13 +77,21 @@ class UsersDao {
 
     // ユーザー取得（メールアドレス）
     public function getUserByEmail(string $email) {
-        $sql = 'select * from users 
-        where email = :email';
+        $sql = 'select * from users where email = :email';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':email', $email, PDO::PARAM_STR);
         $prepare->execute();
         return $prepare->fetch();
     }
+
+    public function getUserById(int $id) {
+        $sql = 'select * from users where id = :id';
+        $prepare = $this->pdo->prepare($sql);
+        $prepare->bindValue(':id', $id, PDO::PARAM_STR);
+        $prepare->execute();
+        return $prepare->fetch();
+    }
+
     // パスワードのチェック
     // パスワードのハッシュ化は「password_hash()」で行っているのですが、
     // 毎回ランダムなハッシュ値になってしまうようで、
