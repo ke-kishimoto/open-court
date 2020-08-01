@@ -1,32 +1,5 @@
-<?php
-if(isset($_SESSION['user'])) {
-    $email = $_SESSION['user']['email'];
-    $mode = 'login';
-} else {
-    $email = '';
-    $mode = 'guest';
-}
 
-if(isset($_SESSION['errMsg'])) {
-    $errMsg = $_SESSION['errMsg'];
-    unset($_SESSION['errMsg']);
-} else {
-    $errMsg = '';
-}
-?>
-
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>予約キャンセル</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body class="container">
-    <?php include('./header.php') ?>
-    <form action="cancelComplete.php" method="post">
+    <form action="./CancelComplete.php" method="post">
         <input type="hidden" name="game_id" value="<?php echo htmlspecialchars($_GET['gameid']) ?>">
         <input type="hidden" name="mode" id="mode" value="<?php echo $mode ?>">
         <p style="color: red;"><?php if(!empty($errMsg)){echo $errMsg;};?></p>

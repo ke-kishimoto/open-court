@@ -11,13 +11,13 @@ $user = $signUpDao->getUserByEmail($_POST['email']);
 if($user) {
     if(password_verify($_POST['password'], $user['password'])) {
         $_SESSION['user'] = $user;
-        header('Location: ../index.php');
+        header('Location: ./index.php');
     } else {
         $_SESSION['errMsg'] = 'メールアドレス、またはパスワードが異なります';
-        header('Location: ../SignIn.php');
+        include('../signIn.php');
     }
 } else {
     $_SESSION['errMsg'] = 'メールアドレス、またはパスワードが異なります';
-    header('Location: ../SignIn.php');
+    include('../signIn.php');
 }
 ?>

@@ -1,28 +1,5 @@
-<?php
-require_once(dirname(__FILE__).'/model/entity/Users.php');
-require_once(dirname(__FILE__).'/model/dao/UsersDao.php');
-use entity\Users;
-use dao\UsersDao;
-
-$limitFlg = false;
-$btnClass = 'btn btn-primary';
-$btnLiteral = '登録';
-
-?>
-<!DOCTYPE html>
-<html lang="jp">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>パスワード変更</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body class="container">
-<?php include('./header.php') ?>
-
 <div>
-    <form id="signUp_form" action="passwordChangeComplete.php" method="post" class="form-group">
+    <form id="signUp_form" action="./PasswordChangeComplete.php" method="post" class="form-group">
         <p style="color: red;"><?php if(!empty($errMsg)){echo $errMsg;};?></p>
         <div id="password-area">
             <p>

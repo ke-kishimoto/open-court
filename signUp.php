@@ -1,69 +1,10 @@
-<?php
-// session_start();
-// 新規登録・アカウント情報修正
-require_once(dirname(__FILE__).'/model/dao/UsersDao.php');
-require_once(dirname(__FILE__).'/model/dao/DefaultCompanionDao.php');
-use dao\UsersDao;
-use dao\DefaultCompanionDao;
-
-$limitFlg = false;
-$btnClass = 'btn btn-primary';
-$btnLiteral = '登録';
-
-if(!empty($_GET) && !empty($_SESSION['user'])) {
-    $usersDao = new UsersDao();
-    $defultCompanionDao = new DefaultCompanionDao();
-    $user = $usersDao->getUserById($_GET['id']);
-    $companions = $defultCompanionDao->getDefaultCompanionList($user['id']);
-    $title = 'アカウント情報修正';
-    $mode = 'update';
-    $id = $_GET['id'];
-    $passChange = '';
-} else {
-    if(!isset($user)) {
-        $user = array(
-            'id' => ''
-            , 'name' => ''
-            , 'occupation' => '1'
-            , 'sex' => '1'
-            , 'email' => ''
-            , 'password' => ''
-            , 'remark' =>''
-        );
-    }
-    $companions = [];
-    $title = '新規登録';
-    $mode = 'new';
-    $id = '';
-    $passChange = 'hidden';
-}
-if(isset($_SESSION['errMsg'])) {
-    $errMsg = $_SESSION['errMsg'];
-    unset($_SESSION['errMsg']);
-} else {
-    $errMsg = '';
-}
-
-?>
-<!DOCTYPE html>
-<html lang="jp">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?php echo $title ?></title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body class="container">
-<?php include('./header.php') ?>
-
 <div>
   <div class="explain-box">
       <span class="explain-tit"><?php echo $title ?></span>
       <p>イベントへ応募時、以下の入力項目がデフォルトで設定されます</p>
   </div>
   <a class="btn btn-sm btn-outline-dark <?php echo htmlspecialchars($passChange) ?>" href="passwordChange.php" role="button">パスワード変更</a>
-    <form id="signUp_form" action="signUpComplete.php" method="post" class="form-group">
+    <form id="signUp_form" action="SignUpComplete.php" method="post" class="form-group">
         <input type="hidden" id="mode" name="mode" value="<?php echo $mode ?>">
         <input type="hidden" id="id" name="id" value="<?php echo $id ?>">
         <p style="color: red;"><?php if(!empty($errMsg)){echo $errMsg;};?></p>
@@ -127,7 +68,7 @@ if(isset($_SESSION['errMsg'])) {
         <button class="<?php echo htmlspecialchars($btnClass) ?>" type="submit"><?php echo htmlspecialchars($btnLiteral) ?></button>
     </form>
     <br>
-    <form action="withdrawal.php">
+    <form action="./Withdrawal.php">
         <button class="btn btn-danger" type="submit">退会</button>
     </form>
 </div>
