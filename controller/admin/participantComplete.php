@@ -70,5 +70,6 @@ include('./Header.php');
 $title = '参加者登録完了';
 include('../../view/admin/head.php');
 include('../../view/admin/header.php');
-include('../../view/admin/participantComplete.php');
+$msg = '参加者の登録が完了しました。';
+include('../../view/admin/complete.php');
 ?>

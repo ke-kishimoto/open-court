@@ -43,8 +43,9 @@ if (isset($_POST["csrf_token"])
 }
 
 include('./Header.php');  
-$title = 'イベント登録完了';
+$title = 'テンプレート登録完了';
 include('../../view/admin/head.php');
 include('../../view/admin/header.php');
-include('../../view/admin/eventTemplateComplete.php');
+$msg = 'テンプレートの更新が完了しました。';
+include('../../view/admin/complete.php');
 ?>

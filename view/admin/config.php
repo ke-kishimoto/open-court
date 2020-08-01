@@ -1,4 +1,4 @@
-<form action="configComplete.php" method="post" class="form-group">
+<form action="ConfigComplete.php" method="post" class="form-group">
     <p>システム名設定</p>
     <p>
         システム名<input class="form-control" type="text" name="system_title"  required value="<?php echo $config['system_title'] ?>">
