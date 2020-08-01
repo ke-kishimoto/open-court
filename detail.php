@@ -1,8 +1,10 @@
 <?php
 
 require_once(dirname(__FILE__).'/model/dao/GameInfoDao.php');
+require_once(dirname(__FILE__).'/model/dao/CompanionDao.php');
 require_once('./model/dao/DetailDao.php');
 use dao\GameInfoDao;
+use dao\CompanionDao;
 use dao\DetailDao;
 
 $gameInfo = null;
@@ -47,13 +49,25 @@ if(empty($detail)) {
 }
 
 // CSFR対策
-session_start();
+// session_start();
 
 // 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
 $toke_byte = openssl_random_pseudo_bytes(16);
 $csrf_token = bin2hex($toke_byte);
 // 生成したトークンをセッションに保存します
 $_SESSION['csrf_token'] = $csrf_token;
+
+if (isset($_SESSION['user'])) {
+    $occupation = $_SESSION['user']['occupation'];
+    $sex = $_SESSION['user']['sex'];
+    $companionDao = new CompanionDao();
+    $companions = $companionDao->getDefaultCompanionList($_SESSION['user']['id']);
+
+} else {
+    $occupation = null;
+    $sex = null;
+    $companions = null;
+}
 
 ?>
 <!DOCTYPE html>
@@ -128,42 +142,56 @@ $_SESSION['csrf_token'] = $csrf_token;
         <p>
             職種
             <select id="occupation" name="occupation" class="custom-select mr-sm-2">
-                <option value="1">社会人</option>
-                <option value="2">大学・専門学校</option>
-                <option value="3">高校</option>
+                <option value="1" <?php echo $occupation == '1' ? 'selected' : '' ?>>社会人</option>
+                <option value="2" <?php echo $occupation == '2' ? 'selected' : '' ?>>大学・専門学校</option>
+                <option value="3" <?php echo $occupation == '3' ? 'selected' : '' ?>>高校</option>
             </select>
         </p>
         <p>
             性別
             <select id="sex" name="sex" class="custom-select mr-sm-2">
-                <option value="1">男性</option>
-                <option value="2">女性</option>
+                <option value="1" <?php echo $sex == '1' ? 'selected' : '' ?>>男性</option>
+                <option value="2" <?php echo $sex == '2' ? 'selected' : '' ?>>女性</option>
             </select>
         </p>
         <p>
             名前
-            <input id="name" class="form-control" type="text" name="name" required maxlength="50">
+            <input id="name" class="form-control" type="text" name="name" required maxlength="50" value="<?php echo !isset($_SESSION['user']) ? '' : $_SESSION['user']['name'] ?>">
         </p>
         <p>
             メール ※新規の方は必須
-            <input class="form-control" type="email" name="email" maxlength="50">
+            <input class="form-control" type="email" name="email" maxlength="50" value="<?php echo !isset($_SESSION['user']) ? '' : $_SESSION['user']['email'] ?>">
         </p>
         <p>
             備考
-            <textarea class="form-control" name="remark" maxlength="200"></textarea>
+            <textarea class="form-control" name="remark" maxlength="200"><?php echo !isset($_SESSION['user']) ? '' : $_SESSION['user']['remark'] ?></textarea>
         </p>
         <p id="douhan-0">
             <!-- 同伴者
             <input class="form-control" type="number" name="companion" required min="0"> 
             -->
-            <input id="companion" name="companion" type="hidden" value="0">
+            <input id="companion" name="companion" type="hidden" value="<?php echo count($companions); ?>">
             <p id="douhanErrMsg" style="color: red; display: none;">同伴者は10人までです</p>
             <button class="btn btn-secondary" id="btn-add" type="button">同伴者追加</button>
             <button class="btn btn-danger" id="btn-del" type="button">同伴者削除</button>
         </p>
-        <input type="hidden" name="title" value="<?php echo htmlspecialchars($gameInfo['title']) ?>">
-        <input type="hidden" name="date" value="<?php echo htmlspecialchars($gameInfo['game_date']) ?>">
-        <button class="<?php echo htmlspecialchars($btnClass) ?>" type="submit"><?php echo htmlspecialchars($btnLiteral) ?></button>
+        <?php for($i = 0;$i < count($companions); $i++): ?>
+            <div id="douhan-<?php echo $i + 1 ?>">
+            <select id="occupation-<?php echo $i ?>" name="occupation" class="custom-select mr-sm-2">
+                <option value="1" <?php echo $companions[$i]['occupation'] == '1' ? 'selected' : ''; ?>>社会人</option>
+                <option value="2" <?php echo $companions[$i]['occupation'] == '2' ? 'selected' : ''; ?>>大学・専門学校</option>
+                <option value="3" <?php echo $companions[$i]['occupation'] == '3' ? 'selected' : ''; ?>>高校</option>
+            </select>
+            <select id="sex-<?php echo $i + 1 ?>" name="sex" class="custom-select mr-sm-2">
+                <option value="1" <?php echo $companions[$i]['sex'] == '1' ? 'selected' : ''; ?>>男性</option>
+                <option value="2" <?php echo $companions[$i]['sex'] == '2' ? 'selected' : ''; ?>>女性</option>
+            </select>
+            <input id="name-<?php echo $i + 1 ?>" class="form-control" type="text" name="name" required maxlength="50" value="<?php echo $companions[$i]['name']; ?>">
+            </div>
+        <?php endfor ?>
+            <input type="hidden" name="title" value="<?php echo htmlspecialchars($gameInfo['title']) ?>">
+            <input type="hidden" name="date" value="<?php echo htmlspecialchars($gameInfo['game_date']) ?>">
+            <button class="<?php echo htmlspecialchars($btnClass) ?>" type="submit"><?php echo htmlspecialchars($btnLiteral) ?></button>
         <a class="btn btn-danger" href="cancelForm.php?gameid=<?php echo htmlspecialchars($gameInfo['id']) ?>" >参加のキャンセル</a>
     </form>
 </div>
