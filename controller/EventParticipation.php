@@ -69,7 +69,7 @@ if (isset($_POST["csrf_token"])
     }
 
     unset($_SESSION['csrf_token']);
-    include('../join.php');
+    include('../view/join.php');
 } else {
     header('Location: ./index.php');
 }

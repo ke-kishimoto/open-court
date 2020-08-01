@@ -15,9 +15,9 @@ foreach ($gameInfoList as $gameInfo) {
     echo '<hr>';
     echo '<li>';
     if ($_POST['type'] === 'admin') {
-        echo '<a href="gameinfomod.php?id=' . $gameInfo['id'] . '">';
+        echo '<a href="EventInfo.php?id=' . $gameInfo['id'] . '">';
     } else {
-        echo '<a href="detail.php?id=' . $gameInfo['id'] . '">';
+        echo '<a href="EventDetail.php?id=' . $gameInfo['id'] . '">';
     }
     echo $gameInfo['title'] . '<br>';
     echo '日時：' . $gameInfo['game_date'] . $gameInfo['start_time'] . '～' . $gameInfo['end_time'] . '<br>';

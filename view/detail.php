@@ -95,7 +95,7 @@
         </p>
         <?php for($i = 0;$i < count($companions); $i++): ?>
             <div id="douhan-<?php echo $i + 1 ?>">
-            <select id="occupation-<?php echo $i ?>" name="occupation-<?php echo $i ?>" class="custom-select mr-sm-2">
+            <select id="occupation-<?php echo $i + 1 ?>" name="occupation-<?php echo $i + 1 ?>" class="custom-select mr-sm-2">
                 <option value="1" <?php echo $companions[$i]['occupation'] == '1' ? 'selected' : ''; ?>>社会人</option>
                 <option value="2" <?php echo $companions[$i]['occupation'] == '2' ? 'selected' : ''; ?>>大学・専門学校</option>
                 <option value="3" <?php echo $companions[$i]['occupation'] == '3' ? 'selected' : ''; ?>>高校</option>

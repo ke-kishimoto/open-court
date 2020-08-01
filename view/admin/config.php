@@ -10,7 +10,7 @@
     <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
     <p>
         参加者からの予約があった際にLINEへ通知を送るための設定画面です。<br> 
-        1. <a href="https://notify-bot.line.me/ja/">LINE notify</a>へアクセスし、ログインしてください。<br>
+        1. <a href="https://notify-bot.line.me/ja/" target="_blank">LINE notify</a>へアクセスし、ログインしてください。<br>
         2. ログイン後は「マイページ」⇒「トークンの発行」を選択します。<br>
         3. 通知設定が来るようにしたいグループを選択し、トークン名を発行ボタンを押下します。<br>
         4. 発行されたトークンをコピーし、入力フォームに貼り付けて更新を押下します。
