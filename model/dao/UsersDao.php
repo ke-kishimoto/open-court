@@ -52,6 +52,21 @@ class UsersDao {
 
     }
 
+    public function updatePass(int $id, string $password) {
+        $sql = 'update users set password = :password where id = :id';
+        $prepare = $this->pdo->prepare($sql);
+        $prepare->bindValue(':password', $password, PDO::PARAM_STR);
+        $prepare->bindValue(':id', $id, PDO::PARAM_INT);
+        $prepare->execute();
+    }
+
+    public function delete(int $id) {
+        $sql = 'delete from users where id = :id';
+        $prepare = $this->pdo->prepare($sql);
+        $prepare->bindValue(':id', $id, PDO::PARAM_INT);
+        $prepare->execute();
+    }
+
     // ユーザーのidの取得
     public function getUsersId(Users $users) {
         $sql = 'select max(id) id

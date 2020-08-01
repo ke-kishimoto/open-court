@@ -1,12 +1,8 @@
 <?php
 // session_start();
-// 新規登録
-require_once(dirname(__FILE__).'/model/entity/Users.php');
-require_once(dirname(__FILE__).'/model/entity/DefaultCompanion.php');
+// 新規登録・アカウント情報修正
 require_once(dirname(__FILE__).'/model/dao/UsersDao.php');
 require_once(dirname(__FILE__).'/model/dao/DefaultCompanionDao.php');
-use entity\Users;
-use entity\DefaultCompanion;
 use dao\UsersDao;
 use dao\DefaultCompanionDao;
 
@@ -22,6 +18,7 @@ if(!empty($_GET) && !empty($_SESSION['user'])) {
     $title = 'アカウント情報修正';
     $mode = 'update';
     $id = $_GET['id'];
+    $passChange = '';
 } else {
     $user = array(
         'id' => ''
@@ -36,79 +33,9 @@ if(!empty($_GET) && !empty($_SESSION['user'])) {
     $title = '新規登録';
     $mode = 'new';
     $id = '';
+    $passChange = 'hidden';
 }
 
-// 更新処理
-if (!empty($_POST)) {
-    $errMsg = '';
-    $usersDao = new UsersDao();
-
-    if($_POST['mode'] == 'new') {
-        //パスワードチェック
-        if (($_POST['password']) != ($_POST['rePassword'])) {
-            $errMsg = 'パスワード(再入力)が同じでありません';
-        // メールアドレスによる重複チェック
-        }else if($usersDao->existsCheck($_POST['email'])){
-            $errMsg = '既に登録済みです';
-        }
-    }
-
-    if(empty($errMsg)){
-        $adminFlg = 0;
-        if ($_POST['mode'] == 'new') {
-            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        } else {
-            $password = '';
-        }
-        $users = new Users(
-            $adminFlg
-            , $_POST['email']
-            , $_POST['name']
-            , $password
-            , $_POST['occupation']
-            , $_POST['sex']
-            , $_POST['remark']
-        );
-    
-        try {
-            // トランザクション開始
-            $usersDao->getPdo()->beginTransaction();
-            $defaultCompanionDao = new DefaultCompanionDao();
-            if($_POST['mode'] == 'new') {
-                // 新規登録
-                $usersDao->insert($users);
-            } else {
-                // 更新
-                $users->id = $_POST['id'];
-                $usersDao->update($users);
-                // 同伴者の削除
-                $defaultCompanionDao->deleteByuserId($users->id);
-            }
-    
-            // 同伴者の登録
-            if($_POST['companion'] > 0) {
-                $id = $usersDao->getUsersId($users);
-                $defaultCompanionDao->setPdo($usersDao->getPdo());
-                for($i = 1; $i <= $_POST['companion']; $i++) {
-                    $defaultCompanion = new DefaultCompanion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
-                    $defaultCompanionDao->insert($defaultCompanion);
-                }
-            }
-            $usersDao->getPdo()->commit();
-    
-            //todo:登録完了ページか、メッセージ表示を作る
-            $errMsg = '登録完了';
-        } catch(Exception $ex) {
-            $usersDao->getPdo()->rollBack();
-        }
-    }
-} 
-// session_destroy();
-function console_log( $data ){
-    echo '<script>';
-    echo 'console.log('. json_encode( $data ) .')';
-    echo '</script>';
-}
 ?>
 <!DOCTYPE html>
 <html lang="jp">
@@ -127,7 +54,8 @@ function console_log( $data ){
       <span class="explain-tit"><?php echo $title ?></span>
       <p>イベントへ応募時、以下の入力項目がデフォルトで設定されます</p>
   </div>
-    <form id="signUp_form" action="signUp.php" method="post" class="form-group">
+  <a class="btn btn-sm btn-outline-dark <?php echo htmlspecialchars($passChange) ?>" href="passwordChange.php" role="button">パスワード変更</a>
+    <form id="signUp_form" action="signUpComplete.php" method="post" class="form-group">
         <input type="hidden" id="mode" name="mode" value="<?php echo $mode ?>">
         <input type="hidden" id="id" name="id" value="<?php echo $id ?>">
         <p style="color: red;"><?php if(!empty($errMsg)){echo $errMsg;};?></p>
@@ -189,6 +117,10 @@ function console_log( $data ){
             </div>
         <?php endfor ?>
         <button class="<?php echo htmlspecialchars($btnClass) ?>" type="submit"><?php echo htmlspecialchars($btnLiteral) ?></button>
+    </form>
+    <br>
+    <form action="withdrawal.php">
+        <button class="btn btn-danger" type="submit">退会</button>
     </form>
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
