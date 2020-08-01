@@ -46,7 +46,7 @@ if(isset($_SESSION['errMsg'])) {
 
 include('./header.php');
 
-include('../head.php');
-include('../header.php');
-include('../signUp.php');
+include('../view/head.php');
+include('../view/header.php');
+include('../view/signUp.php');
 ?>

@@ -18,6 +18,6 @@ if($user) {
     }
 } else {
     $_SESSION['errMsg'] = 'メールアドレス、またはパスワードが異なります';
-    include('../signIn.php');
+    include('../view/signIn.php');
 }
 ?>

@@ -11,5 +11,5 @@ $result = $gameInfoDao->getGameInfoId($date);
 
 if (!empty($result)) {
 
-    header('Location: ../detail.php');
+    header('Location: ../view/detail.php');
 }

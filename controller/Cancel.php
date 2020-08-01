@@ -17,7 +17,7 @@ $title = 'キャンセル';
 
 include('./header.php');
 
-include('../head.php');
-include('../header.php');
-include('../cancelForm.php');
+include('../view/head.php');
+include('../view/header.php');
+include('../view/cancelForm.php');
 ?>

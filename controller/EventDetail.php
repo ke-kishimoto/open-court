@@ -70,8 +70,8 @@ if (isset($_SESSION['user'])) {
 
 include('./header.php');
 $title = 'イベント詳細';
-include('../head.php');
-include('../header.php');
-include('../detail.php');
+include('../view/head.php');
+include('../view/header.php');
+include('../view/detail.php');
 
 ?>

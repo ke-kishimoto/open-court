@@ -6,8 +6,8 @@ $title = 'パスワード変更';
 
 include('./header.php');
 
-include('../head.php');
-include('../header.php');
-include('../passwordChange.php');
+include('../view/head.php');
+include('../view/header.php');
+include('../view/passwordChange.php');
 
 ?>

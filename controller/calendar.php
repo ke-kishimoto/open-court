@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__).'/model/dao/GameInfoDao.php');
+require_once('../model/dao/GameInfoDao.php');
 use dao\GameInfoDao;
 
 $gameInfoDao = new GameInfoDao();

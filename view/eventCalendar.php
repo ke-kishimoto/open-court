@@ -70,7 +70,7 @@
         $('.link').on('click', function(event) {
             event.preventDefault(),
             $.ajax({
-                url:'./controller/EventList.php',
+                url:'../controller/EventList.php',
                 type:'POST',
                 data:{
                     'date':$('#year').text() + '/' + ('00' + $('#this-month').text()).slice(-2) + '/' +( '00' + $(this).text().trim()).slice(-2),

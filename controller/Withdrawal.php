@@ -28,9 +28,9 @@ $title = '退会';
 
 include('./header.php');
 
-include('../head.php');
-include('../header.php');
-include('../withdrawal.php');
+include('../view/head.php');
+include('../view/header.php');
+include('../view/withdrawal.php');
 
 ?>
 

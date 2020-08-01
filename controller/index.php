@@ -1,7 +1,7 @@
 <?php
 
 require_once('../model/dao/GameInfoDao.php');
-require_once("../calendar.php"); 
+require_once("./calendar.php"); 
 use dao\GameInfoDao;
 $gameInfoPDO = new GameInfoDao();
 $gameInfoList = $gameInfoPDO->getGameInfoList($year, $month);
@@ -16,7 +16,7 @@ $week = [
   ];
 include('./header.php');  
 $title = 'イベントカレンダー';
-include('../head.php');
-include('../header.php');
-include('../eventCalendar.php');
+include('../view/head.php');
+include('../view/header.php');
+include('../view/eventCalendar.php');
 ?>

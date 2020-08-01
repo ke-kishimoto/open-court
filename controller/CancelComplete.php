@@ -45,7 +45,7 @@ $title = 'キャンセル完了';
 
 include('./header.php');
 
-include('../head.php');
-include('../header.php');
-include('../cancelComplete.php');
+include('../view/head.php');
+include('../view/header.php');
+include('../view/cancelComplete.php');
 ?>

@@ -85,5 +85,5 @@ if (!empty($_POST)) {
     }
 } 
 
-include('../signUpComplete.php');
+include('../view/signUpComplete.php');
 ?>

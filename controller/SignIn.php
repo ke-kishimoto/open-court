@@ -14,8 +14,8 @@ $title = 'ログイン';
 
 include('./header.php');
 
-include('../head.php');
-include('../header.php');
-include('../signIn.php');
+include('../view/head.php');
+include('../view/header.php');
+include('../view/signIn.php');
 
 ?>
