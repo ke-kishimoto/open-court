@@ -1,4 +1,3 @@
-
 <header>
     <div>
         <a class="logo" href="./index.php"><?php echo htmlspecialchars($_SESSION['system_title']) ?></a>

@@ -69,7 +69,14 @@ if (isset($_POST["csrf_token"])
     }
 
     unset($_SESSION['csrf_token']);
-    include('../view/join.php');
+    
+    $title = 'イベント参加登録完了';
+    $msg = 'イベント参加登録が完了しました';
+    include('./header.php');
+
+    include('../view/head.php');
+    include('../view/header.php');
+    include('../view/complete.php');
 } else {
     header('Location: ./index.php');
 }

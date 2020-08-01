@@ -16,10 +16,10 @@ if (!empty($_POST)) {
     }
 }
 $title = 'パスワード変更完了';
-
+$msg = 'パスワードを変更しました';
 include('./header.php');
 
 include('../view/head.php');
 include('../view/header.php');
-include('../view/passwordChangeComplete.php');
+include('../view/complete.php');
 ?>

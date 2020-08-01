@@ -42,10 +42,10 @@ if(isset($_POST)) {
     }
 }
 $title = 'キャンセル完了';
-
+$msg = 'キャンセルが完了しました';
 include('./header.php');
 
 include('../view/head.php');
 include('../view/header.php');
-include('../view/cancelComplete.php');
+include('../view/complete.php');
 ?>

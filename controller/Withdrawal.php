@@ -25,12 +25,12 @@ if(isset($_SESSION['user'])) {
     }
 }
 $title = '退会';
-
+$msg = '退会処理が完了しました。';
 include('./header.php');
 
 include('../view/head.php');
 include('../view/header.php');
-include('../view/withdrawal.php');
+include('../view/complete.php');
 
 ?>
 

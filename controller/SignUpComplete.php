@@ -84,6 +84,10 @@ if (!empty($_POST)) {
         // include('./signUp.php');
     }
 } 
-
-include('../view/signUpComplete.php');
+include('./header.php');
+$title = 'ユーザー登録完了';
+include('../view/head.php');
+include('../view/header.php');
+$msg = 'ユーザー登録が完了しました。';
+include('../view/complete.php');
 ?>

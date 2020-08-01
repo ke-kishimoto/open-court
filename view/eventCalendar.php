@@ -1,4 +1,3 @@
-
 <p>イベントカレンダー【<span id="year"><?php echo htmlspecialchars($year); ?></span>年<span id="this-month"><?php echo htmlspecialchars($month); ?></span>月】</p>
 
 <div  class="month">
