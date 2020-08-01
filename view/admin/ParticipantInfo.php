@@ -1,50 +1,5 @@
-<?php
-// session_start();
-require_once('../model/dao/DetailDao.php');
-require_once('../model/dao/CompanionDao.php');
-use dao\DetailDao;
-use dao\CompanionDao;
-$detailDao = new DetailDao();
-if(isset($_GET['id'])) {
-    $participant = $detailDao->getParticipant($_GET['id']);
-    $companionDao = new CompanionDao();
-    $companionList = $companionDao->getCompanionList($participant['id']);
-} else {
-//    header('Location: index.php');
-    $participant['id'] = '';
-    $participant['name'] = '';
-    $participant['occupation'] = 1;
-    $participant['occupation_name'] = '社会人';
-    $participant['sex'] = 1;
-    $participant['sex_name'] = '男性';
-    $participant['companion'] = 0;
-    $participant['remark'] = '';
-
-    $companionList = array();
-}
-
-
-// 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
-$toke_byte = openssl_random_pseudo_bytes(16);
-$csrf_token = bin2hex($toke_byte);
-// 生成したトークンをセッションに保存します
-$_SESSION['csrf_token'] = $csrf_token;
-
-?>
-
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>参加者登録</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
-</head>
-<body class="container">
-<?php include('./header.php') ?>
 <p>参加者登録</p>
-<form action="participantRegister.php" method="post" class="form-group">
+<form action="ParticipantComplete.php" method="post" class="form-group">
     <input type="hidden" id="id" name="id" value="<?php echo $participant['id'] ?>">
     <input type="hidden" name="game_id" value="<?php echo $_GET['game_id'] ?>">
     <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
@@ -102,8 +57,8 @@ $_SESSION['csrf_token'] = $csrf_token;
     </p>
 
 </form>
-<p><a href="./gameinfomod.php?id=<?php echo $_GET['game_id'] ?>">イベント情報ページに戻る</a></p>
-<p><a href="index.php">イベント一覧に戻る</a></p>
+<p><a href="./EventInfo.php?id=<?php echo $_GET['game_id'] ?>">イベント情報ページに戻る</a></p>
+<p><a href="./index.php">イベント一覧に戻る</a></p>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
     $(function() {

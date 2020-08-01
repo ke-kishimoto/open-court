@@ -1,33 +1,4 @@
-<?php
-// session_start();
-require_once('../model/dao/ConfigDao.php');
-use dao\ConfigDao;
-
-$configDao = new ConfigDao();
-// いずれユーザーIDにする
-$config = $configDao->getConfig(1);
-
-
-// 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
-$toke_byte = openssl_random_pseudo_bytes(16);
-$csrf_token = bin2hex($toke_byte);
-// 生成したトークンをセッションに保存します
-$_SESSION['csrf_token'] = $csrf_token;
-
-?>
-
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>設定変更</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
-</head>
-<body class="container">
-<?php include('./header.php') ?>
-<form action="configRegister.php" method="post" class="form-group">
+<form action="configComplete.php" method="post" class="form-group">
     <p>システム名設定</p>
     <p>
         システム名<input class="form-control" type="text" name="system_title"  required value="<?php echo $config['system_title'] ?>">

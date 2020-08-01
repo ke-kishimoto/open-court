@@ -1,33 +1,5 @@
-<?php
-// session_start();
-require_once('../model/dao/EventTemplateDao.php');
-use dao\EventTemplateDao;
-
-// テンプレ一覧
-$eventTemplateDao = new EventTemplateDao();
-$eventTemplateList = $eventTemplateDao->getEventTemplateList();
-
-
-// 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
-$toke_byte = openssl_random_pseudo_bytes(16);
-$csrf_token = bin2hex($toke_byte);
-// 生成したトークンをセッションに保存します
-$_SESSION['csrf_token'] = $csrf_token;
-
-?>
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>テンプレート情報修正</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
-</head>
-<body class="container">
-    <?php include('./header.php') ?>
     <p>テンプレート</p>
-    <form action="templateRegister.php" method="post" class="form-group">
+    <form action="EventTempleteComplete.php" method="post" class="form-group">
         <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
         <p>
             <select name="id" id="template">

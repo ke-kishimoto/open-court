@@ -1,9 +1,8 @@
 <?php
-
-require_once('../model/dao/GameInfoDao.php');
-require_once("./calendar.php"); 
+require_once('../../model/dao/GameInfoDao.php');
 use dao\GameInfoDao;
 $gameInfoDao = new GameInfoDao();
+require_once("../calendar.php"); 
 $gameInfoList = $gameInfoDao->getGameInfoList($year, $month);
 $week = [
     '日', //0
@@ -14,9 +13,9 @@ $week = [
     '金', //5
     '土', //6
   ];
-include('./header.php');  
+include('./Header.php');  
 $title = 'イベントカレンダー';
-include('../view/head.php');
-include('../view/header.php');
-include('../view/eventCalendar.php');
+include('../../view/admin/head.php');
+include('../../view/admin/header.php');
+include('../../view/admin/eventCalendar.php');
 ?>

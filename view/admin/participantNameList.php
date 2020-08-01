@@ -1,22 +1,3 @@
-<?php 
-require_once('../model/dao/DetailDao.php');
-use dao\DetailDao;
-
-$detailDao = new DetailDao();
-$participantList = $detailDao->getParticipantList($_GET['gameid'], $_GET['occupation'], $_GET['sex'], $_GET['waiting_flg']);
-
-?>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>参加者リスト</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
-</head>
-<body class="container">
-<?php include('./header.php') ?>
 <?php if (!empty($participantList)): ?>
     <p>参加者リスト：<?php echo $participantList[0]['occupation_name'] ?>、<?php echo $participantList[0]['sex_name'] ?></p>
     <?php foreach($participantList as $participant): ?>

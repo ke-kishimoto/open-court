@@ -1,72 +1,9 @@
-<?php
-// session_start();
-require_once('../model/dao/GameInfoDao.php');
-require_once('../model/dao/DetailDao.php');
-require_once('../model/dao/EventTemplateDao.php');
-use dao\EventTemplateDao;
-use dao\GameInfoDao;
-use dao\DetailDao;
-
-// テンプレ一覧
-$eventTemplateDao = new EventTemplateDao();
-$eventTemplateList = $eventTemplateDao->getEventTemplateList();
-
-$gameInfo = null;
-$gameInfoDao = new GameInfoDao();
-$templateAreaClass = 'hidden';
-$participantDisp = '';
-// 試合情報取得
-if (isset($_GET['id'])) {
-    $gameInfo = $gameInfoDao->getGameInfo($_GET['id']);
-}
-if (empty($gameInfo)) {
-    // 新規の場合
-    //    header('Location: index.php');
-    $gameInfo = array(
-        'id' => ''
-        , 'title' => ''
-        , 'short_title' => ''
-        , 'game_date' => ''
-        , 'start_time' => ''
-        , 'end_time' => ''
-        , 'place' => ''
-        , 'limit_number' => 0
-        , 'detail' => ''
-    );
-    $templateAreaClass = '';
-    $participantDisp = 'hidden';
-}
-// 参加者情報取得
-$participantList = null;
-if(!empty($gameInfo['id'])) {
-    $detailDao = new DetailDao();
-    $participantList = $detailDao->getParticipantList($gameInfo['id']);
-}
-
-// 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
-$toke_byte = openssl_random_pseudo_bytes(16);
-$csrf_token = bin2hex($toke_byte);
-// 生成したトークンをセッションに保存します
-$_SESSION['csrf_token'] = $csrf_token;
-
-?>
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>イベント情報修正</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
-</head>
-<body class="container">
-    <?php include('./header.php') ?>
     <p>対象イベント：<?php echo $gameInfo['title'] ?></p>
 
     <details>
         <summary>イベント情報登録</summary>
         <br>
-        <form action="register.php" method="post" class="form-group">
+        <form action="EventComplete.php" method="post" class="form-group">
             <input type="hidden" id="id" name="id" value="<?php echo $gameInfo['id']; ?>">
             <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
             <div class="<?php echo $templateAreaClass ?>">
@@ -113,18 +50,36 @@ $_SESSION['csrf_token'] = $csrf_token;
 
     <hr>
     <div class="<?php echo $participantDisp ?>">
-        <?php include('./participationInfo.php'); ?>
+        <div>
+            <details>
+            <summary>現在の状況</summary>
+            <br>
+            <p>【参加予定  <span id="cnt"><?php echo $detail['cnt'] ?></span>人】【上限  <?php echo $gameInfo['limit_number'] ?>人】</p>
+            <p>社会人：
+                <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=1&sex=2&waiting_flg=0">女性 <span id="sya_women"><?php echo $detail['sya_women'] ?></span>人</a>、
+                <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=1&sex=1&waiting_flg=0">男性 <span id="sya_men"><?php echo $detail['sya_men'] ?></span>人</a>
+            <p>大学・専門：
+                <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=2&sex=2&waiting_flg=0">女性 <span id="dai_women"><?php echo $detail['dai_women'] ?></span>人</a>、
+                <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=2&sex=1&waiting_flg=0">男性 <span id="dai_men"><?php echo $detail['dai_men'] ?></span>人</a>
+            </p>
+            <p>高校生：
+                <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=3&sex=2&waiting_flg=0">女性 <span id="kou_women"><?php echo $detail['kou_women'] ?></span>人</a>、
+                <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=3&sex=1&waiting_flg=0">男性 <span id="kou_men"><?php echo $detail['kou_men'] ?></span>人</a>
+            </p>
+            <p><a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=0&sex=0&waiting_flg=1">キャンセル待ち：<span id="waiting_cnt"><?php echo $detail['waiting_cnt'] ?></span>人</a></p>
+            </details>
+        </div>
     </div>
     <hr>
     <details class="<?php echo $participantDisp ?>">
         <summary>参加者リスト</summary>
         <br>
-        <a class="btn btn-primary" href="participant.php?game_id=<?php echo $gameInfo['id']; ?>">参加者追加</a>
+        <a class="btn btn-primary" href="ParticipantInfo.php?game_id=<?php echo $gameInfo['id']; ?>">参加者追加</a>
         <?php foreach ((array)$participantList as $participant): ?>
             <?php if($participant['main'] == '1'): ?>
                 <hr>
                 <p>
-                    <a class="btn btn-secondary" href="participant.php?id=<?php echo $participant['id']; ?>&game_id=<?php echo $gameInfo['id']; ?>">修正</a>
+                    <a class="btn btn-secondary" href="ParticipantInfo.php?id=<?php echo $participant['id']; ?>&game_id=<?php echo $gameInfo['id']; ?>">修正</a>
                     <button type="button" class="waiting btn btn-<?php echo $participant['waiting_flg'] == '1' ? 'warning' : 'success' ?>" value="<?php echo $participant['id'] ?>">
                     <?php echo $participant['waiting_flg'] == '1' ? 'キャンセル待ちを解除' : 'キャンセル待ちに変更' ?></button>
                     <span class="duplication"><?php echo $participant['chk'] ?></span>

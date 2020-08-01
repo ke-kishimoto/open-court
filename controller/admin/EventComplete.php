@@ -1,7 +1,7 @@
 <?php
 // session_start();
-require_once('../model/entity/GameInfo.php');
-require_once('../model/dao/GameInfoDao.php');
+require_once('../../model/entity/GameInfo.php');
+require_once('../../model/dao/GameInfoDao.php');
 use entity\GameInfo;
 use dao\GameInfoDao;
 
@@ -48,21 +48,10 @@ if (isset($_POST["csrf_token"])
 } else {
     header('Location: ./index.php');
 }
-?>
 
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>イベント登録完了</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
-</head>
-<body class="container">
-    <?php include('./header.php') ?>
-    <p><?php echo $msg ?>イベント登録完了しました。</p>
-    <p><a href="gameinfomod.php" class="btn btn-primary">続けてイベントを登録する</a></p>
-    <p><a href="index.php" class="btn btn-primary">イベント一覧に戻る</a></p>
-</body>
-</html>
+include('./Header.php');  
+$title = 'イベント登録完了';
+include('../../view/admin/head.php');
+include('../../view/admin/header.php');
+include('../../view/admin/eventComplete.php');
+?>
