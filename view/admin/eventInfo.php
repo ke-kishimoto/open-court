@@ -87,7 +87,7 @@
             <?php endif ?>
         
             <p>
-                <?php echo htmlspecialchars($participant['waiting_name']); ?>
+                <?php /* echo htmlspecialchars($participant['waiting_name']); */ ?>
                 <?php echo htmlspecialchars($participant['companion_name']); ?>  &nbsp;&nbsp;
                 <?php echo htmlspecialchars($participant['name']); ?>  &nbsp;&nbsp;
                 <?php echo htmlspecialchars($participant['occupation_name']); ?>  &nbsp;&nbsp;

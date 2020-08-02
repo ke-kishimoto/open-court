@@ -3,16 +3,43 @@
         <p style="color: red;"><?php if(!empty($errMsg)){echo $errMsg;};?></p>
         <p>
             メール
-            <input class="form-control" type="email" name="email" required maxlength="50">
+            <input id="email" class="form-control" type="email" name="email" required maxlength="50">
         </p>
         <p>
             パスワード
-            <input class="form-control" type="password" name="password" required maxlength="50">
+            <input id="password" class="form-control" type="password" name="password" required maxlength="50">
         </p>
-        <input type="checkbox" id="autoLogin" name="autoLogin" value="true">
+        <input type="checkbox" id="autoLogin" name="autoLogin" checked>
         <label for="autoLogin">ログインしたままにする</label><br><br>
-        <button class="btn btn-primary'" type="submit">ログイン</button>
+        <button id="btn-login" class="btn btn-primary" type="submit">ログイン</button>
     </form>
 </div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+    $(function() {
+        $('#btn-login').on('click', function() {
+            var userMail = $('#email').val();
+            var password = $('#password').val();
+            if(userMail === '' || password === '') {
+                return true;
+            }
+            // if (typeof(Strage) === "undefined") {
+            //     console.log('サポートされていません。')
+            // }
+            if($('#autoLogin').val() === 'on') {
+                var strage = window.localStorage;
+                var user = {
+                    email: userMail,
+                    pass: password,
+                };
+                strage.removeItem('eventScheduleUser');
+                // ローカルストレージに保存
+                strage.setItem('eventScheduleUser', JSON.stringify(user));
+                // console.log(JSON.parse(strage.getItem('eventScheduleUser')));
+            }
+        })
+    })
+
+</script>
 </body>
 </html>

@@ -77,6 +77,7 @@
 <script>
     'use strict';
     $(function() {
+        // 日付をクリックした場合
         $('.link').on('click', function(event) {
             event.preventDefault(),
             $.ajax({
@@ -99,7 +100,7 @@
             .always( (data) => {
 
             })
-        }) 
+        });
     });
 </script>
 </body>
