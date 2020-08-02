@@ -47,7 +47,7 @@
             });
             $('#template').change(function() {
                 $.ajax({
-                url:'../../controller/GetEventTemplate.php',
+                url:'../../controller/api/GetEventTemplate.php',
                 type:'POST',
                 data:{
                     'id':$('#template').val()

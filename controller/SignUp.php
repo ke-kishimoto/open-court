@@ -3,6 +3,7 @@
 // 新規登録・アカウント情報修正
 require_once('../model/dao/UsersDao.php');
 require_once('../model/dao/DefaultCompanionDao.php');
+require_once('./header.php');
 use dao\UsersDao;
 use dao\DefaultCompanionDao;
 
@@ -44,9 +45,7 @@ if(isset($_SESSION['errMsg'])) {
     $errMsg = '';
 }
 
-include('./header.php');
-
-include('../view/head.php');
-include('../view/header.php');
+include('../view/common/head.php');
+include('../view/common/header.php');
 include('../view/signUp.php');
 ?>

@@ -1,5 +1,6 @@
 <?php
 require_once('../model/dao/UsersDao.php');
+require_once('./header.php');
 use dao\UsersDao;
 
 if (!empty($_POST)) {
@@ -17,9 +18,8 @@ if (!empty($_POST)) {
 }
 $title = 'パスワード変更完了';
 $msg = 'パスワードを変更しました';
-include('./header.php');
 
-include('../view/head.php');
-include('../view/header.php');
+include('../view/common/head.php');
+include('../view/common/header.php');
 include('../view/complete.php');
 ?>

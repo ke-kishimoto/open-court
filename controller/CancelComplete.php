@@ -3,7 +3,8 @@ require_once('../model/entity/Participant.php');
 require_once('../model/dao/DetailDao.php');
 require_once('../model/dao/ConfigDao.php');
 require_once('../model/dao/UsersDao.php');
-require_once('../controller/Api.php');
+require_once('../controller/api/LineApi.php');
+require_once('./header.php');
 use dao\DetailDao;
 use dao\UsersDao;
 use dao\GameInfoDao;
@@ -35,17 +36,16 @@ if(isset($_POST)) {
         
             $rowCount = $detailDao->deleteByMailAddress($_POST['game_id'], $_POST['email']);
         
-            $api = new Api();
+            $api = new LineApi();
             $api->cancel_notify($participant, $gameInfo['title'], $gameInfo['game_date']);
             $msg = '予約のキャンセルが完了しました。';
         }
     }
 }
+
 $title = 'キャンセル完了';
 $msg = 'キャンセルが完了しました';
-include('./header.php');
-
-include('../view/head.php');
-include('../view/header.php');
+include('../view/common/head.php');
+include('../view/common/header.php');
 include('../view/complete.php');
 ?>

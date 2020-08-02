@@ -1,7 +1,7 @@
 <?php
 
 header('Content-type: application/json; charset= UTF-8');
-require_once('../model/dao/DetailDao.php');
+require_once('../../model/dao/DetailDao.php');
 use dao\DetailDao;
 
 $detailDao = new DetailDao();

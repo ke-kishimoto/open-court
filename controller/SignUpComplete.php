@@ -5,6 +5,7 @@ require_once('../model/entity/Users.php');
 require_once('../model/entity/DefaultCompanion.php');
 require_once('../model/dao/UsersDao.php');
 require_once('../model/dao/DefaultCompanionDao.php');
+require_once('./header.php');
 use entity\Users;
 use entity\DefaultCompanion;
 use dao\UsersDao;
@@ -84,10 +85,9 @@ if (!empty($_POST)) {
         // include('./signUp.php');
     }
 } 
-include('./header.php');
 $title = 'ユーザー登録完了';
-include('../view/head.php');
-include('../view/header.php');
 $msg = 'ユーザー登録が完了しました。';
+include('../view/common/head.php');
+include('../view/common/header.php');
 include('../view/complete.php');
 ?>

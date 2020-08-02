@@ -2,7 +2,7 @@
 // 日付クリック時のAjax用の処理
 header('Content-type: text/plain; charset= UTF-8');
 
-require_once('../model/dao/GameInfoDao.php');
+require_once('../../model/dao/GameInfoDao.php');
 use dao\GameInfoDao;
 
 $gameInfoPDO = new GameInfoDao();

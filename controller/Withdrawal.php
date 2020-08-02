@@ -1,6 +1,7 @@
 <?php
 require_once('../model/dao/UsersDao.php');
 require_once('../model/dao/DefaultCompanionDao.php');
+require_once('./header.php');
 use dao\UsersDao;
 use dao\DefaultCompanionDao;
 
@@ -26,10 +27,8 @@ if(isset($_SESSION['user'])) {
 }
 $title = '退会';
 $msg = '退会処理が完了しました。';
-include('./header.php');
-
-include('../view/head.php');
-include('../view/header.php');
+include('../view/common/head.php');
+include('../view/common/header.php');
 include('../view/complete.php');
 
 ?>

@@ -8,7 +8,7 @@ define('LINE_API_URL', 'https://notify-api.line.me/api/notify');
 use entity\Participant;
 use dao\ConfigDao;
 
-class Api 
+class LineApi 
 {
     // LINE通知用のfunction
     public function reserve_notify(Participant $participant, $title, $date, $companion = 0){   

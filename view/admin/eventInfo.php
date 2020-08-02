@@ -123,7 +123,7 @@
             }
             $('#template').change(function() {
                 $.ajax({
-                url:'../../controller/GetEventTemplate.php',
+                url:'../../controller/api/GetEventTemplate.php',
                 type:'POST',
                 data:{
                     'id':$('#template').val(),
@@ -148,7 +148,7 @@
             // キャンセル待ち⇔解除の処理
             $('.waiting').on('click', function() {
                $.ajax({
-                url:'../../controller/UpdateWaitingFlg.php',
+                url:'../../controller/api/UpdateWaitingFlg.php',
                 type:'POST',
                 data:{
                     'id':$(this).val(),

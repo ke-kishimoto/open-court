@@ -14,10 +14,16 @@ if($user) {
         header('Location: ./index.php');
     } else {
         $_SESSION['errMsg'] = 'メールアドレス、またはパスワードが異なります';
+        $title = 'ログイン';
+        include('../view/head.php');
+        include('../view/header.php');
         include('../signIn.php');
     }
 } else {
     $_SESSION['errMsg'] = 'メールアドレス、またはパスワードが異なります';
-    include('../view/signIn.php');
+    $title = 'ログイン';
+    include('../view/common/head.php');
+    include('../view/common/header.php');
+    include('../signIn.php');
 }
 ?>

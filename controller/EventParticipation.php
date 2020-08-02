@@ -6,7 +6,8 @@ require_once('../model/entity/Companion.php');
 require_once('../model/dao/DetailDao.php');
 require_once('../model/dao/ConfigDao.php');
 require_once('../model/dao/CompanionDao.php');
-require_once('../controller/Api.php');
+require_once('../controller/api/LineApi.php');
+require_once('./header.php');
 use entity\Participant;
 use entity\Companion;
 use dao\DetailDao;
@@ -58,7 +59,7 @@ if (isset($_POST["csrf_token"])
         }
         
         // 予約の通知
-        $api = new Api();
+        $api = new LineApi();
         $api->reserve_notify($detail, $_POST['title'], $_POST['date'], $_POST['companion']);
 
         // if ($waitingFlg) {
@@ -72,14 +73,11 @@ if (isset($_POST["csrf_token"])
     
     $title = 'イベント参加登録完了';
     $msg = 'イベント参加登録が完了しました';
-    include('./header.php');
-
-    include('../view/head.php');
-    include('../view/header.php');
+    include('../view/common/head.php');
+    include('../view/common/header.php');
     include('../view/complete.php');
 } else {
     header('Location: ./index.php');
 }
-
 
 ?>

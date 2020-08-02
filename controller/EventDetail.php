@@ -2,6 +2,7 @@
 require_once('../model/dao/GameInfoDao.php');
 require_once('../model/dao/DefaultCompanionDao.php');
 require_once('../model/dao/DetailDao.php');
+require_once('./header.php');
 use dao\GameInfoDao;
 use dao\DefaultCompanionDao;
 use dao\DetailDao;
@@ -68,10 +69,9 @@ if (isset($_SESSION['user'])) {
     $companions = [];
 }
 
-include('./header.php');
 $title = 'イベント詳細';
-include('../view/head.php');
-include('../view/header.php');
+include('../view/common/head.php');
+include('../view/common/header.php');
 include('../view/detail.php');
 
 ?>
