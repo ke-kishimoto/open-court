@@ -1,8 +1,11 @@
 $(function() {
     // 自動ログイン
+    var session = window.sessionStorage;
+    var isLogin = session.getItem('eventScheduleIsLogin');
     var strage = window.localStorage;
+
     var user = JSON.parse(strage.getItem('eventScheduleUser'));
-    if(user !== null) {
+    if(user !== null && isLogin !== 'login') {
         // event.preventDefault(),
         $.ajax({
             url:'../controller/api/SignInApi.php',
@@ -16,6 +19,8 @@ $(function() {
         .done( (data) => {
             // $('#user_name').text(data.name);
             // console.log(data);
+            session.setItem('eventScheduleIsLogin', 'login');
+            // location.href = './index.php';
         })
         // Ajaxリクエストが失敗した時発動
         .fail( (data) => {
