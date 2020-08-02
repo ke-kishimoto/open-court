@@ -8,13 +8,7 @@ if(isset($_SESSION['user'])) {
     $email = '';
     $mode = 'guest';
 }
-
-if(isset($_SESSION['errMsg'])) {
-    $errMsg = $_SESSION['errMsg'];
-    unset($_SESSION['errMsg']);
-} else {
-    $errMsg = '';
-}
+$gameId = $_GET['gameid'];
 
 $title = 'キャンセル';
 include('../view/common/head.php');

@@ -13,14 +13,14 @@ use entity\Companion;
 use dao\DetailDao;
 use dao\CompanionDao;
 
-$msg = '';
+$errMsg = '';
 if (isset($_POST["csrf_token"]) 
  && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 
     $detailDao = new DetailDao();
     // メールアドレスによる重複チェック
     if($_POST['email'] !== '' && $detailDao->existsCheck($_POST['game_id'], $_POST['email'])) {
-        $msg = '既に登録済みのため登録できません。';
+        $errMsg = '既に登録済みのため登録できません。';
     } else {
         // キャンセル待ちになるかどうかのチェック
         if($detailDao->limitCheck($_POST['game_id'], 1 + $_POST['companion'])) {
@@ -66,16 +66,22 @@ if (isset($_POST["csrf_token"])
         //     // 上限に達した通知
         //     $api->limit_notify($_POST['title'], $_POST['date'], $detail['limit_number'], $detail['count']);
         // }
-        $msg = '参加登録完了しました。';  
     }
 
     unset($_SESSION['csrf_token']);
-    
-    $title = 'イベント参加登録完了';
-    $msg = 'イベント参加登録が完了しました';
-    include('../view/common/head.php');
-    include('../view/common/header.php');
-    include('../view/complete.php');
+    if(empty($errMsg)) {
+        $title = 'イベント参加登録完了';
+        $msg = 'イベント参加登録が完了しました。';
+        include('../view/common/head.php');
+        include('../view/common/header.php');
+        include('../view/complete.php');
+    } else {
+        $title = 'イベント参加登録完了';
+        $msg = '入力されたメールアドレスで既に登録済みです。';
+        include('../view/common/head.php');
+        include('../view/common/header.php');
+        include('../view/complete.php');
+    }
 } else {
     header('Location: ./index.php');
 }

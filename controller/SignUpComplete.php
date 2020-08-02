@@ -11,11 +11,6 @@ use entity\DefaultCompanion;
 use dao\UsersDao;
 use dao\DefaultCompanionDao;
 
-$limitFlg = false;
-$btnClass = 'btn btn-primary';
-$btnLiteral = '登録';
-
-
 // 更新処理
 if (!empty($_POST)) {
     $errMsg = '';
@@ -24,11 +19,11 @@ if (!empty($_POST)) {
     if($_POST['mode'] == 'new') {
         //パスワードチェック
         if (($_POST['password']) != ($_POST['rePassword'])) {
-            $errMsg = 'パスワード(再入力)が同じでありません';
-            $user['name'] = $_POST['name'];
+            $errMsg = 'パスワードが異なっています。';            
+        }
         // メールアドレスによる重複チェック
-        }else if($usersDao->existsCheck($_POST['email'])){
-            $errMsg = '既に登録済みです';
+        if($usersDao->existsCheck($_POST['email'])){
+            $errMsg = '入力されたメールアドレスは既に登録済みです。';
         }
     }
 
@@ -75,19 +70,43 @@ if (!empty($_POST)) {
             }
             $usersDao->getPdo()->commit();
     
-            $errMsg = '登録完了';
         } catch(Exception $ex) {
             $usersDao->getPdo()->rollBack();
         }
-    } else {
-        $_SESSION['errMsg'] = $errMsg;
-        header('Location: ./signUp.php');
-        // include('./signUp.php');
     }
 } 
-$title = 'ユーザー登録完了';
-$msg = 'ユーザー登録が完了しました。';
-include('../view/common/head.php');
-include('../view/common/header.php');
-include('../view/complete.php');
+if(!empty($errMsg)) {
+    $title = '新規登録';
+    $mode = 'new';
+    $user = array(
+        'name' => $_POST['name']
+        , 'occupation' => $_POST['occupation']
+        , 'sex' => $_POST['sex']
+        , 'email' => $_POST['email']
+        , 'password' => $_POST['password']
+        , 'ewPassword' => $_POST['password']
+        , 'remark' => $_POST['remark']
+    );
+    if($_POST['companion'] > 0) {
+        for($i = 1; $i <= $_POST['companion']; $i++) {
+            $companions[$i-1] = array(
+                'occupation' => $_POST['occupation-' . $i]
+                , 'sex' => $_POST['sex-' . $i]
+                , 'name' => $_POST['name-' . $i]
+            );   
+        }
+    } else {
+        $companions = [];
+    }
+    include('../view/common/head.php');
+    include('../view/common/header.php');
+    include('../view/signup.php');
+} else {
+    $title = 'ユーザー登録完了';
+    $msg = 'ユーザー登録が完了しました。';
+    include('../view/common/head.php');
+    include('../view/common/header.php');
+    include('../view/complete.php');
+}
+
 ?>

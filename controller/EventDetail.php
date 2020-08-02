@@ -9,7 +9,6 @@ use dao\DetailDao;
 
 $gameInfo = null;
 $limitFlg = false;
-$btnClass = 'btn btn-primary';
 $btnLiteral = '登録';
 $pastEvent = false;
 $gameInfoDao = new GameInfoDao();

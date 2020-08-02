@@ -3,7 +3,7 @@
       <span class="explain-tit"><?php echo $title ?></span>
       <p>イベントへ応募時、以下の入力項目がデフォルトで設定されます</p>
   </div>
-  <a class="btn btn-sm btn-outline-dark <?php echo htmlspecialchars($passChange) ?>" href="passwordChange.php" role="button">パスワード変更</a>
+  <a class="btn btn-sm btn-outline-dark <?php echo $mode == 'new' ? 'hidden' : '' ?>" href="passwordChange.php" role="button">パスワード変更</a>
     <form id="signUp_form" action="SignUpComplete.php" method="post" class="form-group">
         <input type="hidden" id="mode" name="mode" value="<?php echo $mode ?>">
         <input type="hidden" id="id" name="id" value="<?php echo $id ?>">
@@ -34,11 +34,11 @@
         <div id="password-area">
             <p>
                 パスワード
-                <input class="form-control" type="password" name="password" required maxlength="50">
+                <input class="form-control" type="password" name="password" required maxlength="50" value="<?php echo $user['password'] ?>">
             </p>
             <p>
                 パスワード(再入力)
-                <input class="form-control" type="password" name="rePassword" required maxlength="50">
+                <input class="form-control" type="password" name="rePassword" required maxlength="50" value="<?php echo $user['password'] ?>">
             </p>
         </div>
         <p>
@@ -53,6 +53,7 @@
         </p>
         <?php for($i = 0;$i < count($companions); $i++): ?>
             <div id="douhan-<?php echo $i + 1 ?>">
+            <?php echo $i+1 ?>人目
             <select id="occupation-<?php echo $i + 1 ?>" name="occupation-<?php echo $i + 1 ?>" class="custom-select mr-sm-2">
                 <option value="1" <?php echo $companions[$i]['occupation'] == '1' ? 'selected' : ''; ?>>社会人</option>
                 <option value="2" <?php echo $companions[$i]['occupation'] == '2' ? 'selected' : ''; ?>>大学・専門学校</option>
@@ -64,13 +65,16 @@
             </select>
             <input id="name-<?php echo $i + 1 ?>" class="form-control" type="text" name="name-<?php echo $i + 1 ?>" required maxlength="50" value="<?php echo $companions[$i]['name']; ?>">
             </div>
+            <br>
         <?php endfor ?>
-        <button class="<?php echo htmlspecialchars($btnClass) ?>" type="submit"><?php echo htmlspecialchars($btnLiteral) ?></button>
+        <button class="btn btn-primary" type="submit">登録</button>
     </form>
     <br>
-    <form action="./Withdrawal.php">
-        <button class="btn btn-danger" type="submit">退会</button>
-    </form>
+    <div class="<?php echo $mode == 'new' ? 'hidden' : '' ?>">
+        <form action="./Withdrawal.php">
+            <button id="button-user-del" class="btn btn-danger" type="submit">退会</button>
+        </form>
+    </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
@@ -98,6 +102,9 @@
                 num--;
             }
             $('#companion').val(num);
+        });
+        $('#button-user-del').on('click', function() {
+            return confirm('削除してもよろしいですか');
         });
         if($('#mode').val() === 'update') {
             $('#password-area').remove();

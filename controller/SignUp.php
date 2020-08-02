@@ -7,10 +7,6 @@ require_once('./header.php');
 use dao\UsersDao;
 use dao\DefaultCompanionDao;
 
-$limitFlg = false;
-$btnClass = 'btn btn-primary';
-$btnLiteral = '登録';
-
 if(!empty($_GET) && !empty($_SESSION['user'])) {
     $usersDao = new UsersDao();
     $defultCompanionDao = new DefaultCompanionDao();
@@ -36,13 +32,6 @@ if(!empty($_GET) && !empty($_SESSION['user'])) {
     $title = '新規登録';
     $mode = 'new';
     $id = '';
-    $passChange = 'hidden';
-}
-if(isset($_SESSION['errMsg'])) {
-    $errMsg = $_SESSION['errMsg'];
-    unset($_SESSION['errMsg']);
-} else {
-    $errMsg = '';
 }
 
 include('../view/common/head.php');

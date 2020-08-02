@@ -9,17 +9,23 @@ if (!empty($_POST)) {
 
     //パスワードチェック
     if (($_POST['password']) != ($_POST['rePassword'])) {
-        $errMsg = 'パスワード(再入力)が同じでありません';
+        $errMsg = '入力されたパスワードが異なります。';
     }
 
     if(empty($errMsg)){
         $usersDao->updatePass($_SESSION['user']['id'], password_hash($_POST['password'], PASSWORD_DEFAULT));
+        $title = 'パスワード変更完了';
+        $msg = 'パスワードを変更しました';
+        
+        include('../view/common/head.php');
+        include('../view/common/header.php');
+        include('../view/complete.php');
+    } else {
+        $title = 'パスワード変更';
+        
+        include('../view/common/head.php');
+        include('../view/common/header.php');
+        include('../view/passwordChange.php');
     }
 }
-$title = 'パスワード変更完了';
-$msg = 'パスワードを変更しました';
-
-include('../view/common/head.php');
-include('../view/common/header.php');
-include('../view/complete.php');
 ?>

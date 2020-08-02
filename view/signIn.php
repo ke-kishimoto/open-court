@@ -11,7 +11,7 @@
         </p>
         <input type="checkbox" id="autoLogin" name="autoLogin" value="true">
         <label for="autoLogin">ログインしたままにする</label><br><br>
-        <button class="<?php echo htmlspecialchars($btnClass) ?>" type="submit"><?php echo htmlspecialchars($btnLiteral) ?></button>
+        <button class="btn btn-primary'" type="submit">ログイン</button>
     </form>
 </div>
 </body>

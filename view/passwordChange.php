@@ -11,7 +11,7 @@
                 <input class="form-control" type="password" name="rePassword" required maxlength="50">
             </p>
         </div>
-        <button class="<?php echo htmlspecialchars($btnClass) ?>" type="submit"><?php echo htmlspecialchars($btnLiteral) ?></button>
+        <button class="btn btn-primary" type="submit">登録</button>
     </form>
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

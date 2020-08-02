@@ -109,7 +109,7 @@
         <?php endfor ?>
             <input type="hidden" name="title" value="<?php echo htmlspecialchars($gameInfo['title']) ?>">
             <input type="hidden" name="date" value="<?php echo htmlspecialchars($gameInfo['game_date']) ?>">
-            <button class="<?php echo htmlspecialchars($btnClass) ?>" type="submit"><?php echo htmlspecialchars($btnLiteral) ?></button>
+            <button class="btn btn-primary" type="submit"><?php echo htmlspecialchars($btnLiteral) ?></button>
         <a class="btn btn-danger" href="Cancel.php?gameid=<?php echo htmlspecialchars($gameInfo['id']) ?>" >参加のキャンセル</a>
     </form>
 </div>
