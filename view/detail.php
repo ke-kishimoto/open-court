@@ -107,9 +107,9 @@
             <input id="name-<?php echo $i + 1 ?>" class="form-control" type="text" name="name-<?php echo $i + 1 ?>" required maxlength="50" value="<?php echo $companions[$i]['name']; ?>">
             </div>
         <?php endfor ?>
-            <input type="hidden" name="title" value="<?php echo htmlspecialchars($gameInfo['title']) ?>">
-            <input type="hidden" name="date" value="<?php echo htmlspecialchars($gameInfo['game_date']) ?>">
-            <button class="btn btn-primary" type="submit"><?php echo htmlspecialchars($btnLiteral) ?></button>
+        <input type="hidden" name="title" value="<?php echo htmlspecialchars($gameInfo['title']) ?>">
+        <input type="hidden" name="date" value="<?php echo htmlspecialchars($gameInfo['game_date']) ?>">
+        <button id="btn-regist" class="btn btn-primary" type="submit"><?php echo htmlspecialchars($btnLiteral) ?></button>
         <a class="btn btn-danger" href="Cancel.php?gameid=<?php echo htmlspecialchars($gameInfo['id']) ?>" >参加のキャンセル</a>
     </form>
 </div>
@@ -145,6 +145,20 @@
                 num--;
             }
             $('#companion').val(num);
+        });
+        $('#btn-regist').on('click', function() {
+            if($('#name').val() === '') {
+                return true;
+            }
+            var msg = '以下の内容で登録します\n' + 
+            '名前：' + $('#name').val() + '\n';
+            // '職種：' + $('#companion').val() + '\n' +
+            // '性別：' + $('#sex').val();
+            var num = Number($('#companion').val());
+            for(let i = 0; i < num; i++) {
+                msg += '同伴者' + (i + 1) + '：' + $('#name-' + i).val() + '\n';
+            }
+            return confirm(msg);
         });
     })
 </script>

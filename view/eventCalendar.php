@@ -1,5 +1,5 @@
+<!-- ここからカレンダー -->
 <p>イベントカレンダー【<span id="year"><?php echo htmlspecialchars($year); ?></span>年<span id="this-month"><?php echo htmlspecialchars($month); ?></span>月】</p>
-
 <div  class="month">
 <a href=".?year=<?php echo htmlspecialchars($pre_year); ?>&month=<?php echo htmlspecialchars($lastmonth); ?>"><?php echo htmlspecialchars($lastmonth); ?>月</a>
 <a href=".?year=<?php echo htmlspecialchars($year); ?>&month=<?php echo htmlspecialchars($month); ?>"><?php echo htmlspecialchars($month); ?>月</a>
@@ -42,8 +42,15 @@
     <?php endforeach; ?>
     </tr>
 </table>
-<p>イベント一覧</p>
 
+<!-- 参加イベント一覧（ログイン者用） -->
+<div class="<?php echo isset($_SESSION['user']) ? '' : 'hidden' ?>">
+<a href="./ParticipatingEventList.php">参加イベント一覧</a>
+<br>
+</div>
+
+<!-- イベント一覧 -->
+<p>イベント一覧</p>
 <ul id="event-list">
     <?php foreach ($gameInfoList as $gameInfo): ?>
         <hr>

@@ -1,6 +1,6 @@
 <?php if (!empty($userList)): ?>
+    <p>ユーザー一覧</p>
     <table>
-        <caption>ユーザー一覧</caption>
         <tr>
             <th>ユーザー名</th><th>職種</th><th>性別</th><th>連絡先</th>
         </tr>

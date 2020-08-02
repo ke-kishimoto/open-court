@@ -52,7 +52,7 @@
         </div>
     <?php endfor ?>
     <p>
-        <button class="btn btn-primary" type="submit" name="register">登録</button>
+        <button id="btn-regist" class="btn btn-primary" type="submit" name="register">登録</button>
         <button id="btn-delete" class="btn btn-secondary" type="submit" name="delete">削除</button>
     </p>
 
@@ -84,6 +84,20 @@
                 num--;
             }
             $('#companion').val(num);
+        });
+        $('#btn-regist').on('click', function() {
+            if($('#name').val() === '') {
+                return true;
+            }
+            var msg = '以下の内容で登録します\n' + 
+            '名前：' + $('#name').val() + '\n';
+            // '職種：' + $('#companion').val() + '\n' +
+            // '性別：' + $('#sex').val();
+            var num = Number($('#companion').val());
+            for(let i = 0; i < num; i++) {
+                msg += '同伴者' + (i + 1) + '：' + $('#name-' + i).val() + '\n';
+            }
+            return confirm(msg);
         });
     })
 </script>
