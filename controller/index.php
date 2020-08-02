@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require_once('../model/dao/GameInfoDao.php');
 require_once("./calendar.php"); 
 require_once('./header.php');  

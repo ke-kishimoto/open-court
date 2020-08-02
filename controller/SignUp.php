@@ -1,5 +1,5 @@
 <?php
-// session_start();
+session_start();
 // 新規登録・アカウント情報修正
 require_once('../model/dao/UsersDao.php');
 require_once('../model/dao/DefaultCompanionDao.php');

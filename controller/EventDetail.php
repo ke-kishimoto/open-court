@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once('../model/dao/GameInfoDao.php');
 require_once('../model/dao/DefaultCompanionDao.php');
 require_once('../model/dao/DetailDao.php');

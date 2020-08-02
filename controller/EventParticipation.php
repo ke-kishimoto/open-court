@@ -1,5 +1,5 @@
 <?php
-// session_start();
+session_start();
 // 参加予約の登録
 require_once('../model/entity/Participant.php');
 require_once('../model/entity/Companion.php');

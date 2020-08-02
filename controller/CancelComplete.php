@@ -1,4 +1,5 @@
-<?php 
+<?php
+session_start();
 require_once('../model/entity/Participant.php');
 require_once('../model/dao/DetailDao.php');
 require_once('../model/dao/ConfigDao.php');

@@ -1,5 +1,5 @@
 <?php
-// session_start();
+session_start();
 require_once('../model/dao/UsersDao.php');
 require_once('./header.php');
 use dao\UsersDao;

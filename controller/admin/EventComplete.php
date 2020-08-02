@@ -1,5 +1,5 @@
 <?php
-// session_start();
+session_start();
 require_once('../../model/entity/GameInfo.php');
 require_once('../../model/dao/GameInfoDao.php');
 use entity\GameInfo;

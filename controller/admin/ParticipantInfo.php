@@ -1,5 +1,5 @@
 <?php
-// session_start();
+session_start();
 require_once('../../model/dao/DetailDao.php');
 require_once('../../model/dao/CompanionDao.php');
 use dao\DetailDao;

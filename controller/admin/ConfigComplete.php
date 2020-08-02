@@ -1,5 +1,5 @@
 <?php
-// session_start();
+session_start();
 require_once('../../model/entity/Config.php');
 require_once('../../model/dao/ConfigDao.php');
 use entity\Config;

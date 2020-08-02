@@ -24,7 +24,7 @@
     </p>
     <p>
         メール
-        <input class="form-control" type="email" name="email">
+        <input class="form-control" type="email" name="email" value="<?php echo $participant['email'] ?>">
     </p>
     <p>
         備考
