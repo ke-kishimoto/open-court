@@ -40,11 +40,15 @@ class ConfigDao {
         $sql = 'update config set 
         line_token = :line_token
         , system_title = :system_title
+        , bg_color = :bg_color
+        , logo_img_path = :logo_img_path
         where id = :id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':id', $config->id, PDO::PARAM_INT);
         $prepare->bindValue(':line_token', $config->lineToken, PDO::PARAM_STR);
         $prepare->bindValue(':system_title', $config->systemTitle, PDO::PARAM_STR);
+        $prepare->bindValue(':bg_color', $config->bgColor, PDO::PARAM_STR);
+        $prepare->bindValue(':logo_img_path', $config->logoImgPath, PDO::PARAM_STR);
         $prepare->execute();
         $_SESSION['system_title'] = $config->systemTitle;
     }

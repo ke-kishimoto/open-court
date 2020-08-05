@@ -18,6 +18,14 @@
     <p>
         LINEトークン<input class="form-control" type="text" name="line_token"  required value="<?php echo $config['line_token'] ?>">
     </p>
+    <hr>
+    <p>背景色</p>
+    <select id="bg_color" name="bg_color" class="custom-select mr-sm-2">
+        <option value="white" <?php echo $config['bg_color'] == 'white' ? 'selected' : '' ?> >白</option>
+        <option value="orange" <?php echo $config['bg_color'] == 'orange' ? 'selected' : '' ?> >オレンジ</option>
+        <option value="pink" <?php echo $config['bg_color'] == 'pink' ? 'selected' : '' ?> >ピンク</option>
+
+    </select>
     <p>
         <button class="btn btn-primary" type="submit" name="register">登録</button>
     </p>

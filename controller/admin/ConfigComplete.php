@@ -13,6 +13,8 @@ if (isset($_POST["csrf_token"])
         $_POST['id']
         , $_POST['line_token']
         , $_POST['system_title']
+        , $_POST['bg_color']
+        , ''
     );
         
     $configDao = new ConfigDao();

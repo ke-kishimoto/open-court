@@ -1,6 +1,7 @@
+-- DB名は任意。そのうち変えたい
 -- create database open_court;
 
--- MAMP
+-- MAMP用接続
 -- /Applications/MAMP/Library/bin/
 -- ./mysql -u root -p
 
@@ -66,7 +67,14 @@ create table config(
     id int primary key
     , line_token varchar(200)
     , system_title varchar(30)
+    , bg_color varchar(30)  -- 背景色、何個か選べるようにする
+    , logo_img_path varchar(200)
 );
+
+
+-- 追加用
+-- alter table config add column bg_color varchar(30);
+-- alter table config add column logo_img_path varchar(200);
 
 -- ユーザー
 -- drop table users;
