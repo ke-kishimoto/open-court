@@ -3,7 +3,7 @@
     <input type="hidden" id="id" name="id" value="<?php echo $participant['id'] ?>">
     <input type="hidden" name="game_id" value="<?php echo $_GET['game_id'] ?>">
     <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
-    <p>
+    <p class="<?php echo $userListClass ?>">
         <select name="id" id="user">
         <option value=""></option>
         <?php foreach ($userList as $user): ?>

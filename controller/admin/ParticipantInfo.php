@@ -7,10 +7,12 @@ use dao\DetailDao;
 use dao\CompanionDao;
 use dao\UsersDao;
 $detailDao = new DetailDao();
+$userListClass = '';
 if(isset($_GET['id'])) {
     $participant = $detailDao->getParticipant($_GET['id']);
     $companionDao = new CompanionDao();
     $companionList = $companionDao->getCompanionList($participant['id']);
+    $userListClass = 'hidden';
 } else {
 //    header('Location: index.php');
     $participant['id'] = '';
