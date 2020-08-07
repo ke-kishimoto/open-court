@@ -85,12 +85,14 @@ class UsersDao {
         id
         , name 
         , email
+        , occupation
         , case 
             when occupation =  1 then '社会人'
             when occupation =  2 then '大学・専門学校'
             when occupation =  3 then '高校'
             else 'その他' 
           end occupation_name
+        , sex
         , case
             when sex = 1 then '男性'
             when sex = 2 then '女性'

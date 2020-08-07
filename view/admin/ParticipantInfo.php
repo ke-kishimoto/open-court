@@ -4,6 +4,14 @@
     <input type="hidden" name="game_id" value="<?php echo $_GET['game_id'] ?>">
     <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
     <p>
+        <select name="id" id="user">
+        <option value=""></option>
+        <?php foreach ($userList as $user): ?>
+            <option value="<?php echo $user['id'] ?>"><?php echo $user['name'] ?></option>
+        <?php endforeach ?>
+        </select>
+    </p>
+    <p>
     職種
     <select id="occupation" name="occupation" class="custom-select mr-sm-2">
         <option value="1" <?php echo $participant['occupation'] == '1' ? 'selected' : '' ?> >社会人</option>
@@ -20,15 +28,15 @@
     </p>
     <p>
         名前
-        <input class="form-control" type="text" id="name" name="name" value="<?php echo $participant['name'] ?>" required>
+        <input id="name" class="form-control" type="text" name="name" value="<?php echo $participant['name'] ?>" required>
     </p>
     <p>
         メール
-        <input class="form-control" type="email" name="email" value="<?php echo $participant['email'] ?>">
+        <input id="email" class="form-control" type="email" name="email" value="<?php echo $participant['email'] ?>">
     </p>
     <p>
         備考
-        <textarea class="form-control" name="remark"><?php echo $participant['remark'] ?></textarea>
+        <textarea id="remark" class="form-control" name="remark"><?php echo $participant['remark'] ?></textarea>
     <div id="douhan-0">
         </p>
             <input id="companion" name="companion" type="hidden" value="<?php echo count((array)$companionList) ?>">
@@ -99,6 +107,29 @@
             }
             return confirm(msg);
         });
+        $('#user').change(function() {
+                $.ajax({
+                url:'../../controller/api/GetUserInfo.php',
+                type:'POST',
+                data:{
+                    'id':$('#user').val()
+                }
+                })
+                // Ajaxリクエストが成功した時発動
+                .done( (data) => {
+                    $('#name').val(data.name);
+                    $('#occupation').val(data.occupation);
+                    $('#sex').val(data.sex);
+                    $('#email').val(data.email);
+                    $('#remark').val(data.remark);
+                })
+                // Ajaxリクエストが失敗した時発動
+                .fail( (data) => {
+                })
+                // Ajaxリクエストが成功・失敗どちらでも発動
+                .always( (data) => {
+                })
+            })
     })
 </script>
 </body>

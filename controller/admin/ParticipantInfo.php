@@ -2,8 +2,10 @@
 session_start();
 require_once('../../model/dao/DetailDao.php');
 require_once('../../model/dao/CompanionDao.php');
+require_once('../../model/dao/UsersDao.php');
 use dao\DetailDao;
 use dao\CompanionDao;
+use dao\UsersDao;
 $detailDao = new DetailDao();
 if(isset($_GET['id'])) {
     $participant = $detailDao->getParticipant($_GET['id']);
@@ -13,6 +15,7 @@ if(isset($_GET['id'])) {
 //    header('Location: index.php');
     $participant['id'] = '';
     $participant['name'] = '';
+    $participant['email'] = '';
     $participant['occupation'] = 1;
     $participant['occupation_name'] = '社会人';
     $participant['sex'] = 1;
@@ -21,6 +24,9 @@ if(isset($_GET['id'])) {
     $participant['remark'] = '';
 
     $companionList = array();
+
+    $userDao = new UsersDao();
+    $userList = $userDao->getUserList();
 }
 
 

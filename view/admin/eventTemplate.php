@@ -55,7 +55,6 @@
                 })
                 // Ajaxリクエストが成功した時発動
                 .done( (data) => {
-                    console.log(data);
                     $('#template_name').val(data.template_name);
                     $('#title').val(data.title);
                     $('#short_title').val(data.short_title);
