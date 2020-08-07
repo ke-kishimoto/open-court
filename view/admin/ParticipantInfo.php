@@ -109,19 +109,49 @@
         });
         $('#user').change(function() {
                 $.ajax({
-                url:'../../controller/api/GetUserInfo.php',
-                type:'POST',
-                data:{
-                    'id':$('#user').val()
-                }
+                    url:'../../controller/api/GetUserInfo.php',
+                    type:'POST',
+                    data:{
+                        'id':$('#user').val()
+                    }
                 })
                 // Ajaxリクエストが成功した時発動
-                .done( (data) => {
-                    $('#name').val(data.name);
-                    $('#occupation').val(data.occupation);
-                    $('#sex').val(data.sex);
-                    $('#email').val(data.email);
-                    $('#remark').val(data.remark);
+                .done( (user) => {
+                    // 同伴者削除
+                    for(let i = Number($('#companion').val()); i > 0; i--) {
+                        $('#douhan-' + i).remove();
+                    }
+                    $('#companion').val(0);
+
+                    // ユーザー情報セット
+                    $('#name').val(user.name);
+                    $('#occupation').val(user.occupation);
+                    $('#sex').val(user.sex);
+                    $('#email').val(user.email);
+                    $('#remark').val(user.remark);
+                    // 同伴者情報追加
+                    $.ajax({
+                        url:'../../controller/api/GetDefaultCompanionList.php',
+                        type:'POST',
+                        data:{
+                            'id':user.id
+                        }
+                    })
+                    .done((conpanionList) => {
+                        // console.log(conpanionList);
+                        
+                        for(let i = 0; i < conpanionList.length; i++) {
+                            var current = $('#douhan-' + i);
+                            let num = i + 1;
+                            var div = $('<div>').attr('id', 'douhan-' + num).text(num + '人目');
+                            div.append($('#occupation').clone().attr('id', 'occupation-' + num).attr('name', 'occupation-' + num).val(conpanionList[i].occupation));
+                            div.append($('#sex').clone().attr('id', 'sex-' + num).attr('name', 'sex-' + num).val(conpanionList[i].sex));
+                            div.append($('#name').clone().attr('id', 'name-' + num).attr('name', 'name-' + num).attr('placeholder', '名前').val(conpanionList[i].name));
+                            div.append($('<br>'));
+                            current.after(div);
+                            $('#companion').val(num);
+                        }
+                    })
                 })
                 // Ajaxリクエストが失敗した時発動
                 .fail( (data) => {
