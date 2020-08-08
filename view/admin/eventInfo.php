@@ -78,11 +78,13 @@
         <?php foreach ((array)$participantList as $participant): ?>
             <?php if($participant['main'] == '1'): ?>
                 <hr>
+                <div id="participant-<?php echo $participant['id'] ?>">
                 <p>
                     <a class="btn btn-secondary" href="ParticipantInfo.php?id=<?php echo $participant['id']; ?>&game_id=<?php echo $gameInfo['id']; ?>">修正</a>
                     <button type="button" class="waiting btn btn-<?php echo $participant['waiting_flg'] == '1' ? 'warning' : 'success' ?>" value="<?php echo $participant['id'] ?>">
                     <?php echo $participant['waiting_flg'] == '1' ? 'キャンセル待ちを解除' : 'キャンセル待ちに変更' ?></button>
                     <span class="duplication"><?php echo $participant['chk'] ?></span>
+                    <button type="button" class="btn btn-danger btn-participant-delete" value="<?php echo $participant['id'] ?>">削除</button>
                 </p>
             <?php endif ?>
         
@@ -100,7 +102,7 @@
                 <p>
                     備考：<?php echo htmlspecialchars($participant['remark']); ?>
                 </p>
-                
+            </div>
             <?php endif ?>
         <?php endforeach; ?>
     </details>
@@ -177,6 +179,36 @@
                 // Ajaxリクエストが成功・失敗どちらでも発動
                 .always( (data) => {
                 })
+            });
+            // 削除処理
+            $('.btn-participant-delete').on('click', function() {
+                if(window.confirm('削除してもよろしいですか')) {
+                    $.ajax({
+                        url:'../../controller/api/deleteParticipant.php',
+                        type:'POST',
+                        data:{
+                            'id':$(this).val(),
+                            'game_id':$('#id').val(),
+                        }
+                    })
+                    .done( (data) => {
+                        $('#cnt').text(data.cnt);
+                        $('#sya_women').text(data.sya_women);
+                        $('#sya_men').text(data.sya_men);
+                        $('#dai_women').text(data.dai_women);
+                        $('#dai_men').text(data.dai_men);
+                        $('#kou_women').text(data.kou_women);
+                        $('#kou_men').text(data.kou_men);
+                        $('#waiting_cnt').text(data.waiting_cnt);
+                        $('#participant-' + $(this).val()).remove();
+                    })
+                    // Ajaxリクエストが失敗した時発動
+                    .fail( (data) => {
+                    })
+                    // Ajaxリクエストが成功・失敗どちらでも発動
+                    .always( (data) => {
+                    })
+                }
             });
         });
     
