@@ -1,6 +1,6 @@
 @import url(http://fonts.googleapis.com/earlyaccess/notosansjp.css);
 html,body{
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: 'DIN Next Light', 'Noto Sans JP', sans-serif;
     font-size: 100%;
 }
 
@@ -102,8 +102,17 @@ header {
     padding: 0;
 }
 
-body {
-    /* background-color: #DE5021; オレンジ*/
+header {
+    /*オレンジ*/
+    background-color: #DE5021; 
     /* background-color: #ffc0cb; */
+    /* background-color: white; */
+}
+
+.bg-color-white {
     background-color: white;
+}
+
+.bg-color-orange {
+    background-color: #DE5021;
 }

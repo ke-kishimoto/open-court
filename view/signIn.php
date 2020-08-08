@@ -37,7 +37,13 @@
                 strage.setItem('eventScheduleUser', JSON.stringify(user));
                 // console.log(JSON.parse(strage.getItem('eventScheduleUser')));
             }
-        })
+        });
+        let strage = window.localStorage;
+        let user = JSON.parse(strage.getItem('eventScheduleUser'));
+        if(user !== null) {
+            $('#email').val(user.email);
+            $('#password').val(user.pass);
+        }
     })
 
 </script>
