@@ -18,5 +18,6 @@ $week = [
 $title = 'イベントカレンダー';
 include('../view/common/head.php');
 include('../view/common/header.php');
+include('../view/calendar.php');
 include('../view/eventCalendar.php');
 ?>

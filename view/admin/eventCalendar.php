@@ -1,46 +1,4 @@
-<p>イベントカレンダー【<span id="year"><?php echo $year; ?></span>年<span id="this-month"><?php echo $month; ?></span>月】</p>
-<div class="month">
-<a href=".?year=<?php echo $pre_year; ?>&month=<?php echo $lastmonth; ?>"><?php echo $lastmonth; ?>月</a>
-<a href=".?year=<?php echo $year; ?>&month=<?php echo $month; ?>"><?php echo $month; ?>月</a>
-<a href=".?year=<?php echo $next_year; ?>&month=<?php echo $nextmonth; ?>"><?php echo $nextmonth; ?>月</a>
-</div>
-<table>
-    <tr>
-        <th>日</th>
-        <th>月</th>
-        <th>火</th>
-        <th>水</th>
-        <th>木</th>
-        <th>金</th>
-        <th>土</th>
-    </tr>
- 
-    <tr>
-    <?php $cnt = 0; ?>
-    <?php foreach ($calendar as $key => $value): ?>
- 
-        <?php $cnt++; ?>
-        <?php if($value['link']): ?>
-            <td class="link">
-                <a class="days__link" href="detail_date.php?date=<?php echo $year . '/' . sprintf('%02d', $month) . '/' . sprintf('%02d', $value['day']); ?>">
-                    <?php echo htmlspecialchars($value['day']); ?>
-                </a>
-            </td>
-        <?php else: ?>
-            <td>
-            <?php echo htmlspecialchars($value['day']); ?>
-            </td>
-        <?php endif ?>
- 
-    <?php if ($cnt == 7): ?>
-    </tr>
-    <tr>
-    <?php $cnt = 0; ?>
-    <?php endif; ?>
- 
-    <?php endforeach; ?>
-    </tr>
-</table>
+
 <p>
     <a href="EventInfo.php" class="btn btn-info">新規イベント登録</a>
 </p>
@@ -60,6 +18,7 @@
         <hr>
         <li>
             <a href="EventInfo.php?id=<?php echo $gameInfo['id']; ?>">
+                <span class="event-end"><?php echo $gameInfo['game_date'] > date('Y-m-d') ? '' : '※このイベントは終了しました<br>'  ?></span>
                 <?php echo htmlspecialchars($gameInfo['title']); ?><br>
                 日時：<?php echo htmlspecialchars(date('n月d日（', strtotime($gameInfo['game_date'])) . $week[date('w', strtotime($gameInfo['game_date']))] . '）'); ?>  
                 <?php echo htmlspecialchars($gameInfo['start_time']); ?>～<?php echo htmlspecialchars($gameInfo['end_time']); ?><br>
