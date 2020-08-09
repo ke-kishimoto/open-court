@@ -7,7 +7,7 @@ $participantList = $detailDao->getParticipantList($_GET['gameid'], $_GET['occupa
 
 $gameId = $_GET['gameid'];
 include('./Header.php');  
-$title = '参加者登録完了';
+$title = '参加者名一覧';
 include('../../view/admin/head.php');
 include('../../view/admin/header.php');
 include('../../view/admin/participantNameList.php');
