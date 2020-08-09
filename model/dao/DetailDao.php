@@ -160,6 +160,12 @@ class DetailDao {
         count(*) cnt
         , sum(
             case 
+                when occupation = 1 then 1
+                else 0
+            end
+        ) sya_all  -- 社会人全体
+        , sum(
+            case 
                 when occupation = 1 and sex = 1 then 1
                 else 0
             end
@@ -172,6 +178,12 @@ class DetailDao {
         ) sya_women  -- 社会人女
         , sum(
             case 
+                when occupation = 2 then 1
+                else 0
+            end
+        ) dai_all  -- 大学生
+        , sum(
+            case 
                 when occupation = 2 and sex = 1 then 1
                 else 0
             end
@@ -182,6 +194,12 @@ class DetailDao {
                 else 0
             end
         ) dai_women  -- 大学生女
+        , sum(
+            case 
+                when occupation = 3 then 1
+                else 0
+            end
+        ) kou_all  -- 高校生
         , sum(
             case 
                 when occupation = 3 and sex = 1 then 1

@@ -53,20 +53,95 @@
         <div>
             <details>
             <summary>現在の状況</summary>
-            <br>
-            <p>【参加予定  <span id="cnt"><?php echo $detail['cnt'] ?></span>人】【上限  <?php echo $gameInfo['limit_number'] ?>人】</p>
-            <p>社会人：
-                <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=1&sex=2&waiting_flg=0">女性 <span id="sya_women"><?php echo $detail['sya_women'] ?></span>人</a>、
-                <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=1&sex=1&waiting_flg=0">男性 <span id="sya_men"><?php echo $detail['sya_men'] ?></span>人</a>
-            <p>大学・専門：
-                <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=2&sex=2&waiting_flg=0">女性 <span id="dai_women"><?php echo $detail['dai_women'] ?></span>人</a>、
-                <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=2&sex=1&waiting_flg=0">男性 <span id="dai_men"><?php echo $detail['dai_men'] ?></span>人</a>
-            </p>
-            <p>高校生：
-                <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=3&sex=2&waiting_flg=0">女性 <span id="kou_women"><?php echo $detail['kou_women'] ?></span>人</a>、
-                <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=3&sex=1&waiting_flg=0">男性 <span id="kou_men"><?php echo $detail['kou_men'] ?></span>人</a>
-            </p>
-            <p><a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=0&sex=0&waiting_flg=1">キャンセル待ち：<span id="waiting_cnt"><?php echo $detail['waiting_cnt'] ?></span>人</a></p>
+                <br>
+                <p>【参加予定  <span id="cnt"><?php echo $detail['cnt'] ?></span>人】【上限  <?php echo $gameInfo['limit_number'] ?>人】</p>
+
+                <table>
+                    <tr>
+                        <th>職種</th><th>男性</th><th>女性</th><th>全体</th>
+                    </tr>
+                    <tr>
+                        <th>社会人</th>
+                        <th>
+                            <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=1&sex=1&waiting_flg=0">
+                                <span id="sya_men"><?php echo $detail['sya_men'] ?></span>人
+                            </a>        
+                        </th>
+                        <th>
+                            <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=1&sex=2&waiting_flg=0">
+                                <span id="sya_women"><?php echo $detail['sya_women'] ?></span>人
+                            </a>        
+                        </th>
+                        <th>
+                            <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=1&sex=0&waiting_flg=0">
+                                <span id="sya_all"><?php echo $detail['sya_all'] ?></span>人
+                            </a>        
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>大学・専門</th>
+                        <th>
+                            <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=2&sex=1&waiting_flg=0">
+                                <span id="dai_men"><?php echo $detail['dai_men'] ?></span>人
+                            </a>        
+                        </th>
+                        <th>
+                            <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=2&sex=2&waiting_flg=0">
+                                <span id="dai_women"><?php echo $detail['dai_women'] ?></span>人
+                            </a>        
+                        </th>
+                        <th>
+                            <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=2&sex=0&waiting_flg=0">
+                                <span id="dai_all"><?php echo $detail['dai_all'] ?></span>人
+                            </a>        
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>高校</th>
+                        <th>
+                            <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=3&sex=1&waiting_flg=0">
+                                <span id="kou_men"><?php echo $detail['kou_men'] ?></span>人
+                            </a>        
+                        </th>
+                        <th>
+                            <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=3&sex=2&waiting_flg=0">
+                                <span id="kou_women"><?php echo $detail['kou_women'] ?></span>人
+                            </a>        
+                        </th>
+                        <th>
+                            <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=3&sex=0&waiting_flg=0">
+                                <span id="kou_all"><?php echo $detail['kou_all'] ?></span>人
+                            </a>        
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>キャンセル待ち</th>
+                        <th>
+                            -       
+                        </th>
+                        <th>
+                            -    
+                        </th>
+                        <th>
+                            <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=0&sex=0&waiting_flg=1">
+                                <span id="waiting_cnt"><?php echo $detail['waiting_cnt'] ?></span>人
+                            </a>        
+                        </th>
+                    </tr>
+                </table>
+
+                <!-- <p>社会人：
+                    <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=1&sex=2&waiting_flg=0">女性 <span id="sya_women"><?php echo $detail['sya_women'] ?></span>人</a>、
+                    <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=1&sex=1&waiting_flg=0">男性 <span id="sya_men"><?php echo $detail['sya_men'] ?></span>人</a>
+                <p>大学・専門：
+                    <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=2&sex=2&waiting_flg=0">女性 <span id="dai_women"><?php echo $detail['dai_women'] ?></span>人</a>、
+                    <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=2&sex=1&waiting_flg=0">男性 <span id="dai_men"><?php echo $detail['dai_men'] ?></span>人</a>
+                </p>
+                <p>高校生：
+                    <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=3&sex=2&waiting_flg=0">女性 <span id="kou_women"><?php echo $detail['kou_women'] ?></span>人</a>、
+                    <a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=3&sex=1&waiting_flg=0">男性 <span id="kou_men"><?php echo $detail['kou_men'] ?></span>人</a>
+                </p>
+                <p><a href="<?php dirname(__FILE__) ?>./participantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=0&sex=0&waiting_flg=1">キャンセル待ち：<span id="waiting_cnt"><?php echo $detail['waiting_cnt'] ?></span>人</a></p> -->
             </details>
         </div>
     </div>
@@ -97,7 +172,8 @@
             </p>
             <?php if($participant['main'] == '1'): ?>
                 <p>
-                    連絡先：<?php echo htmlspecialchars($participant['email']); ?>
+                    連絡先：
+                    <a href="mailto:<?php echo htmlspecialchars($participant['email']); ?>"><?php echo htmlspecialchars($participant['email']); ?></a>
                 </p>
                 <p>
                     備考：<?php echo htmlspecialchars($participant['remark']); ?>
@@ -159,10 +235,13 @@
                })
                .done( (data) => {
                     $('#cnt').text(data.cnt);
+                    $('#sya_all').text(data.sya_all);
                     $('#sya_women').text(data.sya_women);
                     $('#sya_men').text(data.sya_men);
+                    $('#dai_all').text(data.dai_all);
                     $('#dai_women').text(data.dai_women);
                     $('#dai_men').text(data.dai_men);
+                    $('#kou_all').text(data.kou_all);
                     $('#kou_women').text(data.kou_women);
                     $('#kou_men').text(data.kou_men);
                     $('#waiting_cnt').text(data.waiting_cnt);
@@ -193,10 +272,13 @@
                     })
                     .done( (data) => {
                         $('#cnt').text(data.cnt);
+                        $('#sya_all').text(data.sya_all);
                         $('#sya_women').text(data.sya_women);
                         $('#sya_men').text(data.sya_men);
+                        $('#dai_all').text(data.dai_all);
                         $('#dai_women').text(data.dai_women);
                         $('#dai_men').text(data.dai_men);
+                        $('#kou_all').text(data.kou_all);
                         $('#kou_women').text(data.kou_women);
                         $('#kou_men').text(data.kou_men);
                         $('#waiting_cnt').text(data.waiting_cnt);
