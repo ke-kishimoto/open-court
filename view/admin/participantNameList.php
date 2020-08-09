@@ -15,7 +15,7 @@
 <?php else: ?>
     <p>参加者はいません</p>
 <?php endif ?>
-<a href="./eventInfo.php?id=<?php echo $gameId ?>">イベント詳細へ戻る</a>
+<a href="./EventInfo.php?id=<?php echo $gameId ?>">イベント詳細へ戻る</a>
 <br>
 <a href="./index.php">トップへ戻る</a>
 </body>
