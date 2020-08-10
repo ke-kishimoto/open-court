@@ -16,7 +16,8 @@ $_SESSION['csrf_token'] = $csrf_token;
 
 include('./Header.php');  
 $title = 'テンプレート登録';
-include('../../view/admin/head.php');
-include('../../view/admin/header.php');
+include('../../view/admin/common/head.php');
+include('../../view/admin/common/header.php');
 include('../../view/admin/eventTemplate.php');
+include('../../view/admin/common/footer.php');
 ?>

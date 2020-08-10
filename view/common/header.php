@@ -1,4 +1,4 @@
-<header class="<?php echo $bgColor ?>">
+<header class="<?php echo $bgColor ?> participant">
     <div>
         <a class="logo" href="./index.php"><?php echo htmlspecialchars($_SESSION['system_title']) ?></a>
     </div>

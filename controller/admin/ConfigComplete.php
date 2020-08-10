@@ -29,8 +29,9 @@ if (isset($_POST["csrf_token"])
 
 include('./Header.php');  
 $title = 'システム設定完了';
-include('../../view/admin/head.php');
-include('../../view/admin/header.php');
+include('../../view/admin/common/head.php');
+include('../../view/admin/common/header.php');
 $msg = 'システム設定が完了しました。';
 include('../../view/admin/complete.php');
+include('../../view/admin/common/footer.php');
 ?>

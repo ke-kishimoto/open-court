@@ -30,5 +30,3 @@
         <button class="btn btn-primary" type="submit" name="register">登録</button>
     </p>
 </form>
-</body>
-</html>

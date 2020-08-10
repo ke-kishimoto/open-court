@@ -15,10 +15,9 @@ $week = [
   ];
 include('./Header.php');  
 $title = 'イベントカレンダー';
-include('../../view/admin/head.php');
-include('../../view/admin/header.php');
+include('../../view/admin/common/head.php');
+include('../../view/admin/common/header.php');
 include('../../view/calendar.php');
-include('../../view/admin/menu.php');
 include('../../view/eventList.php');
-include('../../view/admin/footer.php');
+include('../../view/admin/common/footer.php');
 ?>

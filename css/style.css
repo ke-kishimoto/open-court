@@ -63,13 +63,18 @@ table td {
     background-color: yellow;
 }
 /* ヘッダー */
-header {
+header.participant {
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid rgba(0,0,0,.3);
     padding: 10px !important;
     margin-bottom: 15px;
 }
+
+header .system-title {
+    text-align: center;;
+}
+
 .nav{
     font-size: 14px;
 }
@@ -120,4 +125,7 @@ header {
 .event-end {
     text-decoration: none;
     color: red;
+}
+.system-title {
+    margin: 0 auto;
 }

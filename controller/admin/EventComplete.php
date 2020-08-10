@@ -51,7 +51,8 @@ if (isset($_POST["csrf_token"])
 
 include('./Header.php');  
 $title = 'イベント登録完了';
-include('../../view/admin/head.php');
-include('../../view/admin/header.php');
+include('../../view/admin/common/head.php');
+include('../../view/admin/common/header.php');
 include('../../view/admin/eventComplete.php');
+include('../../view/admin/common/footer.php');
 ?>

@@ -18,5 +18,3 @@
 <a href="./EventInfo.php?id=<?php echo $gameId ?>">イベント詳細へ戻る</a>
 <br>
 <a href="./index.php">トップへ戻る</a>
-</body>
-</html>
