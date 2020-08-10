@@ -18,5 +18,7 @@ $title = 'イベントカレンダー';
 include('../../view/admin/head.php');
 include('../../view/admin/header.php');
 include('../../view/calendar.php');
-include('../../view/admin/eventCalendar.php');
+include('../../view/admin/menu.php');
+include('../../view/eventList.php');
+include('../../view/admin/footer.php');
 ?>

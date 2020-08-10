@@ -41,6 +41,29 @@ class GameInfoDao {
     }
 
     public function getGameInfoList($year, $month) {
+        $sql = $this->getGameInfoListSQL();
+        $sql .= DaoFactory::getGameInfoListSQL();
+        $sql .= "group by g.id order by max(g.game_date)";
+        $prepare = $this->pdo->prepare($sql);
+        $prepare->bindValue(':year', $year);
+        $prepare->bindValue(':month', $month);
+        $prepare->execute();
+
+        return $prepare->fetchAll();
+    }
+
+    public function getGameInfoListByDate($date) {
+        $sql = $this->getGameInfoListSQL();
+        $sql .= " where game_date = :date ";
+        $sql .= " group by g.id order by max(g.game_date)";
+        $prepare = $this->pdo->prepare($sql);
+        $prepare->bindValue(':date', $date);
+        $prepare->execute();
+
+        return $prepare->fetchAll();
+    }
+
+    private function getGameInfoListSQL() {
         $sql = "select 
         g.id 
         , max(g.title) title
@@ -67,23 +90,7 @@ class GameInfoDao {
                     where waiting_flg = 0) p
         on g.id = p.game_id 
         ";
-        $sql .= DaoFactory::getGameInfoListSQL();
-        $sql .= "group by g.id order by max(g.game_date)";
-        $prepare = $this->pdo->prepare($sql);
-        $prepare->bindValue(':year', $year);
-        $prepare->bindValue(':month', $month);
-        $prepare->execute();
-
-        return $prepare->fetchAll();
-    }
-
-    public function getGameInfoListByDate($date) {
-        $sql = "select * from game_info where game_date = :date";
-        $prepare = $this->pdo->prepare($sql);
-        $prepare->bindValue(':date', $date);
-        $prepare->execute();
-
-        return $prepare->fetchAll();
+        return $sql;
     }
 
     public function insert(GameInfo $gameinfo) {

@@ -22,16 +22,17 @@ foreach ($gameInfoList as $gameInfo) {
 
     echo '<hr>';
     echo '<li>';
-    if ($_POST['type'] === 'admin') {
-        echo '<a href="EventInfo.php?id=' . $gameInfo['id'] . '">';
-    } else {
-        echo '<a href="EventDetail.php?id=' . $gameInfo['id'] . '">';
+    echo '<a href="EventInfo.php?id=' . $gameInfo['id'] . '">';
+    if ($gameInfo['game_date'] < date('Y-m-d')) {
+        echo '<span class="event-end">※このイベントは終了しました<br></span>';
     }
     echo $gameInfo['title'] . '<br>';
     // echo '日時：' . $gameInfo['game_date'] . $gameInfo['start_time'] . '～' . $gameInfo['end_time'] . '<br>';
     echo '日時：' . date('n月d日（', strtotime($gameInfo['game_date'])) . $week[date('w', strtotime($gameInfo['game_date']))] . '）';
     echo $gameInfo['start_time'] . '～' . $gameInfo['end_time'] . '<br>';
-    echo '場所：' . $gameInfo['place'];
+    echo '場所：' . $gameInfo['place'] . '<br>';
+    echo '参加状況：【参加予定：現在' . htmlspecialchars($gameInfo['participants_number']) . '名】定員：' . htmlspecialchars($gameInfo['limit_number']) . '人<br>';
+    echo '空き状況：' . htmlspecialchars($gameInfo['mark']);
     echo '</a>';
     echo '</li>';
 }

@@ -9,7 +9,7 @@
         </tr>
         <?php foreach($eventList as $event): ?>
             <tr>
-                <th><a href="EventDetail.php?id=<?php echo $event['id'] ?>"><?php echo $event['title'] ?></a></th>
+                <th><a href="EventInfo.php?id=<?php echo $event['id'] ?>"><?php echo $event['title'] ?></a></th>
                 <th><?php echo $event['game_date'] ?></th>
                 <th><?php echo $event['start_time'] ?></th>
                 <th><?php echo $event['end_time'] ?></th>
