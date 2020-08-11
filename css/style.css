@@ -81,10 +81,6 @@ header .system-title {
 .nav > a:first-child{
     margin-right: 10px;
 }
-.user-name{
-    line-height: 31px;
-    margin-right: 10px;
-}
 
 /* 新規登録 */
 .explain-box {
