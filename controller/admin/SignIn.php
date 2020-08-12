@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include('./Header.php');  
+// include('./Header.php');  
 $title = 'ログイン';
 include('../../view/admin/common/head.php');
 include('../../view/admin/common/header.php');
