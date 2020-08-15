@@ -90,8 +90,8 @@
             -->
             <input id="companion" name="companion" type="hidden" value="<?php echo count($companions); ?>">
             <p id="douhanErrMsg" style="color: red; display: none;">同伴者は10人までです</p>
-            <button class="btn btn-secondary" id="btn-add" type="button">同伴者追加</button>
-            <button class="btn btn-danger" id="btn-del" type="button">同伴者削除</button>
+            <button class="btn btn-secondary" id="btn-companion-add" type="button">同伴者追加</button>
+            <button class="btn btn-danger" id="btn-companion-del" type="button">同伴者削除</button>
         </p>
         <?php for($i = 0;$i < count($companions); $i++): ?>
             <div id="douhan-<?php echo $i + 1 ?>">
@@ -109,7 +109,7 @@
         <?php endfor ?>
         <input type="hidden" name="title" value="<?php echo htmlspecialchars($gameInfo['title']) ?>">
         <input type="hidden" name="date" value="<?php echo htmlspecialchars($gameInfo['game_date']) ?>">
-        <button id="btn-regist" class="btn btn-primary" type="submit"><?php echo htmlspecialchars($btnLiteral) ?></button>
+        <button id="btn-partisipant-regist" class="btn btn-primary" type="submit"><?php echo htmlspecialchars($btnLiteral) ?></button>
         <a class="btn btn-danger" href="Cancel.php?gameid=<?php echo htmlspecialchars($gameInfo['id']) ?>" >参加のキャンセル</a>
     </form>
 </div>
@@ -122,7 +122,7 @@
 </script>
 <script>
     $(function() {
-        $('#btn-add').on('click', function() {
+        $('#btn-companion-add').on('click', function() {
             var num = Number($('#companion').val());
             if(num > 9){
                 $('#douhanErrMsg').css('display','block');
@@ -138,7 +138,7 @@
             current.after(div);
             $('#companion').val(num);
         });
-        $('#btn-del').on('click', function() {
+        $('#btn-companion-del').on('click', function() {
             var num = Number($('#companion').val());
             if(num > 0) {
                 $('#douhan-' + num).remove();
@@ -146,7 +146,7 @@
             }
             $('#companion').val(num);
         });
-        $('#btn-regist').on('click', function() {
+        $('#btn-partisipant-regist').on('click', function() {
             if($('#name').val() === '') {
                 return true;
             }

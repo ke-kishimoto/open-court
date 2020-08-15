@@ -48,6 +48,7 @@ if(empty($errMsg)) {
     include('../view/common/head.php');
     include('../view/common/header.php');
     include('../view/complete.php');
+    include('../view/common/footer.php');
 } else {
     if(isset($_SESSION['user'])) {
         $email = $_SESSION['user']['email'];
@@ -61,5 +62,6 @@ if(empty($errMsg)) {
     include('../view/common/head.php');
     include('../view/common/header.php');
     include('../view/cancelForm.php');
+    include('../view/common/footer.php');
 }
 ?>

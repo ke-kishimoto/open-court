@@ -23,6 +23,7 @@ if(isset($errMsg)) {
     include('../view/common/head.php');
     include('../view/common/header.php');
     include('../view/signIn.php');
+    include('../view/common/footer.php');
 } else {
     header('Location: ./index.php');
 }

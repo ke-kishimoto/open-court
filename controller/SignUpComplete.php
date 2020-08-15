@@ -101,12 +101,14 @@ if(!empty($errMsg)) {
     include('../view/common/head.php');
     include('../view/common/header.php');
     include('../view/signup.php');
+    include('../view/common/footer.php');
 } else {
     $title = 'ユーザー登録完了';
     $msg = 'ユーザー登録が完了しました。';
     include('../view/common/head.php');
     include('../view/common/header.php');
     include('../view/complete.php');
+    include('../view/common/footer.php');
 }
 
 ?>

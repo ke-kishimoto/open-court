@@ -12,6 +12,7 @@
 <script>
     'use strict';
     $(function() {
+        // カレンダーの日付
         $('.link').on('click', function(event) {
             event.preventDefault(),
             $.ajax({

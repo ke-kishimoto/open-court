@@ -16,4 +16,5 @@ $title = 'キャンセル';
 include('../view/common/head.php');
 include('../view/common/header.php');
 include('../view/cancelForm.php');
+include('../view/common/footer.php');
 ?>

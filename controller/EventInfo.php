@@ -73,5 +73,6 @@ $title = 'イベント詳細';
 include('../view/common/head.php');
 include('../view/common/header.php');
 include('../view/detail.php');
+include('../view/common/footer.php');
 
 ?>

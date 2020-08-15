@@ -5,7 +5,7 @@
   </div>
   <a class="btn btn-sm btn-outline-dark <?php echo $mode == 'new' ? 'hidden' : '' ?>" href="passwordChange.php" role="button">パスワード変更</a>
     <form id="signUp_form" action="SignUpComplete.php" method="post" class="form-group">
-        <input type="hidden" id="mode" name="mode" value="<?php echo $mode ?>">
+        <input type="hidden" id="update-mode" name="mode" value="<?php echo $mode ?>">
         <input type="hidden" id="id" name="id" value="<?php echo $id ?>">
         <p style="color: red;"><?php if(!empty($errMsg)){echo $errMsg;};?></p>
         <p>
@@ -48,8 +48,8 @@
         <p id="douhan-0">
             <input id="companion" name="companion" type="hidden" value="<?php echo count($companions); ?>">
             <p id="douhanErrMsg" style="color: red; display: none;">同伴者は10人までです</p>
-            <button class="btn btn-secondary" id="btn-add" type="button">同伴者追加</button>
-            <button class="btn btn-danger" id="btn-del" type="button">同伴者削除</button>
+            <button class="btn btn-secondary" id="btn-companion-add" type="button">同伴者追加</button>
+            <button class="btn btn-danger" id="btn-companion-del" type="button">同伴者削除</button>
         </p>
         <?php for($i = 0;$i < count($companions); $i++): ?>
             <div id="douhan-<?php echo $i + 1 ?>">
@@ -76,40 +76,3 @@
         </form>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script>
-    $(function() {
-        $('#btn-add').on('click', function() {
-            var num = Number($('#companion').val());
-            if(num > 9){
-                $('#douhanErrMsg').css('display','block');
-                return
-            }
-            var current = $('#douhan-' + num);
-            num++;
-            var div = $('<div>').attr('id', 'douhan-' + num).text(num + '人目');
-            div.append($('#occupation').clone().attr('id', 'occupation-' + num).attr('name', 'occupation-' + num));
-            div.append($('#sex').clone().attr('id', 'sex-' + num).attr('name', 'sex-' + num));
-            div.append($('#name').clone().attr('id', 'name-' + num).attr('name', 'name-' + num).attr('placeholder', '名前').val(''));
-            div.append($('<br>'));
-            current.after(div);
-            $('#companion').val(num);
-        });
-        $('#btn-del').on('click', function() {
-            var num = Number($('#companion').val());
-            if(num > 0) {
-                $('#douhan-' + num).remove();
-                num--;
-            }
-            $('#companion').val(num);
-        });
-        $('#button-user-del').on('click', function() {
-            return confirm('削除してもよろしいですか');
-        });
-        if($('#mode').val() === 'update') {
-            $('#password-area').remove();
-        }
-    })
-</script>
-</body>
-</html>

@@ -12,6 +12,7 @@ if(isset($_SESSION['user'])) {
     include('../view/common/head.php');
     include('../view/common/header.php');
     include('../view/participatingEventList.php');
+    include('../view/common/footer.php');
 
 } else {
     header('Location: ./index.php');

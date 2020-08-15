@@ -75,12 +75,14 @@ if (isset($_POST["csrf_token"])
         include('../view/common/head.php');
         include('../view/common/header.php');
         include('../view/complete.php');
+        include('../view/common/footer.php');
     } else {
         $title = 'イベント参加登録完了';
         $msg = '入力されたメールアドレスで既に登録済みです。';
         include('../view/common/head.php');
         include('../view/common/header.php');
         include('../view/complete.php');
+        include('../view/common/footer.php');
     }
 } else {
     header('Location: ./index.php');

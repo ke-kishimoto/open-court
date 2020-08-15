@@ -37,4 +37,5 @@ if(!empty($_GET) && !empty($_SESSION['user'])) {
 include('../view/common/head.php');
 include('../view/common/header.php');
 include('../view/signUp.php');
+include('../view/common/footer.php');
 ?>
