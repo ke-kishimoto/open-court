@@ -45,6 +45,7 @@ for ($i = 1; $i < $last_day + 1; $i++) {
     $calendar[$j]['day'] = $i;
     if (!empty($info)) {
         $calendar[$j]['link'] = true;
+        $calendar[$j]['info'] = $info;
     } else {
         $calendar[$j]['link'] = false;
     }

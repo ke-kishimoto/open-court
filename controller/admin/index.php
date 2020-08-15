@@ -15,6 +15,7 @@ $week = [
   ];
 include('./Header.php');  
 $title = 'イベントカレンダー';
+$adminFlg = '1';
 include('../../view/admin/common/head.php');
 include('../../view/admin/common/header.php');
 include('../../view/calendar.php');

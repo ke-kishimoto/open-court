@@ -4,40 +4,63 @@ html,body{
     font-size: 100%;
 }
 
-/* カレンダー用 */
+/****** ここからカレンダー用 ******/
 table {
     width: 100%;
-}
-table tr {
-    height: 60px;
-}
-.link{
-    background: rgba(26,115,232,0.9);
-    cursor: pointer;
-    transition: 0.1s;
-}
-.link:hover{
-    background: rgba(26,115,232,1);
-}
-.days__link{
-    color: #FFF;
-}
-.days__link:hover{
-    color: #FFF;
-}
-@media(max-width:480px) {
-table tr {
-    height: 40px;
-}
-}
-table th {
-    background: #EEE;
+    table-layout: fixed;
 }
 table th,
 table td {
     border: 1px solid #CCC;
+}
+table td a {
+    display: flex;
+}
+table tr {
+    height: 60px;
+}
+
+table th {
+    background: #EEE;
     text-align: center;
-    padding: 5px;
+}
+table td .day {
+    height: 60px;
+    overflow-y: scroll;
+    font-size: 12px;
+}
+
+.day a.event {
+    color: white;
+    background-color: #00CC99;
+    border: 1px solid;
+}
+
+
+.sunday {
+    background-color: #FFD5EC;
+}
+.sunday .day a.event {
+    border-color: #FFD5EC;
+}
+
+.saturday {
+    background-color: #D9E5FF;
+}
+.saturday .day a.event {
+    border-color: #D9E5FF;
+}
+
+.day-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.link-add {
+    margin-right: 5px;
+}
+.link, .nolink {
+    margin-left: 3px;
 }
 
 .month {
@@ -45,6 +68,8 @@ table td {
     display: flex;
     justify-content: space-between;
 }
+/****** ここまでカレンダー ******/
+
 .hidden {
     display: none;
 }

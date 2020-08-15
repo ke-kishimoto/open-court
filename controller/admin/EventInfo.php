@@ -35,6 +35,10 @@ if (empty($gameInfo)) {
     );
     $templateAreaClass = '';
     $participantDisp = 'hidden';
+
+    if(isset($_GET['date'])) {
+        $gameInfo['game_date'] = $_GET['date'];
+    }
 }
 // 参加者情報取得
 $participantList = null;
