@@ -18,7 +18,7 @@ if ($config['bg_color'] == 'white') {
 }
 //セッションに'user'が無ければログイン画面へ
 if (isset($_SESSION['user']) == null) {
-    header('Location: signIn.php');
+    header('Location: SignIn.php');
     $userName = '管理者';
 } else {
     $userName = $_SESSION['user']['name'];

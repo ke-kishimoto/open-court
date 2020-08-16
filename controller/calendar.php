@@ -25,17 +25,18 @@ $today = (int)date('d');
 for ($i = 1; $i < $last_day + 1; $i++) {
  
     // 曜日を取得
-    $week = date('w', mktime(0, 0, 0, $month, $i, $year));
+    $firstDayWeek = date('w', mktime(0, 0, 0, $month, $i, $year));
  
     // 1日の場合
     if ($i == 1) {
  
         // 1日目の曜日までをループ
-        for ($s = 1; $s <= $week; $s++) {
+        for ($s = 1; $s <= $firstDayWeek; $s++) {
  
             // 前半に空文字をセット
             $calendar[$j]['day'] = '';
             $calendar[$j]['link'] = false;
+            $calendar[$j]['today'] = '';
             $j++;
  
         }
@@ -66,11 +67,12 @@ for ($i = 1; $i < $last_day + 1; $i++) {
     if ($i == $last_day) {
  
         // 月末日から残りをループ
-        for ($e = 1; $e <= 6 - $week; $e++) {
+        for ($e = 1; $e <= 6 - $firstDayWeek; $e++) {
  
             // 後半に空文字をセット
             $calendar[$j]['day'] = '';
             $calendar[$j]['link'] = false;
+            $calendar[$j]['today'] = '';
             $j++;
         }
     }

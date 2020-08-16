@@ -20,17 +20,17 @@
     <?php foreach ($calendar as $key => $value): ?>
         <?php 
             if($cnt % 7 === 0 && $value['day'] !== '') {
-                $week = 'sunday';
+                $weekName = 'sunday';
             }elseif($cnt % 7 === 6 && $value['day'] !== '') {
-                $week = 'saturday';
+                $weekName = 'saturday';
             }elseif ($value['day'] === '') {
-                $week = 'blank';
+                $weekName = 'blank';
             } else {  
-                $week = '';
+                $weekName = '';
             }
         ?>
         <?php $cnt++; ?>
-        <td class="<?php echo $week; ?>">
+        <td class="<?php echo $weekName; ?>">
             <div class="day">
                 <?php if($value['link']): ?>    
                     <div class="day-header">   
