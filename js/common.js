@@ -1,7 +1,7 @@
 'use strict';
 $(function() {
     // ドロワーメニュー
-    // $('.drawer').drawer();
+    $('.drawer').drawer();
     // キャンセル画面
     if($('#user-mode').val() === 'guest') {
         $('#password-area').remove();
@@ -129,6 +129,11 @@ $(function() {
     });
     if($('#update-mode').val() === 'update') {
         $('#password-area').remove();
+    }
+
+    var gameId = document.getElementById("game_id").value;
+    if(gameId === null || gameId === '') {
+        document.getElementById("join_form").classList.add('hidden');
     }
 
 

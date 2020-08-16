@@ -18,6 +18,8 @@ $last_day = date('j', mktime(0, 0, 0, $month + 1, 0, $year));
  
 $calendar = array();
 $j = 0;
+// 今日の日付
+$today = (int)date('d');
 
 // 月末日までループ
 for ($i = 1; $i < $last_day + 1; $i++) {
@@ -43,6 +45,15 @@ for ($i = 1; $i < $last_day + 1; $i++) {
     $info = $gameInfoDao->getGameInfoListByDate($year . '-' . $month . '-' . $i);
     // 配列に日付をセット
     $calendar[$j]['day'] = $i;
+
+    // 今日かどうか
+    if($i === $today) {
+        $calendar[$j]['today'] = 'today';
+    } else {
+        $calendar[$j]['today'] = '';
+    }
+
+    // イベント有無の判定
     if (!empty($info)) {
         $calendar[$j]['link'] = true;
         $calendar[$j]['info'] = $info;

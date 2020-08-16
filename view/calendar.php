@@ -1,8 +1,8 @@
-<p>イベントカレンダー【<span id="year"><?php echo htmlspecialchars($year); ?></span>年<span id="this-month"><?php echo htmlspecialchars($month); ?></span>月】</p>
+<p>イベントカレンダー</p>
 <div  class="month">
-<a href=".?year=<?php echo htmlspecialchars($pre_year); ?>&month=<?php echo htmlspecialchars($lastmonth); ?>"><?php echo htmlspecialchars($lastmonth); ?>月</a>
-<a href=".?year=<?php echo htmlspecialchars($year); ?>&month=<?php echo htmlspecialchars($month); ?>"><?php echo htmlspecialchars($month); ?>月</a>
-<a href=".?year=<?php echo htmlspecialchars($next_year); ?>&month=<?php echo htmlspecialchars($nextmonth); ?>"><?php echo htmlspecialchars($nextmonth); ?>月</a>
+<a href=".?year=<?php echo htmlspecialchars($pre_year); ?>&month=<?php echo htmlspecialchars($lastmonth); ?>">＜</a>
+<a href=".?year=<?php echo htmlspecialchars($next_year); ?>&month=<?php echo htmlspecialchars($nextmonth); ?>">＞</a>
+<a href=".?year=<?php echo htmlspecialchars($year); ?>&month=<?php echo htmlspecialchars($month); ?>">【<span id="year"><?php echo htmlspecialchars($year); ?></span>年<span id="this-month"><?php echo htmlspecialchars($month); ?></span>月】</a>
 </div>
 <table>
     <tr>
@@ -23,7 +23,9 @@
                 $week = 'sunday';
             }elseif($cnt % 7 === 6 && $value['day'] !== '') {
                 $week = 'saturday';
-            }else {   
+            }elseif ($value['day'] === '') {
+                $week = 'blank';
+            } else {  
                 $week = '';
             }
         ?>
@@ -32,7 +34,7 @@
             <div class="day">
                 <?php if($value['link']): ?>    
                     <div class="day-header">   
-                        <a class="link" href="detail_date.php?date=<?php echo $year . '/' . sprintf('%02d', $month) . '/' . sprintf('%02d', $value['day']); ?>">
+                        <a class="link <?php echo $value['today'] ?>" href="detail_date.php?date=<?php echo $year . '/' . sprintf('%02d', $month) . '/' . sprintf('%02d', $value['day']); ?>">
                             <?php echo htmlspecialchars($value['day']); ?>
                         </a>
                         <?php if($adminFlg === '1' && $value['day'] !== ''): ?>
@@ -47,7 +49,7 @@
                         </span>
                 <?php else: ?>
                     <div class="day-header">
-                        <span class="nolink">
+                        <span class="nolink <?php echo $value['today']?>">
                             <?php echo htmlspecialchars($value['day']); ?>
                         </span>
                         <?php if($adminFlg === '1' && $value['day'] !== ''): ?>

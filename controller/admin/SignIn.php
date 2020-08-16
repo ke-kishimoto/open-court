@@ -6,5 +6,6 @@ $title = 'ログイン';
 include('../../view/admin/common/head.php');
 include('../../view/admin/common/header.php');
 include('../../view/admin/signIn.php');
+include('../../view/admin/common/footer.php');
 
 ?>

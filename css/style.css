@@ -21,8 +21,10 @@ table tr {
 }
 
 table th {
-    background: #EEE;
     text-align: center;
+}
+table .blank {
+    background-color: #EEE;
 }
 table td .day {
     height: 60px;
@@ -34,8 +36,8 @@ table td .day {
     color: white;
     background-color: #00CC99;
     border: 1px solid;
+    border-radius: 10%;
 }
-
 
 .sunday {
     background-color: #FFD5EC;
@@ -65,9 +67,21 @@ table td .day {
 
 .month {
     /* 前月と次月を左右に分ける */
-    display: flex;
-    justify-content: space-between;
+    /* display: flex;
+    justify-content: space-between; */
 }
+
+.month a {
+    margin: 0 10px;
+}
+
+.today {
+    color: white;
+    background-color: blue;
+    border: 1px solid blue;
+    border-radius: 50%;
+}
+
 /****** ここまでカレンダー ******/
 
 .hidden {
