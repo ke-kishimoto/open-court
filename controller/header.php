@@ -20,10 +20,16 @@ if(isset($_SESSION['user']) == null) {
     $noLoginClass = '';
     $userName = 'ゲスト';
     $id = '';
+    $adminMenuFlg = '0';
 } else {
     $loginClass = '';
     $noLoginClass = 'hidden';
     $userName = $_SESSION['user']['name'];
     $id = $_SESSION['user']['id'];
+    if($_SESSION['user']['admin_flg'] == '1') {
+        $adminMenuFlg = '1';
+    } else {
+        $adminMenuFlg = '0';
+    }
 }
 ?>
