@@ -3,7 +3,7 @@
       <span class="explain-tit"><?php echo $title ?></span>
       <p>イベントへ応募時、以下の入力項目がデフォルトで設定されます</p>
   </div>
-  <a class="btn btn-sm btn-outline-dark <?php echo $mode == 'new' ? 'hidden' : '' ?>" href="passwordChange.php" role="button">パスワード変更</a>
+  <a class="btn btn-sm btn-outline-dark <?php echo $mode == 'new' ? 'hidden' : '' ?>" href="PasswordChange.php" role="button">パスワード変更</a>
     <form id="signUp_form" action="SignUpComplete.php" method="post" class="form-group">
         <input type="hidden" id="update-mode" name="mode" value="<?php echo $mode ?>">
         <input type="hidden" id="id" name="id" value="<?php echo $id ?>">
