@@ -2,6 +2,7 @@
 session_start();
 require_once('../../model/entity/GameInfo.php');
 require_once('../../model/dao/GameInfoDao.php');
+require_once('./Header.php');
 use entity\GameInfo;
 use dao\GameInfoDao;
 
@@ -49,7 +50,6 @@ if (isset($_POST["csrf_token"])
     header('Location: ./index.php');
 }
 
-include('./Header.php');  
 $title = 'イベント登録完了';
 include('../../view/admin/common/head.php');
 include('../../view/admin/common/header.php');

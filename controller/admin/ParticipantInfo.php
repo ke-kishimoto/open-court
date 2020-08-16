@@ -3,6 +3,7 @@ session_start();
 require_once('../../model/dao/DetailDao.php');
 require_once('../../model/dao/CompanionDao.php');
 require_once('../../model/dao/UsersDao.php');
+require_once('./Header.php');  
 use dao\DetailDao;
 use dao\CompanionDao;
 use dao\UsersDao;
@@ -38,7 +39,6 @@ $csrf_token = bin2hex($toke_byte);
 // 生成したトークンをセッションに保存します
 $_SESSION['csrf_token'] = $csrf_token;
 
-include('./Header.php');  
 $title = '参加者情報登録';
 include('../../view/admin/common/head.php');
 include('../../view/admin/common/header.php');

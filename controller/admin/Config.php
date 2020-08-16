@@ -1,6 +1,8 @@
 <?php
 session_start();
 require_once('../../model/dao/ConfigDao.php');
+require_once('./Header.php');  
+
 use dao\ConfigDao;
 
 $configDao = new ConfigDao();
@@ -14,7 +16,6 @@ $csrf_token = bin2hex($toke_byte);
 // 生成したトークンをセッションに保存します
 $_SESSION['csrf_token'] = $csrf_token;
 
-include('./Header.php');  
 $title = 'システム設定';
 include('../../view/admin/common/head.php');
 include('../../view/admin/common/header.php');

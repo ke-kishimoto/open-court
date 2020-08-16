@@ -2,6 +2,8 @@
 session_start();
 require_once('../../model/entity/EventTemplate.php');
 require_once('../../model/dao/EventTemplateDao.php');
+require_once('./Header.php');  
+
 use entity\EventTemplate;
 use dao\EventTemplateDao;
 
@@ -42,7 +44,6 @@ if (isset($_POST["csrf_token"])
     header('Location: ./index.php');
 }
 
-include('./Header.php');  
 $title = 'テンプレート登録完了';
 include('../../view/admin/common/head.php');
 include('../../view/admin/common/header.php');

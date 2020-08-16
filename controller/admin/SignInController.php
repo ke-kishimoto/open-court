@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once('../../model/dao/UsersDao.php');
-require_once('./header.php');
+require_once('./Header.php');
 use dao\UsersDao;
 
 $signUpDao = new UsersDao();

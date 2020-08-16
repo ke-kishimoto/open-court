@@ -3,6 +3,7 @@ session_start();
 require_once('../../model/dao/GameInfoDao.php');
 require_once('../../model/dao/DetailDao.php');
 require_once('../../model/dao/EventTemplateDao.php');
+require_once('./Header.php');  
 use dao\EventTemplateDao;
 use dao\GameInfoDao;
 use dao\DetailDao;
@@ -72,7 +73,6 @@ $csrf_token = bin2hex($toke_byte);
 // 生成したトークンをセッションに保存します
 $_SESSION['csrf_token'] = $csrf_token;
 
-include('./Header.php');  
 $title = 'イベント情報登録';
 include('../../view/admin/common/head.php');
 include('../../view/admin/common/header.php');

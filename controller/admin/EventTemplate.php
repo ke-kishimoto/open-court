@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once('../../model/dao/EventTemplateDao.php');
+require_once('./Header.php');
 use dao\EventTemplateDao;
 
 // テンプレ一覧
@@ -14,7 +15,6 @@ $csrf_token = bin2hex($toke_byte);
 // 生成したトークンをセッションに保存します
 $_SESSION['csrf_token'] = $csrf_token;
 
-include('./Header.php');  
 $title = 'テンプレート登録';
 include('../../view/admin/common/head.php');
 include('../../view/admin/common/header.php');

@@ -2,6 +2,8 @@
 session_start();
 require_once('../../model/entity/Config.php');
 require_once('../../model/dao/ConfigDao.php');
+require_once('./Header.php');
+
 use entity\Config;
 use dao\ConfigDao;
 
@@ -27,7 +29,6 @@ if (isset($_POST["csrf_token"])
     header('Location: ./index.php');
 }
 
-include('./Header.php');  
 $title = 'システム設定完了';
 include('../../view/admin/common/head.php');
 include('../../view/admin/common/header.php');

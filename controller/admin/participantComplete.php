@@ -4,6 +4,7 @@ require_once('../../model/entity/Participant.php');
 require_once('../../model/dao/CompanionDao.php');
 require_once('../../model/dao/DetailDao.php');
 require_once('../../model/entity/Companion.php');
+require_once('./Header.php');  
 use entity\Companion;
 use entity\Participant;
 use dao\DetailDao;
@@ -66,7 +67,6 @@ if (isset($_POST["csrf_token"])
     header('Location: ./index.php');
 }
 
-include('./Header.php');  
 $title = '参加者登録完了';
 include('../../view/admin/common/head.php');
 include('../../view/admin/common/header.php');
