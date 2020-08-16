@@ -37,6 +37,7 @@ for ($i = 1; $i < $last_day + 1; $i++) {
             $calendar[$j]['day'] = '';
             $calendar[$j]['link'] = false;
             $calendar[$j]['today'] = '';
+            $calendar[$j]['weekName'] = '';
             $j++;
  
         }
@@ -52,6 +53,15 @@ for ($i = 1; $i < $last_day + 1; $i++) {
         $calendar[$j]['today'] = 'today';
     } else {
         $calendar[$j]['today'] = '';
+    }
+
+    // 曜日判定
+    if($j % 7 === 0) {
+        $calendar[$j]['weekName'] = 'sunday';
+    }elseif($j % 7 === 6) {
+        $calendar[$j]['weekName'] = 'saturday';
+    } else {  
+        $calendar[$j]['weekName'] = '';
     }
 
     // イベント有無の判定
@@ -73,6 +83,7 @@ for ($i = 1; $i < $last_day + 1; $i++) {
             $calendar[$j]['day'] = '';
             $calendar[$j]['link'] = false;
             $calendar[$j]['today'] = '';
+            $calendar[$j]['weekName'] = '';
             $j++;
         }
     }

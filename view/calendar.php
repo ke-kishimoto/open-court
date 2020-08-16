@@ -16,21 +16,8 @@
     </tr>
  
     <tr>
-    <?php $cnt = 0; ?>
     <?php foreach ($calendar as $key => $value): ?>
-        <?php 
-            if($cnt % 7 === 0 && $value['day'] !== '') {
-                $weekName = 'sunday';
-            }elseif($cnt % 7 === 6 && $value['day'] !== '') {
-                $weekName = 'saturday';
-            }elseif ($value['day'] === '') {
-                $weekName = 'blank';
-            } else {  
-                $weekName = '';
-            }
-        ?>
-        <?php $cnt++; ?>
-        <td class="<?php echo $weekName; ?>">
+        <td class="<?php echo $value['weekName']; ?>">
             <div class="day">
                 <?php if($value['link']): ?>    
                     <div class="day-header">   
@@ -44,7 +31,16 @@
                         <?php endif; ?>
                     </div>
                         <?php foreach($value['info'] as $info): ?>
-                            <a class="event" href="./EventInfo.php?id=<?php echo htmlspecialchars($info['id']); ?>"><?php echo $info['short_title'] ?></a>
+                            <?php
+                                if($info['mark'] === '○') {
+                                    $availabilityClass = 'availability-OK';
+                                } elseif($info['mark'] === '△') {
+                                    $availabilityClass = 'availability-COUTION';
+                                } elseif($info['mark'] === '✖️') {
+                                    $availabilityClass = 'availability-NG';
+                                }
+                            ?>
+                            <a class="event <?php echo $availabilityClass; ?>" href="./EventInfo.php?id=<?php echo htmlspecialchars($info['id']); ?>"><?php echo $info['short_title'] ?></a>
                         <?php endforeach; ?>
                         </span>
                 <?php else: ?>
@@ -62,10 +58,9 @@
             </div>
         </td>
  
-    <?php if ($cnt == 7): ?>
-    </tr>
-    <tr>
-    <?php $cnt = 0; ?>
+    <?php if ($value['weekName'] === 'saturday'): ?>
+        </tr>
+        <tr>
     <?php endif; ?>
  
     <?php endforeach; ?>

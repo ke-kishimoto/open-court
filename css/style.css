@@ -34,11 +34,22 @@ table td .day {
 
 .day a.event {
     color: white;
-    background-color: #00CC99;
+    /* background-color: #00CC99; */
     border: 1px solid;
     border-radius: 10%;
 }
 
+.availability-OK {
+    background-color: #00CC99;
+}
+
+.availability-COUTION {
+    background-color: #FFCC33;
+}
+
+.availability-NG {
+    background-color: #FF367F;
+}
 .sunday {
     background-color: #FFD5EC;
 }
@@ -102,33 +113,6 @@ table td .day {
     background-color: yellow;
 }
 /****** ヘッダー ******/
-/* header.participant {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid rgba(0,0,0,.3);
-    padding: 10px !important;
-    margin-bottom: 15px;
-}
-
-header .system-title {
-    text-align: center;;
-}
-
-.nav{
-    font-size: 14px;
-}
-.nav > a:first-child{
-    margin-right: 10px;
-}
-.user-name{
-    line-height: 31px;
-    margin-right: 10px;
-} */
-
-/* .user-name {
-    margin-left: auto;
-} */
-
 .system-header {
     display: flex;
     height: 55px;
@@ -201,6 +185,3 @@ header {
     text-decoration: none;
     color: red;
 }
-/* .system-title {
-    margin: 0 auto;
-} */
