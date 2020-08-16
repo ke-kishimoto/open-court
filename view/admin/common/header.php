@@ -1,4 +1,4 @@
-<header class="<?php echo $bgColor ?> admin" role="banner">
+<header class="<?php echo $bgColor ?>" role="banner">
      <!-- ハンバーガーボタン -->
      <button type="button" class="drawer-toggle drawer-hamburger">
       <span class="sr-only">toggle navigation</span>
@@ -15,6 +15,15 @@
         <li><a class="drawer-menu-item" href="Config.php">システム設定</a></li>
       </ul>
     </nav>
-    <div class="system-title"><a class="logo" href="./index.php"><?php echo $_SESSION['system_title'] ?></a></div>
-    <hr>
+    <div class="system-header">
+      <div class="dummy">
+        <?php echo $userName ?>さん</span>
+      </div>
+      <div class="system-name">
+        <a class="logo" href="./index.php"><?php echo $_SESSION['system_title'] ?></a>
+      </div>
+      <div class="user-name">
+        <span id="user_name" class="user-name"><?php echo $userName ?>さん</span>
+      </div>
+    </div>
 </header>

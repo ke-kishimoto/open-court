@@ -101,8 +101,8 @@ table td .day {
 .duplication {
     background-color: yellow;
 }
-/* ヘッダー */
-header.participant {
+/****** ヘッダー ******/
+/* header.participant {
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid rgba(0,0,0,.3);
@@ -123,7 +123,39 @@ header .system-title {
 .user-name{
     line-height: 31px;
     margin-right: 10px;
+} */
+
+/* .user-name {
+    margin-left: auto;
+} */
+
+.system-header {
+    display: flex;
+    height: 45px;
 }
+
+.dummy {
+    width: fit-content;
+    color: transparent;
+}
+
+.system-name {
+    width: max-content;
+    margin: 0 auto;
+}
+.user-name {
+    /* width: fit-content;  */
+    /* margin-left: auto; */
+    float: right;
+}
+
+@media screen and (max-width:480px) { 
+    .participant-header-menu {
+        display: none;
+    }
+}
+
+/****** ここまでヘッダー ******/
 
 /* 新規登録 */
 .explain-box {
@@ -169,6 +201,6 @@ header {
     text-decoration: none;
     color: red;
 }
-.system-title {
+/* .system-title {
     margin: 0 auto;
-}
+} */
