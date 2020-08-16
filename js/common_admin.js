@@ -247,4 +247,24 @@ $(function() {
             .always( (data) => {
             })
         });
+
+    $('.change-authority').on('click', function() {
+        $.ajax({
+            url:'../../controller/api/UpdateAdminFlg.php',
+            type:'POST',
+            data:{
+                'id':$(this).val()
+            }
+        })
+        .done( (data) => {
+            $('#authority-name-' + $(this).val()).text(data.authority_name);
+        })
+        // Ajaxリクエストが失敗した時発動
+        .fail( (data) => {
+        })
+        // Ajaxリクエストが成功・失敗どちらでも発動
+        .always( (data) => {
+        })
+        
+    });
 });

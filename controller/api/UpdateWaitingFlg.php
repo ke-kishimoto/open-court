@@ -12,5 +12,3 @@ $info = $detailDao->getDetail($_POST['game_id']);
 $info['waiting_flg'] = $participant['waiting_flg'];
 
 echo json_encode($info);
-
-?>

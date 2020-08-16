@@ -11,5 +11,3 @@ $participant = $detailDao->delete($_POST['participant_id']);
 $info = $detailDao->getDetail($_POST['game_id']);
 
 echo json_encode($info);
-
-?>

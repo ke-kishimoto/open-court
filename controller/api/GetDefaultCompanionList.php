@@ -9,5 +9,3 @@ $defaultCompanionDao = new DefaultCompanionDao();
 $companionList = $defaultCompanionDao->getDefaultCompanionList(intval($_POST['id']));
 
 echo json_encode($companionList);
-
-?>

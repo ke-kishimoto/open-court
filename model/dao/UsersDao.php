@@ -96,8 +96,13 @@ class UsersDao {
         , case
             when sex = 1 then '男性'
             when sex = 2 then '女性'
-          end sex_name   
-        from users order by id";
+          end sex_name 
+        , case 
+            when admin_flg = 1 then '管理者'
+            else '一般'
+          end authority_name
+        from users 
+        order by id";
         $prepare = $this->pdo->prepare($sql);
         $prepare->execute();
         return $prepare->fetchAll();
@@ -160,6 +165,20 @@ class UsersDao {
         $prepare->bindValue(':email', $users->email, PDO::PARAM_STR);
         $prepare->execute();
         $users = $prepare->fetch();
+    }
+
+    // 権限更新
+    public function updateAdminFlg(int $id) {
+        $sql = 'update users set admin_flg = 
+                case 
+                  when admin_flg = 1 then 0 
+                  else 1
+                end
+                where id = :id';
+        $prepare = $this->pdo->prepare($sql);
+        $prepare->bindValue(':id', $id, PDO::PARAM_INT);
+        $prepare->execute();
+        
     }
 }  
 

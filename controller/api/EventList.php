@@ -36,5 +36,3 @@ foreach ($gameInfoList as $gameInfo) {
     echo '</a>';
     echo '</li>';
 }
-
-?>

@@ -13,7 +13,7 @@
         <li class="<?php echo htmlspecialchars($noLoginClass) ?>"><a class="drawer-menu-item" href="SignUp.php">ログイン</a></li>
         <li class="<?php echo htmlspecialchars($loginClass) ?>"><a class="drawer-menu-item" href="./ParticipatingEventList.php">参加イベント一覧</a></li>
         <li class="<?php echo htmlspecialchars($loginClass) ?>"><a class="drawer-menu-item" href="./SignUp.php?id=<?php echo $id ?>">アカウント情報</a></li>
-        <li class="<?php echo htmlspecialchars($loginClass) ?>"><a class="drawer-menu-item" href="LououtController.php">ログアウト</a></li>
+        <li class="<?php echo htmlspecialchars($loginClass) ?>"><a class="drawer-menu-item" href="./LogoutController.php">ログアウト</a></li>
       </ul>
     </nav>
 

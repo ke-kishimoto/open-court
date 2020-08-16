@@ -131,9 +131,12 @@ $(function() {
         $('#password-area').remove();
     }
 
-    var gameId = document.getElementById("game_id").value;
-    if(gameId === null || gameId === '') {
-        document.getElementById("join_form").classList.add('hidden');
+    const gameId = document.getElementById("game_id");
+    if(gameId === null || gameId.value === '') {
+        const joinForm = document.getElementById("join_form");
+        if (joinForm !== null) {
+            joinForm.classList.add('hidden');
+        }
     }
 
 

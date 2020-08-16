@@ -9,5 +9,3 @@ $eventTemplateDao = new EventTemplateDao();
 $eventTemplate = $eventTemplateDao->getEventTemplate(intval($_POST['id']));
 
 echo json_encode($eventTemplate);
-
-?>
