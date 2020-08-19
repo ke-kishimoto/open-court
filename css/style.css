@@ -124,6 +124,7 @@ table td .day {
 .system-header {
     display: flex;
     height: 55px;
+    line-height: 55px;
 }
 
 .dummy {
@@ -135,10 +136,10 @@ table td .day {
     width: max-content;
     margin: 0 auto;
 }
-.user-name {
-    /* width: fit-content;  */
-    /* margin-left: auto; */
-    float: right;
+
+.user-name > span:first-child{
+    vertical-align: -1%;
+    margin-right: 5px;
 }
 
 @media screen and (max-width:480px) { 
