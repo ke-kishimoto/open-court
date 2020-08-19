@@ -92,6 +92,14 @@ table td .day {
     border: 1px solid blue;
     border-radius: 50%;
 }
+ /* カレンダーのスクロールバー非表示 */
+.day {
+    -ms-overflow-style: none;    /* IE, Edge 対応 */
+    scrollbar-width: none;       /* Firefox 対応 */
+}
+.day::-webkit-scrollbar {
+    display:none;   /* Chrome, Safari 対応 */
+}
 
 /****** ここまでカレンダー ******/
 
