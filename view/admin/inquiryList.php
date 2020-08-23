@@ -1,4 +1,4 @@
-<p>問い合わせ一覧</p>
+<h1>問い合わせ一覧</h1>
 <ul class="nav nav-tabs">
     <li class="nav-item">
         <a href="#incomplete" class="nav-link active" data-toggle="tab">未対応</a>

@@ -1,3 +1,4 @@
+<h1>ログイン</h1>
 <div>
     <form id="signIn_form" action="./SignInController.php" method="post" class="form-group">
         <p style="color: red;"><?php if(!empty($errMsg)){echo $errMsg;};?></p>

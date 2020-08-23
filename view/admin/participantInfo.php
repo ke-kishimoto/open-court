@@ -66,4 +66,3 @@
 
 </form>
 <p><a href="./EventInfo.php?id=<?php echo $_GET['game_id'] ?>">イベント情報ページに戻る</a></p>
-<p><a href="./index.php">イベント一覧に戻る</a></p>

@@ -1,4 +1,4 @@
-<p>イベントカレンダー</p>
+<h1>イベントカレンダー</h1>
 <div  class="month">
 <a href=".?year=<?php echo htmlspecialchars($pre_year); ?>&month=<?php echo htmlspecialchars($lastmonth); ?>">＜</a>
 <a href=".?year=<?php echo htmlspecialchars($next_year); ?>&month=<?php echo htmlspecialchars($nextmonth); ?>">＞</a>

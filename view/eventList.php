@@ -1,5 +1,4 @@
-<!-- イベント一覧 -->
-<p>イベント一覧</p>
+<h1>イベント一覧</h1>
 <div id="event-list">
     <?php foreach ($gameInfoList as $gameInfo): ?>
         <hr>

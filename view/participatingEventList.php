@@ -1,5 +1,5 @@
 <?php if(!empty($eventList)): ?>
-    <p>参加イベント一覧</p>
+    <h1>参加イベント一覧</h1>
     <ul class="nav nav-tabs">
         <li class="nav-item">
             <a href="#after" class="nav-link active" data-toggle="tab">予定</a>

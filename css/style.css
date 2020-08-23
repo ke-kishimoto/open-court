@@ -202,6 +202,10 @@ header {
     align-items: center;
 }
 .eventList-item {
-    width:fit-content;
-    
+    width:fit-content;    
+}
+
+h1 {
+    font-size: large;
+    margin: 10px 0;
 }

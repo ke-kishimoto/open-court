@@ -1,5 +1,5 @@
 <?php if (!empty($participantList)): ?>
-    <p>参加者リスト</p>
+    <h1>参加者リスト</h1>
     <table>
         <tr>
             <th>名前</th><th>職種</th><th>性別</th>
@@ -15,6 +15,6 @@
 <?php else: ?>
     <p>参加者はいません</p>
 <?php endif ?>
-<a href="./EventInfo.php?id=<?php echo $gameId ?>">イベント詳細へ戻る</a>
-<br>
-<a href="./index.php">トップへ戻る</a>
+<p>
+    <a href="./EventInfo.php?id=<?php echo $gameId ?>">イベント詳細へ戻る</a>
+</p>
