@@ -135,31 +135,7 @@ $(function() {
     $('#btn-event-delete').on('click', function() {
         return confirm('削除してもよろしいですか');
     });
-    // 
-    // $('#template').change(function() {
-    //     $.ajax({
-    //     url:'../../controller/api/GetEventTemplate.php',
-    //     type:'POST',
-    //     data:{
-    //         'id':$('#template').val()
-    //     }
-    //     })
-    //     // Ajaxリクエストが成功した時発動
-    //     .done( (data) => {
-    //         $('#template_name').val(data.template_name);
-    //         $('#title').val(data.title);
-    //         $('#short_title').val(data.short_title);
-    //         $('#place').val(data.place);
-    //         $('#limit_number').val(data.limit_number);
-    //         $('#detail').val(data.detail);
-    //     })
-    //     // Ajaxリクエストが失敗した時発動
-    //     .fail( (data) => {
-    //     })
-    //     // Ajaxリクエストが成功・失敗どちらでも発動
-    //     .always( (data) => {
-    //     })
-    // });
+
     $('#btn-companion-add').on('click', function() {
         var num = Number($('#companion').val());
         var current = $('#douhan-' + num);
@@ -258,6 +234,26 @@ $(function() {
         })
         .done( (data) => {
             $('#authority-name-' + $(this).val()).text(data.authority_name);
+        })
+        // Ajaxリクエストが失敗した時発動
+        .fail( (data) => {
+        })
+        // Ajaxリクエストが成功・失敗どちらでも発動
+        .always( (data) => {
+        })
+        
+    });
+
+    $('.btn-inquiry-status').on('click', function() {
+        $.ajax({
+            url:'../../controller/api/UpdateInquiryStatusFlg.php',
+            type:'POST',
+            data:{
+                'id':$(this).val()
+            }
+        })
+        .done( (data) => {
+            $(this)[0].disabled = true;
         })
         // Ajaxリクエストが失敗した時発動
         .fail( (data) => {

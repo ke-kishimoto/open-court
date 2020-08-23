@@ -10,7 +10,7 @@
         <li><a class="drawer-brand" href="#">メニュー</a></li>
         <li><a class="drawer-menu-item" href="index.php">トップ</a></li>
         <li class="<?php echo htmlspecialchars($noLoginClass) ?>"><a class="drawer-menu-item" href="SignUp.php">新規作成</a></li>
-        <li class="<?php echo htmlspecialchars($noLoginClass) ?>"><a class="drawer-menu-item" href="SignUp.php">ログイン</a></li>
+        <li class="<?php echo htmlspecialchars($noLoginClass) ?>"><a class="drawer-menu-item" href="SignIn.php">ログイン</a></li>
         <li class="<?php echo htmlspecialchars($loginClass) ?>"><a class="drawer-menu-item" href="./ParticipatingEventList.php">参加イベント一覧</a></li>
         <li class="<?php echo htmlspecialchars($loginClass) ?>"><a class="drawer-menu-item" href="./EventBatchRegist.php">イベント一括参加</a></li>
         <li class="<?php echo htmlspecialchars($loginClass) ?>"><a class="drawer-menu-item" href="./SignUp.php?id=<?php echo $id ?>">アカウント情報</a></li>

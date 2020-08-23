@@ -32,5 +32,28 @@ class InquiryDao {
         $prepare->bindValue(':update_date', $inquiry->updateDate, PDO::PARAM_STR);
         $prepare->execute();
     }
+
+    public function getInquiryList() {
+        $sql = 'select i.*, g.title title 
+        from inquiry i
+        left join game_info g
+        on i.game_id = g.id
+        order by id desc';
+        $prepare = $this->pdo->prepare($sql);
+        $prepare->execute();
+        return $prepare->fetchAll();
+    }
+
+    public function updateStatusFlg(int $id) {
+        $sql = 'update inquiry set status_flg = 
+        case 
+            when status_flg = 0 then 1
+            when status_flg = 1 then 0
+        end
+        where id = :id';
+        $prepare = $this->pdo->prepare($sql);
+        $prepare->bindValue(':id', $id, PDO::PARAM_INT);
+        $prepare->execute();
+    }
 }
 

@@ -13,6 +13,7 @@
         <li><a class="drawer-menu-item" href="EventTemplate.php">テンプレート設定</a></li>
         <li><a class="drawer-menu-item" href="UserList.php">ユーザーリスト</a></li>
         <li><a class="drawer-menu-item" href="Config.php">システム設定</a></li>
+        <li><a class="drawer-menu-item" href="InquiryList.php">問い合わせ一覧</a></li>
         <li><a class="drawer-menu-item" href="../index.php">一般利用者画面へ</a></li>
         <li><a class="drawer-menu-item" href="LogoutController.php">ログアウト</a></li>
       </ul>
