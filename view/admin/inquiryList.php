@@ -11,7 +11,7 @@
     <div id="incomplete" class="tab-pane active">
         <br>
         <?php foreach($inquiryList as $inquiry): ?>
-            <?php if($inquiry['status_flg'] == 0): ?>
+            <?php if((int)$inquiry['status_flg'] === 0): ?>
                 名前：<?php echo $inquiry['name']; ?><br>
                 対象イベント：<?php echo $inquiry['title']; ?><br>
                 連絡先：<?php echo $inquiry['email']; ?><br>
@@ -25,10 +25,10 @@
             <?php endif; ?>
         <?php endforeach; ?>
     </div>
-    <div id="complete" class="tab-pane active">
+    <div id="complete" class="tab-pane">
         <br>
         <?php foreach($inquiryList as $inquiry): ?>
-            <?php if($inquiry['status_flg'] != 0): ?>
+            <?php if((int)$inquiry['status_flg'] !== 0): ?>
                 名前：<?php echo $inquiry['name']; ?><br>
                 対象イベント：<?php echo $inquiry['title']; ?><br>
                 連絡先：<?php echo $inquiry['email']; ?><br>
