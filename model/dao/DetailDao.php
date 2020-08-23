@@ -331,17 +331,17 @@ class DetailDao {
         return $prepare->rowCount();
     }
 
+    // 参加済み、参加予定のイベントリスト
     public function getEventListByEmail(string $email, string $gameDate) {
         $sql = 'select g.*
         from participant p
         join game_info g
         on p.game_id = g.id
         where p.email = :email 
-        and g.game_date >= :game_date 
         order by g.game_date, g.start_time';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':email', $email, PDO::PARAM_STR);
-        $prepare->bindValue(':game_date', $gameDate, PDO::PARAM_STR);
+        // $prepare->bindValue(':game_date', $gameDate, PDO::PARAM_STR);
         $prepare->execute();
         return $prepare->fetchAll();
     }
