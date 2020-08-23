@@ -2,7 +2,7 @@
 session_start();
 require_once('../model/entity/Inquiry.php');
 require_once('../model/dao/InquiryDao.php');
-require_once('../model/dao/ConfigDao.php');
+require_once('../model/dao/GameInfoDao.php');
 require_once('../controller/api/LineApi.php');
 require_once('./header.php');
 use dao\InquiryDao;
