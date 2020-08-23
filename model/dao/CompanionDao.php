@@ -37,7 +37,6 @@ class CompanionDao {
         $prepare->bindValue(':sex', $companion->sex, PDO::PARAM_INT);
         $prepare->bindValue(':name', $companion->name, PDO::PARAM_STR);
         $prepare->execute();
-        return $prepare->fetch();
     }
 
     public function deleteByparticipantId(int $participantId) {

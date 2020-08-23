@@ -8,8 +8,10 @@
             <input class="form-control" type="email" name="email" required value="<?php echo $email ?>">
         </p>
         <div id="password-area">
-            パスワード
-            <input class="form-control" type="password" name="password" required>
+            <p>
+                パスワード
+                <input class="form-control" type="password" name="password" required>
+            </p>
         </div>
         <button id="btn-cancel" class="btn btn-primary" type="submit">参加キャンセル</button>
     </form>

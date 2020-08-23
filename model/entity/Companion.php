@@ -9,7 +9,7 @@ class Companion {
     public $sex;
     public $name;
 
-    public function __construct($participantId, $occupation, $sex, $name)
+    public function __construct(int $participantId, int $occupation, int $sex, $name)
     {
         $this->participantId = $participantId;
         $this->occupation = $occupation;

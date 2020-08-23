@@ -10,6 +10,7 @@ use dao\DetailDao;
 use dao\UsersDao;
 use dao\GameInfoDao;
 use entity\Participant;
+use controller\LineApi;
 
 $errMsg = '';
 if(isset($_POST)) {

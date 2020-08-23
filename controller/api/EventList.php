@@ -21,7 +21,6 @@ foreach ($gameInfoList as $gameInfo) {
     // echo $_POST['date'];
 
     echo '<hr>';
-    echo '<li>';
     echo '<a href="EventInfo.php?id=' . $gameInfo['id'] . '">';
     if ($gameInfo['game_date'] < date('Y-m-d')) {
         echo '<span class="event-end">※このイベントは終了しました<br></span>';
@@ -34,5 +33,4 @@ foreach ($gameInfoList as $gameInfo) {
     echo '参加状況：【参加予定：現在' . htmlspecialchars($gameInfo['participants_number']) . '名】定員：' . htmlspecialchars($gameInfo['limit_number']) . '人<br>';
     echo '空き状況：' . htmlspecialchars($gameInfo['mark']);
     echo '</a>';
-    echo '</li>';
 }

@@ -194,3 +194,14 @@ header {
     text-decoration: none;
     color: red;
 }
+
+.eventList-checkbox {
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row-reverse;
+    align-items: center;
+}
+.eventList-item {
+    width:fit-content;
+    
+}

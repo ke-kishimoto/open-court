@@ -301,7 +301,7 @@ class DetailDao {
 
     // メールアドレスによる存在チェック
     public function existsCheck(int $gameId, string $email) {
-        $participant = new Participant($gameId, '', '', '', $email, 0, '');
+        $participant = new Participant($gameId, 0, 0, '', $email, 0, '');
         $id = $this->getParticipantId($participant);
         if (isset($id)) {
             return true;
@@ -312,7 +312,7 @@ class DetailDao {
     // メールアドレスによる削除処理
     public function deleteByMailAddress(int $gameId, string $email) {
         // 存在チェック
-        $participant = new Participant($gameId, '', '', '', $email, 0, '');
+        $participant = new Participant($gameId, 0, 0, '', $email, 0, '');
         $id = $this->getParticipantId($participant);
         if ($id == null) {
             return 0;

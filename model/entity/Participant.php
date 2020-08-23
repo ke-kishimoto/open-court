@@ -12,7 +12,7 @@ class Participant {
     public $waitingFlg;
     public $remark;
 
-    public function __construct($gameId, $occupation, $sex, $name, $email, $waitingFlg, $remark)
+    public function __construct(int $gameId, int $occupation, int $sex, $name, $email, int $waitingFlg, $remark)
     {
         $this->gameId = $gameId;
         $this->occupation = $occupation;
