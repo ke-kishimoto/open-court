@@ -98,3 +98,17 @@ create table default_companion(
     , sex int -- 性別  1：男、2：女
     , name varchar(50)   -- 参加者名
 );
+
+-- 問い合わせ
+-- drop table inquiry; 
+create table inquiry(
+    id serial primary key
+    , game_id int
+    , name varchar(50)
+    , email varchar(50)
+    , content varchar(2000)
+    , status_flg int
+    , register_date date
+    , update_date date
+);
+

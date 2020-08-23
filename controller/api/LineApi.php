@@ -6,6 +6,7 @@ define('LINE_API_URL', 'https://notify-api.line.me/api/notify');
 // // 開発グループLINE用
 // define('LINE_API_TOKEN','SVcGMVbQUmk2xKoiP5PWbSV8tTine4q9BaglYgmB0AY'); 
 use entity\Participant;
+use entity\Inquiry;
 use dao\ConfigDao;
 use Exception;
 
@@ -59,10 +60,20 @@ class LineApi
     // 複数人予約
     public function multiple_reserve(Participant $participant, int $count) {
         $message = "予約が入りました\n";
-        $message .= "{$participant->name}さんが{$count}つのイベントを予約しました";
+        $message .= "{$participant->name}さんが{$count}件のイベントを予約しました";
 
         return $this->line_notify($message);
+    }
 
+    // お問い合わせ
+    public function inquiry(Inquiry $inquiry) {
+        $message = "お問い合わせが入りました\n";
+        $message .=  "対象イベント : {$inquiry->gameTitle}\n";
+        $message .=  "名前 : {$inquiry->name} \n";
+        $message .= "連絡先 : {$inquiry->email} \n";
+        $message .= "問い合わせ内容 : {$inquiry->content} \n";
+
+        return $this->line_notify($message);
     }
 
     // 参加人数が上限に達したときの通知

@@ -66,14 +66,18 @@ class GameInfoDao {
     }
 
     // 一括予約用
-    public function getGameInfoListByAfterDate($date, $email) {
+    public function getGameInfoListByAfterDate($date, $email = '') {
         $sql = $this->getGameInfoListSQL();
         $sql .= " where game_date >= :date ";
-        $sql .= " and not exists(select * from participant where game_id = g.id and email = :email)";
+        if ($email !== '') {
+            $sql .= " and not exists(select * from participant where game_id = g.id and email = :email)";
+        }
         $sql .= " group by g.id order by max(g.game_date), max(g.start_time)";
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':date', $date);
-        $prepare->bindValue(':email', $email);
+        if ($email !== '') {
+            $prepare->bindValue(':email', $email);
+        }
         $prepare->execute();
 
         return $prepare->fetchAll();

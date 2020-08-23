@@ -18,6 +18,7 @@
           <li class="<?php echo htmlspecialchars($loginClass) ?>"><a class="drawer-menu-item" href="./admin/index.php?id=<?php echo $id ?>">管理者画面へ</a></li>
         <?php endif; ?>
         <li class="<?php echo htmlspecialchars($loginClass) ?>"><a class="drawer-menu-item" href="./LogoutController.php">ログアウト</a></li>
+        <li class=""><a class="drawer-menu-item" href="./Inquiry.php">お問い合わせ</a></li>
       </ul>
     </nav>
 
