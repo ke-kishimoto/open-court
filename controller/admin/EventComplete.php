@@ -26,10 +26,10 @@ if (isset($_POST["csrf_token"])
         );
         
         $gameInfoDao = new GameInfoDao();
-        if(empty($_POST['id']) || $_POST['id'] == '') {
+        if(empty($_POST['game_id']) || $_POST['game_id'] == '') {
             $gameInfoDao->insert($gameInfo);
         } else {
-            $gameInfo->id = $_POST['id'];
+            $gameInfo->id = $_POST['game_id'];
             $gameInfoDao->update($gameInfo);
         }
     } else {
