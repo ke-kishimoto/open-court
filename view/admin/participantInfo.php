@@ -1,5 +1,5 @@
 <p>参加者登録</p>
-<form action="ParticipantComplete.php" method="post" class="form-group">
+<form action="participantComplete.php" method="post" class="form-group">
     <input type="hidden" id="participant_id" name="id" value="<?php echo $participant['id'] ?>">
     <input type="hidden" name="game_id" value="<?php echo $_GET['game_id'] ?>">
     <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
