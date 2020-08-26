@@ -2,7 +2,7 @@
 <div id="event-list">
     <?php foreach ($gameInfoList as $gameInfo): ?>
         <hr>
-            <a href="./EventInfo.php?id=<?php echo htmlspecialchars($gameInfo['id']); ?>">
+            <a href="/participant/EventInfo?id=<?php echo htmlspecialchars($gameInfo['id']); ?>">
                 <span class="event-end"><?php echo $gameInfo['game_date'] >= date('Y-m-d') ? '' : '※このイベントは終了しました<br>'  ?></span>
                 <?php echo htmlspecialchars($gameInfo['title']); ?>
                 <br>

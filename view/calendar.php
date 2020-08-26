@@ -1,4 +1,4 @@
-<h1>イベントカレンダー</h1>
+<h1>イベントカレンダー</p>
 <div  class="month">
 <a href=".?year=<?php echo htmlspecialchars($pre_year); ?>&month=<?php echo htmlspecialchars($lastmonth); ?>">＜</a>
 <a href=".?year=<?php echo htmlspecialchars($next_year); ?>&month=<?php echo htmlspecialchars($nextmonth); ?>">＞</a>
@@ -40,7 +40,7 @@
                                     $availabilityClass = 'availability-NG';
                                 }
                             ?>
-                            <a class="event <?php echo $availabilityClass; ?>" href="./EventInfo.php?id=<?php echo htmlspecialchars($info['id']); ?>"><?php echo $info['short_title'] ?></a>
+                            <a class="event <?php echo $availabilityClass; ?>" href="/participant/eventInfo?id=<?php echo htmlspecialchars($info['id']); ?>"><?php echo $info['short_title'] ?></a>
                         <?php endforeach; ?>
                         </span>
                 <?php else: ?>

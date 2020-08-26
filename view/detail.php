@@ -53,7 +53,7 @@
 <hr>
 
 <div class="<?php echo $pastEvent === true ? 'hidden' : '' ?>">
-    <form id="join_form" action="EventParticipation.php" method="post" class="form-group">
+    <form id="join_form" action="/participant/participation" method="post" class="form-group">
         <p>【応募フォーム】</p>
         <input type="hidden" id="game_id" name="game_id" value="<?php echo htmlspecialchars($gameInfo['id']) ?>">
         <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
@@ -110,6 +110,6 @@
         <input type="hidden" name="title" value="<?php echo htmlspecialchars($gameInfo['title']) ?>">
         <input type="hidden" name="date" value="<?php echo htmlspecialchars($gameInfo['game_date']) ?>">
         <button id="btn-partisipant-regist" class="btn btn-primary" type="submit"><?php echo htmlspecialchars($btnLiteral) ?></button>
-        <a class="btn btn-danger" href="Cancel.php?gameid=<?php echo htmlspecialchars($gameInfo['id']) ?>" >参加のキャンセル</a>
+        <a class="btn btn-danger" href="/participant/cancel?gameid=<?php echo htmlspecialchars($gameInfo['id']) ?>" >参加のキャンセル</a>
     </form>
 </div>

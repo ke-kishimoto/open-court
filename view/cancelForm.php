@@ -1,5 +1,5 @@
 
-    <form action="./CancelComplete.php" method="post">
+    <form action="/participant/cancelComplete" method="post">
         <input type="hidden" name="game_id" value="<?php echo htmlspecialchars($gameId) ?>">
         <input type="hidden" name="mode" id="user-mode" value="<?php echo $mode ?>">
         <p style="color: red;"><?php if(!empty($errMsg)){echo $errMsg;};?></p>

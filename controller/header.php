@@ -1,5 +1,6 @@
 <?php 
-require_once('../model/dao/ConfigDao.php');
+session_start();
+require_once('./model/dao/ConfigDao.php');
 use dao\ConfigDao;
 $configDao = new ConfigDao();
 $config = $configDao->getConfig(1);

@@ -1,5 +1,5 @@
 <h1>お問い合わせ</h1>
-    <form id="" action="InquiryComplete.php" method="post" class="form-group">
+    <form id="" action="/inquiry/InquiryComplete" method="post" class="form-group">
         <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
         <p>
             名前

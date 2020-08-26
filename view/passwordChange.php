@@ -1,5 +1,5 @@
 <div>
-    <form id="signUp_form" action="./PasswordChangeComplete.php" method="post" class="form-group">
+    <form id="signUp_form" action="/user/passwordchangecomplete" method="post" class="form-group">
         <p style="color: red;"><?php if(!empty($errMsg)){echo $errMsg;};?></p>
         <div id="password-area">
             <p>
