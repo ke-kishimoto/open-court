@@ -100,7 +100,7 @@ class DetailDao {
         , main
         , name
         , case
-            when main = 0 then '同伴'
+            when main = '0' then '同伴'
             else ''
           end companion_name
         , case 
