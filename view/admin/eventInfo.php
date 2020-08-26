@@ -151,7 +151,7 @@
         <br>
         <a class="btn btn-primary" href="ParticipantInfo.php?game_id=<?php echo $gameInfo['id']; ?>">参加者追加</a>
         <?php foreach ((array)$participantList as $participant): ?>
-            <?php if($participant['main'] == '1'): ?>
+            <?php if($participant['main'] === '1'): ?>
                 <hr>
                 <div id="participant-<?php echo $participant['id'] ?>">
                 <p>
