@@ -34,11 +34,11 @@ if (isset($_POST["csrf_token"])
         }
     } else {
         $gameInfoDao = new GameInfoDao();
-        if($_POST['id'] != '') {
+        if($_POST['game_id'] != '') {
             $msg = '削除';
             try {
                 $gameInfoDao->getPdo()->beginTransaction();
-                $gameInfoDao->delete($_POST['id']);
+                $gameInfoDao->delete($_POST['game_id']);
                 $gameInfoDao->getPdo()->commit();
             }catch (Exception $ex) {
                 $gameInfoDao->getPdo()->rollBack();
@@ -50,7 +50,7 @@ if (isset($_POST["csrf_token"])
     header('Location: ./index.php');
 }
 
-$title = 'イベント登録完了';
+$title = 'イベント更新完了';
 include('../../view/admin/common/head.php');
 include('../../view/admin/common/header.php');
 include('../../view/admin/eventComplete.php');
