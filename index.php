@@ -2,6 +2,10 @@
 require_once('./controller/UserController.php');
 require_once('./controller/InquiryController.php');
 require_once('./controller/ParticipantController.php');
+require_once('./controller/admin/AdminController.php');
+require_once('./controller/admin/ConfigController.php');
+require_once('./controller/admin/EventController.php');
+require_once('./controller/admin/ParticipantController.php');
 // include('./controller/index.php');
 // var_dump('test');
 
@@ -15,12 +19,18 @@ $url = explode("/", $_SERVER['REQUEST_URI']);
 // $url = array_filter( $url, "strlen" ) ;
 
 if(count($url) > 2 && strlen($url[1]) > 0 && strlen($url[2])) {
+
+    if($url[1] === 'admin') {
+        $controllerName = 'controller\\admin\\' . strtoupper(substr($url[2], 0, 1)) . substr($url[2], 1) . 'Controller';
+        $req = explode("?", $url[3]);
+    } else {
+        $controllerName = 'controller\\' . strtoupper(substr($url[1], 0, 1)) . substr($url[1], 1) . 'Controller';
+        $req = explode("?", $url[2]);
+    }
     
-    $controllerName = 'controller\\' . strtoupper(substr($url[1], 0, 1)) . substr($url[1], 1) . 'Controller';
     
     $rClass = new ReflectionClass($controllerName);
     $controller = $rClass->newInstance();
-    $req = explode("?", $url[2]);
     $method = $rClass->getMethod($req[0]);
     $method->invoke($controller);
 } else {

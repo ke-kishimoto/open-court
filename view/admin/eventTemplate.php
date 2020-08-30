@@ -1,5 +1,5 @@
     <h1>テンプレート設定</h1>
-    <form action="EventTempleteComplete.php" method="post" class="form-group">
+    <form action="/admin/event/EventTempleteComplete" method="post" class="form-group">
         <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
         <p>
             <select name="id" id="template">

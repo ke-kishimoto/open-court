@@ -21,6 +21,78 @@ use Exception;
 
 class ParticipantController {
 
+    // 参加一括登録処理
+    public function eventBatchRegist() {
+        $gameInfoDao = new GameInfoDao();
+        date_default_timezone_set('Asia/Tokyo');
+        $gameInfoList = $gameInfoDao->getGameInfoListByAfterDate(date('Y-m-d'), $_SESSION['user']['email']);
+
+        // CSFR対策
+        // 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
+        $toke_byte = openssl_random_pseudo_bytes(16);
+        $csrf_token = bin2hex($toke_byte);
+        // 生成したトークンをセッションに保存します
+        $_SESSION['csrf_token'] = $csrf_token;
+
+        if (isset($_SESSION['user'])) {
+            $occupation = $_SESSION['user']['occupation'];
+            $sex = $_SESSION['user']['sex'];
+            $defaultCompanionDao = new DefaultCompanionDao();
+            $companions = $defaultCompanionDao->getDefaultCompanionList($_SESSION['user']['id']);
+
+        } else {
+            $occupation = null;
+            $sex = null;
+            $companions = [];
+        }
+
+        $title = 'イベント詳細';
+        include('./view/common/head.php');
+        include('./view/common/header.php');
+        include('./view/eventBatchRegist.php');
+        include('./view/common/footer.php');
+    }
+
+    // 一括登録
+    public function eventBatchRegistComplete() {
+        $errMsg = '';
+        if (isset($_POST["csrf_token"]) 
+        && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
+
+            $participant = new Participant(
+                0
+                , (int)$_POST['occupation']
+                , (int)$_POST['sex']
+                , $_POST['name']
+                , $_POST['email']
+                , 0 
+                , $_POST['remark']
+            );
+            
+            $companion = [];
+            for($i = 1; $i <= $_POST['companion']; $i++) {
+                $companion[$i-1] = new Companion(0, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
+            }
+
+            $count = $this->multipleParticipantRegist($_POST['game_id'], $participant, $companion);
+            if($count) {
+                $msg = "{$count}件のイベントに登録しました。";
+            } else {
+                $msg = '登録されたイベントはありませんでした。';
+            }
+
+            unset($_SESSION['csrf_token']);
+            $title = 'イベント参加登録完了';
+            include('./view/common/head.php');
+            include('./view/common/header.php');
+            include('./view/complete.php');
+            include('./view/common/footer.php');
+
+        } else {
+            header('Location: /index.php');
+        }
+    }
+
     // イベント詳細画面
     public function eventInfo() {
 

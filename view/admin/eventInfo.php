@@ -63,17 +63,17 @@
                     <tr>
                         <th>社会人</th>
                         <th>
-                            <a href="<?php dirname(__FILE__) ?>./ParticipantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=1&sex=1&waiting_flg=0">
+                            <a href="/admin/participant/ParticipantNameList?gameid=<?php echo $gameInfo['id'] ?>&occupation=1&sex=1&waiting_flg=0">
                                 <span id="sya_men"><?php echo $detail['sya_men'] ?></span>人
                             </a>        
                         </th>
                         <th>
-                            <a href="<?php dirname(__FILE__) ?>./ParticipantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=1&sex=2&waiting_flg=0">
+                            <a href="/admin/participant/ParticipantNameList?gameid=<?php echo $gameInfo['id'] ?>&occupation=1&sex=2&waiting_flg=0">
                                 <span id="sya_women"><?php echo $detail['sya_women'] ?></span>人
                             </a>        
                         </th>
                         <th>
-                            <a href="<?php dirname(__FILE__) ?>./ParticipantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=1&sex=0&waiting_flg=0">
+                            <a href="/admin/participant/ParticipantNameList?gameid=<?php echo $gameInfo['id'] ?>&occupation=1&sex=0&waiting_flg=0">
                                 <span id="sya_all"><?php echo $detail['sya_all'] ?></span>人
                             </a>        
                         </th>
@@ -81,17 +81,17 @@
                     <tr>
                         <th>大学・専門</th>
                         <th>
-                            <a href="<?php dirname(__FILE__) ?>./ParticipantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=2&sex=1&waiting_flg=0">
+                            <a href="/admin/participant/ParticipantNameList?gameid=<?php echo $gameInfo['id'] ?>&occupation=2&sex=1&waiting_flg=0">
                                 <span id="dai_men"><?php echo $detail['dai_men'] ?></span>人
                             </a>        
                         </th>
                         <th>
-                            <a href="<?php dirname(__FILE__) ?>./ParticipantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=2&sex=2&waiting_flg=0">
+                            <a href="/admin/participant/ParticipantNameList?gameid=<?php echo $gameInfo['id'] ?>&occupation=2&sex=2&waiting_flg=0">
                                 <span id="dai_women"><?php echo $detail['dai_women'] ?></span>人
                             </a>        
                         </th>
                         <th>
-                            <a href="<?php dirname(__FILE__) ?>./ParticipantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=2&sex=0&waiting_flg=0">
+                            <a href="/admin/participant/ParticipantNameList?gameid=<?php echo $gameInfo['id'] ?>&occupation=2&sex=0&waiting_flg=0">
                                 <span id="dai_all"><?php echo $detail['dai_all'] ?></span>人
                             </a>        
                         </th>
@@ -99,17 +99,17 @@
                     <tr>
                         <th>高校</th>
                         <th>
-                            <a href="<?php dirname(__FILE__) ?>./ParticipantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=3&sex=1&waiting_flg=0">
+                            <a href="/admin/participant/ParticipantNameList?gameid=<?php echo $gameInfo['id'] ?>&occupation=3&sex=1&waiting_flg=0">
                                 <span id="kou_men"><?php echo $detail['kou_men'] ?></span>人
                             </a>        
                         </th>
                         <th>
-                            <a href="<?php dirname(__FILE__) ?>./ParticipantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=3&sex=2&waiting_flg=0">
+                            <a href="/admin/participant/ParticipantNameList?gameid=<?php echo $gameInfo['id'] ?>&occupation=3&sex=2&waiting_flg=0">
                                 <span id="kou_women"><?php echo $detail['kou_women'] ?></span>人
                             </a>        
                         </th>
                         <th>
-                            <a href="<?php dirname(__FILE__) ?>./ParticipantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=3&sex=0&waiting_flg=0">
+                            <a href="/admin/participant/ParticipantNameList?gameid=<?php echo $gameInfo['id'] ?>&occupation=3&sex=0&waiting_flg=0">
                                 <span id="kou_all"><?php echo $detail['kou_all'] ?></span>人
                             </a>        
                         </th>
@@ -149,13 +149,13 @@
     <details class="<?php echo $participantDisp ?>">
         <summary>参加者リスト</summary>
         <br>
-        <a class="btn btn-primary" href="ParticipantInfo.php?game_id=<?php echo $gameInfo['id']; ?>">参加者追加</a>
+        <a class="btn btn-primary" href="/admin/participant/participantInfo?game_id=<?php echo $gameInfo['id']; ?>">参加者追加</a>
         <?php foreach ((array)$participantList as $participant): ?>
             <?php if($participant['main'] == '1'): ?>
                 <hr>
                 <div id="participant-<?php echo $participant['id'] ?>">
                 <p>
-                    <a class="btn btn-secondary" href="ParticipantInfo.php?id=<?php echo $participant['id']; ?>&game_id=<?php echo $gameInfo['id']; ?>">修正</a>
+                    <a class="btn btn-secondary" href="/admin/participant/ParticipantInfo?id=<?php echo $participant['id']; ?>&game_id=<?php echo $gameInfo['id']; ?>">修正</a>
                     <button type="button" class="waiting btn btn-<?php echo $participant['waiting_flg'] == '1' ? 'warning' : 'success' ?>" value="<?php echo $participant['id'] ?>">
                     <?php echo $participant['waiting_flg'] == '1' ? 'キャンセル待ちを解除' : 'キャンセル待ちに変更' ?></button>
                     <span class="duplication"><?php echo $participant['chk'] ?></span>

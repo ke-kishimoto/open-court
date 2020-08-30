@@ -3,9 +3,11 @@ namespace controller;
 
 require_once('./model/dao/UsersDao.php');
 require_once('./model/dao/DefaultCompanionDao.php');
+require_once('./model/dao/DetailDao.php');
 require_once('./controller/header.php');
 use dao\UsersDao;
 use dao\DefaultCompanionDao;
+use dao\DetailDao;
 use entity\Users;
 use entity\DefaultCompanion;
 use Exception;
@@ -181,11 +183,11 @@ class UserController {
 
     // アカウント編集
     public function edit() {
-        session_start();
+        // session_start();
         if(!empty($_GET) && !empty($_SESSION['user'])) {
             $usersDao = new UsersDao();
             $defultCompanionDao = new DefaultCompanionDao();
-            $user = $usersDao->getUserById($_GET['id']);
+            $user = $usersDao->getUserById((int)$_GET['id']);
             $companions = $defultCompanionDao->getDefaultCompanionList($user['id']);
             $title = 'アカウント情報修正';
             $mode = 'update';
@@ -201,7 +203,7 @@ class UserController {
         
     }
 
-    // パスワード変更
+    // パスワード変更画面への遷移
     public function passwordChange() {
         // require_once('./header.php');
 
@@ -212,6 +214,7 @@ class UserController {
         include('./view/common/footer.php');
     }
 
+    // パスワード変更処理
     public function passwordChangeComplete() {
         // session_start();
         // require_once('../model/dao/UsersDao.php');
@@ -243,6 +246,23 @@ class UserController {
                 include('./view/passwordChange.php');
                 include('./view/common/footer.php');
             }
+        }
+    }
+
+    // 参加者リスト一覧
+    public function participatingEventList() {
+        if(isset($_SESSION['user'])) {
+            $detailDao = new DetailDao();
+            $eventList = $detailDao->getEventListByEmail($_SESSION['user']['email'], date('Y-m-d'));
+        
+            $title = '参加イベントリスト';
+            include('./view/common/head.php');
+            include('./view/common/header.php');
+            include('./view/participatingEventList.php');
+            include('./view/common/footer.php');
+        
+        } else {
+            header('Location: /index.php');
         }
     }
 

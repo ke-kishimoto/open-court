@@ -14,7 +14,7 @@
             <br>
             <?php foreach($eventList as $event): ?>
                 <?php if($event['game_date'] >= date('Y-m-d')): ?>
-                    <a href="EventInfo.php?id=<?php echo $event['id'] ?>"><?php echo $event['title'] ?></a><br>
+                    <a href="/participant/eventInfo?id=<?php echo $event['id'] ?>"><?php echo $event['title'] ?></a><br>
                         開催日：<?php echo $event['game_date'] ?><br>
                         開始：<?php echo $event['start_time'] ?><br>
                         終了：<?php echo $event['end_time'] ?>
@@ -26,7 +26,7 @@
         <br>
             <?php foreach($eventList as $event): ?>
                 <?php if($event['game_date'] < date('Y-m-d')): ?>
-                    <a href="EventInfo.php?id=<?php echo $event['id'] ?>"><?php echo $event['title'] ?></a><br>
+                    <a href="/participant/eventInfo?id=<?php echo $event['id'] ?>"><?php echo $event['title'] ?></a><br>
                         開催日：<?php echo $event['game_date'] ?><br>
                         開始：<?php echo $event['start_time'] ?><br>
                         終了：<?php echo $event['end_time'] ?>

@@ -124,7 +124,7 @@ class DetailDao {
         from 
         (
         select id, 1 main ,name, occupation, sex, waiting_flg, remark, email
-        , (select '重複あり' from participant where game_id 
+        , (select distinct '重複あり' from participant where game_id 
                         in (select id from game_info where id <> p.game_id and game_date = :game_date)
                         and (email = p.email or name = p.name)
             ) chk

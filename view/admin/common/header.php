@@ -8,14 +8,14 @@
     <nav class="drawer-nav" role="navigation">
       <ul class="drawer-menu">
         <li><a class="drawer-brand" href="#">管理者メニュー</a></li>
-        <li><a class="drawer-menu-item" href="index.php">トップ</a></li>
-        <li><a class="drawer-menu-item" href="EventInfo.php">新規イベント登録</a></li>
-        <li><a class="drawer-menu-item" href="EventTemplate.php">テンプレート設定</a></li>
-        <li><a class="drawer-menu-item" href="UserList.php">ユーザーリスト</a></li>
-        <li><a class="drawer-menu-item" href="Config.php">システム設定</a></li>
-        <li><a class="drawer-menu-item" href="InquiryList.php">問い合わせ一覧</a></li>
-        <li><a class="drawer-menu-item" href="../index.php">一般利用者画面へ</a></li>
-        <li><a class="drawer-menu-item" href="LogoutController.php">ログアウト</a></li>
+        <li><a class="drawer-menu-item" href="/admin/admin/index">トップ</a></li>
+        <li><a class="drawer-menu-item" href="/admin/event/eventInfo">新規イベント登録</a></li>
+        <li><a class="drawer-menu-item" href="/admin/event/eventTemplate">テンプレート設定</a></li>
+        <li><a class="drawer-menu-item" href="/admin/admin/userList">ユーザーリスト</a></li>
+        <li><a class="drawer-menu-item" href="/admin/config/config">システム設定</a></li>
+        <li><a class="drawer-menu-item" href="/admin/admin/inquiryList">問い合わせ一覧</a></li>
+        <li><a class="drawer-menu-item" href="/index.php">一般利用者画面へ</a></li>
+        <li><a class="drawer-menu-item" href="/admin/admin/signout">ログアウト</a></li>
       </ul>
     </nav>
     <div class="system-header">
@@ -23,7 +23,7 @@
         <?php echo $userName ?>さん</span>
       </div>
       <div class="system-name">
-        <a class="logo" href="./index.php"><?php echo $_SESSION['system_title'] ?></a>
+        <a class="logo" href="/admin/admin/index"><?php echo $_SESSION['system_title'] ?></a>
       </div>
       <div class="user-name">
         <span id="user_name" class="user-name"><?php echo $userName ?>さん</span>

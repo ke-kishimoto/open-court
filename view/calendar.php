@@ -25,7 +25,7 @@
                             <?php echo htmlspecialchars($value['day']); ?>
                         </a>
                         <?php if($adminFlg === '1' && $value['day'] !== ''): ?>
-                            <a class="link-add" href="./EventInfo.php?date=<?php echo $year . '-' . sprintf('%02d', $month) . '-' . sprintf('%02d', $value['day'])?>">
+                            <a class="link-add" href="/admin/event/eventInfo?date=<?php echo $year . '-' . sprintf('%02d', $month) . '-' . sprintf('%02d', $value['day'])?>">
                                 追加
                             </a>
                         <?php endif; ?>
@@ -40,7 +40,11 @@
                                     $availabilityClass = 'availability-NG';
                                 }
                             ?>
-                            <a class="event <?php echo $availabilityClass; ?>" href="/participant/eventInfo?id=<?php echo htmlspecialchars($info['id']); ?>"><?php echo $info['short_title'] ?></a>
+                            <?php if($adminFlg === '1'): ?>
+                                <a class="event <?php echo $availabilityClass; ?>" href="/admin/event/eventInfo?game_id=<?php echo htmlspecialchars($info['id']); ?>"><?php echo $info['short_title'] ?></a>
+                            <?php else: ?>
+                                <a class="event <?php echo $availabilityClass; ?>" href="/participant/eventInfo?id=<?php echo htmlspecialchars($info['id']); ?>"><?php echo $info['short_title'] ?></a>
+                            <?php endif; ?>
                         <?php endforeach; ?>
                         </span>
                 <?php else: ?>
@@ -49,7 +53,7 @@
                             <?php echo htmlspecialchars($value['day']); ?>
                         </span>
                         <?php if($adminFlg === '1' && $value['day'] !== ''): ?>
-                            <a class="link-add" href="./EventInfo.php?date=<?php echo $year . '-' . sprintf('%02d', $month) . '-' . sprintf('%02d', $value['day'])?>">
+                            <a class="link-add" href="/admin/event/eventInfo?date=<?php echo $year . '-' . sprintf('%02d', $month) . '-' . sprintf('%02d', $value['day'])?>">
                                 追加
                             </a>
                         <?php endif; ?>
