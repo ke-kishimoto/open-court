@@ -51,7 +51,7 @@ $(function() {
     $('.link').on('click', function(event) {
         event.preventDefault(),
         $.ajax({
-            url:'../controller/api/EventList.php',
+            url:'/api/event/getEventListByDate',
             type:'POST',
             data:{
                 'date':$('#year').text() + '/' + ('00' + $('#this-month').text()).slice(-2) + '/' +( '00' + $(this).text().trim()).slice(-2),
