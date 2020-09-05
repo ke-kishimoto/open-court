@@ -115,7 +115,7 @@ class EventApi {
         echo json_encode($info);
     }
 
-    public function updateWaitngFlg() {
+    public function updateWaitingFlg() {
         header('Content-type: application/json; charset= UTF-8');
     
         $detailDao = new DetailDao();

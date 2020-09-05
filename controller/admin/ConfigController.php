@@ -4,12 +4,15 @@ require_once('./model/entity/Config.php');
 require_once('./model/dao/ConfigDao.php');
 use dao\ConfigDao;
 use entity\Config;
+use controller\BaseController;
 
 
-
-class ConfigController {
+class ConfigController extends BaseController
+{
 
     public function config() {
+        parent::adminHeader();
+        
         $configDao = new ConfigDao();
         // いずれユーザーIDにする
         $config = $configDao->getConfig(1);
@@ -28,6 +31,8 @@ class ConfigController {
     }
 
     public function configComplete() {
+        parent::adminHeader();
+
         if (isset($_POST["csrf_token"]) 
         && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
             // 登録・修正

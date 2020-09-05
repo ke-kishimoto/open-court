@@ -4,7 +4,6 @@ namespace controller;
 require_once('./model/dao/UsersDao.php');
 require_once('./model/dao/DefaultCompanionDao.php');
 require_once('./model/dao/DetailDao.php');
-require_once('./controller/header.php');
 use dao\UsersDao;
 use dao\DefaultCompanionDao;
 use dao\DetailDao;
@@ -12,11 +11,12 @@ use entity\Users;
 use entity\DefaultCompanion;
 use Exception;
 
-class UserController {
+class UserController extends BaseController
+{
 
     // サインイン（ログイン）
     public function signIn() {
-        session_start();
+        parent::userHeader();
         $title = 'ログイン';
         include('./view/common/head.php');
         include('./view/common/header.php');
@@ -26,7 +26,7 @@ class UserController {
 
     // ログインチェック
     public function signInCheck() {
-        session_start();
+        parent::userHeader();
         $signUpDao = new UsersDao();
 
         $user = $signUpDao->getUserByEmail($_POST['email']);
@@ -55,7 +55,7 @@ class UserController {
 
     // サインアップ
     public function signUp() {
-        session_start();
+        parent::userHeader();
         $user = array(
             'id' => ''
             , 'name' => ''
@@ -78,7 +78,7 @@ class UserController {
 
     // ユーザー登録
     public function signUpComplete() {
-        // session_start();
+        parent::userHeader();
         
         // 更新処理
         if (!empty($_POST)) {
@@ -183,7 +183,7 @@ class UserController {
 
     // アカウント編集
     public function edit() {
-        // session_start();
+        parent::userHeader();
         if(!empty($_GET) && !empty($_SESSION['user'])) {
             $usersDao = new UsersDao();
             $defultCompanionDao = new DefaultCompanionDao();
@@ -205,7 +205,7 @@ class UserController {
 
     // パスワード変更画面への遷移
     public function passwordChange() {
-        // require_once('./header.php');
+        parent::userHeader();
 
         $title = 'パスワード変更';
         include('./view/common/head.php');
@@ -216,10 +216,8 @@ class UserController {
 
     // パスワード変更処理
     public function passwordChangeComplete() {
-        // session_start();
-        // require_once('../model/dao/UsersDao.php');
-        // require_once('./header.php');
-
+        parent::userHeader();
+        
         if (!empty($_POST)) {
             $errMsg = '';
             $usersDao = new UsersDao();
@@ -251,6 +249,8 @@ class UserController {
 
     // 参加者リスト一覧
     public function participatingEventList() {
+        parent::userHeader();
+
         if(isset($_SESSION['user'])) {
             $detailDao = new DetailDao();
             $eventList = $detailDao->getEventListByEmail($_SESSION['user']['email'], date('Y-m-d'));
@@ -268,7 +268,7 @@ class UserController {
 
     // サインアウト
     public function signout() {
-        // session_start();
+        session_start();
         // session_unset();
         session_destroy();
         header('Location: /index.php');

@@ -6,7 +6,7 @@ $(function() {
     $('.link').on('click', function(event) {
         event.preventDefault(),
         $.ajax({
-            url:'../../controller/api/EventList.php',
+            url:'/api/event/getEventListByDate',
             type:'POST',
             data:{
                 'date':$('#year').text() + '/' + ('00' + $('#this-month').text()).slice(-2) + '/' +( '00' + $(this).text().trim()).slice(-2),
@@ -39,7 +39,7 @@ $(function() {
     }
     $('#template').change(function() {
         $.ajax({
-        url:'../../controller/api/GetEventTemplate.php',
+        url:'/api/Event/getEventTemplate',
         type:'POST',
         data:{
             'id':$('#template').val(),
@@ -64,7 +64,7 @@ $(function() {
     // キャンセル待ち⇔解除の処理
     $('.waiting').on('click', function() {
         $.ajax({
-        url:'../../controller/api/UpdateWaitingFlg.php',
+        url:'/api/event/updateWaitingFlg',
         type:'POST',
         data:{
             'id':$(this).val(),
@@ -101,7 +101,7 @@ $(function() {
     $('.btn-participant-delete').on('click', function() {
         if(window.confirm('削除してもよろしいですか')) {
             $.ajax({
-                url:'../../controller/api/deleteParticipant.php',
+                url:'/api/event/deleteParticipant',
                 type:'POST',
                 data:{
                     'participant_id':$(this).val(),
@@ -172,7 +172,7 @@ $(function() {
     });
     $('#user').change(function() {
             $.ajax({
-                url:'../../controller/api/GetUserInfo.php',
+                url:'/api/event/getUserInfo',
                 type:'POST',
                 data:{
                     'user_id':$('#user').val()
@@ -194,7 +194,7 @@ $(function() {
                 $('#remark').val(user.remark);
                 // 同伴者情報追加
                 $.ajax({
-                    url:'../../controller/api/GetDefaultCompanionList.php',
+                    url:'/event/api/GetDefaultCompanionList',
                     type:'POST',
                     data:{
                         'id':user.id
@@ -226,7 +226,7 @@ $(function() {
 
     $('.change-authority').on('click', function() {
         $.ajax({
-            url:'../../controller/api/UpdateAdminFlg.php',
+            url:'/api/event/updateAdminFlg',
             type:'POST',
             data:{
                 'id':$(this).val()
@@ -246,7 +246,7 @@ $(function() {
 
     $('.btn-inquiry-status').on('click', function() {
         $.ajax({
-            url:'../../controller/api/UpdateInquiryStatusFlg.php',
+            url:'/api/event/updateInquiryStatusFlg',
             type:'POST',
             data:{
                 'id':$(this).val()

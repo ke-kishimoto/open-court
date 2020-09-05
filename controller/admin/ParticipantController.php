@@ -1,11 +1,11 @@
 <?php 
 namespace controller\admin;
-
 require_once('./model/dao/DetailDao.php');
 require_once('./model/dao/CompanionDao.php');
 require_once('./model/dao/UsersDao.php');
 require_once('./model/entity/Participant.php');
 require_once('./model/entity/Companion.php');
+use controller\BaseController;
 use dao\DetailDao;
 use dao\CompanionDao;
 use dao\UsersDao;
@@ -13,9 +13,12 @@ use entity\Companion;
 use entity\Participant;
 use Exception;
 
-class ParticipantController {
+class ParticipantController extends BaseController
+{
 
     public function participantNameList() {
+        parent::adminHeader();
+
         $detailDao = new DetailDao();
         $participantList = $detailDao->getParticipantList($_GET['gameid'], $_GET['occupation'], $_GET['sex'], $_GET['waiting_flg']);
 
@@ -28,6 +31,8 @@ class ParticipantController {
     }
 
     public function participantInfo() {
+        parent::adminHeader();
+
         $detailDao = new DetailDao();
         $userListClass = '';
         if(isset($_GET['id'])) {
@@ -69,6 +74,8 @@ class ParticipantController {
 
     // 参加者登録
     public function participantRegist() {
+        parent::adminHeader();
+
         if (isset($_POST["csrf_token"]) 
         && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 

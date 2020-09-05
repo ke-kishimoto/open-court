@@ -1,4 +1,4 @@
-<header class="<?php echo $bgColor ?>" role="banner">
+<header class="<?php echo $_SESSION['bgColor'] ?>" role="banner">
      <!-- ハンバーガーボタン -->
      <button type="button" class="drawer-toggle drawer-hamburger">
       <span class="sr-only">toggle navigation</span>
@@ -14,19 +14,19 @@
         <li><a class="drawer-menu-item" href="/admin/admin/userList">ユーザーリスト</a></li>
         <li><a class="drawer-menu-item" href="/admin/config/config">システム設定</a></li>
         <li><a class="drawer-menu-item" href="/admin/admin/inquiryList">問い合わせ一覧</a></li>
-        <li><a class="drawer-menu-item" href="/index.php">一般利用者画面へ</a></li>
+        <li><a class="drawer-menu-item" href="/">一般利用者画面へ</a></li>
         <li><a class="drawer-menu-item" href="/admin/admin/signout">ログアウト</a></li>
       </ul>
     </nav>
     <div class="system-header">
       <div class="dummy">
-        <?php echo $userName ?>さん</span>
+        <?php echo $_SESSION['user_name'] ?>さん</span>
       </div>
       <div class="system-name">
         <a class="logo" href="/admin/admin/index"><?php echo $_SESSION['system_title'] ?></a>
       </div>
       <div class="user-name">
-        <span id="user_name" class="user-name"><?php echo $userName ?>さん</span>
+        <span id="user_name" class="user-name"><?php echo $_SESSION['user_name'] ?>さん</span>
       </div>
     </div>
 </header>

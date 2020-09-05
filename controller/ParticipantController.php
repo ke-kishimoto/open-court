@@ -19,10 +19,13 @@ use dao\GameInfoDao;
 use dao\DefaultCompanionDao;
 use Exception;
 
-class ParticipantController {
+class ParticipantController extends BaseController
+{
 
     // 参加一括登録処理
     public function eventBatchRegist() {
+        parent::userHeader();
+
         $gameInfoDao = new GameInfoDao();
         date_default_timezone_set('Asia/Tokyo');
         $gameInfoList = $gameInfoDao->getGameInfoListByAfterDate(date('Y-m-d'), $_SESSION['user']['email']);
@@ -55,6 +58,8 @@ class ParticipantController {
 
     // 一括登録
     public function eventBatchRegistComplete() {
+        parent::userHeader();
+
         $errMsg = '';
         if (isset($_POST["csrf_token"]) 
         && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
@@ -95,6 +100,7 @@ class ParticipantController {
 
     // イベント詳細画面
     public function eventInfo() {
+        parent::userHeader();
 
         $gameInfo = null;
         $limitFlg = false;
@@ -164,6 +170,7 @@ class ParticipantController {
 
     // 参加処理
     public function participation() {
+        parent::userHeader();
 
         $errMsg = '';
         if (isset($_POST["csrf_token"]) 
@@ -208,9 +215,8 @@ class ParticipantController {
     }
 
     public function cancel() {
-        // session_start();
-        // require_once('./header.php');
-
+        parent::userHeader();
+        
         if(isset($_SESSION['user'])) {
             $email = $_SESSION['user']['email'];
             $mode = 'login';
@@ -229,6 +235,8 @@ class ParticipantController {
 
     // キャンセル処理
     public function cancelComplete() {
+        parent::userHeader();
+
         $errMsg = '';
         if(isset($_POST)) {
             $detailDao = new DetailDao();

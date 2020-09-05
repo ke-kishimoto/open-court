@@ -1,11 +1,11 @@
 <?php
 namespace controller\admin;
-
 require_once('./model/entity/GameInfo.php');
 require_once('./model/entity/EventTemplate.php');
 require_once('./model/dao/GameInfoDao.php');
 require_once('./model/dao/DetailDao.php');
 require_once('./model/dao/EventTemplateDao.php');
+use controller\BaseController;
 use entity\GameInfo;
 use entity\EventTemplate;
 use dao\EventTemplateDao;
@@ -13,9 +13,12 @@ use dao\GameInfoDao;
 use dao\DetailDao;
 use Exception;
 
-class EventController {
+class EventController extends BaseController
+{
 
     public function eventTemplate() {
+        parent::adminHeader();
+
         // テンプレ一覧
         $eventTemplateDao = new EventTemplateDao();
         $eventTemplateList = $eventTemplateDao->getEventTemplateList();
@@ -34,6 +37,8 @@ class EventController {
     }
 
     public function eventTempleteComplete() {
+        parent::adminHeader();
+
         if (isset($_POST["csrf_token"]) 
         && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 
@@ -79,6 +84,8 @@ class EventController {
     }
 
     public function eventInfo() {
+        parent::adminHeader();
+
         // テンプレ一覧
         $eventTemplateDao = new EventTemplateDao();
         $eventTemplateList = $eventTemplateDao->getEventTemplateList();
@@ -88,8 +95,8 @@ class EventController {
         $templateAreaClass = 'hidden';
         $participantDisp = '';
         // 試合情報取得
-        if (isset($_GET['game_id'])) {
-            $gameInfo = $gameInfoDao->getGameInfo($_GET['game_id']);
+        if (isset($_GET['gameid'])) {
+            $gameInfo = $gameInfoDao->getGameInfo($_GET['gameid']);
         }
         if (empty($gameInfo)) {
             // 新規の場合
@@ -151,7 +158,9 @@ class EventController {
         include('./view/admin/common/footer.php');
     }
 
-    public function eventConplete() {
+    public function eventComplete() {
+        parent::adminHeader();
+
         if (isset($_POST["csrf_token"]) 
         && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 

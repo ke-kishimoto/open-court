@@ -1,24 +1,23 @@
 <?php 
-require_once('./controller/UserController.php');
-require_once('./controller/InquiryController.php');
-require_once('./controller/ParticipantController.php');
-require_once('./controller/admin/AdminController.php');
-require_once('./controller/admin/ConfigController.php');
-require_once('./controller/admin/EventController.php');
-require_once('./controller/admin/ParticipantController.php');
-require_once('./controller/api/EventApi.php');
-// include('./controller/index.php');
-// var_dump('test');
+// require_once('./controller/UserController.php');
+// require_once('./controller/EventController.php');
+// require_once('./controller/InquiryController.php');
+// require_once('./controller/ParticipantController.php');
+// require_once('./controller/admin/AdminController.php');
+// require_once('./controller/admin/ConfigController.php');
+// require_once('./controller/admin/EventController.php');
+// require_once('./controller/admin/ParticipantController.php');
+// require_once('./controller/api/EventApi.php');
 
-use controller\UserController;
+use controller\EventController;
 
-// if(strlen($_SERVER['REQUEST_URI']) > 0) {
-//     $url = substr($_SERVER['REQUEST_URI'], 1, -1);
-// }
+spl_autoload_register(function($class) {
+    $pathArray = explode("\\", $class);
+    $path = implode("/", $pathArray);
+    require($path .'.php');
+});
+
 $url = explode("/", $_SERVER['REQUEST_URI']);
-// 空白削除
-// $url = array_filter( $url, "strlen" ) ;
-
 if(count($url) > 2 && strlen($url[1]) > 0 && strlen($url[2])) {
 
     if($url[1] === 'admin') {
@@ -38,17 +37,6 @@ if(count($url) > 2 && strlen($url[1]) > 0 && strlen($url[2])) {
     $method = $rClass->getMethod($req[0]);
     $method->invoke($controller);
 } else {
-// require_once('./controller/header.php');
-   include('./controller/index.php');
+    $controller = new EventController;
+    $controller->index();
 }
-
-
-
-// if (strpos($_SERVER['REQUEST_URI'], 'user') > 0) {
-//     $userController = new UserController();
-//     $userController->signIn();
-// } else {
-//     include('./controller/index.php');
-// }
-
-

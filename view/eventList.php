@@ -2,7 +2,11 @@
 <div id="event-list">
     <?php foreach ($gameInfoList as $gameInfo): ?>
         <hr>
-            <a href="/participant/EventInfo?id=<?php echo htmlspecialchars($gameInfo['id']); ?>">
+        <?php if($adminFlg === '1'): ?>
+            <a href="/admin/event/eventInfo?gameid=<?php echo htmlspecialchars($gameInfo['id']); ?>">
+        <?php else: ?>
+            <a href="/participant/eventInfo?id=<?php echo htmlspecialchars($gameInfo['id']); ?>">
+        <?php endif; ?>
                 <span class="event-end"><?php echo $gameInfo['game_date'] >= date('Y-m-d') ? '' : '※このイベントは終了しました<br>'  ?></span>
                 <?php echo htmlspecialchars($gameInfo['title']); ?>
                 <br>

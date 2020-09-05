@@ -1,6 +1,5 @@
 <?php
 namespace controller;
-// require_once('./header.php');  
 require_once('./model/entity/Inquiry.php');
 require_once('./model/dao/InquiryDao.php');
 require_once('./model/dao/GameInfoDao.php');
@@ -10,10 +9,11 @@ use dao\GameInfoDao;
 use entity\Inquiry;
 use controller\LineApi;
 
-class InquiryController {
+class InquiryController extends BaseController
+{
 
     public function inquiry() {
-        // session_start();
+        parent::userHeader();
         
         $gameInfoDao = new GameInfoDao();
         $gameInfoList = $gameInfoDao->getGameInfoListByAfterDate(date('Y-m-d'));
@@ -34,6 +34,8 @@ class InquiryController {
     }
 
     public function inquiryComplete() {
+        parent::userHeader();
+
         $errMsg = '';
         if(isset($_POST)) {
             $inquiryDao = new InquiryDao();

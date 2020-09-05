@@ -3,7 +3,7 @@
     <details>
         <summary>イベント情報登録</summary>
         <br>
-        <form action="EventComplete.php" method="post" class="form-group">
+        <form action="/admin/event/eventComplete" method="post" class="form-group">
             <input type="hidden" id="game_id" name="game_id" value="<?php echo $gameInfo['id']; ?>">
             <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
             <div class="<?php echo $templateAreaClass ?>">
