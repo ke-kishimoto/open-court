@@ -1,5 +1,5 @@
 <?php
-namespace controller;
+namespace api;
 define('LINE_API_URL', 'https://notify-api.line.me/api/notify');
 // // 個人用
 // define('LINE_API_TOKEN','99FzrFtUEzMpTcOrZtUK3AaoJqqYMoWWTyNOdq5mQHR'); 

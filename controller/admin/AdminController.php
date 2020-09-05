@@ -1,11 +1,6 @@
 <?php
 namespace controller\admin;
 
-require_once('./model/dao/InquiryDao.php');
-require_once('./model/dao/ConfigDao.php');
-require_once('./model/dao/UsersDao.php');
-require_once('./model/dao/GameInfoDao.php');
-
 use controller\BaseController;
 use dao\GameInfoDao;
 use dao\ConfigDao;

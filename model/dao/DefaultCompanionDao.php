@@ -1,7 +1,5 @@
 <?php
-
 namespace dao;
-require_once(dirname(__FILE__).'/DaoFactory.php');
 
 use dao\DaoFactory;
 use PDO;

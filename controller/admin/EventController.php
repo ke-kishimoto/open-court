@@ -1,10 +1,5 @@
 <?php
 namespace controller\admin;
-require_once('./model/entity/GameInfo.php');
-require_once('./model/entity/EventTemplate.php');
-require_once('./model/dao/GameInfoDao.php');
-require_once('./model/dao/DetailDao.php');
-require_once('./model/dao/EventTemplateDao.php');
 use controller\BaseController;
 use entity\GameInfo;
 use entity\EventTemplate;

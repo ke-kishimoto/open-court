@@ -1,15 +1,6 @@
 <?php
 namespace controller;
-require_once('./model/entity/Participant.php');
-require_once('./model/entity/Companion.php');
-require_once('./model/dao/DetailDao.php');
-require_once('./model/dao/UsersDao.php');
-require_once('./model/dao/ConfigDao.php');
-require_once('./model/dao/CompanionDao.php');
-require_once('./model/dao/DefaultCompanionDao.php');
-require_once('./model/dao/GameInfoDao.php');
-require_once('./controller/api/LineApi.php');
-use controller\LineApi;
+use api\LineApi;
 use entity\Participant;
 use entity\Companion;
 use dao\DetailDao;

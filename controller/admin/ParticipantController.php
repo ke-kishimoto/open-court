@@ -1,10 +1,5 @@
 <?php 
 namespace controller\admin;
-require_once('./model/dao/DetailDao.php');
-require_once('./model/dao/CompanionDao.php');
-require_once('./model/dao/UsersDao.php');
-require_once('./model/entity/Participant.php');
-require_once('./model/entity/Companion.php');
 use controller\BaseController;
 use dao\DetailDao;
 use dao\CompanionDao;

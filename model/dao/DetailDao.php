@@ -1,9 +1,5 @@
 <?php
-
 namespace dao;
-
-require_once(dirname(__FILE__).'/DaoFactory.php');
-require_once(dirname(__FILE__).'/GameInfoDao.php');
 
 use dao\DaoFactory;
 use dao\GameInfoDao;

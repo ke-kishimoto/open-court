@@ -1,9 +1,6 @@
 <?php
 namespace dao;
 
-require_once(dirname(__FILE__).'/DaoFactory.php');
-require_once(dirname(__FILE__).'/DetailDao.php');
-
 use dao\DaoFactory;
 use PDO;
 use entity\GameInfo;

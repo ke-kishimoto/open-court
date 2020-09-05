@@ -8,7 +8,7 @@
     <nav class="drawer-nav" role="navigation">
       <ul class="drawer-menu">
         <li><a class="drawer-brand" href="#">メニュー</a></li>
-        <li><a class="drawer-menu-item" href="index.php">トップ</a></li>
+        <li><a class="drawer-menu-item" href="/event/index">トップ</a></li>
         <li class="<?php echo htmlspecialchars($_SESSION['noLoginClass']) ?>"><a class="drawer-menu-item" href="/user/signup">新規作成</a></li>
         <li class="<?php echo htmlspecialchars($_SESSION['noLoginClass']) ?>"><a class="drawer-menu-item" href="/user/signin">ログイン</a></li>
         <li class="<?php echo htmlspecialchars($_SESSION['loginClass']) ?>"><a class="drawer-menu-item" href="/user/participatingEventList">参加イベント一覧</a></li>
@@ -27,7 +27,7 @@
         <?php echo $_SESSION['user_name'] ?>さん</span>
       </div>
       <div class="system-name">
-        <a class="logo" href="/index.php"><?php echo htmlspecialchars($_SESSION['system_title']) ?></a>
+        <a class="logo" href="/event/index"><?php echo htmlspecialchars($_SESSION['system_title']) ?></a>
       </div>
       <div class="user-name">
           <span><?php echo $_SESSION['user_name']?>さん</span>

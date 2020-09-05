@@ -1,13 +1,9 @@
 <?php
 namespace controller;
-require_once('./model/entity/Inquiry.php');
-require_once('./model/dao/InquiryDao.php');
-require_once('./model/dao/GameInfoDao.php');
-require_once('./controller/api/LineApi.php');
 use dao\InquiryDao;
 use dao\GameInfoDao;
 use entity\Inquiry;
-use controller\LineApi;
+use api\LineApi;
 
 class InquiryController extends BaseController
 {

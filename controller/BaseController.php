@@ -1,6 +1,5 @@
 <?php
 namespace controller;
-require_once('./model/dao/ConfigDao.php');
 use dao\ConfigDao;
 
 class BaseController {

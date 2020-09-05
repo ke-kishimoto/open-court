@@ -1,9 +1,6 @@
 <?php 
 namespace controller;
 
-require_once('./model/dao/UsersDao.php');
-require_once('./model/dao/DefaultCompanionDao.php');
-require_once('./model/dao/DetailDao.php');
 use dao\UsersDao;
 use dao\DefaultCompanionDao;
 use dao\DetailDao;

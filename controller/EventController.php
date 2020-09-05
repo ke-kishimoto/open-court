@@ -1,7 +1,6 @@
 <?php
 namespace controller;
 
-require_once('./model/dao/GameInfoDao.php');
 use dao\GameInfoDao;
 use controller\BaseController;
 

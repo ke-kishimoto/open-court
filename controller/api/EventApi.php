@@ -1,11 +1,6 @@
 <?php
-namespace controller\api;
-require_once('./model/dao/DetailDao.php');
-require_once('./model/dao/GameInfoDao.php');
-require_once('./model/dao/DefaultCompanionDao.php');
-require_once('./model/dao/EventTemplateDao.php');
-require_once('./model/dao/UsersDao.php');
-require_once('./model/dao/InquiryDao.php');
+namespace api;
+
 use dao\DetailDao;
 use dao\GameInfoDao;
 use dao\DefaultCompanionDao;

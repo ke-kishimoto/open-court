@@ -1,20 +1,16 @@
 <?php 
-// require_once('./controller/UserController.php');
-// require_once('./controller/EventController.php');
-// require_once('./controller/InquiryController.php');
-// require_once('./controller/ParticipantController.php');
-// require_once('./controller/admin/AdminController.php');
-// require_once('./controller/admin/ConfigController.php');
-// require_once('./controller/admin/EventController.php');
-// require_once('./controller/admin/ParticipantController.php');
-// require_once('./controller/api/EventApi.php');
-
 use controller\EventController;
 
 spl_autoload_register(function($class) {
     $pathArray = explode("\\", $class);
     $path = implode("/", $pathArray);
-    require($path .'.php');
+    if ($pathArray[0] === 'controller') {
+        require($path .'.php');
+    } elseif ($pathArray[0] === 'api') {
+        require('controller/' . $path .'.php');
+    } elseif ($pathArray[0] === 'dao' || $pathArray[0] === 'entity') {
+        require('model/' . $path .'.php');
+    }
 });
 
 $url = explode("/", $_SERVER['REQUEST_URI']);

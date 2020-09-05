@@ -1,7 +1,5 @@
 <?php
 namespace controller\admin;
-require_once('./model/entity/Config.php');
-require_once('./model/dao/ConfigDao.php');
 use dao\ConfigDao;
 use entity\Config;
 use controller\BaseController;

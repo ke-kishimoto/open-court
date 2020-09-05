@@ -1,5 +1,6 @@
 <?php
-require_once('../../model/dao/UsersDao.php');
+namespace api;
+
 use dao\UsersDao;
 
 $signUpDao = new UsersDao();
