@@ -1,5 +1,5 @@
 <hr>
-<footer class="<?php echo $_SESSION['bgColor'] ?> ">
+<footer class="<?php echo $bgColor ?> ">
     <!-- <a href="#">当サイトについて</a> -->
     <a href="PrivacyPolicy.php">プライバシーポリシー</a>
     <a href="Inquiry.php">お問い合わせ</a>
