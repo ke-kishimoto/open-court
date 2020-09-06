@@ -18,7 +18,7 @@
           <li class="<?php echo htmlspecialchars($_SESSION['loginClass']) ?>"><a class="drawer-menu-item" href="/admin/admin/index?id=<?php echo $_SESSION['user_id'] ?>">管理者画面へ</a></li>
         <?php endif; ?>
         <li class="<?php echo htmlspecialchars($_SESSION['loginClass']) ?>"><a class="drawer-menu-item" href="/user/signout">ログアウト</a></li>
-        <li class=""><a class="drawer-menu-item" href="inquiry/inquiry">お問い合わせ</a></li>
+        <li class=""><a class="drawer-menu-item" href="/inquiry/inquiry">お問い合わせ</a></li>
       </ul>
     </nav>
 

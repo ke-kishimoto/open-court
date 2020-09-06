@@ -209,3 +209,15 @@ h1 {
     font-size: large;
     margin: 10px 0;
 }
+
+footer {
+    height: 80px;
+    display: flex;
+    justify-content: center;
+}
+
+footer a{
+    color: black;
+    text-decoration: underline;
+    margin: 0 20px;
+}
