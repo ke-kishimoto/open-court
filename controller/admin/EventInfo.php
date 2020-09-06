@@ -46,6 +46,13 @@ $participantList = null;
 if(!empty($gameInfo['id'])) {
     $detailDao = new DetailDao();
     $participantList = $detailDao->getParticipantList($gameInfo['id']);
+    
+    $mailto = 'mailto:?subject=【' . $gameInfo['title'] . '】についてのお知らせ&amp;';
+    foreach($participantList as $participant) {
+        if(!empty($participant['email'])) {
+            $mailto .= 'bcc=' . $participant['email'] . ',';
+        }
+    }
 }
 
 $detail = null;
