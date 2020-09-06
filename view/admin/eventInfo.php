@@ -150,6 +150,7 @@
         <summary>参加者リスト</summary>
         <br>
         <a class="btn btn-primary" href="/admin/participant/participantInfo?game_id=<?php echo $gameInfo['id']; ?>">参加者追加</a>
+        <a class="btn btn-info" href="<?php echo $mailto ?>">参加者全員に連絡</a>
         <?php foreach ((array)$participantList as $participant): ?>
             <?php if($participant['main'] == '1'): ?>
                 <hr>

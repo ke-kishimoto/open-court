@@ -119,6 +119,13 @@ class EventController extends BaseController
         if(!empty($gameInfo['id'])) {
             $detailDao = new DetailDao();
             $participantList = $detailDao->getParticipantList($gameInfo['id']);
+
+            $mailto = 'mailto:?subject=【' . $gameInfo['title'] . '】についてのお知らせ&amp;bcc=';
+            foreach($participantList as $participant) {
+                if(!empty($participant['email'])) {
+                    $mailto .= $participant['email'] . ',';
+                }
+            }
         }
 
         $detail = null;
