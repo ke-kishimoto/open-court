@@ -39,7 +39,7 @@ $(function() {
     }
     $('#template').change(function() {
         $.ajax({
-        url:'/api/Event/getEventTemplate',
+        url:'/api/event/getEventTemplate',
         type:'POST',
         data:{
             'id':$('#template').val(),

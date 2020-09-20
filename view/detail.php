@@ -73,12 +73,12 @@
             </select>
         </p>
         <p>
-            名前
+            名前 ※必須
             <input id="name" class="form-control" type="text" name="name" required maxlength="50" value="<?php echo !isset($_SESSION['user']) ? '' : $_SESSION['user']['name'] ?>">
         </p>
         <p>
-            メール ※新規の方は必須
-            <input class="form-control" type="email" name="email" maxlength="50" value="<?php echo !isset($_SESSION['user']) ? '' : $_SESSION['user']['email'] ?>">
+            メールアドレス ※必須
+            <input id="email" class="form-control" type="email" name="email" maxlength="50" required value="<?php echo !isset($_SESSION['user']) ? '' : $_SESSION['user']['email'] ?>">
         </p>
         <p>
             備考
