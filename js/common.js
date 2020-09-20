@@ -100,7 +100,7 @@ $(function() {
     let strage = window.localStorage;
     let user = JSON.parse(strage.getItem('eventScheduleUser'));
     if(user !== null) {
-        $('#email').val(user.email);
+        $('#email-login').val(user.email);
         $('#password').val(user.pass);
     }
 

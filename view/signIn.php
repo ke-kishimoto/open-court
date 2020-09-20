@@ -4,7 +4,7 @@
         <p style="color: red;"><?php if(!empty($errMsg)){echo $errMsg;};?></p>
         <p>
             メール
-            <input id="email" class="form-control" type="email" name="email" required maxlength="50">
+            <input id="email-login" class="form-control" type="email" name="email" required maxlength="50">
         </p>
         <p>
             パスワード
