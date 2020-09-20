@@ -32,9 +32,12 @@ $(function() {
         }
         $('#companion').val(num);
     });
-    // 参加者追加
+    // 参加者登録
     $('#btn-partisipant-regist').on('click', function() {
         if($('#name').val() === '') {
+            return true;
+        }
+        if($('#email').val() === '') {
             return true;
         }
         var msg = '以下の内容で登録します\n' + 
@@ -72,6 +75,7 @@ $(function() {
         })
     });
 
+    // ログイン
     $('#btn-login').on('click', function() {
         var userMail = $('#email').val();
         var password = $('#password').val();
