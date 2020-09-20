@@ -37,6 +37,10 @@ if (isset($_POST["csrf_token"])
     if(empty($errMsg)) {
         $title = 'イベント参加登録完了';
         $msg = 'イベント参加登録が完了しました。';
+        $msg2 = <<<EOF
+        変更、及びキャンセルの場合は必ず本システムからの変更かキャンセルを行うか、
+        お問い合わせフォームにより管理者へご連絡ください。
+        EOF;
         include('../view/common/head.php');
         include('../view/common/header.php');
         include('../view/complete.php');
