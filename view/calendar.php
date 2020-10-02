@@ -1,11 +1,15 @@
 <h1>イベントカレンダー</p>
-<div  class="month">
-<a href=".?year=<?php echo htmlspecialchars($pre_year); ?>&month=<?php echo htmlspecialchars($lastmonth); ?>">＜</a>
-<a href=".?year=<?php echo htmlspecialchars($next_year); ?>&month=<?php echo htmlspecialchars($nextmonth); ?>">＞</a>
-<a href=".?year=<?php echo htmlspecialchars($year); ?>&month=<?php echo htmlspecialchars($month); ?>">【<span id="year"><?php echo htmlspecialchars($year); ?></span>年<span id="this-month"><?php echo htmlspecialchars($month); ?></span>月】</a>
-</div>
 <table>
     <tr>
+        <td colspan= 7>
+            <div class="month">
+                <a href=".?year=<?php echo htmlspecialchars($pre_year); ?>&month=<?php echo htmlspecialchars($lastmonth); ?>" class="lastMonthLink"><i class="fas fa-chevron-left"></i></a>
+                <a href=".?year=<?php echo htmlspecialchars($year); ?>&month=<?php echo htmlspecialchars($month); ?>" class="MonthLink"><span id="year"><?php echo htmlspecialchars($year); ?></span>年<span id="this-month"><?php echo htmlspecialchars($month); ?></span>月</a>
+                <a href=".?year=<?php echo htmlspecialchars($next_year); ?>&month=<?php echo htmlspecialchars($nextmonth); ?>"class="nextMonthLink"><i class="fas fa-chevron-right"></i></a>
+            </div>
+        </td>
+    </tr>
+    <tr class="weekTit">
         <th class="sunday">日</th>
         <th>月</th>
         <th>火</th>
@@ -14,7 +18,6 @@
         <th>金</th>
         <th class="saturday">土</th>
     </tr>
- 
     <tr>
     <?php foreach ($calendar as $key => $value): ?>
         <td class="<?php echo $value['weekName']; ?>">
