@@ -112,15 +112,15 @@ create table users(
   , occupation int   -- 職種  1：社会、2：大学生、3：高校生
   , sex int -- 性別  1：男、2：女
   , remark varchar(200)  -- 備考
-  , register_date timestamp   -- 登録日時
-  , update_date timestamp     -- 更新日時
+  , register_date timestamp null default null   -- 登録日時
+  , update_date timestamp null default null     -- 更新日時
 );
 
 -- 追加用
--- alter table users add column register_date timestamp;
--- alter table users add column update_date timestamp;
--- alter table users modify column register_date timestamp;
--- alter table users modify column update_date timestamp;
+-- alter table users add column register_date timestamp null default null;
+-- alter table users add column update_date timestamp null default null;
+-- alter table users drop column register_date;
+-- alter table users drop column update_date;
 
 -- ユーザーに付随する同伴者の初期値
 -- drop table default_companion;
@@ -130,8 +130,8 @@ create table default_companion(
     , occupation int   -- 職種  1：社会、2：大学生、3：高校生
     , sex int -- 性別  1：男、2：女
     , name varchar(50)   -- 参加者名
-    , register_date date
-    , update_date date
+    , register_date timestamp null default null
+    , update_date timestamp null default null
 );
 
 -- 追加用
@@ -147,7 +147,7 @@ create table inquiry(
     , email varchar(50)
     , content varchar(2000)
     , status_flg int
-    , register_date timestamp
-    , update_date timestamp
+    , register_date timestamp null default null
+    , update_date timestamp null default null
 );
 
