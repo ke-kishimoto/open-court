@@ -26,7 +26,7 @@
                         </a>
                         <?php if($adminFlg === '1' && $value['day'] !== ''): ?>
                             <a class="link-add" href="./EventInfo.php?date=<?php echo $year . '-' . sprintf('%02d', $month) . '-' . sprintf('%02d', $value['day'])?>">
-                                追加
+                                ＋
                             </a>
                         <?php endif; ?>
                     </div>
@@ -50,7 +50,7 @@
                         </span>
                         <?php if($adminFlg === '1' && $value['day'] !== ''): ?>
                             <a class="link-add" href="./EventInfo.php?date=<?php echo $year . '-' . sprintf('%02d', $month) . '-' . sprintf('%02d', $value['day'])?>">
-                                追加
+                                ＋
                             </a>
                         <?php endif; ?>
                     </div>

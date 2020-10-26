@@ -30,7 +30,7 @@ table .blank {
 table td .day {
     height: 80px;
     overflow-y: scroll;
-    font-size: 12px;
+    font-size: 15px;
 }
 table td{
     padding: 3px 5px;
@@ -93,7 +93,7 @@ table tr.weekTit{
 }
 
 .link-add {
-    margin-right: 5px;
+    /* margin-right: 5px; */
 }
 .link, .nolink {
     margin-left: 3px;
@@ -149,7 +149,7 @@ a.link, .nolink{
     font-size: 15px;
     font-weight: 600;
     height: 22px;
-    width: 22px;
+    /* width: 22px; */
     display:block
 }
 .nolink{
