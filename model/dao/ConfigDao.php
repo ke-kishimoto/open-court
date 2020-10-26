@@ -43,6 +43,7 @@ class ConfigDao {
         , bg_color = :bg_color
         , logo_img_path = :logo_img_path
         , update_date = :update_date
+        , waiting_flg_auto_update = :waiting_flg_auto_update
         where id = :id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':id', $config->id, PDO::PARAM_INT);
@@ -51,6 +52,7 @@ class ConfigDao {
         $prepare->bindValue(':bg_color', $config->bgColor, PDO::PARAM_STR);
         $prepare->bindValue(':logo_img_path', $config->logoImgPath, PDO::PARAM_STR);
         $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
+        $prepare->bindValue(':waiting_flg_auto_update', $config->waitingFlgAutoUpdate, PDO::PARAM_INT);
         $prepare->execute();
         $_SESSION['system_title'] = $config->systemTitle;
     }

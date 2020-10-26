@@ -29,6 +29,14 @@
             <option value="pink" <?php echo $config['bg_color'] == 'pink' ? 'selected' : '' ?> >ピンク</option>
         </select>
     </p>
+    <hr>
+    <p>キャンセル待ちの更新</p>
+    <p>
+        <select id="waiting_flg_auto_update" name="waiting_flg_auto_update" class="custom-select mr-sm-2">
+            <option value="0" <?php echo $config['waiting_flg_auto_update'] == '0' ? 'selected' : '' ?> >手動</option>
+            <option value="1" <?php echo $config['waiting_flg_auto_update'] == '1' ? 'selected' : '' ?> >自動</option>
+        </select>
+    </p>
     <p>
         <button class="btn btn-primary" type="submit" name="register">登録</button>
     </p>

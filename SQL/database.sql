@@ -103,6 +103,7 @@ create table config(
     , logo_img_path varchar(200)
     , register_date timestamp null default null
     , update_date timestamp null default null
+    , waiting_flg_auto_update int
 );
 
 -- 追加用
@@ -110,6 +111,7 @@ create table config(
 -- alter table config add column logo_img_path varchar(200);
 -- alter table config add column register_date timestamp null default null;
 -- alter table config add column update_date timestamp null default null;
+-- alter table config add column waiting_flg_auto_update int;
 
 -- ユーザー
 -- drop table users;

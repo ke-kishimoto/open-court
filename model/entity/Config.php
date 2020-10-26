@@ -8,13 +8,15 @@ class Config {
     public $systemTitle;
     public $bgColor;
     public $logoImgPath;
+    public $waitingFlgAutoUpdate;
 
-    public function  __construct($id, $lineToken, $systemTitle, $bgColor, $logoImgPath) {
+    public function  __construct($id, $lineToken, $systemTitle, $bgColor, $logoImgPath, $waitingFlgAutoUpdate) {
         $this->id = $id;
         $this->lineToken = $lineToken;
         $this->systemTitle = $systemTitle;
         $this->bgColor = $bgColor;
         $this->logoImgPath = $logoImgPath;
+        $this->waitingFlgAutoUpdate = $waitingFlgAutoUpdate;
     }
     
 }
