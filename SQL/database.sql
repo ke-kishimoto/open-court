@@ -21,11 +21,13 @@ create table game_info (
     , detail varchar(1000)
     , register_date timestamp null default null
     , update_date timestamp null default null
+    , delete_flg int default 1
 );
 
 -- 追加用
 -- alter table game_info add column register_date timestamp null default null;
 -- alter table game_info add column update_date timestamp null default null;
+-- alter table game_info add column delete_flg int default 1;
 
 -- イベントのテンプレ
 -- drop table event_template; 
@@ -39,11 +41,13 @@ create table event_template (
     , detail varchar(1000)
     , register_date timestamp null default null
     , update_date timestamp null default null
+    , delete_flg int default 1
 );
 
 -- 追加用
 -- alter table event_template add column register_date timestamp null default null;
 -- alter table event_template add column update_date timestamp null default null;
+-- alter table event_template add column delete_flg int default 1;
 
 -- 参加者
 -- drop table participant;
@@ -58,6 +62,7 @@ create table participant (
     , remark varchar(200)  -- 備考
     , register_date timestamp null default null   -- 登録日時
     , update_date timestamp null default null     -- 更新日時
+    , delete_flg int default 1
 );
 -- インデックス
 create index participant_idx_game on participant (game_id); 
@@ -65,6 +70,7 @@ create index participant_idx_game on participant (game_id);
 -- 追加用
 -- alter table participant add column register_date timestamp null default null;
 -- alter table participant add column update_date timestamp null default null;
+-- alter table participant add column delete_flg int default 1;
 
 -- 同伴者
 -- drop table companion;
@@ -76,6 +82,7 @@ create table companion (
     , name varchar(50)   -- 参加者名
     , register_date timestamp null default null
     , update_date timestamp null default null
+    , delete_flg int default 1
 );
 -- インデックス
 create index companion_idx_participant on companion (participant_id);
@@ -83,6 +90,7 @@ create index companion_idx_participant on companion (participant_id);
 -- 追加用
 -- alter table companion add column register_date timestamp null default null;
 -- alter table companion add column update_date timestamp null default null;
+-- alter table companion add column delete_flg int default 1;
 
 -- 設定
 -- 後々はユーザー単位にしたいな
@@ -116,6 +124,7 @@ create table users(
   , remark varchar(200)  -- 備考
   , register_date timestamp null default null   -- 登録日時
   , update_date timestamp null default null     -- 更新日時
+  , delete_flg int default 1
 );
 
 -- 追加用
@@ -123,6 +132,8 @@ create table users(
 -- alter table users drop column update_date;
 -- alter table users add column register_date timestamp null default null;
 -- alter table users add column update_date timestamp null default null;
+
+-- alter table users add column delete_flg int default 1;
 
 -- ユーザーに付随する同伴者の初期値
 -- drop table default_companion;
@@ -134,11 +145,13 @@ create table default_companion(
     , name varchar(50)   -- 参加者名
     , register_date timestamp null default null
     , update_date timestamp null default null
+    , delete_flg int default 1
 );
 
 -- 追加用
 -- alter table default_companion add column register_date timestamp null default null;
 -- alter table default_companion add column update_date timestamp null default null;
+-- alter table default_companion add column delete_flg int default 1;
 
 -- 問い合わせ
 -- drop table inquiry; 

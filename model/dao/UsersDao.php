@@ -56,15 +56,19 @@ class UsersDao {
     }
 
     public function updatePass(int $id, string $password) {
-        $sql = 'update users set password = :password where id = :id';
+        $sql = 'update users set password = :password 
+        , update_date = :update_date
+        where id = :id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':password', $password, PDO::PARAM_STR);
+        $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
     }
 
     public function delete(int $id) {
-        $sql = 'delete from users where id = :id';
+        // $sql = 'delete from users where id = :id';
+        $sql = 'update users set delete_flg = 9 where id = :id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
@@ -104,6 +108,10 @@ class UsersDao {
             when admin_flg = 1 then '管理者'
             else '一般'
           end authority_name
+        , case 
+            when delete_flg = 1 then '利用可能'
+            when delete_flg = 9 then '利用不可'
+          end status
         from users 
         order by id";
         $prepare = $this->pdo->prepare($sql);
@@ -123,7 +131,7 @@ class UsersDao {
 
     // ユーザー取得（メールアドレス）
     public function getUserByEmail(string $email) {
-        $sql = 'select * from users where email = :email';
+        $sql = 'select * from users where email = :email and delete_flg = 1';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':email', $email, PDO::PARAM_STR);
         $prepare->execute();
@@ -143,32 +151,34 @@ class UsersDao {
     // 毎回ランダムなハッシュ値になってしまうようで、
     // 比較には「password_verify()」を使用しなければならないみたいです。
     // 参照：https://qiita.com/rana_kualu/items/3ef57485be1103362f56
-    public function comparePassword(Users $users) {
-        $sql = 'select password
-                from users 
-                where email = :email';
-        $prepare = $this->pdo->prepare($sql);
-        $prepare->bindValue(':email', $users->email, PDO::PARAM_STR);
-        $prepare->execute();
-        $info = $prepare->fetch();
-        if(password_verify($users->email, $info['password'])){
-            return true;
-        } else
-            return false;
-    }
+    // private function comparePassword(Users $users) {
+    //     $sql = 'select password
+    //             from users 
+    //             where email = :email';
+    //     $prepare = $this->pdo->prepare($sql);
+    //     $prepare->bindValue(':email', $users->email, PDO::PARAM_STR);
+    //     $prepare->execute();
+    //     $info = $prepare->fetch();
+    //     if(password_verify($users->email, $info['password'])){
+    //         return true;
+    //     } else
+    //         return false;
+    // }
     
-    // ログイン
-    public function login(Users $users) {
-        $this->existsCheck($users->email);
-        $this->comparePassword($users);
-        $sql = 'select *
-                from users 
-                where email = :email';
-        $prepare = $this->pdo->prepare($sql);
-        $prepare->bindValue(':email', $users->email, PDO::PARAM_STR);
-        $prepare->execute();
-        $users = $prepare->fetch();
-    }
+    // // ログイン
+    // public function login(Users $users) {
+    //     $this->existsCheck($users->email);
+    //     $this->comparePassword($users);
+    //     $sql = 'select *
+    //             from users 
+    //             where email = :email
+    //             and delete_flg = 1
+    //             ';
+    //     $prepare = $this->pdo->prepare($sql);
+    //     $prepare->bindValue(':email', $users->email, PDO::PARAM_STR);
+    //     $prepare->execute();
+    //     $users = $prepare->fetch();
+    // }
 
     // 権限更新
     public function updateAdminFlg(int $id) {

@@ -6,7 +6,8 @@
                         職種：<?php echo $user['occupation_name'] ?><br>
                         性別：<?php echo $user['sex_name'] ?><br>
                         連絡先：<a href="mailto:<?php echo $user['email'] ?>"><?php echo $user['email'] ?></a><br>
-                        <p>権限：<span id="authority-name-<?php echo $user['id'] ?>"><?php echo $user['authority_name'] ?></span><p>
+                        権限：<span id="authority-name-<?php echo $user['id'] ?>"><?php echo $user['authority_name'] ?></span><br>
+                        <p>状態：<span id="statud-<?php echo $user['id'] ?>"><?php echo $user['status'] ?></span><p>
                         <p><button class="change-authority btn btn-info" type="button" value="<?php echo $user['id'] ?>">権限の変更</button></p>
                     <hr>
             <?php endif; ?>

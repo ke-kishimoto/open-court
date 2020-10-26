@@ -22,7 +22,7 @@ class GameInfoDao {
     }
 
     public function getGameInfoId($date) {
-        $sql = 'select id from game_info where game_date = :gameDate';
+        $sql = 'select id from game_info where game_date = :gameDate and delete_flg = 1';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':gameDate', $date);
         $prepare->execute();
@@ -44,7 +44,8 @@ class GameInfoDao {
     public function getGameInfoList($year, $month) {
         $sql = $this->getGameInfoListSQL();
         $sql .= DaoFactory::getGameInfoListSQL();
-        $sql .= "group by g.id order by max(g.game_date)";
+        $sql .= " and g.delete_flg = 1 ";
+        $sql .= " group by g.id order by max(g.game_date)";
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':year', $year);
         $prepare->bindValue(':month', $month);
@@ -56,7 +57,7 @@ class GameInfoDao {
     // カレンダー表示用
     public function getGameInfoListByDate($date) {
         $sql = $this->getGameInfoListSQL();
-        $sql .= " where game_date = :date ";
+        $sql .= " where game_date = :date and g.delete_flg = 1 ";
         $sql .= " group by g.id order by max(g.game_date), max(g.start_time)";
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':date', $date);
@@ -68,7 +69,7 @@ class GameInfoDao {
     // 一括予約用
     public function getGameInfoListByAfterDate($date, $email = '') {
         $sql = $this->getGameInfoListSQL();
-        $sql .= " where game_date >= :date ";
+        $sql .= " where game_date >= :date and g.delete_flg = 1 ";
         if ($email !== '') {
             $sql .= " and not exists(select * from participant where game_id = g.id and email = :email)";
         }
@@ -86,6 +87,7 @@ class GameInfoDao {
     private function getGameInfoListSQL() {
         $sql = "select 
         g.id 
+        , max(g.delete_flg) delete_flg
         , max(g.title) title
         , max(g.short_title) short_title
         , max(g.game_date) game_date
@@ -159,8 +161,12 @@ class GameInfoDao {
         $detailDao = New DetailDao();
         $detailDao->setPdo($this->pdo);
         $detailDao->deleteByGameId($id);
-        $sql = "delete from game_info where id = :id";
+        // $sql = "delete from game_info where id = :id";
+        $sql = "update game_info set delete_flg = 9 
+        , update_date = :update_date
+        where id = :id";
         $prepare = $this->pdo->prepare($sql);
+        $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
 
