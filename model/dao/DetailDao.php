@@ -359,4 +359,20 @@ class DetailDao {
         $prepare->execute();
         return $prepare->fetchAll();
     }
+
+    // キャンセル待ちメンバーの取得
+    public function getWitingList(int $gameId) {
+        $sql = 'select *
+        , coalesce((select count(*) from companion 
+            where participant_id = participant.id), 0) cnt
+        from participant
+        where game_id = :game_id
+        and delete_flg = 1
+        and waiting_flg = 1
+        order by id';
+        $prepare = $this->pdo->prepare($sql);
+        $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
+        $prepare->execute();
+        return $prepare->fetchAll();
+    }
 }

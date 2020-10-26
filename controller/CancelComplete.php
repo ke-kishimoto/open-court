@@ -6,6 +6,7 @@ require_once('../model/dao/ConfigDao.php');
 require_once('../model/dao/UsersDao.php');
 require_once('../controller/api/LineApi.php');
 require_once('./header.php');
+use dao\ConfigDao;
 use dao\DetailDao;
 use dao\UsersDao;
 use dao\GameInfoDao;
@@ -39,6 +40,19 @@ if(isset($_POST)) {
         
             $api = new LineApi();
             $api->cancel_notify($participant, $gameInfo['title'], $gameInfo['game_date']);
+
+
+            $configDao = new ConfigDao();
+            $config = $configDao->getConfig(1);
+            // キャンセル待ちの自動繰り上げ
+            if($config['waiting_flg_auto_update'] == 1) {
+                $waitingList = $detailDao->getWitingList($_POST['game_id']);
+                foreach($waitingList as $waitingMember) {
+                    if(!$detailDao->limitCheck($_POST['game_id'], 1 + $waitingMember['cnt'])) {
+                        $detailDao->updateWaitingFlg($waitingMember['id']);
+                    }
+                }
+            }
         }
     }
 }
