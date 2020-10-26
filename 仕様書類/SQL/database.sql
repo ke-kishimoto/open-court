@@ -19,6 +19,8 @@ create table game_info (
     , place varchar(100)
     , limit_number int
     , detail varchar(1000)
+    , register_date timestamp null default null
+    , update_date timestamp null default null
 );
 
 -- イベントのテンプレ
@@ -31,6 +33,8 @@ create table event_template (
     , place varchar(100)
     , limit_number int
     , detail varchar(1000)
+    , register_date timestamp null default null
+    , update_date timestamp null default null
 );
 
 -- 参加者
@@ -43,7 +47,9 @@ create table participant (
     , name varchar(50)   -- 参加者名
     , email varchar(50)  -- メール
     , waiting_flg int -- キャンセル待ちフラグ 0：通常、1：キャンセル待ち
-    , remark varchar(200)
+    , remark varchar(200)  -- 備考
+    , register_date timestamp null default null   -- 登録日時
+    , update_date timestamp null default null     -- 更新日時
 );
 -- インデックス
 create index participant_idx_game on participant (game_id); 
@@ -56,6 +62,8 @@ create table companion (
     , occupation int   -- 職種  1：社会、2：大学生、3：高校生
     , sex int -- 性別  1：男、2：女
     , name varchar(50)   -- 参加者名
+    , register_date timestamp null default null
+    , update_date timestamp null default null
 );
 -- インデックス
 create index companion_idx_participant on companion (participant_id);
@@ -69,12 +77,9 @@ create table config(
     , system_title varchar(30)
     , bg_color varchar(30)  -- 背景色、何個か選べるようにする
     , logo_img_path varchar(200)
+    , register_date timestamp null default null
+    , update_date timestamp null default null
 );
-
-
--- 追加用
--- alter table config add column bg_color varchar(30);
--- alter table config add column logo_img_path varchar(200);
 
 -- ユーザー
 -- drop table users;
@@ -86,7 +91,9 @@ create table users(
   , password varchar(200) -- ハッシュ化して保存
   , occupation int   -- 職種  1：社会、2：大学生、3：高校生
   , sex int -- 性別  1：男、2：女
-  , remark varchar(200)
+  , remark varchar(200)  -- 備考
+  , register_date timestamp null default null   -- 登録日時
+  , update_date timestamp null default null     -- 更新日時
 );
 
 -- ユーザーに付随する同伴者の初期値
@@ -97,6 +104,8 @@ create table default_companion(
     , occupation int   -- 職種  1：社会、2：大学生、3：高校生
     , sex int -- 性別  1：男、2：女
     , name varchar(50)   -- 参加者名
+    , register_date timestamp null default null
+    , update_date timestamp null default null
 );
 
 -- 問い合わせ
@@ -108,7 +117,7 @@ create table inquiry(
     , email varchar(50)
     , content varchar(2000)
     , status_flg int
-    , register_date date
-    , update_date date
+    , register_date timestamp null default null
+    , update_date timestamp null default null
 );
 
