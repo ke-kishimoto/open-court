@@ -21,6 +21,7 @@ create table game_info (
     , detail varchar(1000)
     , register_date timestamp null default null
     , update_date timestamp null default null
+    , delete_flg int default 1
 );
 
 -- イベントのテンプレ
@@ -35,6 +36,7 @@ create table event_template (
     , detail varchar(1000)
     , register_date timestamp null default null
     , update_date timestamp null default null
+    , delete_flg int default 1
 );
 
 -- 参加者
@@ -50,6 +52,7 @@ create table participant (
     , remark varchar(200)  -- 備考
     , register_date timestamp null default null   -- 登録日時
     , update_date timestamp null default null     -- 更新日時
+    , delete_flg int default 1
 );
 -- インデックス
 create index participant_idx_game on participant (game_id); 
@@ -64,6 +67,7 @@ create table companion (
     , name varchar(50)   -- 参加者名
     , register_date timestamp null default null
     , update_date timestamp null default null
+    , delete_flg int default 1
 );
 -- インデックス
 create index companion_idx_participant on companion (participant_id);
@@ -94,6 +98,7 @@ create table users(
   , remark varchar(200)  -- 備考
   , register_date timestamp null default null   -- 登録日時
   , update_date timestamp null default null     -- 更新日時
+  , delete_flg int default 1
 );
 
 -- ユーザーに付随する同伴者の初期値
@@ -106,6 +111,7 @@ create table default_companion(
     , name varchar(50)   -- 参加者名
     , register_date timestamp null default null
     , update_date timestamp null default null
+    , delete_flg int default 1
 );
 
 -- 問い合わせ
