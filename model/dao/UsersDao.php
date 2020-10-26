@@ -33,7 +33,7 @@ class UsersDao {
       $prepare->bindValue(':occupation', $users->occupation, PDO::PARAM_INT);
       $prepare->bindValue(':sex', $users->sex, PDO::PARAM_INT);
       $prepare->bindValue(':remark', $users->remark, PDO::PARAM_STR);
-      $prepare->bindValue(':register_date', date('y-m-d H:i:s'), PDO::PARAM_STR);
+      $prepare->bindValue(':register_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
       $prepare->execute();
     }
 
@@ -49,7 +49,7 @@ class UsersDao {
         $prepare->bindValue(':occupation', $users->occupation, PDO::PARAM_INT);
         $prepare->bindValue(':sex', $users->sex, PDO::PARAM_INT);
         $prepare->bindValue(':remark', $users->remark, PDO::PARAM_STR);
-        $prepare->bindValue(':update_date', date('y-m-d H:i:s'), PDO::PARAM_STR);
+        $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->bindValue(':id', $users->id, PDO::PARAM_INT);
         $prepare->execute();
 

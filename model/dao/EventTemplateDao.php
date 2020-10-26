@@ -38,8 +38,8 @@ class EventTemplateDao {
     }
 
     public function insert(EventTemplate $eventTemplate) {
-        $sql = 'insert into event_template (template_name, title, short_title, place, limit_number, detail) 
-            values(:template_name, :title, :short_title, :place, :limit_number, :detail)';
+        $sql = 'insert into event_template (template_name, title, short_title, place, limit_number, detail, register_date) 
+            values(:template_name, :title, :short_title, :place, :limit_number, :detail, :register_date)';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':template_name', $eventTemplate->templateName, PDO::PARAM_STR);
         $prepare->bindValue(':title', $eventTemplate->title, PDO::PARAM_STR);
@@ -47,6 +47,7 @@ class EventTemplateDao {
         $prepare->bindValue(':place', $eventTemplate->place, PDO::PARAM_STR);
         $prepare->bindValue(':limit_number', $eventTemplate->limitNumber, PDO::PARAM_INT);
         $prepare->bindValue(':detail', $eventTemplate->detail, PDO::PARAM_STR);
+        $prepare->bindValue(':register_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->execute();
     }
 
@@ -58,6 +59,7 @@ class EventTemplateDao {
         , place = :place
         , limit_number = :limit_number
         , detail = :detail
+        , update_date = :update_date
         where id = :id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':template_name', $eventTemplate->templateName, PDO::PARAM_STR);
@@ -66,6 +68,7 @@ class EventTemplateDao {
         $prepare->bindValue(':place', $eventTemplate->place, PDO::PARAM_STR);
         $prepare->bindValue(':limit_number', $eventTemplate->limitNumber, PDO::PARAM_INT);
         $prepare->bindValue(':detail', $eventTemplate->detail, PDO::PARAM_STR);
+        $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->bindValue(':id', $eventTemplate->id);
         $prepare->execute();
     }

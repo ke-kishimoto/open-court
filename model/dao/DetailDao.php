@@ -27,8 +27,8 @@ class DetailDao {
     // 参加者登録
     public function insert(Participant $participant) {
         $sql = 'insert into participant 
-        (game_id, occupation, sex, name, email, waiting_flg, remark) 
-        values(:game_id, :occupation, :sex, :name, :email, :waiting_flg, :remark)';
+        (game_id, occupation, sex, name, email, waiting_flg, remark, register_date) 
+        values(:game_id, :occupation, :sex, :name, :email, :waiting_flg, :remark, :register_date)';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':game_id', $participant->gameId, PDO::PARAM_INT);
         $prepare->bindValue(':occupation', $participant->occupation, PDO::PARAM_INT);
@@ -37,6 +37,7 @@ class DetailDao {
         $prepare->bindValue(':email', $participant->email, PDO::PARAM_STR);
         $prepare->bindValue(':waiting_flg', $participant->waitingFlg, PDO::PARAM_INT);
         $prepare->bindValue(':remark', $participant->remark, PDO::PARAM_STR);
+        $prepare->bindValue(':register_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->execute();
     }
 
@@ -48,6 +49,7 @@ class DetailDao {
         , sex = :sex
         , email = :email
         , remark = :remark
+        , update_date = :update_date
         where id = :id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':occupation', $participant->occupation, PDO::PARAM_INT);
@@ -55,6 +57,7 @@ class DetailDao {
         $prepare->bindValue(':name', $participant->name, PDO::PARAM_STR);
         $prepare->bindValue(':email', $participant->email, PDO::PARAM_STR);
         $prepare->bindValue(':remark', $participant->remark, PDO::PARAM_STR);
+        $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->bindValue(':id', $participant->id, PDO::PARAM_INT);
         $prepare->execute();
     }
@@ -146,7 +149,7 @@ class DetailDao {
         if($sex > 0) {
             $prepare->bindValue(':sex', $sex, PDO::PARAM_INT);
         }
-        if($andwaitingFlg > -1) {
+        if($waitingFlg > -1) {
             $prepare->bindValue(':waiting_flg', $waitingFlg, PDO::PARAM_INT);
         }
         $prepare->bindValue(':game_date', $gameInfo['game_date']);

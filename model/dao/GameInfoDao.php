@@ -114,8 +114,8 @@ class GameInfoDao {
     }
 
     public function insert(GameInfo $gameinfo) {
-        $sql = 'insert into game_info (title, short_title, game_date, start_time, end_time, place, limit_number, detail) 
-            values(:title, :short_title, :game_date, :start_time, :end_time, :place, :limit_number, :detail)';
+        $sql = 'insert into game_info (title, short_title, game_date, start_time, end_time, place, limit_number, detail, register_date) 
+            values(:title, :short_title, :game_date, :start_time, :end_time, :place, :limit_number, :detail, :register_date)';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':title', $gameinfo->title, PDO::PARAM_STR);
         $prepare->bindValue(':short_title', $gameinfo->shortTitle, PDO::PARAM_STR);
@@ -125,6 +125,7 @@ class GameInfoDao {
         $prepare->bindValue(':place', $gameinfo->place, PDO::PARAM_STR);
         $prepare->bindValue(':limit_number', $gameinfo->limitNumber, PDO::PARAM_INT);
         $prepare->bindValue(':detail', $gameinfo->detail, PDO::PARAM_STR);
+        $prepare->bindValue(':register_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->execute();
     }
 
@@ -137,6 +138,7 @@ class GameInfoDao {
         , place = :place
         , limit_number = :limit_number
         , detail = :detail
+        , update_date = :update_date
         where id = :id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':id', $gameinfo->id, PDO::PARAM_INT);
@@ -148,6 +150,7 @@ class GameInfoDao {
         $prepare->bindValue(':place', $gameinfo->place, PDO::PARAM_STR);
         $prepare->bindValue(':limit_number', $gameinfo->limitNumber, PDO::PARAM_INT);
         $prepare->bindValue(':detail', $gameinfo->detail, PDO::PARAM_STR);
+        $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->execute();
     }
 
