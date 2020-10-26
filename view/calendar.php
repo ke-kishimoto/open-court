@@ -1,8 +1,8 @@
 <h1>イベントカレンダー</h1>
 <div  class="month">
 <a href=".?year=<?php echo htmlspecialchars($pre_year); ?>&month=<?php echo htmlspecialchars($lastmonth); ?>">＜</a>
-<a href=".?year=<?php echo htmlspecialchars($next_year); ?>&month=<?php echo htmlspecialchars($nextmonth); ?>">＞</a>
 <a href=".?year=<?php echo htmlspecialchars($year); ?>&month=<?php echo htmlspecialchars($month); ?>">【<span id="year"><?php echo htmlspecialchars($year); ?></span>年<span id="this-month"><?php echo htmlspecialchars($month); ?></span>月】</a>
+<a href=".?year=<?php echo htmlspecialchars($next_year); ?>&month=<?php echo htmlspecialchars($nextmonth); ?>">＞</a>
 </div>
 <table>
     <tr>
