@@ -14,7 +14,7 @@ class XamppPDO extends PDO{
     public function __construct()
     {
         // ローカル用
-        parent::__construct(XamppPDO::DSN, XamppPDO::USER, XamppPDO::PASSWORD);
+        parent::__construct(self::DSN, self::USER, self::PASSWORD);
 
     }
 }

@@ -21,8 +21,8 @@ class UsersDao {
     // ユーザー登録
     public function insert(Users $users) {
       $sql = 'insert into users 
-      (admin_flg, email, name, password, occupation, sex, remark) 
-      values(:admin_flg, :email, :name, :password, :occupation, :sex, :remark)';
+      (admin_flg, email, name, password, occupation, sex, remark, register_date) 
+      values(:admin_flg, :email, :name, :password, :occupation, :sex, :remark, :register_date)';
       $prepare = $this->pdo->prepare($sql);
       $prepare->bindValue(':admin_flg', $users->adminFlg, PDO::PARAM_INT);
       $prepare->bindValue(':email', $users->email, PDO::PARAM_STR);
@@ -31,6 +31,7 @@ class UsersDao {
       $prepare->bindValue(':occupation', $users->occupation, PDO::PARAM_INT);
       $prepare->bindValue(':sex', $users->sex, PDO::PARAM_INT);
       $prepare->bindValue(':remark', $users->remark, PDO::PARAM_STR);
+      $prepare->bindValue(':register_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
       $prepare->execute();
     }
 
@@ -38,6 +39,7 @@ class UsersDao {
     public function update(Users $users) {
         $sql = 'update users set name = :name
         , email = :email, occupation = :occupation, sex = :sex, remark = :remark 
+        , update_date = :update_date
         where id = :id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':email', $users->email, PDO::PARAM_STR);
@@ -45,6 +47,7 @@ class UsersDao {
         $prepare->bindValue(':occupation', $users->occupation, PDO::PARAM_INT);
         $prepare->bindValue(':sex', $users->sex, PDO::PARAM_INT);
         $prepare->bindValue(':remark', $users->remark, PDO::PARAM_STR);
+        $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->bindValue(':id', $users->id, PDO::PARAM_INT);
         $prepare->execute();
 

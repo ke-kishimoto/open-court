@@ -28,13 +28,14 @@ class CompanionDao {
     }
 
     public function insert(Companion $companion) {
-        $sql = 'insert into companion (participant_id, occupation, sex, name) 
-                values (:participant_id, :occupation, :sex, :name)';
+        $sql = 'insert into companion (participant_id, occupation, sex, name, register_date) 
+                values (:participant_id, :occupation, :sex, :name, :register_date)';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':participant_id', $companion->participantId, PDO::PARAM_INT);
         $prepare->bindValue(':occupation', $companion->occupation, PDO::PARAM_INT);
         $prepare->bindValue(':sex', $companion->sex, PDO::PARAM_INT);
         $prepare->bindValue(':name', $companion->name, PDO::PARAM_STR);
+        $prepare->bindValue(':register_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->execute();
     }
 

@@ -27,13 +27,14 @@ class DefaultCompanionDao {
     }
 
     public function insert(DefaultCompanion $defaultCompanion) {
-        $sql = 'insert into default_companion (user_id, occupation, sex, name) 
-                values (:user_id, :occupation, :sex, :name)';
+        $sql = 'insert into default_companion (user_id, occupation, sex, name, register_date) 
+                values (:user_id, :occupation, :sex, :name, :register_date)';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':user_id', $defaultCompanion->userId, PDO::PARAM_INT);
         $prepare->bindValue(':occupation', $defaultCompanion->occupation, PDO::PARAM_INT);
         $prepare->bindValue(':sex', $defaultCompanion->sex, PDO::PARAM_INT);
         $prepare->bindValue(':name', $defaultCompanion->name, PDO::PARAM_STR);
+        $prepare->bindValue(':register_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->execute();
         return $prepare->fetch();
     }
