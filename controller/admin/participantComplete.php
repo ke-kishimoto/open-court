@@ -19,13 +19,13 @@ if (isset($_POST["csrf_token"])
     $companionDao->setPdo($detailDao->getPdo());
     try {
         $detailDao->getPdo()->beginTransaction();
-        if($detailDao->limitCheck($_POST['game_id'], 1)) {
+        if($detailDao->limitCheck($_POST['game_id'], 1 + $_POST['companion'])) {
             $waitingFlg = 1;
         } else {
             $waitingFlg = 0;
         }
 
-        // 同伴者を削除しておく
+        // 同伴者を削除しておく（修正の場合）
         if ($_POST['id'] !== '') {
             $companionDao->deleteByparticipantId($_POST['id']);
         }

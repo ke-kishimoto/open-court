@@ -109,7 +109,7 @@ class GameInfoDao {
         left join (select *
                     , (select count(*) from companion where participant_id = participant.id) cnt
                     from participant
-                    where waiting_flg = 0) p
+                    where delete_flg = 1 and waiting_flg = 0) p
         on g.id = p.game_id 
         ";
         return $sql;
