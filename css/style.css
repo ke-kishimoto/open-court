@@ -162,7 +162,7 @@ a.link, .nolink{
 }
 /* ロゴ */
 .logo {
-    font-size: 24px;
+    font-size: 15px;
     text-decoration: none;
     transition: 0.3s;
     color: black;
@@ -197,6 +197,7 @@ a.link, .nolink{
 .user-name > span:first-child{
     vertical-align: -1%;
     margin-right: 5px;
+    font-size: 12px
 }
 
 @media screen and (max-width:480px) { 
