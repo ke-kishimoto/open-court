@@ -3,6 +3,7 @@ namespace controller;
 use api\LineApi;
 use entity\Participant;
 use entity\Companion;
+use dao\ConfigDao;
 use dao\DetailDao;
 use dao\UsersDao;
 use dao\CompanionDao;
@@ -255,6 +256,18 @@ class ParticipantController extends BaseController
                 
                     $api = new LineApi();
                     $api->cancel_notify($participant, $gameInfo['title'], $gameInfo['game_date']);
+
+                    $configDao = new ConfigDao();
+                    $config = $configDao->getConfig(1);
+                    // キャンセル待ちの自動繰り上げ
+                    if($config['waiting_flg_auto_update'] == 1) {
+                        $waitingList = $detailDao->getWitingList($_POST['game_id']);
+                        foreach($waitingList as $waitingMember) {
+                            if(!$detailDao->limitCheck($_POST['game_id'], 1 + $waitingMember['cnt'])) {
+                                $detailDao->updateWaitingFlg($waitingMember['id']);
+                            }
+                        }
+                    }
                 }
             }
         }
