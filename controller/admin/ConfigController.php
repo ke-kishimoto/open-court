@@ -39,7 +39,8 @@ class ConfigController extends BaseController
                 , $_POST['line_token']
                 , $_POST['system_title']
                 , $_POST['bg_color']
-                , ''
+                , ''  // img_logo
+                , $_POST['waiting_flg_auto_update']
             );
                 
             $configDao = new ConfigDao();
