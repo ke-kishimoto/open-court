@@ -60,8 +60,12 @@ class DetailDao {
 
     // 参加者の削除
     public function delete(int $id) {
-        $sql = 'delete from participant where id = :id';
+        // $sql = 'delete from participant where id = :id';
+        $sql = 'update participant set delete_flg = 9 
+        , update_date = :update_date
+        where id = :id';
         $prepare = $this->pdo->prepare($sql);
+        $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
     }
@@ -128,12 +132,13 @@ class DetailDao {
                         and (email = p.email or name = p.name)
             ) chk
         from participant p
-        where game_id = :game_id " 
+        where game_id = :game_id  
+        and delete_flg = 1 " 
         . $andOcc . $andSex . $andwaitingFlg .
         " union all
         select participant_id, 0 ,name, occupation, sex, 0, '', '', ''
         from companion
-        where participant_id in (select id from participant where game_id = :game_id" . $andwaitingFlg . ")"
+        where participant_id in (select id from participant where game_id = :game_id and delete_flg = 1 " . $andwaitingFlg . ")"
         . $andOcc . $andSex .
         ") p
         order by id, main desc";
@@ -215,11 +220,12 @@ class DetailDao {
         (select occupation, sex 
         from participant
         where game_id = :game_id
+        and delete_flg = 1
         and waiting_flg = :waiting_flg
         union all
         select occupation, sex
         from companion
-        where participant_id in (select id from participant where game_id = :game_id and waiting_flg = :waiting_flg)
+        where participant_id in (select id from participant where game_id = :game_id and delete_flg = 1 and waiting_flg = :waiting_flg)
         ) p';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
@@ -243,8 +249,12 @@ class DetailDao {
         // $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
         // $prepare->execute();
         // 参加者の削除
-        $sql = "delete from participant where game_id = :game_id";
+        // $sql = "delete from participant where game_id = :game_id";
+        $sql = "update participant set delete_flg = 9
+        , update_date = :update_date
+        where game_id = :game_id";
         $prepare = $this->pdo->prepare($sql);
+        $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
         $prepare->execute();
     }
@@ -256,7 +266,7 @@ class DetailDao {
                 left join (select *
                             , (select count(*) from companion 
                                where participant_id = participant.id) cnt
-                            from participant) p
+                            from participant where delete_flg = 1) p
                 on g.id = p.game_id 
                 and waiting_flg = 0
                 where g.id = :game_id ";
@@ -337,6 +347,7 @@ class DetailDao {
         join game_info g
         on p.game_id = g.id
         where p.email = :email 
+        and g.delete_flg = 1
         order by g.game_date, g.start_time';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':email', $email, PDO::PARAM_STR);

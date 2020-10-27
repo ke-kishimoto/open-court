@@ -19,7 +19,7 @@ class EventTemplateDao {
     }
 
     public function getEventTemplateList() {
-        $sql = 'select * from event_template order by id';
+        $sql = 'select * from event_template where delete_flg = 1 order by id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->execute();
 
@@ -72,7 +72,8 @@ class EventTemplateDao {
     }
 
     public function delete(int $id){
-        $sql = "delete from event_template where id = :id";
+        // $sql = "delete from event_template where id = :id";
+        $sql = "update event_template set delete_flg = 9 where id = :id";
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
