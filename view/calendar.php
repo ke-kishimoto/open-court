@@ -1,4 +1,3 @@
-<h1>イベントカレンダー</p>
 <table>
     <tr>
         <td colspan= 7>
@@ -29,7 +28,7 @@
                         </a>
                         <?php if($adminFlg === '1' && $value['day'] !== ''): ?>
                             <a class="link-add" href="/admin/event/eventInfo?date=<?php echo $year . '-' . sprintf('%02d', $month) . '-' . sprintf('%02d', $value['day'])?>">
-                                追加
+                                ＋
                             </a>
                         <?php endif; ?>
                     </div>
@@ -57,7 +56,7 @@
                         </span>
                         <?php if($adminFlg === '1' && $value['day'] !== ''): ?>
                             <a class="link-add" href="/admin/event/eventInfo?date=<?php echo $year . '-' . sprintf('%02d', $month) . '-' . sprintf('%02d', $value['day'])?>">
-                                追加
+                                ＋
                             </a>
                         <?php endif; ?>
                     </div>
