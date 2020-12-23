@@ -6,28 +6,35 @@ use dao\DaoFactory;
 use PDO;
 use entity\Config;
 
-class ConfigDao {
+class ConfigDao 
+{
 
     private static $systemTitle;
-    public static function getSystemTitle() {
+    public static function getSystemTitle() 
+    {
         return ConfigDao::$systemTitle;
     }
-    public static function setSystemTitle(string $systemTitle) {
+    public static function setSystemTitle(string $systemTitle) 
+    {
         ConfigDao::$systemTitle = $systemTitle;
     }
 
     private $pdo;
-    public function __construct() {
+    public function __construct() 
+    {
         $this->pdo = DaoFactory::getConnection();
     }
-    public function getPdo() {
+    public function getPdo() 
+    {
         return $this->pdo;
     }
-    public function setPdo(PDO $pdo) {
+    public function setPdo(PDO $pdo) 
+    {
         $this->pdo = $pdo;
     }
 
-    public function getConfig($id) {
+    public function getConfig($id) 
+    {
         $sql = 'select * from config where id = :id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
@@ -35,7 +42,8 @@ class ConfigDao {
         return $prepare->fetch();
     }
 
-    public function update(Config $config) {
+    public function update(Config $config) 
+    {
         $sql = 'update config set 
         line_token = :line_token
         , system_title = :system_title
@@ -56,5 +64,3 @@ class ConfigDao {
         $_SESSION['system_title'] = $config->systemTitle;
     }
 }
-
-?>

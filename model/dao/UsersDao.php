@@ -5,21 +5,25 @@ use dao\DaoFactory;
 use PDO;
 use entity\Users;
 
-class UsersDao {
-
+class UsersDao 
+{
     private $pdo;
-    public function __construct() {
+    public function __construct() 
+    {
         $this->pdo = DaoFactory::getConnection();
     }
-    public function getPdo() {
+    public function getPdo() 
+    {
         return $this->pdo;
     }
-    public function setPdo(PDO $pdo) {
+    public function setPdo(PDO $pdo) 
+    {
         $this->pdo = $pdo;
     }
 
     // ユーザー登録
-    public function insert(Users $users) {
+    public function insert(Users $users) 
+    {
       $sql = 'insert into users 
       (admin_flg, email, name, password, occupation, sex, remark, register_date) 
       values(:admin_flg, :email, :name, :password, :occupation, :sex, :remark, :register_date)';
@@ -36,7 +40,8 @@ class UsersDao {
     }
 
     // ユーザー情報の更新
-    public function update(Users $users) {
+    public function update(Users $users) 
+    {
         $sql = 'update users set name = :name
         , email = :email, occupation = :occupation, sex = :sex, remark = :remark 
         , update_date = :update_date
@@ -53,7 +58,8 @@ class UsersDao {
 
     }
 
-    public function updatePass(int $id, string $password) {
+    public function updatePass(int $id, string $password) 
+    {
         $sql = 'update users set password = :password 
         , update_date = :update_date
         where id = :id';
@@ -64,7 +70,8 @@ class UsersDao {
         $prepare->execute();
     }
 
-    public function delete(int $id) {
+    public function delete(int $id) 
+    {
         // $sql = 'delete from users where id = :id';
         $sql = 'update users set delete_flg = 9 where id = :id';
         $prepare = $this->pdo->prepare($sql);
@@ -73,7 +80,8 @@ class UsersDao {
     }
 
     // ユーザーのidの取得
-    public function getUsersId(Users $users) {
+    public function getUsersId(Users $users) 
+    {
         $sql = 'select max(id) id
                 from users 
                 where email = :email';
@@ -85,7 +93,8 @@ class UsersDao {
         return $info['id'];
     }
 
-    public function getUserList(){
+    public function getUserList()
+    {
         $sql = "select 
         id
         , name 
@@ -114,7 +123,8 @@ class UsersDao {
     }
 
     // メールアドレスによる存在チェック
-    public function existsCheck(string $email) {
+    public function existsCheck(string $email) 
+    {
         $users = new Users('',$email, '', '', '', '', '');
         $id = $this->getUsersId($users);
         if (isset($id)) {
@@ -124,7 +134,8 @@ class UsersDao {
     }
 
     // ユーザー取得（メールアドレス）
-    public function getUserByEmail(string $email) {
+    public function getUserByEmail(string $email) 
+    {
         $sql = 'select * from users where email = :email and delete_flg = 1';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':email', $email, PDO::PARAM_STR);
@@ -133,7 +144,8 @@ class UsersDao {
     }
 
     // IDによるユーザーの取得
-    public function getUserById(int $id) {
+    public function getUserById(int $id) 
+    {
         $sql = 'select * from users where id = :id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':id', $id, PDO::PARAM_STR);
@@ -142,7 +154,8 @@ class UsersDao {
     }
 
     // 権限更新
-    public function updateAdminFlg(int $id) {
+    public function updateAdminFlg(int $id) 
+    {
         $sql = 'update users set admin_flg = 
                 case 
                   when admin_flg = 1 then 0 

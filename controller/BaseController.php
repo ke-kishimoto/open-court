@@ -23,7 +23,7 @@ class BaseController {
 
         $this->headerCommon();
 
-        if($_SESSION['user'] === null) {
+        if(!isset($_SESSION['user'])) {
             $_SESSION['loginClass'] = 'hidden';
             $_SESSION['noLoginClass'] = '';
             $_SESSION['user_name'] = 'ゲスト';
