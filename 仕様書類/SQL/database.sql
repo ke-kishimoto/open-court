@@ -22,7 +22,15 @@ create table game_info (
     , register_date timestamp null default null
     , update_date timestamp null default null
     , delete_flg int default 1
+    , price1 int
+    , price2 int
+    , price3 int
 );
+
+-- 参加費用のカラム追加
+alter table game_info add column price1 int;
+alter table game_info add column price2 int;
+alter table game_info add column price3 int;
 
 -- イベントのテンプレ
 -- drop table event_template; 
@@ -37,7 +45,15 @@ create table event_template (
     , register_date timestamp null default null
     , update_date timestamp null default null
     , delete_flg int default 1
+    , price1 int
+    , price2 int
+    , price3 int
 );
+
+-- 参加費用のカラム追加
+alter table event_template add column price1 int;
+alter table event_template add column price2 int;
+alter table event_template add column price3 int;
 
 -- 参加者
 -- drop table participant;
@@ -90,7 +106,7 @@ create table config(
 -- drop table users;
 create table users(
   id serial primary key
-  , admin_flg int  -- 0:一般利用者、1:管理者　使う分からんけど
+  , admin_flg int  -- 0:一般利用者、1:管理者、2:スーパーユーザー
   , email varchar(50) unique
   , name varchar(50)
   , password varchar(200) -- ハッシュ化して保存
