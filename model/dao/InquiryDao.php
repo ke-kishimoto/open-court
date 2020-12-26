@@ -6,19 +6,24 @@ use dao\DaoFactory;
 use PDO;
 use entity\Inquiry;
 
-class InquiryDao {
+class InquiryDao 
+{
     private $pdo;
-    public function __construct() {
+    public function __construct() 
+    {
         $this->pdo = DaoFactory::getConnection();
     }
-    public function getPdo() {
+    public function getPdo() 
+    {
         return $this->pdo;
     }
-    public function setPdo(PDO $pdo) {
+    public function setPdo(PDO $pdo) 
+    {
         $this->pdo = $pdo;
     }
 
-    public function insert(Inquiry $inquiry) {
+    public function insert(Inquiry $inquiry) 
+    {
         $sql = 'insert into inquiry (game_id, name, email, content, status_flg, register_date)
         values (:game_id, :name, :email, :content, :status_flg, :register_date)';
         $prepare = $this->pdo->prepare($sql);
@@ -31,7 +36,8 @@ class InquiryDao {
         $prepare->execute();
     }
 
-    public function getInquiryList() {
+    public function getInquiryList() 
+    {
         $sql = 'select i.*, g.title title 
         from inquiry i
         left join game_info g
@@ -42,7 +48,8 @@ class InquiryDao {
         return $prepare->fetchAll();
     }
 
-    public function updateStatusFlg(int $id) {
+    public function updateStatusFlg(int $id) 
+    {
         $sql = 'update inquiry set status_flg = 
         case 
             when status_flg = 0 then 1
@@ -54,6 +61,15 @@ class InquiryDao {
         $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
+    }
+
+    public function getInquiry(int $id)
+    {
+        $sql = 'select * from inquiry where id = :id';
+        $prepare = $this->pdo->prepare($sql);
+        $prepare->bindValue(':id', $id, PDO::PARAM_INT);
+        $prepare->execute();
+        return $prepare->fetch();
     }
 }
 

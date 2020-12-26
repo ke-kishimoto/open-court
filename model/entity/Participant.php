@@ -2,7 +2,8 @@
 
 namespace entity;
 
-class Participant {
+class Participant 
+{
     public $id;
     public $gameId;
     public $occupation;
@@ -16,7 +17,7 @@ class Participant {
     {
         
     }
-    
+
     // public function __construct(int $gameId, int $occupation, int $sex, $name, $email, int $waitingFlg, $remark)
     // {
     //     $this->gameId = $gameId;

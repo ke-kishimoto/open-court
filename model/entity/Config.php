@@ -1,7 +1,8 @@
 <?php
 namespace entity;
 
-class Config {
+class Config 
+{
 
     public $id;
     public $lineToken;

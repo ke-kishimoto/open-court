@@ -5,20 +5,25 @@ use dao\DaoFactory;
 use PDO;
 use entity\GameInfo;
 
-class GameInfoDao {
+class GameInfoDao 
+{
 
     private $pdo;
-    public function __construct() {
+    public function __construct() 
+    {
         $this->pdo = DaoFactory::getConnection();
     }
-    public function getPdo() {
+    public function getPdo() 
+    {
         return $this->pdo;
     }
-    public function setPdo(PDO $pdo) {
+    public function setPdo(PDO $pdo) 
+    {
         $this->pdo = $pdo;
     }
 
-    public function getGameInfoId($date) {
+    public function getGameInfoId($date) 
+    {
         $sql = 'select id from game_info where game_date = :gameDate and delete_flg = 1';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':gameDate', $date);
@@ -28,7 +33,8 @@ class GameInfoDao {
         return $result['id'];
     }
 
-    public function getGameInfo($id) {
+    public function getGameInfo($id) 
+    {
         $sql = 'select * from game_info where id = :id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':id', $id);
@@ -38,7 +44,8 @@ class GameInfoDao {
     }
 
     // 一覧表示用
-    public function getGameInfoList($year, $month) {
+    public function getGameInfoList($year, $month) 
+    {
         $sql = $this->getGameInfoListSQL();
         $sql .= DaoFactory::getGameInfoListSQL();
         $sql .= " and g.delete_flg = 1 ";
@@ -52,7 +59,8 @@ class GameInfoDao {
     }
 
     // カレンダー表示用
-    public function getGameInfoListByDate($date) {
+    public function getGameInfoListByDate($date) 
+    {
         $sql = $this->getGameInfoListSQL();
         $sql .= " where game_date = :date and g.delete_flg = 1 ";
         $sql .= " group by g.id order by max(g.game_date), max(g.start_time)";
@@ -64,7 +72,8 @@ class GameInfoDao {
     }
 
     // 一括予約用
-    public function getGameInfoListByAfterDate($date, $email = '') {
+    public function getGameInfoListByAfterDate($date, $email = '') 
+    {
         $sql = $this->getGameInfoListSQL();
         $sql .= " where game_date >= :date g.delete_flg = 1 ";
         if ($email !== '') {
@@ -81,7 +90,8 @@ class GameInfoDao {
         return $prepare->fetchAll();
     }
 
-    private function getGameInfoListSQL() {
+    private function getGameInfoListSQL() 
+    {
         $sql = "select 
         g.id 
         , max(g.delete_flg) delete_flg
@@ -112,7 +122,8 @@ class GameInfoDao {
         return $sql;
     }
 
-    public function insert(GameInfo $gameinfo) {
+    public function insert(GameInfo $gameinfo) 
+    {
         $sql = 'insert into game_info (title, short_title, game_date, start_time, end_time, place, limit_number, detail, register_date) 
             values(:title, :short_title, :game_date, :start_time, :end_time, :place, :limit_number, :detail, :register_date)';
         $prepare = $this->pdo->prepare($sql);
@@ -128,7 +139,8 @@ class GameInfoDao {
         $prepare->execute();
     }
 
-    public function update(GameInfo $gameinfo) {
+    public function update(GameInfo $gameinfo) 
+    {
         $sql = 'update game_info set title = :title
         , short_title = :short_title
         , game_date = :game_date
@@ -153,7 +165,8 @@ class GameInfoDao {
         $prepare->execute();
     }
 
-    public function delete(int $id){
+    public function delete(int $id)
+    {
         // 先に参加者情報を削除しておく
         $detailDao = New DetailDao();
         $detailDao->setPdo($this->pdo);

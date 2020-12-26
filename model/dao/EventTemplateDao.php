@@ -5,20 +5,25 @@ use dao\DaoFactory;
 use PDO;
 use entity\EventTemplate;
 
-class EventTemplateDao {
+class EventTemplateDao 
+{
 
     private $pdo;
-    public function __construct() {
+    public function __construct() 
+    {
         $this->pdo = DaoFactory::getConnection();
     }
-    public function getPdo() {
+    public function getPdo() 
+    {
         return $this->pdo;
     }
-    public function setPdo(PDO $pdo) {
+    public function setPdo(PDO $pdo) 
+    {
         $this->pdo = $pdo;
     }
 
-    public function getEventTemplateList() {
+    public function getEventTemplateList() 
+    {
         $sql = 'select * from event_template where delete_flg = 1 order by id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->execute();
@@ -26,7 +31,8 @@ class EventTemplateDao {
         return $prepare->fetchAll();
     }
 
-    public function getEventTemplate($id) {
+    public function getEventTemplate($id) 
+    {
         $sql = 'select * from event_template where id = :id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':id', $id);
@@ -35,7 +41,8 @@ class EventTemplateDao {
         return $prepare->fetch();
     }
 
-    public function insert(EventTemplate $eventTemplate) {
+    public function insert(EventTemplate $eventTemplate) 
+    {
         $sql = 'insert into event_template (template_name, title, short_title, place, limit_number, detail, register_date) 
             values(:template_name, :title, :short_title, :place, :limit_number, :detail, :register_date)';
         $prepare = $this->pdo->prepare($sql);
@@ -49,7 +56,8 @@ class EventTemplateDao {
         $prepare->execute();
     }
 
-    public function update(EventTemplate $eventTemplate) {
+    public function update(EventTemplate $eventTemplate) 
+    {
         $sql = 'update event_template set
         template_name = :template_name 
         , title = :title
@@ -71,7 +79,8 @@ class EventTemplateDao {
         $prepare->execute();
     }
 
-    public function delete(int $id){
+    public function delete(int $id)
+    {
         // $sql = "delete from event_template where id = :id";
         $sql = "update event_template set delete_flg = 9 where id = :id";
         $prepare = $this->pdo->prepare($sql);

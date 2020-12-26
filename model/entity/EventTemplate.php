@@ -2,7 +2,8 @@
 
 namespace entity;
 
-class EventTemplate {
+class EventTemplate 
+{
 
     public $id;
     public $templateName;

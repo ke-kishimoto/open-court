@@ -2,7 +2,8 @@
 
 namespace entity;
 
-class GameInfo {
+class GameInfo 
+{
 
     public $id;
     public $title;

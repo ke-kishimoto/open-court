@@ -80,13 +80,13 @@ class UsersDao
     }
 
     // ユーザーのidの取得
-    public function getUsersId(Users $users) 
+    public function getUsersId(Users $user) 
     {
         $sql = 'select max(id) id
                 from users 
                 where email = :email';
         $prepare = $this->pdo->prepare($sql);
-        $prepare->bindValue(':email', $users->email, PDO::PARAM_STR);
+        $prepare->bindValue(':email', $user->email, PDO::PARAM_STR);
 
         $prepare->execute();
         $info = $prepare->fetch();
@@ -125,8 +125,10 @@ class UsersDao
     // メールアドレスによる存在チェック
     public function existsCheck(string $email) 
     {
-        $users = new Users('',$email, '', '', '', '', '');
-        $id = $this->getUsersId($users);
+        // $users = new Users('',$email, '', '', '', '', '');
+        $user = new Users();
+        $user->email = $email;
+        $id = $this->getUsersId($user);
         if (isset($id)) {
             return true;
         }

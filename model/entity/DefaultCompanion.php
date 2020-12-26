@@ -2,7 +2,8 @@
 
 namespace entity;
 
-class DefaultCompanion {
+class DefaultCompanion 
+{
     public $id;
     public $userId;
     public $occupation;
@@ -13,7 +14,7 @@ class DefaultCompanion {
     {
         
     }
-    
+
     // public function __construct($userId, $occupation, $sex, $name)
     // {
     //     $this->userId = $userId;

@@ -6,20 +6,25 @@ use dao\DaoFactory;
 use PDO;
 use entity\Companion;
 
-class CompanionDao {
+class CompanionDao 
+{
 
     private $pdo;
-    public function __construct() {
+    public function __construct() 
+    {
         $this->pdo = DaoFactory::getConnection();
     }
-    public function getPdo() {
+    public function getPdo() 
+    {
         return $this->pdo;
     }
-    public function setPdo(PDO $pdo) {
+    public function setPdo(PDO $pdo) 
+    {
         $this->pdo = $pdo;
     }
 
-    public function getCompanionList(int $participantId) {
+    public function getCompanionList(int $participantId) 
+    {
         $sql = 'select * from companion where participant_id = :participant_id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':participant_id', $participantId, PDO::PARAM_INT);
@@ -27,7 +32,8 @@ class CompanionDao {
         return $prepare->fetchAll();
     }
 
-    public function insert(Companion $companion) {
+    public function insert(Companion $companion) 
+    {
         $sql = 'insert into companion (participant_id, occupation, sex, name, register_date) 
                 values (:participant_id, :occupation, :sex, :name, :register_date)';
         $prepare = $this->pdo->prepare($sql);
@@ -39,23 +45,14 @@ class CompanionDao {
         $prepare->execute();
     }
 
-    public function deleteByparticipantId(int $participantId) {
+    public function deleteByparticipantId(int $participantId) 
+    {
         $sql = 'delete from companion where participant_id = :participant_id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':participant_id', $participantId, PDO::PARAM_INT);
         $prepare->execute();
     }
 
-    public function update(Companion $companion) {
-        // $pdo = DaoFactory::getConnection();
-        // $sql = 'update config set 
-        // line_token = :line_token
-        // where id = :id';
-        // $prepare = $pdo->prepare($sql);
-        // $prepare->bindValue(':id', $config->id, PDO::PARAM_INT);
-        // $prepare->bindValue(':line_token', $config->lineToken, PDO::PARAM_STR);
-        // $prepare->execute();
-    }
 }
 
 ?>

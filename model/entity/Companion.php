@@ -2,7 +2,8 @@
 
 namespace entity;
 
-class Companion {
+class Companion 
+{
     public $id;
     public $participantId;
     public $occupation;
