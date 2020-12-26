@@ -2,7 +2,8 @@
 
 namespace entity;
 
-class Inquiry {
+class Inquiry 
+{
     public $id;
     public $gameId;
     public $name;
@@ -14,13 +15,18 @@ class Inquiry {
 
     public $gameTitle;
 
-    public function __construct($gameId, $name, $email, $content, $statusFlg, $registerDate, $updateDate) {
-        $this->gameId = $gameId;
-        $this->name = $name;
-        $this->email = $email;
-        $this->content = $content;
-        $this->statusFlg = $statusFlg;
-        $this->registerDate = $registerDate;
-        $this->updateDate = $updateDate;
+    public function __construct()
+    {
+        
     }
+
+    // public function __construct($gameId, $name, $email, $content, $statusFlg, $registerDate, $updateDate) {
+    //     $this->gameId = $gameId;
+    //     $this->name = $name;
+    //     $this->email = $email;
+    //     $this->content = $content;
+    //     $this->statusFlg = $statusFlg;
+    //     $this->registerDate = $registerDate;
+    //     $this->updateDate = $updateDate;
+    // }
 }

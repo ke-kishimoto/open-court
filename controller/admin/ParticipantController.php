@@ -90,15 +90,23 @@ class ParticipantController extends BaseController
                     $companionDao->deleteByparticipantId($_POST['id']);
                 }
                 if (isset($_POST['register'])) {
-                    $participant = new Participant(
-                        $_POST['game_id']
-                        , $_POST['occupation']
-                        , $_POST['sex']
-                        , $_POST['name']
-                        , $_POST['email']
-                        , $waitingFlg
-                        , $_POST['remark']
-                    );
+                    // $participant = new Participant(
+                    //     $_POST['game_id']
+                    //     , $_POST['occupation']
+                    //     , $_POST['sex']
+                    //     , $_POST['name']
+                    //     , $_POST['email']
+                    //     , $waitingFlg
+                    //     , $_POST['remark']
+                    // );
+                    $participant = new Participant();
+                    $participant->gameId = (int)$_POST['game_id'];
+                    $participant->occupation = (int)$_POST['occupation'];
+                    $participant->sex = (int)$_POST['sex'];
+                    $participant->name = $_POST['name'];
+                    $participant->email = $_POST['email'];
+                    $participant->waitingFlg = 0;
+                    $participant->remark = $_POST['remark'];
                     if($_POST['id'] !== '') {
                         $participant->id = $_POST['id']; // IDはコンストラクタにないので固定でセット
                         $detailDao->update($participant);
@@ -110,7 +118,12 @@ class ParticipantController extends BaseController
                     // 同伴者の登録
                     if($_POST['companion'] > 0) {
                         for($i = 1; $i <= $_POST['companion']; $i++) {
-                            $companion = new Companion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
+                            // $companion = new Companion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
+                            $companion = new Companion();
+                            $companion->participantId = $id;
+                            $companion->occupation =  $_POST['occupation-' . $i];
+                            $companion->sex = $_POST['sex-' . $i];
+                            $companion->name =  $_POST['name-' . $i];
                             $companionDao->insert($companion);
                         }
                     }

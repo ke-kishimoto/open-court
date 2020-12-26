@@ -9,11 +9,16 @@ class DefaultCompanion {
     public $sex;
     public $name;
 
-    public function __construct($userId, $occupation, $sex, $name)
+    public function __construct()
     {
-        $this->userId = $userId;
-        $this->occupation = $occupation;
-        $this->sex = $sex;
-        $this->name = $name;
+        
     }
+    
+    // public function __construct($userId, $occupation, $sex, $name)
+    // {
+    //     $this->userId = $userId;
+    //     $this->occupation = $occupation;
+    //     $this->sex = $sex;
+    //     $this->name = $name;
+    // }
 }

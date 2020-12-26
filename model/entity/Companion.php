@@ -9,11 +9,16 @@ class Companion {
     public $sex;
     public $name;
 
-    public function __construct(int $participantId, int $occupation, int $sex, $name)
+    public function __construct()
     {
-        $this->participantId = $participantId;
-        $this->occupation = $occupation;
-        $this->sex = $sex;
-        $this->name = $name;
+        
     }
+
+    // public function __construct(int $participantId, int $occupation, int $sex, $name)
+    // {
+    //     $this->participantId = $participantId;
+    //     $this->occupation = $occupation;
+    //     $this->sex = $sex;
+    //     $this->name = $name;
+    // }
 }

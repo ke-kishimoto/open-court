@@ -36,7 +36,15 @@ class InquiryController extends BaseController
         if(isset($_POST)) {
             $inquiryDao = new InquiryDao();
             $gameId = (int)$_POST['game_id'];
-            $inquiry = new Inquiry($gameId, $_POST['name'], $_POST['email'], $_POST['content'], 0, date('Y-m-d'), null);
+            // $inquiry = new Inquiry($gameId, $_POST['name'], $_POST['email'], $_POST['content'], 0, date('Y-m-d'), null);
+            $inquiry = new Inquiry();
+            $inquiry->gameId = $gameId;
+            $inquiry->name = $_POST['name'];
+            $inquiry->email = $_POST['email'];
+            $inquiry->content = $_POST['content'];
+            $inquiry->statusFlg = 0;
+            $inquiry->registerDate = date('Y-m-d');
+            $inquiry->updateDate = null;
             $inquiryDao->insert($inquiry);
 
             $inquiry->gameTitle = '';

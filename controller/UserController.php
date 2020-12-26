@@ -100,15 +100,22 @@ class UserController extends BaseController
                 } else {
                     $password = '';
                 }
-                $users = new Users(
-                    $adminFlg
-                    , $_POST['email']
-                    , $_POST['name']
-                    , $password
-                    , $_POST['occupation']
-                    , $_POST['sex']
-                    , $_POST['remark']
-                );
+                $users = new Users();
+                $users->email = $_POST['email'];
+                $users->name = $_POST['name'];
+                $users->password =  $password;
+                $users->occupation = $_POST['occupation'];
+                $users->sex = $_POST['sex'];
+                $users->remark = $_POST['sex'];
+                // $users = new Users(
+                //     $adminFlg
+                //     , $_POST['email']
+                //     , $_POST['name']
+                //     , $password
+                //     , $_POST['occupation']
+                //     , $_POST['sex']
+                //     , $_POST['remark']
+                // );
             
                 try {
                     // トランザクション開始
@@ -130,7 +137,12 @@ class UserController extends BaseController
                         $id = $usersDao->getUsersId($users);
                         $defaultCompanionDao->setPdo($usersDao->getPdo());
                         for($i = 1; $i <= $_POST['companion']; $i++) {
-                            $defaultCompanion = new DefaultCompanion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
+                            // $defaultCompanion = new DefaultCompanion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
+                            $defaultCompanion = new DefaultCompanion();
+                            $defaultCompanion->id = $id; 
+                            $defaultCompanion->occupation = $_POST['occupation-' . $i];
+                            $defaultCompanion->sex = $_POST['sex-' . $i];
+                            $defaultCompanion->nsme = $_POST['name-' . $i];
                             $defaultCompanionDao->insert($defaultCompanion);
                         }
                     }

@@ -56,19 +56,32 @@ class ParticipantController extends BaseController
         if (isset($_POST["csrf_token"]) 
         && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 
-            $participant = new Participant(
-                0
-                , (int)$_POST['occupation']
-                , (int)$_POST['sex']
-                , $_POST['name']
-                , $_POST['email']
-                , 0 
-                , $_POST['remark']
-            );
+            // $participant = new Participant(
+            //     0
+            //     , (int)$_POST['occupation']
+            //     , (int)$_POST['sex']
+            //     , $_POST['name']
+            //     , $_POST['email']
+            //     , 0 
+            //     , $_POST['remark']
+            // );
+            $participant = new Participant();
+            $participant->gameId = 0;
+            $participant->occupation = (int)$_POST['occupation'];
+            $participant->sex = (int)$_POST['sex'];
+            $participant->name = $_POST['name'];
+            $participant->email = $_POST['email'];
+            $participant->waitingFlg = 0;
+            $participant->remark = $_POST['remark'];
             
             $companion = [];
             for($i = 1; $i <= $_POST['companion']; $i++) {
-                $companion[$i-1] = new Companion(0, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
+                // $companion[$i-1] = new Companion(0, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
+                $companion[$i-1] = new Companion();
+                $companion[$i-1]->participationId = 0;
+                $companion[$i-1]->occupation = $_POST['occupation-' . $i]; 
+                $companion[$i-1]->sex = $_POST['sex-' . $i];
+                $companion[$i-1]->name = $_POST['name-' . $i];
             }
 
             $count = $this->multipleParticipantRegist($_POST['game_id'], $participant, $companion);
@@ -168,19 +181,32 @@ class ParticipantController extends BaseController
         if (isset($_POST["csrf_token"]) 
         && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 
-            $participant = new Participant(
-                (int)$_POST['game_id']
-                , (int)$_POST['occupation']
-                , (int)$_POST['sex']
-                , $_POST['name']
-                , $_POST['email']
-                , 0 
-                , $_POST['remark']
-            );
+            // $participant = new Participant(
+            //     (int)$_POST['game_id']
+            //     , (int)$_POST['occupation']
+            //     , (int)$_POST['sex']
+            //     , $_POST['name']
+            //     , $_POST['email']
+            //     , 0 
+            //     , $_POST['remark']
+            // );
+            $participant = new Participant();
+            $participant->gameId = (int)$_POST['game_id'];
+            $participant->occupation = (int)$_POST['occupation'];
+            $participant->sex = (int)$_POST['sex'];
+            $participant->name = $_POST['name'];
+            $participant->email = $_POST['email'];
+            $participant->waitingFlg = 0;
+            $participant->remark = $_POST['remark'];
         
             $companion = [];
             for($i = 1; $i <= $_POST['companion']; $i++) {
-                $companion[$i-1] = new Companion(0, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
+                // $companion[$i-1] = new Companion(0, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
+                $companion[$i-1] = new Companion();
+                $companion[$i-1]->participationId = 0;
+                $companion[$i-1]->occupation = $_POST['occupation-' . $i];
+                $companion[$i-1]->sex = $_POST['sex-' . $i];
+                $companion[$i-1]->name = $_POST['name-' . $i];
             }
 
             $errMsg = $this->oneParticipantRegist($participant, $companion);
@@ -233,7 +259,18 @@ class ParticipantController extends BaseController
         if(isset($_POST)) {
             $detailDao = new DetailDao();
             // LINE通知用に参加者情報とイベント情報を取得
-            $participant = new Participant($_POST['game_id'], 0, 0, '', $_POST['email'], 0, '');
+            // $participant = new Participant(
+            //     $_POST['game_id']
+            //     , 0
+            //     , 0
+            //     , ''
+            //     , $_POST['email']
+            //     , 0
+            //     , ''
+            // );
+            $participant = new Participant();
+            $participant->gameId = (int)$_POST['game_id'];
+            $participant->email = $_POST['email'];
             $id = $detailDao->getParticipantId($participant);
             $msg = '';
             if ($id == null)  {

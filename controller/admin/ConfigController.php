@@ -34,14 +34,20 @@ class ConfigController extends BaseController
         if (isset($_POST["csrf_token"]) 
         && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
             // 登録・修正
-            $config = new Config(
-                $_POST['id']
-                , $_POST['line_token']
-                , $_POST['system_title']
-                , $_POST['bg_color']
-                , ''  // img_logo
-                , $_POST['waiting_flg_auto_update']
-            );
+            // $config = new Config(
+            //     $_POST['id']
+            //     , $_POST['line_token']
+            //     , $_POST['system_title']
+            //     , $_POST['bg_color']
+            //     , ''  // img_logo
+            //     , $_POST['waiting_flg_auto_update']
+            // );
+            $config = new Config();
+            $config->id = $_POST['id'];
+            $config->lineToken = $_POST['line_token'];
+            $config->systemTitle = $_POST['system_title'];
+            $config->bgColor = $_POST['bg_color'];
+            $config->waitingFlgAutoUpdate = $_POST['waiting_flg_auto_update'];
                 
             $configDao = new ConfigDao();
             $configDao->update($config);

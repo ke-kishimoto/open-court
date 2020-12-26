@@ -41,14 +41,21 @@ class EventController extends BaseController
             if (isset($_POST['register'])) {
                 // 登録・修正''
                 $msg = '登録';
-                $eventTemplate = new EventTemplate(
-                    $_POST['template_name']
-                    , $_POST['title']
-                    , $_POST['short_title']
-                    , $_POST['place']
-                    , $_POST['limit_number']
-                    , $_POST['detail']
-                );
+                // $eventTemplate = new EventTemplate(
+                //     $_POST['template_name']
+                //     , $_POST['title']
+                //     , $_POST['short_title']
+                //     , $_POST['place']
+                //     , $_POST['limit_number']
+                //     , $_POST['detail']
+                // );
+                $eventTemplate = new EventTemplate();
+                $eventTemplate->templateName = $_POST['template_name'];
+                $eventTemplate->title = $_POST['title'];
+                $eventTemplate->shortTitle = $_POST['short_title'];
+                $eventTemplate->place = $_POST['place'];
+                $eventTemplate->limitNumber = $_POST['limit_number'];
+                $eventTemplate->detail = $_POST['detail'];
                 
                 $eventTemplateDao = new EventTemplateDao();
                 
@@ -170,16 +177,25 @@ class EventController extends BaseController
             if (isset($_POST['register'])) {
                 // 登録・修正''
                 $msg = '登録';
-                $gameInfo = new GameInfo(
-                    $_POST['title']
-                    , $_POST['short_title']
-                    , $_POST['game_date']
-                    , $_POST['start_time']
-                    , $_POST['end_time']
-                    , $_POST['place']
-                    , $_POST['limit_number']
-                    , $_POST['detail']
-                );
+                // $gameInfo = new GameInfo(
+                //     $_POST['title']
+                //     , $_POST['short_title']
+                //     , $_POST['game_date']
+                //     , $_POST['start_time']
+                //     , $_POST['end_time']
+                //     , $_POST['place']
+                //     , $_POST['limit_number']
+                //     , $_POST['detail']
+                // );
+                $gameInfo = new GameInfo();
+                $gameInfo->title = $_POST['title'];
+                $gameInfo->shortTitle = $_POST['short_title'];
+                $gameInfo->gameDate = $_POST['game_date'];
+                $gameInfo->startTime = $_POST['start_time'];
+                $gameInfo->endTime = $_POST['end_time'];
+                $gameInfo->place = $_POST['place'];
+                $gameInfo->limitNumber = $_POST['limit_number'];
+                $gameInfo->detail = $_POST['detail'];
                 
                 $gameInfoDao = new GameInfoDao();
                 if(empty($_POST['game_id']) || $_POST['game_id'] == '') {
