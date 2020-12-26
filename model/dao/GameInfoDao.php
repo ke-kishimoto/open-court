@@ -22,17 +22,6 @@ class GameInfoDao
         $this->pdo = $pdo;
     }
 
-    public function getGameInfoId($date) 
-    {
-        $sql = 'select id from game_info where game_date = :gameDate and delete_flg = 1';
-        $prepare = $this->pdo->prepare($sql);
-        $prepare->bindValue(':gameDate', $date);
-        $prepare->execute();
-
-        $result = $prepare->fetch();
-        return $result['id'];
-    }
-
     public function getGameInfo($id) 
     {
         $sql = 'select * from game_info where id = :id';
@@ -75,7 +64,7 @@ class GameInfoDao
     public function getGameInfoListByAfterDate($date, $email = '') 
     {
         $sql = $this->getGameInfoListSQL();
-        $sql .= " where game_date >= :date g.delete_flg = 1 ";
+        $sql .= " where game_date >= :date and g.delete_flg = 1 ";
         if ($email !== '') {
             $sql .= " and not exists(select * from participant where game_id = g.id and email = :email)";
         }
