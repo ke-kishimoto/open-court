@@ -38,19 +38,14 @@ class ConfigController extends BaseController
 
             $configDao = new ConfigDao();
             $cfg = $configDao->getConfig(1);
+            $config->id = $_POST['id'];
+            $config->lineToken = $_POST['line_token'];
+            $config->systemTitle = $_POST['system_title'];
+            $config->bgColor = $_POST['bg_color'];
+            $config->waitingFlgAutoUpdate = $_POST['waiting_flg_auto_update'];
             if(empty($cfg)) {
-                $config->id = 1;
-                $config->lineToken = '1234567890123456789012345678901234567890';
-                $config->systemTitle = 'system_name';
-                $config->bgColor = 'white';
-                $config->waitingFlgAutoUpdate = 0;
                 $configDao->insert($config);
             } else {
-                $config->id = $_POST['id'];
-                $config->lineToken = $_POST['line_token'];
-                $config->systemTitle = $_POST['system_title'];
-                $config->bgColor = $_POST['bg_color'];
-                $config->waitingFlgAutoUpdate = $_POST['waiting_flg_auto_update'];
                 $configDao->update($config);
             }                
 
