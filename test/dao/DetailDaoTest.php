@@ -512,31 +512,40 @@ class ConfigDaoTest extends TestCase
         $dataSet = $this->getConnection()->createDataSet();
         $dao = new DetailDao();
 
+        // 全員
         $list = $dao->getParticipantList(1);
         $this->assertSame(21, count($list));
 
+        // 社会人男性
         $list = $dao->getParticipantList(1, 1, 1);
         $this->assertSame(1, count($list));
         $this->assertSame($list[0]['chk'], '重複あり');
 
+        // 大学生男性
         $list = $dao->getParticipantList(1, 2, 1);
         $this->assertSame(2, count($list));
 
+        // 高校生男性
         $list = $dao->getParticipantList(1, 3, 1);
         $this->assertSame(3, count($list));
 
+        // 社会人女性
         $list = $dao->getParticipantList(1, 1, 2);
         $this->assertSame(4, count($list));
 
+        // 大学生女性
         $list = $dao->getParticipantList(1, 2, 2);
         $this->assertSame(5, count($list));
 
+        // 高校生女性
         $list = $dao->getParticipantList(1, 3, 2);
         $this->assertSame(6, count($list));
 
+        // キャンセル待ちじゃない人
         $list = $dao->getParticipantList(2, 0, 0, 0);
         $this->assertSame(2, count($list));
 
+        // キャンセル待ちの人
         $list = $dao->getParticipantList(2, 0, 0, 1);
         $this->assertSame(3, count($list));
 
@@ -649,7 +658,8 @@ class ConfigDaoTest extends TestCase
         $dataSet = $this->getConnection()->createDataSet();
         $dao = new DetailDao();
 
-        $list = $dao->getWitingList(2);
+        $gameId = 2;
+        $list = $dao->getWitingList($gameId);
         $this->assertSame(3, count($list));
     }
 
