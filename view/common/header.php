@@ -27,7 +27,7 @@
         <?php echo $_SESSION['user_name'] ?>さん</span>
       </div>
       <div class="system-name">
-        <a class="logo" href="/event/index"><?php echo htmlspecialchars($_SESSION['system_title']) ?></a>
+        <a class="logo" href="/"><?php echo htmlspecialchars($_SESSION['system_title']) ?></a>
       </div>
       <div class="user-name">
           <span><?php echo $_SESSION['user_name']?>さん</span>
