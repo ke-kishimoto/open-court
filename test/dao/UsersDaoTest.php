@@ -68,6 +68,7 @@ class UsersDaoTest extends TestCase
         $user->occupation = 3;
         $user->sex = 1;
         $user->remark = 'dddd';
+        $user->adminFlg = '0';
         $dao->insert($user);
         
         $user = $dao->getUserById(3);
@@ -77,6 +78,7 @@ class UsersDaoTest extends TestCase
         $this->assertSame('3', $user['occupation']);
         $this->assertSame('1', $user['sex']);
         $this->assertSame('dddd', $user['remark']);
+        $this->assertSame('0', $user['admin_flg']);
     }
 
     public function testUpdate()

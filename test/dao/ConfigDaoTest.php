@@ -85,4 +85,28 @@ class ConfigDaoTest extends TestCase
         $this->assertSame('1', $config['waiting_flg_auto_update']);
 
     }
+
+    public function testInsert()
+    {
+        $dataSet = $this->getConnection()->createDataSet();
+        $dao = new ConfigDao();
+
+        $config = new Config();
+        $config->id = 2;
+        $config->lineToken = '456';
+        $config->systemTitle = 'title2';
+        $config->bgColor = 'green';
+        $config->logoImgPath = '//img//logo.jpg';
+        $config->waitingFlgAutoUpdate = '0';
+
+        $dao->insert($config);
+
+        $config = $dao->getConfig(2);
+        $this->assertSame('2', $config['id']);
+        $this->assertSame('456', $config['line_token']);
+        $this->assertSame('title2', $config['system_title']);
+        $this->assertSame('green', $config['bg_color']);
+        $this->assertSame('//img//logo.jpg', $config['logo_img_path']);
+        $this->assertSame('0', $config['waiting_flg_auto_update']);
+    }
 }
