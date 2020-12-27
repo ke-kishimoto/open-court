@@ -1,5 +1,13 @@
 {
-    "require": {
-        "vlucas/phpdotenv": "^5.1"
+    
+    "require-dev": {
+        "phpunit/phpunit": "^7.5",
+        "phpunit/dbunit": "4.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "open-court\\": "src"
+            
+        }
     }
-  }
+}

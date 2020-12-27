@@ -1,10 +1,6 @@
 <?php
 namespace api;
 define('LINE_API_URL', 'https://notify-api.line.me/api/notify');
-// // 個人用
-// define('LINE_API_TOKEN','99FzrFtUEzMpTcOrZtUK3AaoJqqYMoWWTyNOdq5mQHR'); 
-// // 開発グループLINE用
-// define('LINE_API_TOKEN','SVcGMVbQUmk2xKoiP5PWbSV8tTine4q9BaglYgmB0AY'); 
 use entity\Participant;
 use entity\Inquiry;
 use dao\ConfigDao;
@@ -46,21 +42,21 @@ class LineApi
     }
 
     // キャンセル通知
-    public function cancel_notify($participant, $title, $date){
+    public function cancel_notify($name, $title, $date){
         $message = "予約がキャンセルされました\n";
         $message .=  "イベント : " . $title . "\n";
         $message .=  "日付 : " . $date . "\n";
         $message .= "--------------------\n";
-        $message .=  "名前 : " . $participant['name'] . "\n";
+        $message .=  "名前 : " . $name . "\n";
         $message .= "--------------------\n";
 
         return $this->line_notify($message);
     }  
 
     // 複数人予約
-    public function multiple_reserve(Participant $participant, int $count) {
+    public function multiple_reserve($name, int $count) {
         $message = "予約が入りました\n";
-        $message .= "{$participant->name}さんが{$count}件のイベントを予約しました";
+        $message .= "{$name}さんが{$count}件のイベントを予約しました";
 
         return $this->line_notify($message);
     }
@@ -72,17 +68,6 @@ class LineApi
         $message .=  "名前 : {$inquiry->name} \n";
         $message .= "連絡先 : {$inquiry->email} \n";
         $message .= "問い合わせ内容 : {$inquiry->content} \n";
-
-        return $this->line_notify($message);
-    }
-
-    // 参加人数が上限に達したときの通知
-    public function limit_notify($title, $date, $limit, $count) {
-        $message = "参加人数が上限に達しました\n";
-        $message .=  "イベント : " . $title . "\n";
-        $message .=  "日付 : " . $date . "\n";
-        $message .=  "上限 : " . $limit . "\n";
-        $message .=  "参加人数 : " . $count . "\n";
 
         return $this->line_notify($message);
     }

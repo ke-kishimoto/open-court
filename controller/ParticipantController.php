@@ -292,7 +292,7 @@ class ParticipantController extends BaseController
                     $rowCount = $detailDao->deleteByMailAddress($_POST['game_id'], $_POST['email']);
                 
                     $api = new LineApi();
-                    $api->cancel_notify($participant, $gameInfo['title'], $gameInfo['game_date']);
+                    $api->cancel_notify($participant['name'], $gameInfo['title'], $gameInfo['game_date']);
 
                     $configDao = new ConfigDao();
                     $config = $configDao->getConfig(1);
@@ -378,7 +378,7 @@ class ParticipantController extends BaseController
         // 予約の通知
         if($count) {
             $api = new LineApi();
-            $api->multiple_reserve($paricipant, $count);
+            $api->multiple_reserve($paricipant->name, $count);
         }
         return $count;
     }
