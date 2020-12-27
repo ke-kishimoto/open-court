@@ -107,15 +107,7 @@ class UserController extends BaseController
                 $users->occupation = $_POST['occupation'];
                 $users->sex = $_POST['sex'];
                 $users->remark = $_POST['sex'];
-                // $users = new Users(
-                //     $adminFlg
-                //     , $_POST['email']
-                //     , $_POST['name']
-                //     , $password
-                //     , $_POST['occupation']
-                //     , $_POST['sex']
-                //     , $_POST['remark']
-                // );
+                $users->adminFlg = 0;
             
                 try {
                     // トランザクション開始
