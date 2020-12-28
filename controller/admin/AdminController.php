@@ -44,13 +44,21 @@ class AdminController extends BaseController
             if ($i == 1) {
         
                 // 1日目の曜日までをループ
-                for ($s = 1; $s <= $firstDayWeek; $s++) {
+                for ($s = 0; $s < $firstDayWeek; $s++) {
         
                     // 前半に空文字をセット
                     $calendar[$j]['day'] = '';
                     $calendar[$j]['link'] = false;
                     $calendar[$j]['today'] = '';
-                    $calendar[$j]['weekName'] = '';
+                    // $calendar[$j]['weekName'] = '';
+                    // 曜日判定
+                    if($s % 7 === 0) {
+                        $calendar[$j]['weekName'] = 'sunday';
+                    }elseif($s % 7 === 6) {
+                        $calendar[$j]['weekName'] = 'saturday';
+                    } else {  
+                        $calendar[$j]['weekName'] = '';
+                    }
                     $j++;
         
                 }
@@ -96,7 +104,15 @@ class AdminController extends BaseController
                     $calendar[$j]['day'] = '';
                     $calendar[$j]['link'] = false;
                     $calendar[$j]['today'] = '';
-                    $calendar[$j]['weekName'] = '';
+                    // $calendar[$j]['weekName'] = '';
+                    // 曜日判定
+                    if($j % 7 === 0) {
+                        $calendar[$j]['weekName'] = 'sunday';
+                    }elseif($j % 7 === 6) {
+                        $calendar[$j]['weekName'] = 'saturday';
+                    } else {  
+                        $calendar[$j]['weekName'] = '';
+                    }
                     $j++;
                 }
             }
