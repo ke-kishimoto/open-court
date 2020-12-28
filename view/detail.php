@@ -8,26 +8,29 @@
 <p>時間：<?php echo htmlspecialchars($gameInfo['start_time']) ?>～<?php echo htmlspecialchars($gameInfo['end_time']) ?></p>
 <p>場所：<?php echo htmlspecialchars($gameInfo['place']) ?></p>
 <p>詳細：<?php echo htmlspecialchars($gameInfo['detail']) ?></p>
+<p>社会人：<?php echo htmlspecialchars($gameInfo['price1']) ?>円<br>
+    大学・専門：<?php echo htmlspecialchars($gameInfo['price2']) ?>円<br>
+    高校生：<?php echo htmlspecialchars($gameInfo['price3']) ?>円</p>
 
 <hr>
 
 <div>
     <details>
-    <summary>現在の状況</summary>
-    <br>
-    <p>【参加予定  <span id="cnt"><?php echo htmlspecialchars($detail['cnt']) ?></span>人】【上限  <?php echo htmlspecialchars($gameInfo['limit_number']) ?>人】</p>
-    <p>社会人：
-        女性 <span id="sya_women"><?php echo htmlspecialchars($detail['sya_women']) ?></span>人、
-        男性 <span id="sya_men"><?php echo htmlspecialchars($detail['sya_men']) ?></span>人
-    <p>大学・専門：
-        女性 <span id="dai_women"><?php echo htmlspecialchars($detail['dai_women']) ?></span>人、
-        男性 <span id="dai_men"><?php echo htmlspecialchars($detail['dai_men']) ?></span>人
-    </p>
-    <p>高校生：
-        女性 <span id="kou_women"><?php echo htmlspecialchars($detail['kou_women']) ?></span>人、
-        男性 <span id="kou_men"><?php echo htmlspecialchars($detail['kou_men']) ?></span>人
-    </p>
-    <p>キャンセル待ち：<span id="waiting_cnt"><?php echo htmlspecialchars($detail['waiting_cnt']) ?></span>人</p>
+        <summary>現在の状況</summary>
+        <br>
+        <p>【参加予定 <span id="cnt"><?php echo htmlspecialchars($detail['cnt']) ?></span>人】【上限 <?php echo htmlspecialchars($gameInfo['limit_number']) ?>人】</p>
+        <p>社会人：
+            女性 <span id="sya_women"><?php echo htmlspecialchars($detail['sya_women']) ?></span>人、
+            男性 <span id="sya_men"><?php echo htmlspecialchars($detail['sya_men']) ?></span>人
+            <p>大学・専門：
+                女性 <span id="dai_women"><?php echo htmlspecialchars($detail['dai_women']) ?></span>人、
+                男性 <span id="dai_men"><?php echo htmlspecialchars($detail['dai_men']) ?></span>人
+            </p>
+            <p>高校生：
+                女性 <span id="kou_women"><?php echo htmlspecialchars($detail['kou_women']) ?></span>人、
+                男性 <span id="kou_men"><?php echo htmlspecialchars($detail['kou_men']) ?></span>人
+            </p>
+            <p>キャンセル待ち：<span id="waiting_cnt"><?php echo htmlspecialchars($detail['waiting_cnt']) ?></span>人</p>
     </details>
 </div>
 

@@ -14,6 +14,9 @@ class GameInfo
     public $place;
     public $limitNumber;
     public $detail;
+    public $price1;
+    public $price2;
+    public $price3;
 
     public function __construct()
     {

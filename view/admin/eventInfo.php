@@ -5,23 +5,23 @@
         <br>
         <form action="/admin/event/eventComplete" method="post" class="form-group">
             <input type="hidden" id="game_id" name="game_id" value="<?php echo $gameInfo['id']; ?>">
-            <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
+            <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
             <div class="<?php echo $templateAreaClass ?>">
                 <p>
                     テンプレート：
                     <select name="template" id="template">
-                    <option value=""></option>
-                    <?php foreach ($eventTemplateList as $eventTemplate): ?>
-                        <option value="<?php echo $eventTemplate['id'] ?>"><?php echo $eventTemplate['template_name'] ?></option>
-                    <?php endforeach ?>
+                        <option value=""></option>
+                        <?php foreach ($eventTemplateList as $eventTemplate) : ?>
+                            <option value="<?php echo $eventTemplate['id'] ?>"><?php echo $eventTemplate['template_name'] ?></option>
+                        <?php endforeach ?>
                     </select>
                 </p>
             </div>
             <p>
-                タイトル<input class="form-control" type="text" id="title" name="title"  required value="<?php echo $gameInfo['title'] ?>">
+                タイトル<input class="form-control" type="text" id="title" name="title" required value="<?php echo $gameInfo['title'] ?>">
             </p>
             <p>
-                タイトル略称<input class="form-control" type="text" id="short_title" name="short_title"  required value="<?php echo $gameInfo['short_title'] ?>">
+                タイトル略称<input class="form-control" type="text" id="short_title" name="short_title" required value="<?php echo $gameInfo['short_title'] ?>">
             </p>
             <p>
                 日程<input class="form-control" type="date" name="game_date" required value="<?php echo $gameInfo['game_date'] ?>">
@@ -43,9 +43,9 @@
             </p>
             <p>
                 参加費<br>
-                <label>社会人　<input type="text" type="number" class="form-control form-price" id="price1" name="price1" required>円</label><br>
-                <label>大学・専門学校　<input type="text" type="number" class="form-control form-price" id="price1" name="price1" required>円</label><br>
-                <label>高校　<input type="text" type="number" class="form-control form-price" id="price1" name="price1" required>円</label>
+                <label>社会人　<input type="text" type="number" class="form-control form-price" id="price1" name="price1" required value="<?php echo $gameInfo['price1'] ?>">円</label><br>
+                <label>大学・専門　<input type="text" type="number" class="form-control form-price" id="price2" name="price2" required value="<?php echo $gameInfo['price2'] ?>">円</label><br>
+                <label>高校　<input type="text" type="number" class="form-control form-price" id="price3" name="price3" required value="<?php echo $gameInfo['price3'] ?>">円</label>
             </p>
             <p>
                 <button class="btn btn-primary" type="submit" name="register">登録</button>
@@ -58,30 +58,33 @@
     <div class="<?php echo $participantDisp ?>">
         <div>
             <details>
-            <summary>現在の状況</summary>
+                <summary>現在の状況</summary>
                 <br>
-                <p>【参加予定  <span id="cnt"><?php echo $detail['cnt'] ?></span>人】【上限  <?php echo $gameInfo['limit_number'] ?>人】</p>
+                <p>【参加予定 <span id="cnt"><?php echo $detail['cnt'] ?></span>人】【上限 <?php echo $gameInfo['limit_number'] ?>人】</p>
 
                 <table>
                     <tr>
-                        <th>職種</th><th>男性</th><th>女性</th><th>全体</th>
+                        <th>職種</th>
+                        <th>男性</th>
+                        <th>女性</th>
+                        <th>全体</th>
                     </tr>
                     <tr>
                         <th>社会人</th>
                         <th>
                             <a href="/admin/participant/ParticipantNameList?gameid=<?php echo $gameInfo['id'] ?>&occupation=1&sex=1&waiting_flg=0">
                                 <span id="sya_men"><?php echo $detail['sya_men'] ?></span>人
-                            </a>        
+                            </a>
                         </th>
                         <th>
                             <a href="/admin/participant/ParticipantNameList?gameid=<?php echo $gameInfo['id'] ?>&occupation=1&sex=2&waiting_flg=0">
                                 <span id="sya_women"><?php echo $detail['sya_women'] ?></span>人
-                            </a>        
+                            </a>
                         </th>
                         <th>
                             <a href="/admin/participant/ParticipantNameList?gameid=<?php echo $gameInfo['id'] ?>&occupation=1&sex=0&waiting_flg=0">
                                 <span id="sya_all"><?php echo $detail['sya_all'] ?></span>人
-                            </a>        
+                            </a>
                         </th>
                     </tr>
                     <tr>
@@ -89,17 +92,17 @@
                         <th>
                             <a href="/admin/participant/ParticipantNameList?gameid=<?php echo $gameInfo['id'] ?>&occupation=2&sex=1&waiting_flg=0">
                                 <span id="dai_men"><?php echo $detail['dai_men'] ?></span>人
-                            </a>        
+                            </a>
                         </th>
                         <th>
                             <a href="/admin/participant/ParticipantNameList?gameid=<?php echo $gameInfo['id'] ?>&occupation=2&sex=2&waiting_flg=0">
                                 <span id="dai_women"><?php echo $detail['dai_women'] ?></span>人
-                            </a>        
+                            </a>
                         </th>
                         <th>
                             <a href="/admin/participant/ParticipantNameList?gameid=<?php echo $gameInfo['id'] ?>&occupation=2&sex=0&waiting_flg=0">
                                 <span id="dai_all"><?php echo $detail['dai_all'] ?></span>人
-                            </a>        
+                            </a>
                         </th>
                     </tr>
                     <tr>
@@ -107,31 +110,31 @@
                         <th>
                             <a href="/admin/participant/ParticipantNameList?gameid=<?php echo $gameInfo['id'] ?>&occupation=3&sex=1&waiting_flg=0">
                                 <span id="kou_men"><?php echo $detail['kou_men'] ?></span>人
-                            </a>        
+                            </a>
                         </th>
                         <th>
                             <a href="/admin/participant/ParticipantNameList?gameid=<?php echo $gameInfo['id'] ?>&occupation=3&sex=2&waiting_flg=0">
                                 <span id="kou_women"><?php echo $detail['kou_women'] ?></span>人
-                            </a>        
+                            </a>
                         </th>
                         <th>
                             <a href="/admin/participant/ParticipantNameList?gameid=<?php echo $gameInfo['id'] ?>&occupation=3&sex=0&waiting_flg=0">
                                 <span id="kou_all"><?php echo $detail['kou_all'] ?></span>人
-                            </a>        
+                            </a>
                         </th>
                     </tr>
                     <tr>
                         <th>キャンセル待ち</th>
                         <th>
-                            -       
+                            -
                         </th>
                         <th>
-                            -    
+                            -
                         </th>
                         <th>
                             <a href="<?php dirname(__FILE__) ?>./ParticipantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=0&sex=0&waiting_flg=1">
                                 <span id="waiting_cnt"><?php echo $detail['waiting_cnt'] ?></span>人
-                            </a>        
+                            </a>
                         </th>
                     </tr>
                 </table>
@@ -157,35 +160,35 @@
         <br>
         <a class="btn btn-primary" href="/admin/participant/participantInfo?game_id=<?php echo $gameInfo['id']; ?>">参加者追加</a>
         <a class="btn btn-info" href="<?php echo $mailto ?>">参加者全員に連絡</a>
-        <?php foreach ((array)$participantList as $participant): ?>
-            <?php if($participant['main'] == '1'): ?>
+        <?php foreach ((array)$participantList as $participant) : ?>
+            <?php if ($participant['main'] == '1') : ?>
                 <hr>
                 <div id="participant-<?php echo $participant['id'] ?>">
+                    <p>
+                        <a class="btn btn-secondary" href="/admin/participant/ParticipantInfo?id=<?php echo $participant['id']; ?>&game_id=<?php echo $gameInfo['id']; ?>">修正</a>
+                        <button type="button" class="waiting btn btn-<?php echo $participant['waiting_flg'] == '1' ? 'warning' : 'success' ?>" value="<?php echo $participant['id'] ?>">
+                            <?php echo $participant['waiting_flg'] == '1' ? 'キャンセル待ちを解除' : 'キャンセル待ちに変更' ?></button>
+                        <span class="duplication"><?php echo $participant['chk'] ?></span>
+                        <button type="button" class="btn btn-danger btn-participant-delete" value="<?php echo $participant['id'] ?>">削除</button>
+                    </p>
+                <?php endif ?>
+
                 <p>
-                    <a class="btn btn-secondary" href="/admin/participant/ParticipantInfo?id=<?php echo $participant['id']; ?>&game_id=<?php echo $gameInfo['id']; ?>">修正</a>
-                    <button type="button" class="waiting btn btn-<?php echo $participant['waiting_flg'] == '1' ? 'warning' : 'success' ?>" value="<?php echo $participant['id'] ?>">
-                    <?php echo $participant['waiting_flg'] == '1' ? 'キャンセル待ちを解除' : 'キャンセル待ちに変更' ?></button>
-                    <span class="duplication"><?php echo $participant['chk'] ?></span>
-                    <button type="button" class="btn btn-danger btn-participant-delete" value="<?php echo $participant['id'] ?>">削除</button>
+                    <?php /* echo htmlspecialchars($participant['waiting_name']); */ ?>
+                    <?php echo htmlspecialchars($participant['companion_name']); ?> &nbsp;&nbsp;
+                    <?php echo htmlspecialchars($participant['name']); ?> &nbsp;&nbsp;
+                    <?php echo htmlspecialchars($participant['occupation_name']); ?> &nbsp;&nbsp;
+                    <?php echo htmlspecialchars($participant['sex_name']); ?> &nbsp;&nbsp;
                 </p>
-            <?php endif ?>
-        
-            <p>
-                <?php /* echo htmlspecialchars($participant['waiting_name']); */ ?>
-                <?php echo htmlspecialchars($participant['companion_name']); ?>  &nbsp;&nbsp;
-                <?php echo htmlspecialchars($participant['name']); ?>  &nbsp;&nbsp;
-                <?php echo htmlspecialchars($participant['occupation_name']); ?>  &nbsp;&nbsp;
-                <?php echo htmlspecialchars($participant['sex_name']); ?>  &nbsp;&nbsp;
-            </p>
-            <?php if($participant['main'] == '1'): ?>
-                <p>
-                    連絡先：
-                    <a href="mailto:<?php echo htmlspecialchars($participant['email']); ?>"><?php echo htmlspecialchars($participant['email']); ?></a>
-                </p>
-                <p>
-                    備考：<?php echo htmlspecialchars($participant['remark']); ?>
-                </p>
-            </div>
+                <?php if ($participant['main'] == '1') : ?>
+                    <p>
+                        連絡先：
+                        <a href="mailto:<?php echo htmlspecialchars($participant['email']); ?>"><?php echo htmlspecialchars($participant['email']); ?></a>
+                    </p>
+                    <p>
+                        備考：<?php echo htmlspecialchars($participant['remark']); ?>
+                    </p>
+                </div>
             <?php endif ?>
         <?php endforeach; ?>
     </details>

@@ -178,6 +178,9 @@ class EventController extends BaseController
                 $gameInfo->place = $_POST['place'];
                 $gameInfo->limitNumber = $_POST['limit_number'];
                 $gameInfo->detail = $_POST['detail'];
+                $gameInfo->price1 = $_POST['price1'];
+                $gameInfo->price2 = $_POST['price2'];
+                $gameInfo->price3 = $_POST['price3'];
                 
                 $gameInfoDao = new GameInfoDao();
                 if(empty($_POST['game_id']) || $_POST['game_id'] == '') {
