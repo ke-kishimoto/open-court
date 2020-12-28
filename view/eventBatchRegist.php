@@ -1,6 +1,6 @@
 <h1>イベント一括登録</h1>
     下記の内容で一括登録できます。
-    <form id="" action="EventBatchRegistComplete.php" method="post" class="form-group">
+    <form id="" action="/participant/eventBatchRegistComplete" method="post" class="form-group">
         <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
         <p>
             職種
