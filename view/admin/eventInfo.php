@@ -42,6 +42,12 @@
                 詳細<textarea class="form-control" id="detail" name="detail"><?php echo $gameInfo['detail'] ?></textarea>
             </p>
             <p>
+                参加費<br>
+                <label>社会人　<input type="text" type="number" class="form-control form-price" id="price1" name="price1" required>円</label><br>
+                <label>大学・専門学校　<input type="text" type="number" class="form-control form-price" id="price1" name="price1" required>円</label><br>
+                <label>高校　<input type="text" type="number" class="form-control form-price" id="price1" name="price1" required>円</label>
+            </p>
+            <p>
                 <button class="btn btn-primary" type="submit" name="register">登録</button>
                 <button id="btn-delete" class="btn btn-secondary" type="submit" name="delete">削除</button>
             </p>
