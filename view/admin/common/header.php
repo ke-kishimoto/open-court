@@ -15,7 +15,7 @@
         <li><a class="drawer-menu-item" href="/admin/config/config">システム設定</a></li>
         <li><a class="drawer-menu-item" href="/admin/admin/inquiryList">問い合わせ一覧</a></li>
         <li><a class="drawer-menu-item" href="/">一般利用者画面へ</a></li>
-        <li><a class="drawer-menu-item" href="/admin/admin/signout">ログアウト</a></li>
+        <li><a class="drawer-menu-item" href="/user/signout">ログアウト</a></li>
       </ul>
     </nav>
     <div class="system-header">

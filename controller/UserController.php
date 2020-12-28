@@ -271,7 +271,8 @@ class UserController extends BaseController
     public function signout() {
         session_start();
         // session_unset();
-        session_destroy();
+        // session_destroy();
+        unset($_SESSION['user']);
         header('Location: /index.php');
     }
 
