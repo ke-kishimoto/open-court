@@ -9,7 +9,7 @@
       <ul class="drawer-menu">
         <li><a class="drawer-brand" href="#">メニュー</a></li>
         <li><a class="drawer-menu-item" href="/event/index">トップ</a></li>
-        <li class="<?php echo htmlspecialchars($_SESSION['noLoginClass']) ?>"><a class="drawer-menu-item" href="/user/signup">新規作成</a></li>
+        <li class="<?php echo htmlspecialchars($_SESSION['noLoginClass']) ?>"><a class="drawer-menu-item" href="/user/signup">新規登録</a></li>
         <li class="<?php echo htmlspecialchars($_SESSION['noLoginClass']) ?>"><a class="drawer-menu-item" href="/user/signin">ログイン</a></li>
         <li class="<?php echo htmlspecialchars($_SESSION['loginClass']) ?>"><a class="drawer-menu-item" href="/user/participatingEventList">参加イベント一覧</a></li>
         <li class="<?php echo htmlspecialchars($_SESSION['loginClass']) ?>"><a class="drawer-menu-item" href="/participant/eventBatchRegist">イベント一括参加</a></li>

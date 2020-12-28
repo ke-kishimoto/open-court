@@ -203,6 +203,15 @@ a.link, .nolink{
     .participant-header-menu {
         display: none;
     }
+    .logo {
+        font-size: 15px;
+    }
+    .user-name {
+        font-size: 14px;
+    }
+    a.MonthLink {
+        font-size: 20px;
+    }
 }
 
 /****** ここまでヘッダー ******/
