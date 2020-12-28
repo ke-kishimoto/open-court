@@ -106,7 +106,7 @@ class UserController extends BaseController
                 $users->password =  $password;
                 $users->occupation = $_POST['occupation'];
                 $users->sex = $_POST['sex'];
-                $users->remark = $_POST['sex'];
+                $users->remark = $_POST['remark'];
                 $users->adminFlg = 0;
             
                 try {
@@ -131,10 +131,10 @@ class UserController extends BaseController
                         for($i = 1; $i <= $_POST['companion']; $i++) {
                             // $defaultCompanion = new DefaultCompanion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
                             $defaultCompanion = new DefaultCompanion();
-                            $defaultCompanion->id = $id; 
+                            $defaultCompanion->userId = $id; 
                             $defaultCompanion->occupation = $_POST['occupation-' . $i];
                             $defaultCompanion->sex = $_POST['sex-' . $i];
-                            $defaultCompanion->nsme = $_POST['name-' . $i];
+                            $defaultCompanion->name = $_POST['name-' . $i];
                             $defaultCompanionDao->insert($defaultCompanion);
                         }
                     }
