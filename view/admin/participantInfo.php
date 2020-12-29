@@ -65,4 +65,4 @@
     </p>
 
 </form>
-<p><a href="/admin/event/ventInfo?id=<?php echo $_GET['game_id'] ?>">イベント情報ページに戻る</a></p>
+<p><a href="/admin/event/eventInfo?gameid=<?php echo $_GET['game_id'] ?>">イベント情報ページに戻る</a></p>

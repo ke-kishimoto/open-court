@@ -16,5 +16,5 @@
     <p>参加者はいません</p>
 <?php endif ?>
 <p>
-    <a href="./EventInfo.php?id=<?php echo $gameId ?>">イベント詳細へ戻る</a>
+    <a href="/admin/event/eventInfo?gameid=<?php echo $gameId ?>">イベント詳細へ戻る</a>
 </p>
