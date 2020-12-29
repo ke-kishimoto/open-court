@@ -69,9 +69,15 @@ create table participant (
     , register_date timestamp null default null   -- 登録日時
     , update_date timestamp null default null     -- 更新日時
     , delete_flg int default 1
+    , attendance int default 1 -- 出欠  -- 1：出席、２：出席
+    , amount int  -- 回収金額
 );
 -- インデックス
 create index participant_idx_game on participant (game_id); 
+
+-- 出欠と回収金額
+alter table participant add column attendance int default 1; 
+alter table participant add column amount int;
 
 -- 同伴者
 -- drop table companion;
@@ -84,9 +90,15 @@ create table companion (
     , register_date timestamp null default null
     , update_date timestamp null default null
     , delete_flg int default 1
+    , attendance int default 1 -- 出欠
+    , amount int  -- 回収金額
 );
 -- インデックス
 create index companion_idx_participant on companion (participant_id);
+
+-- 出欠と回収金額
+alter table companion add column attendance int default 1; 
+alter table companion add column amount int;
 
 -- 設定
 -- 後々はユーザー単位にしたいな
@@ -99,7 +111,7 @@ create table config(
     , logo_img_path varchar(200)
     , register_date timestamp null default null
     , update_date timestamp null default null
-    , waiting_flg_auto_update int
+    , waiting_flg_auto_update int  -- 0：手動、1：自動
 );
 
 -- ユーザー
@@ -139,7 +151,7 @@ create table inquiry(
     , name varchar(50)
     , email varchar(50)
     , content varchar(2000)
-    , status_flg int
+    , status_flg int  -- 0：未完了、1：完了済み
     , register_date timestamp null default null
     , update_date timestamp null default null
 );
