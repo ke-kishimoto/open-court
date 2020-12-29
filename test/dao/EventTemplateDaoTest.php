@@ -36,7 +36,10 @@ class EventTemplateDaoTest extends TestCase
                         'short_title' => 'イベさん',
                         'place' => '沖縄市',
                         'limit_number' => 20,
-                        'detail' => '沖縄市でやるイベントです。'
+                        'detail' => '沖縄市でやるイベントです。',
+                        'price1' => 100,
+                        'price2' => 200,
+                        'price3' => 300,
                     ],
                     [
                         'id' => 2,
@@ -45,7 +48,10 @@ class EventTemplateDaoTest extends TestCase
                         'short_title' => 'イベさん2',
                         'place' => '沖縄市越来',
                         'limit_number' => 10,
-                        'detail' => '沖縄市でやるイベントです。'
+                        'detail' => '沖縄市でやるイベントです。',
+                        'price1' => 100,
+                        'price2' => 200,
+                        'price3' => 300,
                     ],
                 ],
             ]
@@ -74,6 +80,9 @@ class EventTemplateDaoTest extends TestCase
         $this->assertSame('沖縄市', $template['place']);
         $this->assertSame('20', $template['limit_number']);
         $this->assertSame('沖縄市でやるイベントです。', $template['detail']);
+        $this->assertSame('100', $template['price1']);
+        $this->assertSame('200', $template['price2']);
+        $this->assertSame('300', $template['price3']);
 
     }
 
@@ -89,6 +98,9 @@ class EventTemplateDaoTest extends TestCase
         $template->place = '那覇市';
         $template->limitNumber = 25;
         $template->detail = 'みんなでわいわい';
+        $template->price1 = 100;
+        $template->price2 = 200;
+        $template->price3 = 300;
 
         $dao->insert($template);
 

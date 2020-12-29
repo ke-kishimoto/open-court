@@ -53,6 +53,9 @@ $(function() {
             $('#place').val(data.place);
             $('#limit_number').val(data.limit_number);
             $('#detail').val(data.detail);
+            $('#price1').val(data.price1);
+            $('#price2').val(data.price2);
+            $('#price3').val(data.price3);
         })
         // Ajaxリクエストが失敗した時発動
         .fail( (data) => {

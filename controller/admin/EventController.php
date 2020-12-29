@@ -48,6 +48,9 @@ class EventController extends BaseController
                 $eventTemplate->place = $_POST['place'];
                 $eventTemplate->limitNumber = $_POST['limit_number'];
                 $eventTemplate->detail = $_POST['detail'];
+                $eventTemplate->price1 = (int)$_POST['price1'];
+                $eventTemplate->price2 = (int)$_POST['price2'];
+                $eventTemplate->price3 = (int)$_POST['price3'];
                 
                 $eventTemplateDao = new EventTemplateDao();
                 

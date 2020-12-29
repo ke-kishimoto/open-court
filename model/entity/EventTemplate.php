@@ -12,20 +12,14 @@ class EventTemplate
     public $place;
     public $limitNumber;
     public $detail;
+    public $price1;
+    public $price2;
+    public $price3;
 
     public function __construct()
     {
         
     }
-    // public function __construct($templateName, $title, $shortTitle, $place, $limitNumber, $detail)
-    // {
-    //     $this->templateName = $templateName;
-    //     $this->title = $title;
-    //     $this->shortTitle = $shortTitle;
-    //     $this->place = $place;
-    //     $this->limitNumber = $limitNumber;
-    //     $this->detail = $detail;
-    // }
 }
 
 ?>
