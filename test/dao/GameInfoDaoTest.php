@@ -41,7 +41,10 @@ class ConfigDaoTest extends TestCase
                         'place' => '那覇',
                         'limit_number' => 20,
                         'detail' => 'イベントです。',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'price1' => 100,
+                        'price2' => 200,
+                        'price3' => 300,
                     ],
                     [
                         'id' => 2,
@@ -53,7 +56,10 @@ class ConfigDaoTest extends TestCase
                         'place' => '那覇',
                         'limit_number' => 20,
                         'detail' => 'イベントです。',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'price1' => 100,
+                        'price2' => 200,
+                        'price3' => 300,
                     ],
                     [
                         'id' => 3,
@@ -65,7 +71,10 @@ class ConfigDaoTest extends TestCase
                         'place' => '那覇',
                         'limit_number' => 20,
                         'detail' => 'イベントです。',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'price1' => 100,
+                        'price2' => 200,
+                        'price3' => 300,
                     ],
                     [
                         'id' => 4,
@@ -77,7 +86,10 @@ class ConfigDaoTest extends TestCase
                         'place' => '那覇',
                         'limit_number' => 20,
                         'detail' => 'イベントです。',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'price1' => 100,
+                        'price2' => 200,
+                        'price3' => 300,
                     ],
                     [
                         'id' => 5,
@@ -89,7 +101,10 @@ class ConfigDaoTest extends TestCase
                         'place' => '那覇',
                         'limit_number' => 20,
                         'detail' => 'イベントです。',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'price1' => 100,
+                        'price2' => 200,
+                        'price3' => 300,
                     ],
                     [
                         'id' => 6,
@@ -101,7 +116,10 @@ class ConfigDaoTest extends TestCase
                         'place' => '那覇',
                         'limit_number' => 20,
                         'detail' => 'イベントです。',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'price1' => 100,
+                        'price2' => 200,
+                        'price3' => 300,
                     ],
                     [
                         'id' => 7,
@@ -113,7 +131,10 @@ class ConfigDaoTest extends TestCase
                         'place' => '那覇',
                         'limit_number' => 20,
                         'detail' => 'イベントです。',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'price1' => 100,
+                        'price2' => 200,
+                        'price3' => 300,
                     ],
                     [
                         'id' => 8,
@@ -125,7 +146,10 @@ class ConfigDaoTest extends TestCase
                         'place' => '那覇',
                         'limit_number' => 20,
                         'detail' => 'イベントです。',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'price1' => 100,
+                        'price2' => 200,
+                        'price3' => 300,
                     ],
                     [
                         'id' => 9,
@@ -137,7 +161,10 @@ class ConfigDaoTest extends TestCase
                         'place' => '那覇',
                         'limit_number' => 20,
                         'detail' => 'イベントです。',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'price1' => 100,
+                        'price2' => 200,
+                        'price3' => 300,
                     ],
                     [
                         'id' => 10,
@@ -149,7 +176,10 @@ class ConfigDaoTest extends TestCase
                         'place' => '那覇',
                         'limit_number' => 20,
                         'detail' => 'イベントです。',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'price1' => 100,
+                        'price2' => 200,
+                        'price3' => 300,
                     ],
                     
                 ],
@@ -180,6 +210,9 @@ class ConfigDaoTest extends TestCase
         $this->assertSame('20', $gameInfo['limit_number']);
         $this->assertSame('イベントです。', $gameInfo['detail']);
         $this->assertSame('1', $gameInfo['delete_flg']);
+        $this->assertSame('100', $gameInfo['price1']);
+        $this->assertSame('200', $gameInfo['price2']);
+        $this->assertSame('300', $gameInfo['price3']);
     }
 
     public function testGetGameInfoList()
@@ -231,6 +264,9 @@ class ConfigDaoTest extends TestCase
         $gameInfo->place = '追加場所';
         $gameInfo->limitNumber = 35;
         $gameInfo->detail = '追加詳細';
+        $gameInfo->price1 = 100;
+        $gameInfo->price2 = 200;
+        $gameInfo->price3 = 300;
 
         $dao->insert($gameInfo);
 
@@ -245,6 +281,9 @@ class ConfigDaoTest extends TestCase
         $this->assertSame('35', $gameInfo['limit_number']);
         $this->assertSame('追加詳細', $gameInfo['detail']);
         $this->assertSame('1', $gameInfo['delete_flg']);
+        $this->assertSame('100', $gameInfo['price1']);
+        $this->assertSame('200', $gameInfo['price2']);
+        $this->assertSame('300', $gameInfo['price3']);
 
     }
 
@@ -263,6 +302,9 @@ class ConfigDaoTest extends TestCase
         $gameInfo->place = '更新場所';
         $gameInfo->limitNumber = 35;
         $gameInfo->detail = '更新詳細';
+        $gameInfo->price1 = 1000;
+        $gameInfo->price2 = 2000;
+        $gameInfo->price3 = 3000;
 
         $dao->update($gameInfo);
 
@@ -277,6 +319,9 @@ class ConfigDaoTest extends TestCase
         $this->assertSame('35', $gameInfo['limit_number']);
         $this->assertSame('更新詳細', $gameInfo['detail']);
         $this->assertSame('1', $gameInfo['delete_flg']);
+        $this->assertSame('1000', $gameInfo['price1']);
+        $this->assertSame('2000', $gameInfo['price2']);
+        $this->assertSame('3000', $gameInfo['price3']);
 
     }
 

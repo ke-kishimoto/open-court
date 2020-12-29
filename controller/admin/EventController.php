@@ -105,6 +105,9 @@ class EventController extends BaseController
                 , 'place' => ''
                 , 'limit_number' => 0
                 , 'detail' => ''
+                , 'price1' => 0
+                , 'price2' => 0
+                , 'price3' => 0
             );
             $templateAreaClass = '';
             $participantDisp = 'hidden';
@@ -178,9 +181,9 @@ class EventController extends BaseController
                 $gameInfo->place = $_POST['place'];
                 $gameInfo->limitNumber = $_POST['limit_number'];
                 $gameInfo->detail = $_POST['detail'];
-                $gameInfo->price1 = $_POST['price1'];
-                $gameInfo->price2 = $_POST['price2'];
-                $gameInfo->price3 = $_POST['price3'];
+                $gameInfo->price1 = (int)$_POST['price1'];
+                $gameInfo->price2 = (int)$_POST['price2'];
+                $gameInfo->price3 = (int)$_POST['price3'];
                 
                 $gameInfoDao = new GameInfoDao();
                 if(empty($_POST['game_id']) || $_POST['game_id'] == '') {

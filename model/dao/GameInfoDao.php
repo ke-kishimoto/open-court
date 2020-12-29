@@ -114,8 +114,32 @@ class GameInfoDao
 
     public function insert(GameInfo $gameinfo) 
     {
-        $sql = 'insert into game_info (title, short_title, game_date, start_time, end_time, place, limit_number, detail, register_date) 
-            values(:title, :short_title, :game_date, :start_time, :end_time, :place, :limit_number, :detail, :register_date)';
+        $sql = 'insert into game_info 
+        (title
+        , short_title
+        , game_date
+        , start_time
+        , end_time
+        , place
+        , limit_number
+        , detail
+        , register_date
+        , price1
+        , price2
+        , price3) 
+            values(
+                :title
+            , :short_title
+            , :game_date
+            , :start_time
+            , :end_time
+            , :place
+            , :limit_number
+            , :detail
+            , :register_date
+            , :price1
+            , :price2
+            , :price3)';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':title', $gameinfo->title, PDO::PARAM_STR);
         $prepare->bindValue(':short_title', $gameinfo->shortTitle, PDO::PARAM_STR);
@@ -125,9 +149,9 @@ class GameInfoDao
         $prepare->bindValue(':place', $gameinfo->place, PDO::PARAM_STR);
         $prepare->bindValue(':limit_number', $gameinfo->limitNumber, PDO::PARAM_INT);
         $prepare->bindValue(':detail', $gameinfo->detail, PDO::PARAM_STR);
-        $prepare->bindValue(':price1', $gameinfo->price1, PDO::PARAM_STR);
-        $prepare->bindValue(':price2', $gameinfo->price2, PDO::PARAM_STR);
-        $prepare->bindValue(':price3', $gameinfo->price3, PDO::PARAM_STR);
+        $prepare->bindValue(':price1', $gameinfo->price1, PDO::PARAM_INT);
+        $prepare->bindValue(':price2', $gameinfo->price2, PDO::PARAM_INT);
+        $prepare->bindValue(':price3', $gameinfo->price3, PDO::PARAM_INT);
         $prepare->bindValue(':register_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->execute();
     }
@@ -157,9 +181,9 @@ class GameInfoDao
         $prepare->bindValue(':place', $gameinfo->place, PDO::PARAM_STR);
         $prepare->bindValue(':limit_number', $gameinfo->limitNumber, PDO::PARAM_INT);
         $prepare->bindValue(':detail', $gameinfo->detail, PDO::PARAM_STR);
-        $prepare->bindValue(':price1', $gameinfo->price1, PDO::PARAM_STR);
-        $prepare->bindValue(':price2', $gameinfo->price2, PDO::PARAM_STR);
-        $prepare->bindValue(':price3', $gameinfo->price3, PDO::PARAM_STR);
+        $prepare->bindValue(':price1', $gameinfo->price1, PDO::PARAM_INT);
+        $prepare->bindValue(':price2', $gameinfo->price2, PDO::PARAM_INT);
+        $prepare->bindValue(':price3', $gameinfo->price3, PDO::PARAM_INT);
         $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->execute();
     }
