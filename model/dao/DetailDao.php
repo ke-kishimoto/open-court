@@ -7,24 +7,46 @@ use dao\GameInfoDao;
 use PDO;
 use entity\Participant;
 
-class DetailDao {
+class DetailDao 
+{
 
     private $pdo;
-    public function __construct() {
+    public function __construct() 
+    {
         $this->pdo = DaoFactory::getConnection();
     }
-    public function getPdo() {
+    public function getPdo() 
+    {
         return $this->pdo;
     }
-    public function setPdo(PDO $pdo) {
+    public function setPdo(PDO $pdo) 
+    {
         $this->pdo = $pdo;
     }
 
     // 参加者登録
-    public function insert(Participant $participant) {
+    public function insert(Participant $participant) 
+    {
         $sql = 'insert into participant 
-        (game_id, occupation, sex, name, email, waiting_flg, remark, register_date) 
-        values(:game_id, :occupation, :sex, :name, :email, :waiting_flg, :remark, :register_date)';
+        (game_id
+        , occupation
+        , sex
+        , name
+        , email
+        , waiting_flg
+        , remark
+        , register_date
+        , amount) 
+            values(
+                :game_id
+                , :occupation
+                , :sex
+                , :name
+                , :email
+                , :waiting_flg
+                , :remark
+                , :register_date
+                , :amount)';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':game_id', $participant->gameId, PDO::PARAM_INT);
         $prepare->bindValue(':occupation', $participant->occupation, PDO::PARAM_INT);
@@ -34,11 +56,13 @@ class DetailDao {
         $prepare->bindValue(':waiting_flg', $participant->waitingFlg, PDO::PARAM_INT);
         $prepare->bindValue(':remark', $participant->remark, PDO::PARAM_STR);
         $prepare->bindValue(':register_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
+        $prepare->bindValue(':amount', $participant->amount, PDO::PARAM_INT);
         $prepare->execute();
     }
 
     // 参加者の更新
-    public function update(Participant $participant) {
+    public function update(Participant $participant) 
+    {
         $sql = 'update participant set
         name = :name
         , occupation = :occupation
@@ -46,6 +70,7 @@ class DetailDao {
         , email = :email
         , remark = :remark
         , update_date = :update_date
+        , amount = :amount
         where id = :id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':occupation', $participant->occupation, PDO::PARAM_INT);
@@ -54,6 +79,7 @@ class DetailDao {
         $prepare->bindValue(':email', $participant->email, PDO::PARAM_STR);
         $prepare->bindValue(':remark', $participant->remark, PDO::PARAM_STR);
         $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
+        $prepare->bindValue(':amount', $participant->amount, PDO::PARAM_INT);
         $prepare->bindValue(':id', $participant->id, PDO::PARAM_INT);
         $prepare->execute();
     }
@@ -71,7 +97,8 @@ class DetailDao {
     }
 
     // 参加者情報取得
-    public function getParticipant(int $id) {
+    public function getParticipant(int $id) 
+    {
         $sql = "select * 
         , case 
             when occupation =  1 then '社会人'
@@ -91,7 +118,8 @@ class DetailDao {
     }
 
     // 参加者一覧取得
-    public function getParticipantList(int $gameId, int $occupation = 0, int $sex = 0, int $waitingFlg = -1) {
+    public function getParticipantList(int $gameId, int $occupation = 0, int $sex = 0, int $waitingFlg = -1) 
+    {
         // イベントの日付を取得しておく
         $gameInfoDao = new GameInfoDao();
         $gameInfo = $gameInfoDao->getGameInfo($gameId);
@@ -159,7 +187,8 @@ class DetailDao {
     }
 
     // 参加者集計情報取得
-    public function getDetail(int $gameId) {
+    public function getDetail(int $gameId) 
+    {
         $sql = 'select 
         count(*) cnt
         , sum(
@@ -242,7 +271,8 @@ class DetailDao {
     }
 
     // イベントごと削除する場合の参加者の削除
-    public function deleteByGameId(int $gameId) {
+    public function deleteByGameId(int $gameId) 
+    {
         // // 同伴者の削除
         // $sql = "delete from companion where participant_id in (select id from participant where game_id = :game_id)";
         // $prepare = $pdo->prepare($sql);
@@ -260,7 +290,8 @@ class DetailDao {
     }
 
     // 参加者の上限チェック
-    public function limitCheck(int $gameId, int $participants_number) {
+    public function limitCheck(int $gameId, int $participants_number) 
+    {
         $sql = "select (max(g.limit_number) - coalesce(count(p.id), 0) - coalesce(sum(cnt), 0)) num
                 from game_info g 
                 left join (select *
@@ -283,11 +314,13 @@ class DetailDao {
     }
 
     // 参加者idの取得
-    public function getParticipantId(Participant $participant) {
-        $sql = 'select max(id) id
+    public function getParticipantId(Participant $participant) 
+    {
+        $sql = "select max(id) id
                 from participant 
                 where game_id = :game_id
-                and email = :email';
+                and email = :email
+                and delete_flg = '1'";
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':game_id', $participant->gameId, PDO::PARAM_INT);
         $prepare->bindValue(':email', $participant->email, PDO::PARAM_STR);
@@ -298,7 +331,8 @@ class DetailDao {
     }
 
     // キャンセル待ちフラグの更新
-    public function updateWaitingFlg(int $id) {
+    public function updateWaitingFlg(int $id) 
+    {
         $sql = 'update participant set
         waiting_flg = case when waiting_flg = 0 then 1 else 0 end
         where id = :id';
@@ -309,7 +343,8 @@ class DetailDao {
     }
 
     // メールアドレスによる存在チェック
-    public function existsCheck(int $gameId, string $email) {
+    public function existsCheck(int $gameId, string $email) 
+    {
         // $participant = new Participant($gameId, 0, 0, '', $email, 0, '');
         $participant = new Participant();
         $participant->gameId = $gameId;
@@ -322,7 +357,8 @@ class DetailDao {
     }
 
     // メールアドレスによる削除処理
-    public function deleteByMailAddress(int $gameId, string $email) {
+    public function deleteByMailAddress(int $gameId, string $email) 
+    {
         // 存在チェック
         // $participant = new Participant($gameId, 0, 0, '', $email, 0, '');
         $participant = new Participant();
@@ -347,7 +383,8 @@ class DetailDao {
     }
 
     // 参加済み、参加予定のイベントリスト
-    public function getEventListByEmail(string $email, string $gameDate) {
+    public function getEventListByEmail(string $email, string $gameDate) 
+    {
         $sql = 'select g.*
         from participant p
         join game_info g
@@ -363,7 +400,8 @@ class DetailDao {
     }
 
     // キャンセル待ちメンバーの取得
-    public function getWitingList(int $gameId) {
+    public function getWitingList(int $gameId) 
+    {
         $sql = 'select *
         , coalesce((select count(*) from companion 
             where participant_id = participant.id), 0) cnt
@@ -376,5 +414,17 @@ class DetailDao {
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
         $prepare->execute();
         return $prepare->fetchAll();
+    }
+
+    // 出欠の更新
+    public function updateAttendance($id)
+    {
+        $sql = 'update participant set 
+        attendance = case when attendance = 1 then 2 else 1 end
+        where id = :id';
+        $prepare = $this->pdo->prepare($sql);
+        $prepare->bindValue(':id', $id, PDO::PARAM_INT);
+        $prepare->execute();
+        return $this->getParticipant($id);
     }
 }

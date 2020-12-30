@@ -89,7 +89,10 @@ class ConfigDaoTest extends TestCase
                         'email' => 'aaa@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'aaa',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
+
                     ],
                     [
                         'id' => 2,
@@ -100,7 +103,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'bbb@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'bbb',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 3,
@@ -111,7 +116,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'ccc@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'ccc',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 4,
@@ -133,7 +140,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'eee@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'eee',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 6,
@@ -144,7 +153,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'fff@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'fff',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 7,
@@ -155,7 +166,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'ggg@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'ggg',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 8,
@@ -166,7 +179,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'hhh@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'hhh',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 9,
@@ -177,7 +192,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'iii@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'iii',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 10,
@@ -188,7 +205,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'jjj@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'jjj',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 11,
@@ -199,7 +218,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'kkk@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'kkk',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 12,
@@ -210,7 +231,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'lll@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'lll',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 13,
@@ -221,7 +244,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'mmm@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'mmm',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 14,
@@ -232,7 +257,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'nnn@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'nnn',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 15,
@@ -243,7 +270,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'ooo@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'ooo',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 16,
@@ -254,7 +283,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'ppp@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'ppp',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 17,
@@ -265,7 +296,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'qqq@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'qqq',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 18,
@@ -276,7 +309,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'rrr@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'rrr',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 19,
@@ -287,7 +322,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'sss@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'sss',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 20,
@@ -309,7 +346,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'uuu@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'uuu',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     // 2
                     [
@@ -321,7 +360,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'aaa@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'aaa',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 23,
@@ -332,7 +373,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'bbbb@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'bbbb',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 24,
@@ -343,7 +386,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'cccc@gmail.com',
                         'waiting_flg' => 1,
                         'remark' => 'aaa',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 25,
@@ -354,7 +399,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'dddd@gmail.com',
                         'waiting_flg' => 1,
                         'remark' => 'aaa',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 26,
@@ -365,7 +412,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'eeee@gmail.com',
                         'waiting_flg' => 1,
                         'remark' => 'aaa',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 27,
@@ -376,7 +425,9 @@ class ConfigDaoTest extends TestCase
                         'email' => '1111@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'aaa',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 28,
@@ -387,7 +438,9 @@ class ConfigDaoTest extends TestCase
                         'email' => '2222@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'aaa',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 29,
@@ -398,7 +451,9 @@ class ConfigDaoTest extends TestCase
                         'email' => '2222@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'aaa',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                 ],
                 'companion' => [
@@ -427,6 +482,7 @@ class ConfigDaoTest extends TestCase
         $participant->email = 'add@gmail.com';
         $participant->waitingFlg = 0;
         $participant->remark = '備考';
+        $participant->amount = 150;
 
         $dao->insert($participant);
 
@@ -442,6 +498,8 @@ class ConfigDaoTest extends TestCase
         $this->assertSame('add@gmail.com', $participant['email']);
         $this->assertSame('0', $participant['waiting_flg']);
         $this->assertSame('備考', $participant['remark']);
+        $this->assertSame('1', $participant['attendance']);
+        $this->assertSame('150', $participant['amount']);
         $this->assertSame('社会人', $participant['occupation_name']);
         $this->assertSame('男性', $participant['sex_name']);
     }
@@ -459,6 +517,7 @@ class ConfigDaoTest extends TestCase
         $participant->email = 'update@gmail.com';
         $participant->waitingFlg = 0;
         $participant->remark = '更新';
+        $participant->amount = 200;
 
         $dao->update($participant);
 
@@ -470,6 +529,7 @@ class ConfigDaoTest extends TestCase
         $this->assertSame('update@gmail.com', $participant['email']);
         $this->assertSame('0', $participant['waiting_flg']);
         $this->assertSame('更新', $participant['remark']);
+        $this->assertSame('200', $participant['amount']);
         $this->assertSame('大学・専門学校', $participant['occupation_name']);
         $this->assertSame('女性', $participant['sex_name']);
 
@@ -661,6 +721,17 @@ class ConfigDaoTest extends TestCase
         $gameId = 2;
         $list = $dao->getWitingList($gameId);
         $this->assertSame(3, count($list));
+    }
+
+    public function testUpdateAttendance()
+    {
+        $dataSet = $this->getConnection()->createDataSet();
+        $dao = new DetailDao();
+
+        $id = 1;
+        $participant = $dao->updateAttendance($id);
+        $this->assertSame('2', $participant['attendance']);
+
     }
 
   
