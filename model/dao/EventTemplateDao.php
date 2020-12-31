@@ -1,120 +1,31 @@
 <?php
 namespace dao;
 
-use dao\DaoFactory;
 use PDO;
-use entity\EventTemplate;
 
-class EventTemplateDao 
+class EventTemplateDao extends BaseDao
 {
 
-    private $pdo;
     public function __construct() 
     {
-        $this->pdo = DaoFactory::getConnection();
+        parent::__construct();
+        $this->tableName = 'event_template';
     }
-    public function getPdo() 
-    {
-        return $this->pdo;
-    }
-    public function setPdo(PDO $pdo) 
-    {
-        $this->pdo = $pdo;
-    }
-
+   
     public function getEventTemplateList() 
     {
         $sql = 'select * from event_template where delete_flg = 1 order by id';
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->execute();
 
         return $prepare->fetchAll();
-    }
-
-    public function getEventTemplate($id) 
-    {
-        $sql = 'select * from event_template where id = :id';
-        $prepare = $this->pdo->prepare($sql);
-        $prepare->bindValue(':id', $id);
-        $prepare->execute();
-
-        return $prepare->fetch();
-    }
-
-    public function insert(EventTemplate $eventTemplate) 
-    {
-        $sql = 'insert into event_template 
-        (template_name
-        , title
-        , short_title
-        , place
-        , limit_number
-        , detail
-        , register_date
-        , price1
-        , price2
-        , price3
-        ) 
-            values(
-                :template_name
-                , :title
-                , :short_title
-                , :place
-                , :limit_number
-                , :detail
-                , :register_date
-                , :price1
-                , :price2
-                , :price3
-                )';
-        $prepare = $this->pdo->prepare($sql);
-        $prepare->bindValue(':template_name', $eventTemplate->templateName, PDO::PARAM_STR);
-        $prepare->bindValue(':title', $eventTemplate->title, PDO::PARAM_STR);
-        $prepare->bindValue(':short_title', $eventTemplate->shortTitle, PDO::PARAM_STR);
-        $prepare->bindValue(':place', $eventTemplate->place, PDO::PARAM_STR);
-        $prepare->bindValue(':limit_number', $eventTemplate->limitNumber, PDO::PARAM_INT);
-        $prepare->bindValue(':detail', $eventTemplate->detail, PDO::PARAM_STR);
-        $prepare->bindValue(':register_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
-        $prepare->bindValue(':price1', $eventTemplate->price1, PDO::PARAM_INT);
-        $prepare->bindValue(':price2', $eventTemplate->price2, PDO::PARAM_INT);
-        $prepare->bindValue(':price3', $eventTemplate->price3, PDO::PARAM_INT);
-        $prepare->execute();
-    }
-
-    public function update(EventTemplate $eventTemplate) 
-    {
-        $sql = 'update event_template set
-        template_name = :template_name 
-        , title = :title
-        , short_title = :short_title
-        , place = :place
-        , limit_number = :limit_number
-        , detail = :detail
-        , update_date = :update_date
-        , price1 = :price1
-        , price2 = :price2
-        , price3 = :price3
-        where id = :id';
-        $prepare = $this->pdo->prepare($sql);
-        $prepare->bindValue(':template_name', $eventTemplate->templateName, PDO::PARAM_STR);
-        $prepare->bindValue(':title', $eventTemplate->title, PDO::PARAM_STR);
-        $prepare->bindValue(':short_title', $eventTemplate->shortTitle, PDO::PARAM_STR);
-        $prepare->bindValue(':place', $eventTemplate->place, PDO::PARAM_STR);
-        $prepare->bindValue(':limit_number', $eventTemplate->limitNumber, PDO::PARAM_INT);
-        $prepare->bindValue(':detail', $eventTemplate->detail, PDO::PARAM_STR);
-        $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
-        $prepare->bindValue(':price1', $eventTemplate->price1, PDO::PARAM_INT);
-        $prepare->bindValue(':price2', $eventTemplate->price2, PDO::PARAM_INT);
-        $prepare->bindValue(':price3', $eventTemplate->price3, PDO::PARAM_INT);
-        $prepare->bindValue(':id', $eventTemplate->id);
-        $prepare->execute();
     }
 
     public function delete(int $id)
     {
         // $sql = "delete from event_template where id = :id";
         $sql = "update event_template set delete_flg = 9 where id = :id";
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
 

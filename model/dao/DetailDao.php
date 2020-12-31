@@ -1,98 +1,21 @@
 <?php
 namespace dao;
 
-use dao\DaoFactory;
 use dao\GameInfoDao;
 
 use PDO;
 use entity\Participant;
 
-class DetailDao 
+class DetailDao extends BaseDao
 {
 
-    private $pdo;
     public function __construct() 
     {
-        $this->pdo = DaoFactory::getConnection();
-    }
-    public function getPdo() 
-    {
-        return $this->pdo;
-    }
-    public function setPdo(PDO $pdo) 
-    {
-        $this->pdo = $pdo;
+        parent::__construct();
+        $this->tableName = 'participant';
     }
 
-    // 参加者登録
-    public function insert(Participant $participant) 
-    {
-        $sql = 'insert into participant 
-        (
-            game_id
-            , occupation
-            , sex
-            , name
-            , email
-            , waiting_flg
-            , remark
-            , register_date
-            , amount
-            , tel
-        ) 
-            values
-            (
-                :game_id
-                , :occupation
-                , :sex
-                , :name
-                , :email
-                , :waiting_flg
-                , :remark
-                , :register_date
-                , :amount
-                , :tel
-            )';
-        $prepare = $this->pdo->prepare($sql);
-        $prepare->bindValue(':game_id', $participant->gameId, PDO::PARAM_INT);
-        $prepare->bindValue(':occupation', $participant->occupation, PDO::PARAM_INT);
-        $prepare->bindValue(':sex', $participant->sex, PDO::PARAM_INT);
-        $prepare->bindValue(':name', $participant->name, PDO::PARAM_STR);
-        $prepare->bindValue(':email', $participant->email, PDO::PARAM_STR);
-        $prepare->bindValue(':waiting_flg', $participant->waitingFlg, PDO::PARAM_INT);
-        $prepare->bindValue(':remark', $participant->remark, PDO::PARAM_STR);
-        $prepare->bindValue(':register_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
-        $prepare->bindValue(':amount', $participant->amount, PDO::PARAM_INT);
-        $prepare->bindValue(':tel', $participant->tel, PDO::PARAM_STR);
-        $prepare->execute();
-    }
-
-    // 参加者の更新
-    public function update(Participant $participant) 
-    {
-        $sql = 'update participant set
-        name = :name
-        , occupation = :occupation
-        , sex = :sex
-        , email = :email
-        , remark = :remark
-        , update_date = :update_date
-        , amount = :amount
-        , tel = :tel
-        where id = :id';
-        $prepare = $this->pdo->prepare($sql);
-        $prepare->bindValue(':occupation', $participant->occupation, PDO::PARAM_INT);
-        $prepare->bindValue(':sex', $participant->sex, PDO::PARAM_INT);
-        $prepare->bindValue(':name', $participant->name, PDO::PARAM_STR);
-        $prepare->bindValue(':email', $participant->email, PDO::PARAM_STR);
-        $prepare->bindValue(':remark', $participant->remark, PDO::PARAM_STR);
-        $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
-        $prepare->bindValue(':amount', $participant->amount, PDO::PARAM_INT);
-        $prepare->bindValue(':tel', $participant->tel, PDO::PARAM_STR);
-        $prepare->bindValue(':id', $participant->id, PDO::PARAM_INT);
-        $prepare->execute();
-    }
-
+    
     // 参加者の削除
     public function delete(int $id) {
         // $sql = 'delete from participant where id = :id';
@@ -100,7 +23,7 @@ class DetailDao
         delete_flg = 9 
         , update_date = :update_date
         where id = :id';
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
@@ -121,7 +44,7 @@ class DetailDao
             when sex = 2 then '女性'
           end sex_name
         from participant where id = :id";
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
         return $prepare->fetch();
@@ -132,7 +55,7 @@ class DetailDao
     {
         // イベントの日付を取得しておく
         $gameInfoDao = new GameInfoDao();
-        $gameInfo = $gameInfoDao->getGameInfo($gameId);
+        $gameInfo = $gameInfoDao->selectById($gameId);
         $andOcc = $occupation > 0 ? ' and occupation = :occupation ' : '';
         $andSex = $sex > 0 ? ' and sex = :sex ' : '';
         $andwaitingFlg = $waitingFlg > -1 ? ' and waiting_flg = :waiting_flg'  : '';
@@ -180,7 +103,7 @@ class DetailDao
         . $andOcc . $andSex .
         ") p
         order by id, main desc";
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
         if($occupation > 0) {
             $prepare->bindValue(':occupation', $occupation, PDO::PARAM_INT);
@@ -266,7 +189,7 @@ class DetailDao
         from companion
         where participant_id in (select id from participant where game_id = :game_id and delete_flg = 1 and waiting_flg = :waiting_flg)
         ) p';
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
         $prepare->bindValue(':waiting_flg', 0, PDO::PARAM_INT); // 参加予定
         $prepare->execute();
@@ -293,7 +216,7 @@ class DetailDao
         $sql = "update participant set delete_flg = 9
         , update_date = :update_date
         where game_id = :game_id";
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
         $prepare->execute();
@@ -311,7 +234,7 @@ class DetailDao
                 on g.id = p.game_id 
                 and waiting_flg = 0
                 where g.id = :game_id ";
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
         $prepare->execute();
         $info = $prepare->fetch();
@@ -331,7 +254,7 @@ class DetailDao
                 where game_id = :game_id
                 and email = :email
                 and delete_flg = '1'";
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':game_id', $participant->gameId, PDO::PARAM_INT);
         $prepare->bindValue(':email', $participant->email, PDO::PARAM_STR);
 
@@ -346,7 +269,7 @@ class DetailDao
         $sql = 'update participant set
         waiting_flg = case when waiting_flg = 0 then 1 else 0 end
         where id = :id';
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
         return $this->getParticipant($id);
@@ -380,12 +303,12 @@ class DetailDao
         }
         // 同伴者削除
         $sql = 'delete from companion where participant_id = :participant_id';
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':participant_id', $id, PDO::PARAM_INT);
         $prepare->execute();
         // 参加者削除
         $sql = 'delete from participant where game_id = :game_id and email = :email';
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
         $prepare->bindValue(':email', $email, PDO::PARAM_STR);
         $prepare->execute();
@@ -402,7 +325,7 @@ class DetailDao
         where p.email = :email 
         and g.delete_flg = 1
         order by g.game_date, g.start_time';
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':email', $email, PDO::PARAM_STR);
         // $prepare->bindValue(':game_date', $gameDate, PDO::PARAM_STR);
         $prepare->execute();
@@ -420,7 +343,7 @@ class DetailDao
         and delete_flg = 1
         and waiting_flg = 1
         order by id';
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
         $prepare->execute();
         return $prepare->fetchAll();
@@ -432,7 +355,7 @@ class DetailDao
         $sql = 'update participant set 
         attendance = case when attendance = 1 then 2 else 1 end
         where id = :id';
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
         return $this->getParticipant($id);

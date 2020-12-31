@@ -2,10 +2,8 @@
 
 namespace entity;
 
-class EventTemplate 
+class EventTemplate extends BaseEntity
 {
-
-    public $id;
     public $templateName;
     public $title;
     public $shortTitle;
@@ -21,5 +19,3 @@ class EventTemplate
         
     }
 }
-
-?>

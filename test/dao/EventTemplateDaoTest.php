@@ -1,9 +1,11 @@
 <?php
 require_once "vendor/autoload.php";
 require_once(__DIR__.'/MyApp_DbUnit_ArrayDataSet.php');
+require_once('./model/dao/BaseDao.php');
 require_once('./model/dao/EventTemplateDao.php');
 require_once('./model/dao/DaoFactory.php');
 require_once('./model/dao/TestPDO.php');
+require_once('./model/entity/BaseEntity.php');
 require_once('./model/entity/EventTemplate.php');
 
 use PHPUnit\Framework\TestCase;
@@ -72,7 +74,7 @@ class EventTemplateDaoTest extends TestCase
         $dataSet = $this->getConnection()->createDataSet();
         $dao = new EventTemplateDao();
 
-        $template = $dao->getEventTemplate(1);
+        $template = $dao->selectById(1);
         $this->assertSame('1', $template['id']);
         $this->assertSame('テンプレートサンプル', $template['template_name']);
         $this->assertSame('イベントサンプル', $template['title']);
@@ -107,7 +109,7 @@ class EventTemplateDaoTest extends TestCase
         $list = $dao->getEventTemplateList();
         $this->assertSame(3, count($list));
 
-        $template = $dao->getEventTemplate(3);
+        $template = $dao->selectById(3);
         $this->assertSame('3', $template['id']);
         $this->assertSame('オープンコート1', $template['template_name']);
         $this->assertSame('オープンコード1 aaa', $template['title']);
@@ -134,7 +136,7 @@ class EventTemplateDaoTest extends TestCase
 
         $dao->update($template);
 
-        $template = $dao->getEventTemplate(2);
+        $template = $dao->selectById(2);
         $this->assertSame('2', $template['id']);
         $this->assertSame('ビギナーズ', $template['template_name']);
         $this->assertSame('ビギナーズ1 aaa', $template['title']);

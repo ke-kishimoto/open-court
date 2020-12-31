@@ -4,13 +4,15 @@ namespace dao;
 use dao\HerokuPDO;
 use dao\XamppPDO;
 use dao\MampPDO;
+use dao\TestPDO;
 
 class DaoFactory {
 
     // 環境の切り替え
     // const ENVIROMENT = 'Heroku';
     // const ENVIROMENT = 'XAMPP';
-    const ENVIROMENT = 'MAMP';
+    // const ENVIROMENT = 'MAMP';
+    const ENVIROMENT = 'TEST';
 
     // DBの切り替え
     // const DBTYPE = 'PostgreSQL';
@@ -19,11 +21,13 @@ class DaoFactory {
     public static function getConnection() {
         
         if (DaoFactory::ENVIROMENT === 'Heroku') {
-            return new HerokuPDO();
+            // return new HerokuPDO();
         } elseif (DaoFactory::ENVIROMENT === 'XAMPP') {
             return new XamppPDO();
         } elseif (DaoFactory::ENVIROMENT === 'MAMP') {
             return new MampPDO();
+        } elseif (DaoFactory::ENVIROMENT === 'TEST') {
+            return new TestPDO();
         }
     } 
 

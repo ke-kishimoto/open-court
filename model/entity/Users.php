@@ -2,8 +2,8 @@
 
 namespace entity;
 
-class Users {
-	public $id;
+class Users extends BaseEntity
+{
 	public $adminFlg;
 	public $email;
 	public $name;

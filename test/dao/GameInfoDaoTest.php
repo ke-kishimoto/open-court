@@ -1,10 +1,12 @@
 <?php
 require_once "vendor/autoload.php";
 require_once(__DIR__.'/MyApp_DbUnit_ArrayDataSet.php');
+require_once('./model/dao/BaseDao.php');
 require_once('./model/dao/DetailDao.php');
 require_once('./model/dao/GameInfoDao.php');
 require_once('./model/dao/DaoFactory.php');
 require_once('./model/dao/TestPDO.php');
+require_once('./model/entity/BaseEntity.php');
 require_once('./model/entity/GameInfo.php');
 
 use PHPUnit\Framework\TestCase;
@@ -199,7 +201,7 @@ class ConfigDaoTest extends TestCase
         $dataSet = $this->getConnection()->createDataSet();
         $dao = new GameInfoDao();
 
-        $gameInfo = $dao->getGameInfo(1);
+        $gameInfo = $dao->selectById(1);
         $this->assertSame('1', $gameInfo['id']);
         $this->assertSame('イベントタイトル', $gameInfo['title']);
         $this->assertSame('イベント略称', $gameInfo['short_title']);
@@ -270,7 +272,7 @@ class ConfigDaoTest extends TestCase
 
         $dao->insert($gameInfo);
 
-        $gameInfo = $dao->getGameInfo(11);
+        $gameInfo = $dao->selectById(11);
         $this->assertSame('11', $gameInfo['id']);
         $this->assertSame('追加イベント', $gameInfo['title']);
         $this->assertSame('追加ショート', $gameInfo['short_title']);
@@ -294,6 +296,7 @@ class ConfigDaoTest extends TestCase
 
         $gameInfo = new GameInfo();
         $gameInfo->id = 1;
+        $gameInfo->delete_flg = 9;
         $gameInfo->title = '更新イベント';
         $gameInfo->shortTitle = '更新ショート';
         $gameInfo->gameDate = '2020-02-02';
@@ -308,7 +311,7 @@ class ConfigDaoTest extends TestCase
 
         $dao->update($gameInfo);
 
-        $gameInfo = $dao->getGameInfo(1);
+        $gameInfo = $dao->selectById(1);
         $this->assertSame('1', $gameInfo['id']);
         $this->assertSame('更新イベント', $gameInfo['title']);
         $this->assertSame('更新ショート', $gameInfo['short_title']);
@@ -318,7 +321,7 @@ class ConfigDaoTest extends TestCase
         $this->assertSame('更新場所', $gameInfo['place']);
         $this->assertSame('35', $gameInfo['limit_number']);
         $this->assertSame('更新詳細', $gameInfo['detail']);
-        $this->assertSame('1', $gameInfo['delete_flg']);
+        $this->assertSame('9', $gameInfo['delete_flg']);
         $this->assertSame('1000', $gameInfo['price1']);
         $this->assertSame('2000', $gameInfo['price2']);
         $this->assertSame('3000', $gameInfo['price3']);

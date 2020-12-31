@@ -188,7 +188,7 @@ class UserController extends BaseController
         if(!empty($_GET) && !empty($_SESSION['user'])) {
             $usersDao = new UsersDao();
             $defultCompanionDao = new DefaultCompanionDao();
-            $user = $usersDao->getUserById((int)$_GET['id']);
+            $user = $usersDao->selectById((int)$_GET['id']);
             $companions = $defultCompanionDao->getDefaultCompanionList($user['id']);
             $title = 'アカウント情報修正';
             $mode = 'update';

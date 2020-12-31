@@ -93,7 +93,7 @@ class EventController extends BaseController
         $participantDisp = '';
         // 試合情報取得
         if (isset($_GET['gameid'])) {
-            $gameInfo = $gameInfoDao->getGameInfo($_GET['gameid']);
+            $gameInfo = $gameInfoDao->selectById($_GET['gameid']);
         }
         if (empty($gameInfo)) {
             // 新規の場合

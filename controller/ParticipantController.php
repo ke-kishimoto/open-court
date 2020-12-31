@@ -113,7 +113,7 @@ class ParticipantController extends BaseController
         $gameInfoDao = new GameInfoDao();
         // 試合情報取得
         if (isset($_GET['id'])) {
-            $gameInfo = $gameInfoDao->getGameInfo($_GET['id']);
+            $gameInfo = $gameInfoDao->selectById($_GET['id']);
             $detailDao = new DetailDao();
             $limitFlg = $detailDao->limitCheck($gameInfo['id'], 0);
             $detail = $detailDao->getDetail($gameInfo['id']);

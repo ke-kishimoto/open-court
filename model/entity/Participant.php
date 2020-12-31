@@ -2,9 +2,8 @@
 
 namespace entity;
 
-class Participant 
+class Participant extends BaseEntity
 {
-    public $id;
     public $gameId;
     public $occupation;
     public $sex;

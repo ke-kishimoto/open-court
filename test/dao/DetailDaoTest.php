@@ -1,10 +1,12 @@
 <?php
 require_once "vendor/autoload.php";
 require_once(__DIR__.'/MyApp_DbUnit_ArrayDataSet.php');
+require_once('./model/dao/BaseDao.php');
 require_once('./model/dao/DetailDao.php');
 require_once('./model/dao/GameInfoDao.php');
 require_once('./model/dao/DaoFactory.php');
 require_once('./model/dao/TestPDO.php');
+require_once('./model/entity/BaseEntity.php');
 require_once('./model/entity/Participant.php');
 
 use PHPUnit\Framework\TestCase;

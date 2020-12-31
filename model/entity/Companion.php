@@ -1,10 +1,10 @@
 <?php
 
 namespace entity;
+use entity\BaseEntity;
 
-class Companion 
+class Companion extends BaseEntity
 {
-    public $id;
     public $participantId;
     public $occupation;
     public $sex;

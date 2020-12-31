@@ -1,7 +1,9 @@
 <?php
 require_once "vendor/autoload.php";
 require_once(__DIR__.'/MyApp_DbUnit_ArrayDataSet.php');
+require_once('./model/dao/BaseDao.php');
 require_once('./model/dao/UsersDao.php');
+require_once('./model/entity/BaseEntity.php');
 require_once('./model/entity/Users.php');
 require_once('./model/dao/DaoFactory.php');
 require_once('./model/dao/TestPDO.php');
@@ -74,7 +76,7 @@ class UsersDaoTest extends TestCase
         $user->tel = '090-1234-5678';
         $dao->insert($user);
         
-        $user = $dao->getUserById(3);
+        $user = $dao->selectById(3);
         $this->assertSame('newuser', $user['name']);
         $this->assertSame('newuser@gmail.com', $user['email']);
         $this->assertSame('password', $user['password']);
@@ -101,7 +103,7 @@ class UsersDaoTest extends TestCase
         $user->tel = '080-2345-6789';
         $dao->update($user);
         
-        $user = $dao->getUserById(1);
+        $user = $dao->selectById(1);
         $this->assertSame('updateuser', $user['name']);
         $this->assertSame('updateuser@gmail.com', $user['email']);
         // $this->assertSame('password', $user['password']);
@@ -117,7 +119,7 @@ class UsersDaoTest extends TestCase
         $dao = new UsersDao();
 
         $dao->updatePass(1, '5678');
-        $user = $dao->getUserById(1);
+        $user = $dao->selectById(1);
 
         $this->assertSame('5678', $user['password']);
 
@@ -129,7 +131,7 @@ class UsersDaoTest extends TestCase
         $dao = new UsersDao();
         
         $dao->delete(2);
-        $user = $dao->getUserById(2);
+        $user = $dao->selectById(2);
 
         $this->assertSame('9', $user['delete_flg']);
 
@@ -190,11 +192,11 @@ class UsersDaoTest extends TestCase
         $this->assertSame('aaaa', $user['remark']);
     }
 
-    public function testGetUserById()
+    public function testSelectById()
     {
         $dataSet = $this->getConnection()->createDataSet();
         $dao = new UsersDao();
-        $user = $dao->getUserById(1);
+        $user = $dao->selectById(1);
 
         $this->assertSame('1', $user['id']);
         $this->assertSame('1', $user['admin_flg']);
@@ -213,11 +215,11 @@ class UsersDaoTest extends TestCase
         $dao = new UsersDao();
 
         $dao->updateAdminFlg(1);
-        $user = $dao->getUserById(1);
+        $user = $dao->selectById(1);
         $this->assertSame('0', $user['admin_flg']);
 
         $dao->updateAdminFlg(1);
-        $user = $dao->getUserById(1);
+        $user = $dao->selectById(1);
         $this->assertSame('1', $user['admin_flg']);
 
     }

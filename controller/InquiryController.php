@@ -50,7 +50,7 @@ class InquiryController extends BaseController
             $inquiry->gameTitle = '';
             if($gameId) {
                 $gameInfoDao = new GameInfoDao();
-                $gameInfo = $gameInfoDao->getGameInfo($gameId);
+                $gameInfo = $gameInfoDao->selectById($gameId);
                 $inquiry->gameTitle = $gameInfo['title'];
             }
             // LINE通知用に参加者情報とイベント情報を取得

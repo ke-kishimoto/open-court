@@ -162,7 +162,11 @@ create table inquiry(
     , status_flg int  -- 0：未完了、1：完了済み
     , register_date timestamp null default null
     , update_date timestamp null default null
+    , delete_flg int default 1
 );
+
+-- 削除フラグ追加
+alter table inquiry add column delete_flg int default 1;
 
 -- お知らせ
 -- drop table notice;
@@ -171,8 +175,10 @@ create table notice(
     , title varchar(30)
     , content varchar(2000)
     , register_date timestamp null default null
+    , update_date timestamp null default null
     , delete_flg int default 1
 );
+
 
 -- 障害報告
 -- drop table trouble_report;

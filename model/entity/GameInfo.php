@@ -2,10 +2,8 @@
 
 namespace entity;
 
-class GameInfo 
+class GameInfo extends BaseEntity
 {
-
-    public $id;
     public $title;
     public $shortTitle;
     public $gameDate;
@@ -22,16 +20,5 @@ class GameInfo
     {
         
     }
-    // public function __construct($title, $shortTitle, $gameDate, $startTime, $endTime, $place, $limitNumber, $detail)
-    // {
-    //     $this->title = $title;
-    //     $this->shortTitle = $shortTitle;
-    //     $this->gameDate = $gameDate;
-    //     $this->startTime = $startTime;
-    //     $this->endTime = $endTime;
-    //     $this->place = $place;
-    //     $this->limitNumber = $limitNumber;
-    //     $this->detail = $detail;
-    // }
-}
 
+}

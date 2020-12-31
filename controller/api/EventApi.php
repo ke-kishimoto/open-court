@@ -68,7 +68,7 @@ class EventApi {
         header('Content-type: application/json; charset= UTF-8');
     
         $eventTemplateDao = new EventTemplateDao();
-        $eventTemplate = $eventTemplateDao->getEventTemplate(intval($_POST['id']));
+        $eventTemplate = $eventTemplateDao->selectById(intval($_POST['id']));
         
         echo json_encode($eventTemplate);
     }
@@ -77,7 +77,7 @@ class EventApi {
         header('Content-type: application/json; charset= UTF-8');
 
         $userDao = new UsersDao();
-        $user = $userDao->getUserById(intval($_POST['user_id']));
+        $user = $userDao->selectById(intval($_POST['user_id']));
         
         echo json_encode($user);
     }
@@ -89,7 +89,7 @@ class EventApi {
         // キャンセル待ちフラグの更新
         $userDao->updateAdminFlg($_POST['id']);
 
-        $user = $userDao->getUserById($_POST['id']);
+        $user = $userDao->selectById($_POST['id']);
 
         if($user['admin_flg'] == '1') {
             $info['authority_name'] = '管理者';

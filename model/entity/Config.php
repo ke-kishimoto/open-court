@@ -15,16 +15,5 @@ class Config
     {
         
     }
-
-    // public function  __construct($id, $lineToken, $systemTitle, $bgColor, $logoImgPath, $waitingFlgAutoUpdate) {
-    //     $this->id = $id;
-    //     $this->lineToken = $lineToken;
-    //     $this->systemTitle = $systemTitle;
-    //     $this->bgColor = $bgColor;
-    //     $this->logoImgPath = $logoImgPath;
-    //     $this->waitingFlgAutoUpdate = $waitingFlgAutoUpdate;
-    // }
     
 }
-
-?>

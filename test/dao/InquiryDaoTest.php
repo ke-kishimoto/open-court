@@ -1,7 +1,9 @@
 <?php
 require_once "vendor/autoload.php";
 require_once(__DIR__.'/MyApp_DbUnit_ArrayDataSet.php');
+require_once('./model/dao/BaseDao.php');
 require_once('./model/dao/InquiryDao.php');
+require_once('./model/entity/BaseEntity.php');
 require_once('./model/entity/Inquiry.php');
 require_once('./model/dao/DaoFactory.php');
 require_once('./model/dao/TestPDO.php');
@@ -36,6 +38,7 @@ class InquiryDaoTest extends TestCase
                         'email' => 'test@test.com',
                         'content' => '問い合わせ内容',
                         'status_flg' => 0,
+                        'delete_flg' => 1,
                         'register_date' => '2020-01-01 17:15:23',
                         'update_date' => '2020-01-01 17:15:23'
                     ],
@@ -46,6 +49,7 @@ class InquiryDaoTest extends TestCase
                         'email' => 'jiro@test.com',
                         'content' => '問い合わせ内容2',
                         'status_flg' => 1,
+                        'delete_flg' => 1,
                         'register_date' => '2020-01-01 17:15:23',
                         'update_date' => '2020-01-01 17:15:23'
                     ],
@@ -58,13 +62,14 @@ class InquiryDaoTest extends TestCase
     {
         $dataSet = $this->getConnection()->createDataSet();
         $dao = new InquiryDao();
-        $inquiry = $dao->getInquiry(1);
+        $inquiry = $dao->selectById(1);
         $this->assertSame('1', $inquiry['id']);
         $this->assertSame('1', $inquiry['game_id']);
         $this->assertSame('test taro', $inquiry['name']);
         $this->assertSame('test@test.com', $inquiry['email']);
         $this->assertSame('問い合わせ内容', $inquiry['content']);
         $this->assertSame('0', $inquiry['status_flg']);
+        $this->assertSame('1', $inquiry['delete_flg']);
     }
 
     public function testGetInquiryList()
@@ -92,7 +97,7 @@ class InquiryDaoTest extends TestCase
         $inquiryList = $dao->getInquiryList();
         $this->assertSame(3, count($inquiryList));
 
-        $inquiry = $dao->getInquiry(3);
+        $inquiry = $dao->selectById(3);
         $this->assertSame('3', $inquiry['id']);
         $this->assertSame(null, $inquiry['game_id']);
         $this->assertSame('alice', $inquiry['name']);
@@ -108,11 +113,11 @@ class InquiryDaoTest extends TestCase
         $dataSet = $this->getConnection()->createDataSet();
         $dao = new InquiryDao();
         $dao->updateStatusFlg(1);
-        $inquiry = $dao->getInquiry(1);
+        $inquiry = $dao->selectById(1);
         $this->assertSame('1', $inquiry['status_flg']);
 
         $dao->updateStatusFlg(2);
-        $inquiry = $dao->getInquiry(2);
+        $inquiry = $dao->selectById(2);
         $this->assertSame('0', $inquiry['status_flg']);
     }
 

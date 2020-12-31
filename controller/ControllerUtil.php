@@ -21,7 +21,7 @@ class ControllerUtil
         } else {
             if(!empty($password) && !empty($userId)) {
                 $usersDao = new UsersDao();
-                $user = $usersDao->getUserById($userId);
+                $user = $usersDao->selectById($userId);
                 if(!password_verify($password, $user['password'])) {
                     $errMsg = 'パスワードが異なります。';
                     return $errMsg;
@@ -30,7 +30,7 @@ class ControllerUtil
             if(empty($errMsg)) {
                 $participant = $detailDao->getParticipant($id);
                 $gameInfoDao = new GameInfoDao();
-                $gameInfo = $gameInfoDao->getGameInfo($participant['game_id']);
+                $gameInfo = $gameInfoDao->selectById($participant['game_id']);
             
                 $rowCount = $detailDao->deleteByMailAddress($participant['game_id'], $participant['email']);
             

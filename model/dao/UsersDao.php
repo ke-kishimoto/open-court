@@ -1,89 +1,15 @@
 <?php
 namespace dao;
 
-use dao\DaoFactory;
 use PDO;
 use entity\Users;
 
-class UsersDao 
+class UsersDao extends BaseDao
 {
-    private $pdo;
     public function __construct() 
     {
-        $this->pdo = DaoFactory::getConnection();
-    }
-    public function getPdo() 
-    {
-        return $this->pdo;
-    }
-    public function setPdo(PDO $pdo) 
-    {
-        $this->pdo = $pdo;
-    }
-
-    // ユーザー登録
-    public function insert(Users $users) 
-    {
-      $sql = 'insert into users 
-      (
-        admin_flg
-        , email
-        , name
-        , password
-        , occupation
-        , sex
-        , remark
-        , register_date
-        , tel
-        ) 
-      values
-      (
-        :admin_flg
-        , :email
-        , :name
-        , :password
-        , :occupation
-        , :sex
-        , :remark
-        , :register_date
-        , :tel
-        )';
-      $prepare = $this->pdo->prepare($sql);
-      $prepare->bindValue(':admin_flg', $users->adminFlg, PDO::PARAM_INT);
-      $prepare->bindValue(':email', $users->email, PDO::PARAM_STR);
-      $prepare->bindValue(':name', $users->name, PDO::PARAM_STR);
-      $prepare->bindValue(':password', $users->password, PDO::PARAM_STR);
-      $prepare->bindValue(':occupation', $users->occupation, PDO::PARAM_INT);
-      $prepare->bindValue(':sex', $users->sex, PDO::PARAM_INT);
-      $prepare->bindValue(':remark', $users->remark, PDO::PARAM_STR);
-      $prepare->bindValue(':register_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
-      $prepare->bindValue(':tel', $users->tel, PDO::PARAM_STR);
-      $prepare->execute();
-    }
-
-    // ユーザー情報の更新
-    public function update(Users $users) 
-    {
-        $sql = 'update users set 
-        name = :name
-        , email = :email
-        , occupation = :occupation
-        , sex = :sex
-        , remark = :remark 
-        , update_date = :update_date
-        , tel = :tel
-        where id = :id';
-        $prepare = $this->pdo->prepare($sql);
-        $prepare->bindValue(':email', $users->email, PDO::PARAM_STR);
-        $prepare->bindValue(':name', $users->name, PDO::PARAM_STR);
-        $prepare->bindValue(':occupation', $users->occupation, PDO::PARAM_INT);
-        $prepare->bindValue(':sex', $users->sex, PDO::PARAM_INT);
-        $prepare->bindValue(':remark', $users->remark, PDO::PARAM_STR);
-        $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
-        $prepare->bindValue(':id', $users->id, PDO::PARAM_INT);
-        $prepare->bindValue(':tel', $users->tel, PDO::PARAM_STR);
-        $prepare->execute();
-
+        parent::__construct();
+        $this->tableName = 'users';
     }
 
     public function updatePass(int $id, string $password) 
@@ -92,7 +18,7 @@ class UsersDao
         password = :password 
         , update_date = :update_date
         where id = :id';
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':password', $password, PDO::PARAM_STR);
         $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
@@ -103,7 +29,7 @@ class UsersDao
     {
         // $sql = 'delete from users where id = :id';
         $sql = 'update users set delete_flg = 9 where id = :id';
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
     }
@@ -115,7 +41,7 @@ class UsersDao
                 from users 
                 where email = :email
                 and delete_flg = '1'";
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':email', $user->email, PDO::PARAM_STR);
 
         $prepare->execute();
@@ -147,7 +73,7 @@ class UsersDao
           end authority_name
         from users 
         order by id";
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->execute();
         return $prepare->fetchAll();
     }
@@ -169,18 +95,8 @@ class UsersDao
     public function getUserByEmail(string $email) 
     {
         $sql = 'select * from users where email = :email and delete_flg = 1';
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':email', $email, PDO::PARAM_STR);
-        $prepare->execute();
-        return $prepare->fetch();
-    }
-
-    // IDによるユーザーの取得
-    public function getUserById(int $id) 
-    {
-        $sql = 'select * from users where id = :id';
-        $prepare = $this->pdo->prepare($sql);
-        $prepare->bindValue(':id', $id, PDO::PARAM_STR);
         $prepare->execute();
         return $prepare->fetch();
     }
@@ -194,7 +110,7 @@ class UsersDao
                   else 1
                 end
                 where id = :id';
-        $prepare = $this->pdo->prepare($sql);
+        $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
         
