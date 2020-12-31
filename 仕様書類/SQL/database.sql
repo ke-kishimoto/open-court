@@ -27,10 +27,10 @@ create table game_info (
     , price3 int
 );
 
--- 参加費用のカラム追加
-alter table game_info add column price1 int;
-alter table game_info add column price2 int;
-alter table game_info add column price3 int;
+-- -- 参加費用のカラム追加
+-- alter table game_info add column price1 int;
+-- alter table game_info add column price2 int;
+-- alter table game_info add column price3 int;
 
 -- イベントのテンプレ
 -- drop table event_template; 
@@ -50,10 +50,10 @@ create table event_template (
     , price3 int
 );
 
--- 参加費用のカラム追加
-alter table event_template add column price1 int;
-alter table event_template add column price2 int;
-alter table event_template add column price3 int;
+-- -- 参加費用のカラム追加
+-- alter table event_template add column price1 int;
+-- alter table event_template add column price2 int;
+-- alter table event_template add column price3 int;
 
 -- 参加者
 -- drop table participant;
@@ -71,6 +71,7 @@ create table participant (
     , delete_flg int default 1
     , attendance int default 1 -- 出欠  -- 1：出席、２：出席
     , amount int  -- 回収金額
+    , tel varchar(13)
 );
 -- インデックス
 create index participant_idx_game on participant (game_id); 
@@ -78,6 +79,9 @@ create index participant_idx_game on participant (game_id);
 -- 出欠と回収金額
 alter table participant add column attendance int default 1; 
 alter table participant add column amount int;
+-- 電話番号
+alter table participant add column tel varchar(13);
+
 
 -- 同伴者
 -- drop table companion;
@@ -128,7 +132,11 @@ create table users(
   , register_date timestamp null default null   -- 登録日時
   , update_date timestamp null default null     -- 更新日時
   , delete_flg int default 1
+  , tel varchar(13)
 );
+-- 電話番号
+alter table users add column tel varchar(13);
+
 
 -- ユーザーに付随する同伴者の初期値
 -- drop table default_companion;
@@ -155,4 +163,28 @@ create table inquiry(
     , register_date timestamp null default null
     , update_date timestamp null default null
 );
+
+-- お知らせ
+-- drop table notice;
+create table notice(
+    id serial primary key
+    , title varchar(30)
+    , content varchar(2000)
+    , register_date timestamp null default null
+    , delete_flg int default 1
+);
+
+-- 障害報告
+-- drop table trouble_report;
+create table trouble_report(
+    id serial primary key
+    , name varchar(50)
+    , title varchar(30)
+    , content varchar(2000)
+    , delete_flg int default 1 -- 9：削除済み
+    , status_flg int default 0 -- 0：未完了、1：完了済み
+    , register_date timestamp null default null
+    , update_date timestamp null default null
+);
+
 
