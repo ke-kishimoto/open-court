@@ -38,7 +38,8 @@ class UsersDaoTest extends TestCase
                         'occupation' => '1',
                         'sex' => '1',
                         'remark' => 'aaaa',
-                        'delete_flg' => '1'
+                        'delete_flg' => '1',
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 2,
@@ -49,7 +50,8 @@ class UsersDaoTest extends TestCase
                         'occupation' => '2',
                         'sex' => '2',
                         'remark' => 'bbbb',
-                        'delete_flg' => '1'
+                        'delete_flg' => '1',
+                        'tel' => '000-3333-4444',
                     ],
                 ],
             ]
@@ -69,6 +71,7 @@ class UsersDaoTest extends TestCase
         $user->sex = 1;
         $user->remark = 'dddd';
         $user->adminFlg = '0';
+        $user->tel = '090-1234-5678';
         $dao->insert($user);
         
         $user = $dao->getUserById(3);
@@ -79,6 +82,7 @@ class UsersDaoTest extends TestCase
         $this->assertSame('1', $user['sex']);
         $this->assertSame('dddd', $user['remark']);
         $this->assertSame('0', $user['admin_flg']);
+        $this->assertSame('090-1234-5678', $user['tel']);
     }
 
     public function testUpdate()
@@ -94,6 +98,7 @@ class UsersDaoTest extends TestCase
         $user->occupation = 2;
         $user->sex = 2;
         $user->remark = 'cccc';
+        $user->tel = '080-2345-6789';
         $dao->update($user);
         
         $user = $dao->getUserById(1);
@@ -103,6 +108,7 @@ class UsersDaoTest extends TestCase
         $this->assertSame('2', $user['occupation']);
         $this->assertSame('2', $user['sex']);
         $this->assertSame('cccc', $user['remark']);
+        $this->assertSame('080-2345-6789', $user['tel']);
     }
 
     public function testUpdatePass()
@@ -198,6 +204,7 @@ class UsersDaoTest extends TestCase
         $this->assertSame('1', $user['occupation']);
         $this->assertSame('1', $user['sex']);
         $this->assertSame('aaaa', $user['remark']);
+        $this->assertSame('000-1111-2222', $user['tel']);
     }
 
     public function testUpdateAdminFlg()

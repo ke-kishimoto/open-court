@@ -28,16 +28,20 @@ class DetailDao
     public function insert(Participant $participant) 
     {
         $sql = 'insert into participant 
-        (game_id
-        , occupation
-        , sex
-        , name
-        , email
-        , waiting_flg
-        , remark
-        , register_date
-        , amount) 
-            values(
+        (
+            game_id
+            , occupation
+            , sex
+            , name
+            , email
+            , waiting_flg
+            , remark
+            , register_date
+            , amount
+            , tel
+        ) 
+            values
+            (
                 :game_id
                 , :occupation
                 , :sex
@@ -46,7 +50,9 @@ class DetailDao
                 , :waiting_flg
                 , :remark
                 , :register_date
-                , :amount)';
+                , :amount
+                , :tel
+            )';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':game_id', $participant->gameId, PDO::PARAM_INT);
         $prepare->bindValue(':occupation', $participant->occupation, PDO::PARAM_INT);
@@ -57,6 +63,7 @@ class DetailDao
         $prepare->bindValue(':remark', $participant->remark, PDO::PARAM_STR);
         $prepare->bindValue(':register_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->bindValue(':amount', $participant->amount, PDO::PARAM_INT);
+        $prepare->bindValue(':tel', $participant->tel, PDO::PARAM_STR);
         $prepare->execute();
     }
 
@@ -71,6 +78,7 @@ class DetailDao
         , remark = :remark
         , update_date = :update_date
         , amount = :amount
+        , tel = :tel
         where id = :id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':occupation', $participant->occupation, PDO::PARAM_INT);
@@ -80,6 +88,7 @@ class DetailDao
         $prepare->bindValue(':remark', $participant->remark, PDO::PARAM_STR);
         $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->bindValue(':amount', $participant->amount, PDO::PARAM_INT);
+        $prepare->bindValue(':tel', $participant->tel, PDO::PARAM_STR);
         $prepare->bindValue(':id', $participant->id, PDO::PARAM_INT);
         $prepare->execute();
     }
@@ -87,7 +96,8 @@ class DetailDao
     // 参加者の削除
     public function delete(int $id) {
         // $sql = 'delete from participant where id = :id';
-        $sql = 'update participant set delete_flg = 9 
+        $sql = 'update participant set 
+        delete_flg = 9 
         , update_date = :update_date
         where id = :id';
         $prepare = $this->pdo->prepare($sql);

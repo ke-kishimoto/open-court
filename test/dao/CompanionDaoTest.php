@@ -41,14 +41,18 @@ class CompaionDaoTest extends TestCase
                         'participant_id' => 1,
                         'occupation' => 1,
                         'sex' => 1,
-                        'name' => '同伴者1'
+                        'name' => '同伴者1',
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                     [
                         'id' => 2,
                         'participant_id' => 1,
                         'occupation' => 2,
                         'sex' => 2,
-                        'name' => '同伴者2'
+                        'name' => '同伴者2',
+                        'attendance' => 1,
+                        'amount' => 100,
                     ],
                 ],
             ]
@@ -75,10 +79,19 @@ class CompaionDaoTest extends TestCase
         $companion->occupation = 3;
         $companion->sex = 2;
         $companion->name = '同伴者3';
+        $companion->amount = 150;
         $dao->insert($companion);
 
         $list = $dao->getCompanionList(1);
         $this->assertSame(3, count($list));
+
+        $this->assertSame('3', $list[2]['id']);
+        $this->assertSame('1', $list[2]['participant_id']);
+        $this->assertSame('3', $list[2]['occupation']);
+        $this->assertSame('2', $list[2]['sex']);
+        $this->assertSame('同伴者3', $list[2]['name']);
+        $this->assertSame('1', $list[2]['attendance']);
+        $this->assertSame('150', $list[2]['amount']);
 
     }
 

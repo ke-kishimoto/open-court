@@ -40,7 +40,7 @@ class ConfigDaoTest extends TestCase
                         'place' => '那覇',
                         'limit_number' => 25,
                         'detail' => 'イベントです。',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
                     ],
                     [
                         'id' => 2,
@@ -52,7 +52,7 @@ class ConfigDaoTest extends TestCase
                         'place' => '那覇',
                         'limit_number' => 2,
                         'detail' => 'イベントです。',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
                     ],
                     [
                         'id' => 3,
@@ -64,7 +64,7 @@ class ConfigDaoTest extends TestCase
                         'place' => '那覇',
                         'limit_number' => 4,
                         'detail' => 'イベントです。',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
                     ],
                     [
                         'id' => 4,
@@ -76,7 +76,7 @@ class ConfigDaoTest extends TestCase
                         'place' => '那覇',
                         'limit_number' => 5,
                         'detail' => 'イベントです。',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
                     ],
                 ],
                 'participant' => [
@@ -92,7 +92,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
-
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 2,
@@ -106,6 +106,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 3,
@@ -119,6 +120,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 4,
@@ -129,7 +131,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'ddd@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'ddd',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 5,
@@ -143,6 +147,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 6,
@@ -156,6 +161,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 7,
@@ -169,6 +175,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 8,
@@ -182,6 +189,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 9,
@@ -195,6 +203,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 10,
@@ -208,6 +217,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 11,
@@ -221,6 +231,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 12,
@@ -234,6 +245,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 13,
@@ -247,6 +259,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 14,
@@ -260,6 +273,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 15,
@@ -273,6 +287,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 16,
@@ -286,6 +301,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 17,
@@ -299,6 +315,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 18,
@@ -312,6 +329,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 19,
@@ -325,6 +343,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 20,
@@ -335,7 +354,9 @@ class ConfigDaoTest extends TestCase
                         'email' => 'ttt@gmail.com',
                         'waiting_flg' => 0,
                         'remark' => 'ttt',
-                        'delete_flg' => 1
+                        'delete_flg' => 1,
+                        'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 21,
@@ -349,6 +370,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     // 2
                     [
@@ -363,6 +385,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 23,
@@ -376,6 +399,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 24,
@@ -389,6 +413,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 25,
@@ -402,6 +427,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 26,
@@ -415,6 +441,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 27,
@@ -428,6 +455,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 28,
@@ -441,6 +469,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                     [
                         'id' => 29,
@@ -454,6 +483,7 @@ class ConfigDaoTest extends TestCase
                         'delete_flg' => 1,
                         'attendance' => 1,
                         'amount' => 100,
+                        'tel' => '000-1111-2222',
                     ],
                 ],
                 'companion' => [
@@ -483,6 +513,7 @@ class ConfigDaoTest extends TestCase
         $participant->waitingFlg = 0;
         $participant->remark = '備考';
         $participant->amount = 150;
+        $participant->tel = '090-1234-5678';
 
         $dao->insert($participant);
 
@@ -502,6 +533,7 @@ class ConfigDaoTest extends TestCase
         $this->assertSame('150', $participant['amount']);
         $this->assertSame('社会人', $participant['occupation_name']);
         $this->assertSame('男性', $participant['sex_name']);
+        $this->assertSame('090-1234-5678', $participant['tel']);
     }
 
     public function testUpdate()
@@ -518,6 +550,7 @@ class ConfigDaoTest extends TestCase
         $participant->waitingFlg = 0;
         $participant->remark = '更新';
         $participant->amount = 200;
+        $participant->tel = '090-2345-6789';
 
         $dao->update($participant);
 
@@ -532,8 +565,7 @@ class ConfigDaoTest extends TestCase
         $this->assertSame('200', $participant['amount']);
         $this->assertSame('大学・専門学校', $participant['occupation_name']);
         $this->assertSame('女性', $participant['sex_name']);
-
-
+        $this->assertSame('090-2345-6789', $participant['tel']);
     }
 
     public function testDelete()
@@ -565,6 +597,7 @@ class ConfigDaoTest extends TestCase
         $this->assertSame('aaa', $participant['remark']);
         $this->assertSame('社会人', $participant['occupation_name']);
         $this->assertSame('男性', $participant['sex_name']);
+        $this->assertSame('000-1111-2222', $participant['tel']);
     }
 
     public function testGetParticipantList()

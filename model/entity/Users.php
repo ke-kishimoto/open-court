@@ -11,20 +11,10 @@ class Users {
 	public $occupation;
 	public $sex;
 	public $remark;
+	public $tel;
 
 	public function __construct()
 	{
 		
 	}
-
-	// public function __construct($adminFlg, $email, $name, $password, $occupation, $sex, $remark)
-	// {
-	// 	$this->adminFlg = $adminFlg;
-	// 	$this->email = $email;
-	// 	$this->name = $name;
-	// 	$this->password = $password;
-	// 	$this->occupation = $occupation;
-	// 	$this->sex = $sex;
-	// 	$this->remark = $remark;
-	// }
 }

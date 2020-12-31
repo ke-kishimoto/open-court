@@ -25,8 +25,29 @@ class UsersDao
     public function insert(Users $users) 
     {
       $sql = 'insert into users 
-      (admin_flg, email, name, password, occupation, sex, remark, register_date) 
-      values(:admin_flg, :email, :name, :password, :occupation, :sex, :remark, :register_date)';
+      (
+        admin_flg
+        , email
+        , name
+        , password
+        , occupation
+        , sex
+        , remark
+        , register_date
+        , tel
+        ) 
+      values
+      (
+        :admin_flg
+        , :email
+        , :name
+        , :password
+        , :occupation
+        , :sex
+        , :remark
+        , :register_date
+        , :tel
+        )';
       $prepare = $this->pdo->prepare($sql);
       $prepare->bindValue(':admin_flg', $users->adminFlg, PDO::PARAM_INT);
       $prepare->bindValue(':email', $users->email, PDO::PARAM_STR);
@@ -36,15 +57,21 @@ class UsersDao
       $prepare->bindValue(':sex', $users->sex, PDO::PARAM_INT);
       $prepare->bindValue(':remark', $users->remark, PDO::PARAM_STR);
       $prepare->bindValue(':register_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
+      $prepare->bindValue(':tel', $users->tel, PDO::PARAM_STR);
       $prepare->execute();
     }
 
     // ユーザー情報の更新
     public function update(Users $users) 
     {
-        $sql = 'update users set name = :name
-        , email = :email, occupation = :occupation, sex = :sex, remark = :remark 
+        $sql = 'update users set 
+        name = :name
+        , email = :email
+        , occupation = :occupation
+        , sex = :sex
+        , remark = :remark 
         , update_date = :update_date
+        , tel = :tel
         where id = :id';
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':email', $users->email, PDO::PARAM_STR);
@@ -54,13 +81,15 @@ class UsersDao
         $prepare->bindValue(':remark', $users->remark, PDO::PARAM_STR);
         $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->bindValue(':id', $users->id, PDO::PARAM_INT);
+        $prepare->bindValue(':tel', $users->tel, PDO::PARAM_STR);
         $prepare->execute();
 
     }
 
     public function updatePass(int $id, string $password) 
     {
-        $sql = 'update users set password = :password 
+        $sql = 'update users set 
+        password = :password 
         , update_date = :update_date
         where id = :id';
         $prepare = $this->pdo->prepare($sql);
@@ -82,9 +111,10 @@ class UsersDao
     // ユーザーのidの取得
     public function getUsersId(Users $user) 
     {
-        $sql = 'select max(id) id
+        $sql = "select max(id) id
                 from users 
-                where email = :email';
+                where email = :email
+                and delete_flg = '1'";
         $prepare = $this->pdo->prepare($sql);
         $prepare->bindValue(':email', $user->email, PDO::PARAM_STR);
 
