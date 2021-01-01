@@ -1,6 +1,7 @@
 <?php
 require_once(__DIR__.'/../dao/MyApp_DbUnit_ArrayDataSet.php');
 require_once(__DIR__.'/../../controller/api/LineApi.php');
+require_once('./model/dao/BaseDao.php');
 require_once('./model/dao/ConfigDao.php');
 require_once('./model/dao/DetailDao.php');
 require_once('./model/dao/UsersDao.php');
@@ -8,17 +9,18 @@ require_once('./model/dao/GameInfoDao.php');
 require_once('./model/dao/InquiryDao.php');
 require_once('./model/dao/DaoFactory.php');
 require_once('./model/dao/TestPDO.php');
+require_once('./model/entity/BaseEntity.php');
 require_once('./model/entity/Config.php');
 require_once('./model/entity/Participant.php');
 require_once('./model/entity/Inquiry.php');
-require_once('./controller/ControllerUtil.php');
+require_once('./service/EventService.php');
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\DbUnit\TestCaseTrait;
 use api\LineApi;
 use entity\Inquiry;
 use entity\Participant;
-use controller\ControllerUtil;
+use service\EventService;
 use dao\DetailDao;
 
 class LineApiTest extends TestCase
@@ -169,23 +171,23 @@ class LineApiTest extends TestCase
     public function testCancelCompete()
     {
         $dataSet = $this->getConnection()->createDataSet();
-        $util = new ControllerUtil();
+        $service = new EventService();
 
         $participant = new Participant();
         $participant->gameId = 1;
         $participant->email = 'bbbb@gmail.com'; // メールアドレス間違い
         $password = 'password';
         $userId = 3;
-        $msg = $util->cancelComplete($participant, $password, $userId);
+        $msg = $service->cancelComplete($participant, $password, $userId);
         $this->assertSame('入力されたメールアドレスによる登録がありませんでした。', $msg);
 
         $participant->email = 'bbb@gmail.com';
         $password = 'password1234'; // パスワード間違い
-        $msg = $util->cancelComplete($participant, $password, $userId);
+        $msg = $service->cancelComplete($participant, $password, $userId);
         $this->assertSame('パスワードが異なります。', $msg);
 
         $password = 'password';
-        $msg = $util->cancelComplete($participant, $password, $userId);
+        $msg = $service->cancelComplete($participant, $password, $userId);
         $this->assertEmpty($msg);
         $detailDao = new DetailDao();
         $par = $detailDao->getParticipant(3);
@@ -193,13 +195,13 @@ class LineApiTest extends TestCase
         $this->assertSame('0', $par['waiting_flg']);
 
         $participant->gameId = 2; // 4人
-        $msg = $util->cancelComplete($participant, $password, $userId);
+        $msg = $service->cancelComplete($participant, $password, $userId);
         $par = $detailDao->getParticipant(6); // 1 + 同伴3 = 4人
         // 同伴者がいるので解除されない(まだ合計5人なのでキャンセルまちにならない)
         $this->assertSame('1', $par['waiting_flg']);
 
         $participant->email = 'aaa@gmail.com';
-        $msg = $util->cancelComplete($participant, $password, $userId);
+        $msg = $service->cancelComplete($participant, $password, $userId);
         $par = $detailDao->getParticipant(6);
         // 解除される
         $this->assertSame('0', $par['waiting_flg']);

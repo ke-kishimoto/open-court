@@ -1,14 +1,11 @@
 <?php
 namespace controller;
-use api\LineApi;
 use entity\Participant;
 use entity\Companion;
 use dao\DetailDao;
-use dao\CompanionDao;
 use dao\GameInfoDao;
 use dao\DefaultCompanionDao;
-use controller\ControllerUtil;
-use Exception;
+use service\EventService;
 
 class ParticipantController extends BaseController
 {
@@ -55,15 +52,6 @@ class ParticipantController extends BaseController
         if (isset($_POST["csrf_token"]) 
         && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 
-            // $participant = new Participant(
-            //     0
-            //     , (int)$_POST['occupation']
-            //     , (int)$_POST['sex']
-            //     , $_POST['name']
-            //     , $_POST['email']
-            //     , 0 
-            //     , $_POST['remark']
-            // );
             $participant = new Participant();
             $participant->gameId = 0;
             $participant->occupation = (int)$_POST['occupation'];
@@ -75,7 +63,6 @@ class ParticipantController extends BaseController
             
             $companion = [];
             for($i = 1; $i <= $_POST['companion']; $i++) {
-                // $companion[$i-1] = new Companion(0, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
                 $companion[$i-1] = new Companion();
                 $companion[$i-1]->participationId = 0;
                 $companion[$i-1]->occupation = $_POST['occupation-' . $i]; 
@@ -83,7 +70,8 @@ class ParticipantController extends BaseController
                 $companion[$i-1]->name = $_POST['name-' . $i];
             }
 
-            $count = $this->multipleParticipantRegist($_POST['game_id'], $participant, $companion);
+            $service = new EventService();
+            $count = $service->multipleParticipantRegist($_POST['game_id'], $participant, $companion);
             if($count) {
                 $msg = "{$count}件のイベントに登録しました。";
             } else {
@@ -180,15 +168,6 @@ class ParticipantController extends BaseController
         if (isset($_POST["csrf_token"]) 
         && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 
-            // $participant = new Participant(
-            //     (int)$_POST['game_id']
-            //     , (int)$_POST['occupation']
-            //     , (int)$_POST['sex']
-            //     , $_POST['name']
-            //     , $_POST['email']
-            //     , 0 
-            //     , $_POST['remark']
-            // );
             $participant = new Participant();
             $participant->gameId = (int)$_POST['game_id'];
             $participant->occupation = (int)$_POST['occupation'];
@@ -200,7 +179,6 @@ class ParticipantController extends BaseController
         
             $companion = [];
             for($i = 1; $i <= $_POST['companion']; $i++) {
-                // $companion[$i-1] = new Companion(0, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
                 $companion[$i-1] = new Companion();
                 $companion[$i-1]->participationId = 0;
                 $companion[$i-1]->occupation = $_POST['occupation-' . $i];
@@ -208,7 +186,8 @@ class ParticipantController extends BaseController
                 $companion[$i-1]->name = $_POST['name-' . $i];
             }
 
-            $errMsg = $this->oneParticipantRegist($participant, $companion);
+            $service = new EventService();
+            $errMsg = $service->oneParticipantRegist($participant, $companion);
 
             unset($_SESSION['csrf_token']);
             if(empty($errMsg)) {
@@ -257,7 +236,7 @@ class ParticipantController extends BaseController
         $errMsg = '';
         if(isset($_POST)) {
 
-            $util = new ControllerUtil();
+            $service = new EventService();
             $participant = new Participant();
             $participant->gameId = (int)$_POST['game_id'];
             $participant->email = $_POST['email'];
@@ -268,7 +247,7 @@ class ParticipantController extends BaseController
                 $password = '';
                 $userId = '';
             }
-            $errMsg = $util->cancelComplete($participant, $password, $userId);
+            $errMsg = $service->cancelComplete($participant, $password, $userId);
         }
         
         if(empty($errMsg)) {
@@ -294,85 +273,5 @@ class ParticipantController extends BaseController
             include('./view/common/footer.php');
         }
     }
-
-    // 1人
-    private function oneParticipantRegist(Participant $paricipant, array $companions) {
-        $detailDao = new DetailDao();
-        $errMsg = '';
-        try {
-            // トランザクション開始
-            $detailDao->getPdo()->beginTransaction();
-            $errMsg = $this->participantRegist($detailDao, $paricipant, $companions);
-            $detailDao->getPdo()->commit();
-        } catch(Exception $ex) {
-            // ロールバック
-            $errMsg = 'エラーが発生しました。';
-            $detailDao->getPdo()->rollBack();
-        }
-        // 予約の通知
-        if(!$errMsg) {
-            $api = new LineApi();
-            $api->reserve_notify($paricipant, $_POST['title'], $_POST['date'], $_POST['companion']);
-        }
-        return $errMsg;
-    }
-    // 複数人
-    private function multipleParticipantRegist(array $gameIds, Participant $paricipant, array $companions) {
-        $detailDao = new DetailDao();
-        $count = 0;
-        try {
-            // トランザクション開始
-            $detailDao->getPdo()->beginTransaction();
-            foreach($gameIds as $gameId) {
-                $paricipant->gameId = (int)$gameId;
-                $errMsg = $this->participantRegist($detailDao, $paricipant, $companions);
-                if(!$errMsg) {
-                    $count++;
-                }
-            }
-            $detailDao->getPdo()->commit();
-        } catch(Exception $ex) {
-            // ロールバック
-            $count = 0;
-            $errMsg = 'エラーが発生しました。';
-            $detailDao->getPdo()->rollBack();
-        }
-        // 予約の通知
-        if($count) {
-            $api = new LineApi();
-            $api->multiple_reserve($paricipant->name, $count);
-        }
-        return $count;
-    }
-
-    // 登録処理
-    private function participantRegist(DetailDao $detailDao, Participant $paricipant, array $companions) {
-        $errMsg = '';
-        if($paricipant->email !== '' && $detailDao->existsCheck($paricipant->gameId, $paricipant->email)) {
-            $errMsg = '既に登録済みのため登録できません。';
-        } else {
-            // キャンセル待ちになるかどうかのチェック
-            if($detailDao->limitCheck($paricipant->gameId, 1 + count($companions))) {
-                $waitingFlg = 1;
-            } else {
-                $waitingFlg = 0;
-            }
-            $paricipant->waitingFlg = $waitingFlg;    
-            $detailDao->insert($paricipant);
-            
-            // 同伴者の登録
-            if(count($companions) > 0) {
-                $id = $detailDao->getParticipantId($paricipant);
-                $companionDao = new CompanionDao();
-                $companionDao->setPdo($detailDao->getPdo());
-                foreach($companions as $companion) {
-                    $companion->participantId = (int)$id;
-                    $companionDao->insert($companion);
-                }
-            }
-        }
-        return $errMsg;
-    }
-
 
 }
