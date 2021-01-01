@@ -40,7 +40,7 @@ class BaseDao
         $sql = "insert into {$this->tableName} (";
         $i = 0;
         foreach($entity as $key => $value) {
-            if ($value === null) {
+            if ($key === 'id' || $key === 'register_date' || $value === null) {
                 continue;
             }
             if($i !== 0) {
@@ -52,7 +52,7 @@ class BaseDao
         $sql .= ", register_date) values (";
         $i = 0;
         foreach($entity as $key => $value) {
-            if ($value === null) {
+            if ($key === 'id' || $key === 'register_date' || $value === null) {
                 continue;
             }
             if($i !== 0) {
@@ -108,6 +108,18 @@ class BaseDao
     {
         $sql = "delete from {$this->tableName} where id = :id";
         $prepare = $this->pdo->prepare($sql);
+        $prepare->bindValue(':id', $id, PDO::PARAM_INT);
+        $prepare->execute();
+    }
+
+    // 削除フラグの更新
+    public function updateDeleteFlg(int $id) {
+        $sql = "update {$this->tableName} set 
+        delete_flg = 9 
+        , update_date = :update_date
+        where id = :id";
+        $prepare = $this->getPdo()->prepare($sql);
+        $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
     }

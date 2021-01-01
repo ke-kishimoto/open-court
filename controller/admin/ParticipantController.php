@@ -128,7 +128,7 @@ class ParticipantController extends BaseController
                         }
                     }
                 } else {
-                    $detailDao->delete($_POST['id']);
+                    $detailDao->updateDeleteFlg($_POST['id']);
                 }
                 $detailDao->getPdo()->commit();
             } catch(Exception $ex) {

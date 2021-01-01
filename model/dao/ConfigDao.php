@@ -2,10 +2,6 @@
 
 namespace dao;
 
-use dao\DaoFactory;
-use PDO;
-use entity\Config;
-
 class ConfigDao extends BaseDao
 {
 

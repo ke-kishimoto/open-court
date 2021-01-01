@@ -75,14 +75,5 @@ class TroubleReportDao
         $prepare->execute();
 
     }
-
-    public function delete(int $id)
-    {
-        $sql = "update troubleReport set delete_flg = '9'
-        where id = :id";
-        $prepare = $this->pdo->prepare($sql);
-        $prepare->bindValue(':id', $id, PDO::PARAM_INT);
-        $prepare->execute();
-    }
     
 }

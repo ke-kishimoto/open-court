@@ -21,13 +21,4 @@ class EventTemplateDao extends BaseDao
         return $prepare->fetchAll();
     }
 
-    public function delete(int $id)
-    {
-        // $sql = "delete from event_template where id = :id";
-        $sql = "update event_template set delete_flg = 9 where id = :id";
-        $prepare = $this->getPdo()->prepare($sql);
-        $prepare->bindValue(':id', $id, PDO::PARAM_INT);
-        $prepare->execute();
-
-    }
 }

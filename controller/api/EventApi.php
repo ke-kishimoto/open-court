@@ -14,7 +14,7 @@ class EventApi {
         header('Content-type: application/json; charset= UTF-8');
         $detailDao = new DetailDao();
         // 削除
-        $participant = $detailDao->delete($_POST['participant_id']);
+        $participant = $detailDao->updateDeleteFlg($_POST['participant_id']);
 
         $info = $detailDao->getDetail($_POST['game_id']);
 

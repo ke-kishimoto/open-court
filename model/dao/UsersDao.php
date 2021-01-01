@@ -25,15 +25,6 @@ class UsersDao extends BaseDao
         $prepare->execute();
     }
 
-    public function delete(int $id) 
-    {
-        // $sql = 'delete from users where id = :id';
-        $sql = 'update users set delete_flg = 9 where id = :id';
-        $prepare = $this->getPdo()->prepare($sql);
-        $prepare->bindValue(':id', $id, PDO::PARAM_INT);
-        $prepare->execute();
-    }
-
     // ユーザーのidの取得
     public function getUsersId(Users $user) 
     {

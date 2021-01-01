@@ -64,7 +64,7 @@ class EventController extends BaseController
                 $eventTemplateDao = new EventTemplateDao();
                 if($_POST['id'] != '') {
                     $msg = '削除';
-                    $eventTemplateDao->delete($_POST['id']);
+                    $eventTemplateDao->updateDeleteFlg($_POST['id']);
                 }
             }
             unset($_SESSION['csrf_token']);
@@ -201,7 +201,7 @@ class EventController extends BaseController
                     $msg = '削除';
                     try {
                         $gameInfoDao->getPdo()->beginTransaction();
-                        $gameInfoDao->delete($_POST['game_id']);
+                        $gameInfoDao->updateDeleteFlg($_POST['game_id']);
                         $gameInfoDao->getPdo()->commit();
                     }catch (Exception $ex) {
                         $gameInfoDao->getPdo()->rollBack();

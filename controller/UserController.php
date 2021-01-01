@@ -287,7 +287,7 @@ class UserController extends BaseController
                 $defaultCompanionDao = new DefaultCompanionDao();
                 // 同伴者の削除
                 $defaultCompanionDao->deleteByuserId($_SESSION['user']['id']);
-                $usersDao->delete($_SESSION['user']['id']);
+                $usersDao->updateDeleteFlg($_SESSION['user']['id']);
             
                 $usersDao->getPdo()->commit();
             

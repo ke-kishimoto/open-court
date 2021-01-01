@@ -125,12 +125,12 @@ class UsersDaoTest extends TestCase
 
     }
 
-    public function testDelete()
+    public function testUpdateDeleteFlg()
     {
         $dataSet = $this->getConnection()->createDataSet();
         $dao = new UsersDao();
         
-        $dao->delete(2);
+        $dao->updateDeleteFlg(2);
         $user = $dao->selectById(2);
 
         $this->assertSame('9', $user['delete_flg']);

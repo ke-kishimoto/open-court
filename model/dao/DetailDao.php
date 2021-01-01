@@ -15,20 +15,6 @@ class DetailDao extends BaseDao
         $this->tableName = 'participant';
     }
 
-    
-    // 参加者の削除
-    public function delete(int $id) {
-        // $sql = 'delete from participant where id = :id';
-        $sql = 'update participant set 
-        delete_flg = 9 
-        , update_date = :update_date
-        where id = :id';
-        $prepare = $this->getPdo()->prepare($sql);
-        $prepare->bindValue(':update_date', date('Y-m-d H:i:s'), PDO::PARAM_STR);
-        $prepare->bindValue(':id', $id, PDO::PARAM_INT);
-        $prepare->execute();
-    }
-
     // 参加者情報取得
     public function getParticipant(int $id) 
     {
