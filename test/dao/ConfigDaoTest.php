@@ -1,9 +1,11 @@
 <?php
 require_once "vendor/autoload.php";
 require_once(__DIR__.'/MyApp_DbUnit_ArrayDataSet.php');
+require_once('./model/dao/BaseDao.php');
 require_once('./model/dao/ConfigDao.php');
 require_once('./model/dao/DaoFactory.php');
 require_once('./model/dao/TestPDO.php');
+require_once('./model/entity/BaseEntity.php');
 require_once('./model/entity/Config.php');
 
 use PHPUnit\Framework\TestCase;
@@ -49,7 +51,7 @@ class ConfigDaoTest extends TestCase
     {
         $dataSet = $this->getConnection()->createDataSet();
         $dao = new ConfigDao();
-        $config = $dao->getConfig(1);
+        $config = $dao->selectById(1);
         $this->assertSame('1', $config['id'], 'id');
         $this->assertSame('abcde', $config['line_token'], 'line_token');
         $this->assertSame('event calendar', $config['system_title'], 'system_title');
@@ -76,7 +78,7 @@ class ConfigDaoTest extends TestCase
 
         $dao->update($config);
 
-        $config = $dao->getConfig(1);
+        $config = $dao->selectById(1);
         $this->assertSame('1', $config['id']);
         $this->assertSame('123', $config['line_token']);
         $this->assertSame('title', $config['system_title']);
@@ -101,7 +103,7 @@ class ConfigDaoTest extends TestCase
 
         $dao->insert($config);
 
-        $config = $dao->getConfig(2);
+        $config = $dao->selectById(2);
         $this->assertSame('2', $config['id']);
         $this->assertSame('456', $config['line_token']);
         $this->assertSame('title2', $config['system_title']);

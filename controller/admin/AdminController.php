@@ -167,7 +167,7 @@ class AdminController extends BaseController
         parent::adminHeader();
 
         $configDao = new ConfigDao();
-        $config = $configDao->getConfig(1);
+        $config = $configDao->selectById(1);
         if(!isset($_SESSION)){
             session_start();
         }

@@ -84,7 +84,7 @@ class LineApi
         $configDao = new ConfigDao();
 
         // いずれはuserIDにする
-        $config = $configDao->getConfig(1);
+        $config = $configDao->selectById(1);
 
         try {
 

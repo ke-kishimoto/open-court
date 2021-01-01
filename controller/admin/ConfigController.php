@@ -13,7 +13,7 @@ class ConfigController extends BaseController
         
         $configDao = new ConfigDao();
         // いずれユーザーIDにする
-        $config = $configDao->getConfig(1);
+        $config = $configDao->selectById(1);
 
         // 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
         $toke_byte = openssl_random_pseudo_bytes(16);
@@ -37,7 +37,7 @@ class ConfigController extends BaseController
             $config = new Config();
 
             $configDao = new ConfigDao();
-            $cfg = $configDao->getConfig(1);
+            $cfg = $configDao->selectById(1);
             $config->id = $_POST['id'];
             $config->lineToken = $_POST['line_token'];
             $config->systemTitle = $_POST['system_title'];

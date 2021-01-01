@@ -1,10 +1,8 @@
 <?php
 namespace entity;
 
-class Config 
+class Config extends BaseEntity
 {
-
-    public $id;
     public $lineToken;
     public $systemTitle;
     public $bgColor;

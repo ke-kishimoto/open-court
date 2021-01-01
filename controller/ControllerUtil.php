@@ -38,7 +38,7 @@ class ControllerUtil
                 $api->cancel_notify($participant['name'], $gameInfo['title'], $gameInfo['game_date']);
 
                 $configDao = new ConfigDao();
-                $config = $configDao->getConfig(1);
+                $config = $configDao->selectById(1);
                 // キャンセル待ちの自動繰り上げ
                 if($config['waiting_flg_auto_update'] == 1) {
                     $waitingList = $detailDao->getWitingList($participant['game_id']);

@@ -45,7 +45,7 @@ class BaseController {
 
     private function headerCommon() {
         $configDao = new ConfigDao();
-        $config = $configDao->getConfig(1);
+        $config = $configDao->selectById(1);
         if ($config['system_title'] !== null) {
             $_SESSION['system_title'] = $config['system_title'];
         } else {

@@ -19,12 +19,12 @@ create table game_info (
     , place varchar(100)
     , limit_number int
     , detail varchar(1000)
-    , register_date timestamp null default null
-    , update_date timestamp null default null
-    , delete_flg int default 1
     , price1 int
     , price2 int
     , price3 int
+    , delete_flg int default 1
+    , register_date timestamp null default null
+    , update_date timestamp null default null
 );
 
 -- -- 参加費用のカラム追加
@@ -42,12 +42,12 @@ create table event_template (
     , place varchar(100)
     , limit_number int
     , detail varchar(1000)
-    , register_date timestamp null default null
-    , update_date timestamp null default null
-    , delete_flg int default 1
     , price1 int
     , price2 int
     , price3 int
+    , delete_flg int default 1
+    , register_date timestamp null default null
+    , update_date timestamp null default null
 );
 
 -- -- 参加費用のカラム追加
@@ -66,12 +66,12 @@ create table participant (
     , email varchar(50)  -- メール
     , waiting_flg int -- キャンセル待ちフラグ 0：通常、1：キャンセル待ち
     , remark varchar(200)  -- 備考
-    , register_date timestamp null default null   -- 登録日時
-    , update_date timestamp null default null     -- 更新日時
-    , delete_flg int default 1
     , attendance int default 1 -- 出欠  -- 1：出席、２：出席
     , amount int  -- 回収金額
     , tel varchar(13)
+    , delete_flg int default 1
+    , register_date timestamp null default null   -- 登録日時
+    , update_date timestamp null default null     -- 更新日時
 );
 -- インデックス
 create index participant_idx_game on participant (game_id); 
@@ -91,11 +91,11 @@ create table companion (
     , occupation int   -- 職種  1：社会、2：大学生、3：高校生
     , sex int -- 性別  1：男、2：女
     , name varchar(50)   -- 参加者名
+    , attendance int default 1 -- 1：出席、9：欠席
+    , amount int  -- 回収金額
+    , delete_flg int default 1
     , register_date timestamp null default null
     , update_date timestamp null default null
-    , delete_flg int default 1
-    , attendance int default 1 -- 出欠
-    , amount int  -- 回収金額
 );
 -- インデックス
 create index companion_idx_participant on companion (participant_id);
@@ -108,15 +108,18 @@ alter table companion add column amount int;
 -- 後々はユーザー単位にしたいな
 -- drop table config;
 create table config(
-    id int primary key
+    id serial primary key
     , line_token varchar(200)
     , system_title varchar(30)
     , bg_color varchar(30)  -- 背景色、何個か選べるようにする
     , logo_img_path varchar(200)
+    , waiting_flg_auto_update int  -- キャンセル待ち自動更新区分 0：手動、1：自動
+    , delete_flg int default 1
     , register_date timestamp null default null
     , update_date timestamp null default null
-    , waiting_flg_auto_update int  -- 0：手動、1：自動
 );
+
+alter table config add column delete_flg int default 1;
 
 -- ユーザー
 -- drop table users;
