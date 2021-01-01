@@ -2,9 +2,9 @@
     <tr>
         <td colspan= 7>
             <div class="month">
-                <a href="./index?year=<?php echo htmlspecialchars($pre_year); ?>&month=<?php echo htmlspecialchars($lastmonth); ?>" class="lastMonthLink"><i class="fas fa-chevron-left"></i></a>
-                <a href="./index?year=<?php echo htmlspecialchars($year); ?>&month=<?php echo htmlspecialchars($month); ?>" class="MonthLink"><span id="year"><?php echo htmlspecialchars($year); ?></span>年<span id="this-month"><?php echo htmlspecialchars($month); ?></span>月</a>
-                <a href="./index?year=<?php echo htmlspecialchars($next_year); ?>&month=<?php echo htmlspecialchars($nextmonth); ?>"class="nextMonthLink"><i class="fas fa-chevron-right"></i></a>
+                <a href="./index?year=<?php echo htmlspecialchars($eventCalendar->lastYear); ?>&month=<?php echo htmlspecialchars($eventCalendar->lastmonth); ?>" class="lastMonthLink"><i class="fas fa-chevron-left"></i></a>
+                <a href="./index?year=<?php echo htmlspecialchars($eventCalendar->year); ?>&month=<?php echo htmlspecialchars($eventCalendar->month); ?>" class="MonthLink"><span id="year"><?php echo htmlspecialchars($eventCalendar->year); ?></span>年<span id="this-month"><?php echo htmlspecialchars($eventCalendar->month); ?></span>月</a>
+                <a href="./index?year=<?php echo htmlspecialchars($eventCalendar->nextYear); ?>&month=<?php echo htmlspecialchars($eventCalendar->nextmonth); ?>"class="nextMonthLink"><i class="fas fa-chevron-right"></i></a>
             </div>
         </td>
     </tr>
@@ -18,7 +18,7 @@
         <th class="saturday">土</th>
     </tr>
     <tr>
-    <?php foreach ($calendar as $key => $value): ?>
+    <?php foreach ($eventCalendar->calendar as $key => $value): ?>
         <td class="<?php echo $value['weekName']; ?>">
             <div class="day">
                 <?php if($value['link']): ?>    

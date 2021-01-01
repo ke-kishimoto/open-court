@@ -11,8 +11,8 @@ class DaoFactory {
     // 環境の切り替え
     // const ENVIROMENT = 'Heroku';
     // const ENVIROMENT = 'XAMPP';
-    // const ENVIROMENT = 'MAMP';
-    const ENVIROMENT = 'TEST';
+    const ENVIROMENT = 'MAMP';
+    // const ENVIROMENT = 'TEST';
 
     // DBの切り替え
     // const DBTYPE = 'PostgreSQL';
