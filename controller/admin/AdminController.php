@@ -16,8 +16,6 @@ class AdminController extends BaseController
 
         $gameInfoDao = new GameInfoDao();
         // 現在の年月を取得 
-        // $year = date('Y');
-        // $month = date('n');
         $year = isset($_GET['year']) ? intval($_GET['year']) : date('Y') ;
         $month = isset($_GET['month']) ? intval($_GET['month']) : date('n');
 

@@ -197,7 +197,7 @@ $(function() {
                 $('#remark').val(user.remark);
                 // 同伴者情報追加
                 $.ajax({
-                    url:'/event/api/GetDefaultCompanionList',
+                    url:'/api/event/GetDefaultCompanionList',
                     type:'POST',
                     data:{
                         'id':user.id

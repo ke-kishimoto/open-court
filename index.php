@@ -4,7 +4,7 @@ use controller\EventController;
 spl_autoload_register(function($class) {
     $pathArray = explode("\\", $class);
     $path = implode("/", $pathArray);
-    if ($pathArray[0] === 'controller') {
+    if ($pathArray[0] === 'controller' || $pathArray[0] === 'service') {
         require($path .'.php');
     } elseif ($pathArray[0] === 'api') {
         require('controller/' . $path .'.php');
