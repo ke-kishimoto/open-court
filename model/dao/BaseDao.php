@@ -5,6 +5,7 @@ namespace dao;
 use dao\DaoFactory;
 use PDO;
 use entity\BaseEntity;
+use phpDocumentor\Reflection\Types\Array_;
 
 class BaseDao
 {
@@ -33,6 +34,18 @@ class BaseDao
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
         return $prepare->fetch();
+    }
+
+    public function selectAll(int $deleteFlg = 0)
+    {
+        $sql = "select * from {$this->tableName}";
+        $sql .= $deleteFlg !== 0 ? " where delete_flg = :delete_flg" : "";
+        $prepare = $this->pdo->prepare($sql);
+        if ($deleteFlg !== 0) {
+            $prepare->bindValue(':delete_flg', $deleteFlg, PDO::PARAM_INT);
+        }
+        $prepare->execute();
+        return $prepare->fetchAll();
     }
 
     public function insert(BaseEntity $entity)
@@ -80,7 +93,7 @@ class BaseDao
         $sql = "update {$this->tableName} set ";
         $i = 0;
         foreach($entity as $key => $value) {
-            if ($key === 'id' || $key === 'registerDate' || $key === 'updateDate') {
+            if ($value === null || $key === 'id' || $key === 'registerDate' || $key === 'updateDate') {
                 continue;
             }
             if($i !== 0) {
@@ -94,7 +107,7 @@ class BaseDao
 
         $prepare = $this->pdo->prepare($sql);
         foreach($entity as $key => $value) {
-            if ($key === 'id' || $key === 'registerDate' || $key === 'updateDate') {
+            if ($value === null || $key === 'id' || $key === 'registerDate' || $key === 'updateDate') {
                 continue;
             }
             $prepare->bindValue($key, $value);
@@ -124,6 +137,18 @@ class BaseDao
         $prepare->execute();
     }
 
+    public function query(string $sql, array $paramList = [])
+    {
+        $prepare = $this->getPdo()->prepare($sql);
+        foreach($paramList as $key => $value) {
+            $prepare->bindValue($key, $value);
+        }
+        $prepare->execute();
+        // 結果の取得は呼び出し元に任せる
+        return $prepare;
+    }
+
+    // キャメルケースをスネークケースに変換する
     private static function underscore($str)
     {
         return ltrim(strtolower(preg_replace('/[A-Z]/', '_\0', $str)), '_');
