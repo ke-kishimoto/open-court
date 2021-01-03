@@ -27,11 +27,6 @@ create table game_info (
     , update_date timestamp null default null
 );
 
--- -- 参加費用のカラム追加
--- alter table game_info add column price1 int;
--- alter table game_info add column price2 int;
--- alter table game_info add column price3 int;
-
 -- イベントのテンプレ
 -- drop table event_template; 
 create table event_template (
@@ -50,25 +45,21 @@ create table event_template (
     , update_date timestamp null default null
 );
 
--- -- 参加費用のカラム追加
--- alter table event_template add column price1 int;
--- alter table event_template add column price2 int;
--- alter table event_template add column price3 int;
-
 -- 参加者
 -- drop table participant;
 create table participant (
     id serial primary key
     , game_id int
-    , occupation int   -- 職種  1：社会、2：大学生、3：高校生
-    , sex int -- 性別  1：男、2：女
+    , occupation int     -- 職種  1：社会、2：大学生、3：高校生
+    , sex int            -- 性別  1：男、2：女
     , name varchar(50)   -- 参加者名
     , email varchar(50)  -- メール
-    , waiting_flg int -- キャンセル待ちフラグ 0：通常、1：キャンセル待ち
+    , waiting_flg int    -- キャンセル待ちフラグ 0：通常、1：キャンセル待ち
     , remark varchar(200)  -- 備考
     , attendance int default 1 -- 出欠  -- 1：出席、２：出席
-    , amount int  -- 回収金額
-    , tel varchar(13)
+    , amount int           -- 回収金額
+    , amount_remark varchar(200) -- 売上備考
+    , tel varchar(13)      -- 電話番号
     , delete_flg int default 1
     , register_date timestamp null default null   -- 登録日時
     , update_date timestamp null default null     -- 更新日時
@@ -79,6 +70,7 @@ create index participant_idx_game on participant (game_id);
 -- 出欠と回収金額
 alter table participant add column attendance int default 1; 
 alter table participant add column amount int;
+alter table participant add column amount_remark varchar(200);
 -- 電話番号
 alter table participant add column tel varchar(13);
 
@@ -88,11 +80,12 @@ alter table participant add column tel varchar(13);
 create table companion (
     id serial primary key
     , participant_id int -- 参加者id
-    , occupation int   -- 職種  1：社会、2：大学生、3：高校生
-    , sex int -- 性別  1：男、2：女
+    , occupation int     -- 職種  1：社会、2：大学生、3：高校生
+    , sex int            -- 性別  1：男、2：女
     , name varchar(50)   -- 参加者名
-    , attendance int default 1 -- 1：出席、9：欠席
-    , amount int  -- 回収金額
+    , attendance int default 1 -- 1：出席、2：欠席
+    , amount int         -- 回収金額
+    , amount_remark varchar(200) -- 売上備考
     , delete_flg int default 1
     , register_date timestamp null default null
     , update_date timestamp null default null
@@ -103,6 +96,7 @@ create index companion_idx_participant on companion (participant_id);
 -- 出欠と回収金額
 alter table companion add column attendance int default 1; 
 alter table companion add column amount int;
+alter table companion add column amount_remark varchar(200);
 
 -- 設定
 -- 後々はユーザー単位にしたいな
@@ -129,9 +123,9 @@ create table users(
   , email varchar(50) unique
   , name varchar(50)
   , password varchar(200) -- ハッシュ化して保存
-  , occupation int   -- 職種  1：社会、2：大学生、3：高校生
-  , sex int -- 性別  1：男、2：女
-  , remark varchar(200)  -- 備考
+  , occupation int        -- 職種  1：社会、2：大学生、3：高校生
+  , sex int               -- 性別  1：男、2：女
+  , remark varchar(200)   -- 備考
   , register_date timestamp null default null   -- 登録日時
   , update_date timestamp null default null     -- 更新日時
   , delete_flg int default 1
@@ -188,6 +182,7 @@ create table notice(
 create table trouble_report(
     id serial primary key
     , name varchar(50)
+    , category int -- 1：障害、２：要望、３、その他
     , title varchar(30)
     , content varchar(2000)
     , delete_flg int default 1 -- 9：削除済み
@@ -195,5 +190,4 @@ create table trouble_report(
     , register_date timestamp null default null
     , update_date timestamp null default null
 );
-
 
