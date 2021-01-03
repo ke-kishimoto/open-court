@@ -47,6 +47,7 @@ class SalesDao extends BaseDao
             else '欠席'
           end attendance_name
         , amount
+        , amount_remark
         from participant
         where game_id = :game_id
         and delete_flg = 1

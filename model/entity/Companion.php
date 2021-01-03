@@ -11,6 +11,7 @@ class Companion extends BaseEntity
     public $name;
     public $attendance;
     public $amount;
+    public $amountRemark;
 
     public function __construct()
     {

@@ -13,6 +13,7 @@ class Participant extends BaseEntity
     public $remark;
     public $attendance;
     public $amount;
+    public $amountRemark;
     public $tel;
 
     public function __construct()

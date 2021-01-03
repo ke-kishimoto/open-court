@@ -8,10 +8,12 @@ use Exception;
 use dao\UsersDao;
 use dao\GameInfoDao;
 use api\LineApi;
+use entity\GameInfo;
 use entity\Participant;
 
 class EventService
 {
+    // イベント参加のキャンセル
     public function cancelComplete(Participant $participant, $password, $userId)
     {
         $detailDao = new DetailDao();
@@ -55,14 +57,15 @@ class EventService
         }
     }
 
-    // 1人
+    // １イベントへの参加
     public function oneParticipantRegist(Participant $paricipant, array $companions) {
         $detailDao = new DetailDao();
+        $gameInfoDao = new GameInfoDao();
         $errMsg = '';
         try {
             // トランザクション開始
             $detailDao->getPdo()->beginTransaction();
-            $errMsg = $this->participantRegist($detailDao, $paricipant, $companions);
+            $errMsg = $this->participantRegist($detailDao, $gameInfoDao, $paricipant, $companions);
             $detailDao->getPdo()->commit();
         } catch(Exception $ex) {
             // ロールバック
@@ -76,16 +79,17 @@ class EventService
         }
         return $errMsg;
     }
-    // 複数人
+    // 一活参加登録
     public function multipleParticipantRegist(array $gameIds, Participant $paricipant, array $companions) {
         $detailDao = new DetailDao();
+        $gameInfoDao = new GameInfoDao();
         $count = 0;
         try {
             // トランザクション開始
             $detailDao->getPdo()->beginTransaction();
             foreach($gameIds as $gameId) {
                 $paricipant->gameId = (int)$gameId;
-                $errMsg = $this->participantRegist($detailDao, $paricipant, $companions);
+                $errMsg = $this->participantRegist($detailDao, $gameInfoDao, $paricipant, $companions);
                 if(!$errMsg) {
                     $count++;
                 }
@@ -106,23 +110,38 @@ class EventService
     }
 
     // 登録処理
-    private function participantRegist(DetailDao $detailDao, Participant $paricipant, array $companions) {
+    private function participantRegist(DetailDao $detailDao, GameInfoDao $gameInfoDao, Participant $participant, array $companions) {
         $errMsg = '';
-        if($paricipant->email !== '' && $detailDao->existsCheck($paricipant->gameId, $paricipant->email)) {
+        if($participant->email !== '' && $detailDao->existsCheck($participant->gameId, $participant->email)) {
             $errMsg = '既に登録済みのため登録できません。';
         } else {
             // キャンセル待ちになるかどうかのチェック
-            if($detailDao->limitCheck($paricipant->gameId, 1 + count($companions))) {
+            if($detailDao->limitCheck($participant->gameId, 1 + count($companions))) {
                 $waitingFlg = 1;
             } else {
                 $waitingFlg = 0;
             }
-            $paricipant->waitingFlg = $waitingFlg;    
-            $detailDao->insert($paricipant);
+            $participant->waitingFlg = $waitingFlg;
+            if ($waitingFlg === 0) {
+                $participant->attendance = 1;
+            } else {
+                // キャンセル待ちの場合はデフォルトで欠席
+                $participant->attendance = 2;
+            }
+            // 参加費の取得
+            $gameInfo = $gameInfoDao->selectById($participant->gameId);
+            if ($participant->occupation == 1) {
+                $participant->amount = $gameInfo['price1'];
+            } elseif ($participant->occupation == 2) {
+                $participant->amount = $gameInfo['price2'];
+            } else {
+                $participant->amount = $gameInfo['price3'];
+            }
+            $detailDao->insert($participant);
             
             // 同伴者の登録
             if(count($companions) > 0) {
-                $id = $detailDao->getParticipantId($paricipant);
+                $id = $detailDao->getParticipantId($participant);
                 $companionDao = new CompanionDao();
                 $companionDao->setPdo($detailDao->getPdo());
                 foreach($companions as $companion) {

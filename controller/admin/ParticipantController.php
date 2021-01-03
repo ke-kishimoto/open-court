@@ -3,6 +3,7 @@ namespace controller\admin;
 use controller\BaseController;
 use dao\DetailDao;
 use dao\CompanionDao;
+use dao\GameInfoDao;
 use dao\UsersDao;
 use entity\Companion;
 use entity\Participant;
@@ -36,7 +37,6 @@ class ParticipantController extends BaseController
             $companionList = $companionDao->getCompanionList($participant['id']);
             $userListClass = 'hidden';
         } else {
-        //    header('Location: index.php');
             $participant['id'] = '';
             $participant['name'] = '';
             $participant['email'] = '';
@@ -75,6 +75,7 @@ class ParticipantController extends BaseController
         && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 
             $detailDao = new DetailDao();
+            $gameInfoDao = new GameInfoDao();
             $companionDao = new CompanionDao();
             $companionDao->setPdo($detailDao->getPdo());
             try {
@@ -90,25 +91,30 @@ class ParticipantController extends BaseController
                     $companionDao->deleteByparticipantId($_POST['id']);
                 }
                 if (isset($_POST['register'])) {
-                    // $participant = new Participant(
-                    //     $_POST['game_id']
-                    //     , $_POST['occupation']
-                    //     , $_POST['sex']
-                    //     , $_POST['name']
-                    //     , $_POST['email']
-                    //     , $waitingFlg
-                    //     , $_POST['remark']
-                    // );
                     $participant = new Participant();
                     $participant->gameId = (int)$_POST['game_id'];
                     $participant->occupation = (int)$_POST['occupation'];
                     $participant->sex = (int)$_POST['sex'];
                     $participant->name = $_POST['name'];
                     $participant->email = $_POST['email'];
-                    $participant->waitingFlg = 0;
+                    $participant->waitingFlg = $waitingFlg;
                     $participant->remark = $_POST['remark'];
+                    if ($waitingFlg === 0) {
+                        $participant->attendance = 1;
+                    } else {
+                        // キャンセル待ちの場合はデフォルトで欠席
+                        $participant->attendance = 2;
+                    }
+                    $gameInfo = $gameInfoDao->selectById($participant->gameId);
+                    if ($participant->occupation == 1) {
+                        $participant->amount = $gameInfo['price1'];
+                    } elseif ($participant->occupation == 2) {
+                        $participant->amount = $gameInfo['price2'];
+                    } else {
+                        $participant->amount = $gameInfo['price3'];
+                    }
                     if($_POST['id'] !== '') {
-                        $participant->id = $_POST['id']; // IDはコンストラクタにないので固定でセット
+                        $participant->id = $_POST['id'];
                         $detailDao->update($participant);
                         $id = $participant->id;
                     } else {
@@ -118,7 +124,6 @@ class ParticipantController extends BaseController
                     // 同伴者の登録
                     if($_POST['companion'] > 0) {
                         for($i = 1; $i <= $_POST['companion']; $i++) {
-                            // $companion = new Companion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
                             $companion = new Companion();
                             $companion->participantId = $id;
                             $companion->occupation =  $_POST['occupation-' . $i];
