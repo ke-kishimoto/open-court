@@ -9,7 +9,6 @@ use dao\TestPDO;
 class DaoFactory {
 
     // 環境の切り替え
-    // const ENVIROMENT = 'Heroku';
     // const ENVIROMENT = 'XAMPP';
     const ENVIROMENT = 'MAMP';
     // const ENVIROMENT = 'TEST';
@@ -20,9 +19,7 @@ class DaoFactory {
     
     public static function getConnection() {
         
-        if (DaoFactory::ENVIROMENT === 'Heroku') {
-            // return new HerokuPDO();
-        } elseif (DaoFactory::ENVIROMENT === 'XAMPP') {
+        if (DaoFactory::ENVIROMENT === 'XAMPP') {
             return new XamppPDO();
         } elseif (DaoFactory::ENVIROMENT === 'MAMP') {
             return new MampPDO();
