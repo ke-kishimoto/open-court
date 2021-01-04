@@ -300,3 +300,12 @@ footer a{
     width:100px;
     display:inline;
 }
+
+.sales-event-title{
+    width: 400px;
+    text-decoration: none;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    margin: 0 auto;
+}
