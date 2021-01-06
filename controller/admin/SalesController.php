@@ -21,6 +21,13 @@ class SalesController extends BaseController
 
         $salesDao = new SalesDao();
         $eventList = $salesDao->getMonthSales($year, $month);
+        
+        $total_cnt = 0;
+        $total_amount = 0;
+        foreach ($eventList as $event){
+            $total_cnt += (int)$event['cnt'];
+            $total_amount += (int)$event['amount'];
+        }
 
         $title = '売上管理';
         $adminFlg = '0';
