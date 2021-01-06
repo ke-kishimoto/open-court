@@ -146,6 +146,13 @@ class EventService
                 $companionDao->setPdo($detailDao->getPdo());
                 foreach($companions as $companion) {
                     $companion->participantId = (int)$id;
+                    if ($companion->occupation == 1) {
+                        $companion->amount = $gameInfo['price1'];
+                    } elseif ($companion->occupation == 2) {
+                        $companion->amount = $gameInfo['price2'];
+                    } else {
+                        $companion->amount = $gameInfo['price3'];
+                    }
                     $companionDao->insert($companion);
                 }
             }
