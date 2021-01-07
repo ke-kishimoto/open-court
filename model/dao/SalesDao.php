@@ -16,8 +16,8 @@ class SalesDao extends BaseDao
         p.game_id game_id
         , max(g.game_date) date
         , max(title) title
-        , count(*) + (select count(*) from companion where participant_id = p.id and delete_flg = 1 and attendance = 1 ) cnt
-        , sum(amount) + (select sum(amount) from companion where participant_id = p.id and delete_flg = 1 and attendance = 1 ) amount
+        , count(*) + (select count(*) from companion where participant_id in (select id from participant where game_id = g.id and delete_flg = 1) and delete_flg = 1 and attendance = 1 ) cnt
+        , sum(amount) + (select sum(amount) from companion where participant_id in (select id from participant where game_id = g.id and delete_flg = 1) and delete_flg = 1 and attendance = 1) amount
         from participant p
         inner join game_info g
         on p.game_id = g.id
@@ -67,7 +67,7 @@ class SalesDao extends BaseDao
         , amount
         , amount_remark
         from companion
-        where participant_id   in (select id from participant where game_id = :game_id and delete_flg = 1)
+        where participant_id in (select id from participant where game_id = :game_id and delete_flg = 1)
         and delete_flg = 1
         order by id";
         $prepare = $this->getPdo()->prepare($sql);
