@@ -54,7 +54,22 @@ class SalesDao extends BaseDao
         on p.game_id = g.id
         where p.game_id = :game_id
         and p.delete_flg = 1
-        order by p.id";
+        union all
+        select  
+        participant_id 
+        , name 
+        , ''
+        , attendance
+        , case
+            when attendance = 1 then '出席'
+            else '欠席'
+          end attendance_name
+        , amount
+        , amount_remark
+        from companion
+        where participant_id   in (select id from participant where game_id = :game_id and delete_flg = 1)
+        and delete_flg = 1
+        order by id";
         $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
         $prepare->execute();
