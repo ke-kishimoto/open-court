@@ -92,4 +92,25 @@ class SalesController extends BaseController
         }
 
     }
+
+    public function year()
+    {
+        parent::adminHeader();
+
+        $salesDao = new SalesDao();
+        $salesYearList = $salesDao->getYearSales();
+        $total_cnt = 0;
+        $total_amount = 0;
+        foreach ($salesYearList as $year) {
+            $total_cnt += (int)$year['cnt'];
+            $total_amount += (int)$year['amount'];
+        }
+
+        $title = '売上管理（年単位）';
+        $adminFlg = '0';
+        include('./view/admin/common/head.php');
+        include('./view/admin/common/header.php');
+        include('./view/admin/yearlysales.php');
+        include('./view/admin/common/footer.php');
+    }
 }

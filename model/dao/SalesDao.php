@@ -10,14 +10,49 @@ class SalesDao extends BaseDao
         $this->tableName = 'participant';
     }
 
+    public function getYearSales()
+    {
+        $sql = "select 
+        date
+        ,count(id) as cnt
+        ,sum(amount) as amount
+        from(
+            select 
+            p.id
+            , amount
+            , date_format(g.game_date, '%Y') as date
+            from participant p
+            inner join game_info g
+            on p.game_id = g.id
+            where  p.delete_flg = 1
+            and p.attendance = 1
+            union all
+            select  
+            participant_id
+            , c.amount
+            , date_format(g.game_date, '%Y') as date
+            from companion c
+            inner join participant p on  c.participant_id = p.id
+            inner join game_info g on g.id = p.game_id
+            where participant_id in (select id from participant where delete_flg = 1)
+            and c.delete_flg = 1
+            and p.attendance = 1
+         ) as tmp
+        group by date
+        order by date";
+        $prepare = $this->getPdo()->prepare($sql);
+        $prepare->execute();
+        return $prepare->fetchAll();
+    }
+
     public function getMonthSales($year, $month)
     {
         $sql = "select 
         p.game_id game_id
         , max(g.game_date) date
         , max(title) title
-        , count(*) + (select count(*) from companion where participant_id in (select id from participant where game_id = g.id and delete_flg = 1) and delete_flg = 1 and attendance = 1 ) cnt
-        , sum(amount) + (select sum(amount) from companion where participant_id in (select id from participant where game_id = g.id and delete_flg = 1) and delete_flg = 1 and attendance = 1) amount
+        , coalesce(count(*) + (select count(*) from companion where participant_id in (select id from participant where game_id = g.id and delete_flg = 1) and delete_flg = 1 and attendance = 1 ), 0) cnt
+        , sum(amount) + (select coalesce(sum(amount), 0) from companion where participant_id in (select id from participant where game_id = g.id and delete_flg = 1) and delete_flg = 1 and attendance = 1) amount
         from participant p
         inner join game_info g
         on p.game_id = g.id
@@ -57,18 +92,20 @@ class SalesDao extends BaseDao
         union all
         select  
         participant_id 
-        , name 
-        , ''
-        , attendance
+        , c.name 
+        , g.title
+        , c.attendance
         , case
-            when attendance = 1 then '出席'
+            when c.attendance = 1 then '出席'
             else '欠席'
           end attendance_name
-        , amount
-        , amount_remark
-        from companion
+        , c.amount
+        , c.amount_remark
+        from companion c
+        inner join participant p on  c.participant_id = p.id
+        inner join game_info g on g.id = p.game_id
         where participant_id in (select id from participant where game_id = :game_id and delete_flg = 1)
-        and delete_flg = 1
+        and c.delete_flg = 1
         order by id";
         $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
