@@ -4,6 +4,7 @@ use entity\Participant;
 use entity\Companion;
 use dao\DetailDao;
 use dao\GameInfoDao;
+use dao\CompanionDao;
 use dao\DefaultCompanionDao;
 use service\EventService;
 
@@ -96,7 +97,6 @@ class ParticipantController extends BaseController
 
         $gameInfo = null;
         $limitFlg = false;
-        $btnLiteral = '登録';
         $pastEvent = false;
         $gameInfoDao = new GameInfoDao();
         // 試合情報取得
@@ -142,15 +142,39 @@ class ParticipantController extends BaseController
         $_SESSION['csrf_token'] = $csrf_token;
 
         if (isset($_SESSION['user'])) {
-            $occupation = $_SESSION['user']['occupation'];
-            $sex = $_SESSION['user']['sex'];
-            $defaultCompanionDao = new DefaultCompanionDao();
-            $companions = $defaultCompanionDao->getDefaultCompanionList($_SESSION['user']['id']);
+            $prepare = $detailDao->query(
+                "select * from participant 
+                where game_id = :game_id
+                and email = :email
+                and delete_flg = 1
+                "
+            , [
+                'game_id' => $gameInfo['id']
+                , 'email' =>$_SESSION['user']['email']
+            ]);
+            $participant = $prepare->fetch();
+            if(!empty($participant)) {
+                $participantId = $participant['id'];
+                $occupation = $participant['occupation'];
+                $sex = $participant['sex'];
+                $companionDao = new CompanionDao();
+                $companions = $companionDao->getCompanionList((int)$participant['id']);
+                $Registered = true;
+            } else {
+                $participantId = '';
+                $occupation = $_SESSION['user']['occupation'];
+                $sex = $_SESSION['user']['sex'];
+                $defaultCompanionDao = new DefaultCompanionDao();
+                $companions = $defaultCompanionDao->getDefaultCompanionList((int)$_SESSION['user']['id']);
+                $Registered = false;
+            }
 
         } else {
+            $participantId = '';
             $occupation = null;
             $sex = null;
             $companions = [];
+            $Registered = true;
         }
 
         $title = 'イベント詳細';
@@ -187,7 +211,12 @@ class ParticipantController extends BaseController
             }
 
             $service = new EventService();
-            $errMsg = $service->oneParticipantRegist($participant, $companion);
+            if(isset($_POST['insert'])) {
+                $errMsg = $service->oneParticipantRegist($participant, $companion);
+            } elseif(isset($_POST['update'])) {
+                $participant->id = $_POST['participantId'];
+                $errMsg = $service->participantUpdate($participant, $companion);
+            }
 
             unset($_SESSION['csrf_token']);
             if(empty($errMsg)) {

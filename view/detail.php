@@ -57,7 +57,7 @@
 
 <div class="<?php echo $pastEvent === true ? 'hidden' : '' ?>">
     <form id="join_form" action="/participant/participation" method="post" class="form-group">
-        <p>【応募フォーム】</p>
+        <p>【応募フォーム】<span class="text-danger"><?php echo $Registered ? '※参加登録済みです' : '' ?></span></p>
         <input type="hidden" id="game_id" name="game_id" value="<?php echo htmlspecialchars($gameInfo['id']) ?>">
         <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
         <p>
@@ -88,9 +88,6 @@
             <textarea class="form-control" name="remark" maxlength="200"><?php echo !isset($_SESSION['user']) ? '' : $_SESSION['user']['remark'] ?></textarea>
         </p>
         <p id="douhan-0">
-            <!-- 同伴者
-            <input class="form-control" type="number" name="companion" required min="0"> 
-            -->
             <input id="companion" name="companion" type="hidden" value="<?php echo count($companions); ?>">
             <p id="douhanErrMsg" style="color: red; display: none;">同伴者は10人までです</p>
             <button class="btn btn-secondary" id="btn-companion-add" type="button">同伴者追加</button>
@@ -98,6 +95,7 @@
         </p>
         <?php for($i = 0;$i < count($companions); $i++): ?>
             <div id="douhan-<?php echo $i + 1 ?>">
+            <?php echo ($i + 1) . '人目' ?><br>
             <select id="occupation-<?php echo $i + 1 ?>" name="occupation-<?php echo $i + 1 ?>" class="custom-select mr-sm-2">
                 <option value="1" <?php echo $companions[$i]['occupation'] == '1' ? 'selected' : ''; ?>>社会人</option>
                 <option value="2" <?php echo $companions[$i]['occupation'] == '2' ? 'selected' : ''; ?>>大学・専門学校</option>
@@ -112,7 +110,8 @@
         <?php endfor ?>
         <input type="hidden" name="title" value="<?php echo htmlspecialchars($gameInfo['title']) ?>">
         <input type="hidden" name="date" value="<?php echo htmlspecialchars($gameInfo['game_date']) ?>">
-        <button id="btn-partisipant-regist" class="btn btn-primary" type="submit"><?php echo htmlspecialchars($btnLiteral) ?></button>
-        <a class="btn btn-danger" href="/participant/cancel?gameid=<?php echo htmlspecialchars($gameInfo['id']) ?>" >参加のキャンセル</a>
+        <input type="hidden" name="participantId" value="<?php echo htmlspecialchars($participantId) ?>">
+        <button id="btn-partisipant-regist" name="<?php echo $Registered ? 'update' : 'insert' ?>"  class="btn btn-primary" type="submit" value="regist"><?php echo $Registered ? '修正' : '登録' ?></button>
+        <a class="btn btn-danger <?php echo $Registered ? '' : 'hidden' ?>" href="/participant/cancel?gameid=<?php echo htmlspecialchars($gameInfo['id']) ?>" >参加のキャンセル</a>
     </form>
 </div>

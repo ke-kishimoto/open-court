@@ -154,7 +154,7 @@ class EventService
     // 更新処理
     public function participantUpdate(Participant $participant, array $companions)
     {
-        
+        $errMsg = '';
         try {
             $detailDao = new DetailDao();
             $gameInfoDao = new GameInfoDao();
@@ -191,8 +191,10 @@ class EventService
             }
             $detailDao->getPdo()->commit();
         } catch (Exception $ex) {
+            $errMsg ='エラーが発生しました。';
             $detailDao->getPdo()->rollBack();
         }
+        return $errMsg;
     }
 
     // 参加者取得
