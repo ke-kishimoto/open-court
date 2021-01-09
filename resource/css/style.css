@@ -54,6 +54,18 @@ table tr.weekTit{
     transition: .2s;
 }
 
+.guide {
+    color: white;
+    border: 1px solid;
+    border-radius: 10%;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 2px;
+    text-decoration: none;
+    transition: .2s;
+}
+
 .availability-OK {
     background-color: #00CC99;
 }

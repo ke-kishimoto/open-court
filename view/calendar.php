@@ -66,9 +66,11 @@
  
     <?php if ($value['weekName'] === 'saturday'): ?>
         </tr>
-        <tr>
     <?php endif; ?>
  
     <?php endforeach; ?>
-    </tr>
-</table>
+</table>    
+空き状況
+<span class="guide availability-OK">空きあり</span>
+<span class="guide availability-COUTION">残り僅か</span>
+<span class="guide availability-NG">キャンセル待ち</span>
