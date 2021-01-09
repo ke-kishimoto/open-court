@@ -174,7 +174,7 @@ class ParticipantController extends BaseController
             $occupation = null;
             $sex = null;
             $companions = [];
-            $Registered = true;
+            $Registered = false;
         }
 
         $title = 'イベント詳細';
