@@ -169,7 +169,7 @@ $(function() {
         // '性別：' + $('#sex').val();
         var num = Number($('#companion').val());
         for(let i = 0; i < num; i++) {
-            msg += '同伴者' + (i + 1) + '：' + $('#name-' + i).val() + '\n';
+            msg += '同伴者' + (i + 1) + '：' + $('#name-' + (i + 1)).val() + '\n';
         }
         return confirm(msg);
     });

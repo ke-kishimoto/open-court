@@ -58,7 +58,7 @@ class EventService
     }
 
     // １イベントへの参加
-    public function oneParticipantRegist(Participant $paricipant, array $companions) {
+    public function oneParticipantRegist(Participant $paricipant, array $companions, int $notifyFlg = 1) {
         $detailDao = new DetailDao();
         $gameInfoDao = new GameInfoDao();
         $errMsg = '';
@@ -73,7 +73,7 @@ class EventService
             $detailDao->getPdo()->rollBack();
         }
         // 予約の通知
-        if(!$errMsg) {
+        if(!$errMsg && $notifyFlg === 1) {
             $api = new LineApi();
             $api->reserve_notify($paricipant, $_POST['title'], $_POST['date'], $_POST['companion']);
         }
@@ -128,15 +128,11 @@ class EventService
                 // キャンセル待ちの場合はデフォルトで欠席
                 $participant->attendance = 2;
             }
-            // 参加費の取得
+            // イベント情報取得
             $gameInfo = $gameInfoDao->selectById($participant->gameId);
-            if ($participant->occupation == 1) {
-                $participant->amount = $gameInfo['price1'];
-            } elseif ($participant->occupation == 2) {
-                $participant->amount = $gameInfo['price2'];
-            } else {
-                $participant->amount = $gameInfo['price3'];
-            }
+            // 参加費の取得
+            $participant->amount = $this->getAmount($participant->occupation, $gameInfo);
+            // 登録
             $detailDao->insert($participant);
             
             // 同伴者の登録
@@ -146,17 +142,70 @@ class EventService
                 $companionDao->setPdo($detailDao->getPdo());
                 foreach($companions as $companion) {
                     $companion->participantId = (int)$id;
-                    if ($companion->occupation == 1) {
-                        $companion->amount = $gameInfo['price1'];
-                    } elseif ($companion->occupation == 2) {
-                        $companion->amount = $gameInfo['price2'];
-                    } else {
-                        $companion->amount = $gameInfo['price3'];
-                    }
+                    $companion->attendance = $participant->attendance;
+                    $companion->amount = $this->getAmount($companion->occupation,$gameInfo);
                     $companionDao->insert($companion);
                 }
             }
         }
         return $errMsg;
+    }
+
+    // 更新処理
+    public function participantUpdate(Participant $participant, array $companions)
+    {
+        
+        try {
+            $detailDao = new DetailDao();
+            $gameInfoDao = new GameInfoDao();
+            $companionDao = new CompanionDao();
+            // トランザクション開始
+            $detailDao->getPdo()->beginTransaction();
+
+            // 同伴者の削除
+            $companionDao->deleteByparticipantId($participant->id);
+    
+            // イベント情報取得
+            $gameInfo = $gameInfoDao->selectById($participant->gameId);
+            // 参加費取得
+            $participant->amount = $this->getAmount($participant->occupation, $gameInfo);
+            // 出欠の設定。キャンセル待ちは更新前と同じ
+            if ($participant->waitingFlg === 0) {
+                $participant->attendance = 1;
+            } else {
+                // キャンセル待ちの場合はデフォルトで欠席
+                $participant->attendance = 2;
+            }
+            // 更新
+            $detailDao->update($participant);
+            // 同伴者の登録
+            if(count($companions) > 0) {
+                $id = $detailDao->getParticipantId($participant);
+                $companionDao->setPdo($detailDao->getPdo());
+                foreach($companions as $companion) {
+                    $companion->participantId = (int)$id;
+                    $companion->attendance = $participant->attendance;
+                    $companion->amount = $this->getAmount($companion->occupation,$gameInfo);
+                    $companionDao->insert($companion);
+                }
+            }
+            $detailDao->getPdo()->commit();
+        } catch (Exception $ex) {
+            $detailDao->getPdo()->rollBack();
+        }
+    }
+
+    // 参加者取得
+    private function getAmount(int $occupation, array $gameInfo)
+    {
+        if ($occupation == 1) {
+            return $gameInfo['price1'];
+        } elseif ($occupation == 2) {
+            return $gameInfo['price2'];
+        } elseif ($occupation == 3) {
+            return $gameInfo['price3'];
+        } else {
+            return 0;
+        }
     }
 }

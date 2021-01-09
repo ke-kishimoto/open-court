@@ -3,11 +3,10 @@ namespace controller\admin;
 use controller\BaseController;
 use dao\DetailDao;
 use dao\CompanionDao;
-use dao\GameInfoDao;
 use dao\UsersDao;
 use entity\Companion;
 use entity\Participant;
-use Exception;
+use service\EventService;
 
 class ParticipantController extends BaseController
 {
@@ -68,78 +67,43 @@ class ParticipantController extends BaseController
     }
 
     // 参加者登録
-    public function participantRegist() {
+    public function participantRegist() 
+    {
         parent::adminHeader();
 
         if (isset($_POST["csrf_token"]) 
         && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 
-            $detailDao = new DetailDao();
-            $gameInfoDao = new GameInfoDao();
-            $companionDao = new CompanionDao();
-            $companionDao->setPdo($detailDao->getPdo());
-            try {
-                $detailDao->getPdo()->beginTransaction();
-                if($detailDao->limitCheck($_POST['game_id'], 1)) {
-                    $waitingFlg = 1;
-                } else {
-                    $waitingFlg = 0;
-                }
+            if (isset($_POST['register'])) {
+                $service = new EventService();
+                $participant = new Participant();
+                $participant->gameId = (int)$_POST['game_id'];
+                $participant->occupation = (int)$_POST['occupation'];
+                $participant->sex = (int)$_POST['sex'];
+                $participant->name = $_POST['name'];
+                $participant->email = $_POST['email'];
+                $participant->remark = $_POST['remark'];
 
-                // 同伴者を削除しておく
-                if ($_POST['id'] !== '') {
-                    $companionDao->deleteByparticipantId($_POST['id']);
+                $companions = [];
+                if($_POST['companion'] > 0) {
+                    for($i = 1; $i <= $_POST['companion']; $i++) {
+                        $companion = new Companion();
+                        $companion->occupation =  $_POST['occupation-' . $i];
+                        $companion->sex = $_POST['sex-' . $i];
+                        $companion->name =  $_POST['name-' . $i];
+                        $companions[] = $companion;
+                    }
                 }
-                if (isset($_POST['register'])) {
-                    $participant = new Participant();
-                    $participant->gameId = (int)$_POST['game_id'];
-                    $participant->occupation = (int)$_POST['occupation'];
-                    $participant->sex = (int)$_POST['sex'];
-                    $participant->name = $_POST['name'];
-                    $participant->email = $_POST['email'];
-                    $participant->waitingFlg = $waitingFlg;
-                    $participant->remark = $_POST['remark'];
-                    if ($waitingFlg === 0) {
-                        $participant->attendance = 1;
-                    } else {
-                        // キャンセル待ちの場合はデフォルトで欠席
-                        $participant->attendance = 2;
-                    }
-                    $gameInfo = $gameInfoDao->selectById($participant->gameId);
-                    if ($participant->occupation == 1) {
-                        $participant->amount = $gameInfo['price1'];
-                    } elseif ($participant->occupation == 2) {
-                        $participant->amount = $gameInfo['price2'];
-                    } else {
-                        $participant->amount = $gameInfo['price3'];
-                    }
-                    if($_POST['id'] !== '') {
-                        $participant->id = $_POST['id'];
-                        $detailDao->update($participant);
-                        $id = $participant->id;
-                    } else {
-                        $detailDao->insert($participant);
-                        $id = $detailDao->getParticipantId($participant);
-                    }
-                    // 同伴者の登録
-                    if($_POST['companion'] > 0) {
-                        for($i = 1; $i <= $_POST['companion']; $i++) {
-                            $companion = new Companion();
-                            $companion->participantId = $id;
-                            $companion->occupation =  $_POST['occupation-' . $i];
-                            $companion->sex = $_POST['sex-' . $i];
-                            $companion->name =  $_POST['name-' . $i];
-                            $companionDao->insert($companion);
-                        }
-                    }
+                if($_POST['id'] !== '') {
+                    $participant->id = $_POST['id'];
+                    $service->participantUpdate($participant, $companions);
                 } else {
-                    $detailDao->updateDeleteFlg($_POST['id']);
+                    $service->oneParticipantRegist($participant, $companions, 0);
                 }
-                $detailDao->getPdo()->commit();
-            } catch(Exception $ex) {
-                $detailDao->getPdo()->rollBack();
+            } else {
+                $detailDao = new DetailDao();
+                $detailDao->updateDeleteFlg($_POST['id']);
             }
-            
             unset($_SESSION['csrf_token']);
         } else {
             header('Location: ./index.php');
