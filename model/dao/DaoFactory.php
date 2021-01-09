@@ -1,16 +1,13 @@
 <?php
 namespace dao;
 
-use dao\HerokuPDO;
-use dao\XamppPDO;
-use dao\MampPDO;
+use dao\MyPDO;
 use dao\TestPDO;
 
 class DaoFactory {
 
     // 環境の切り替え
-    // const ENVIROMENT = 'XAMPP';
-    const ENVIROMENT = 'MAMP';
+    const ENVIROMENT = 'DEV';
     // const ENVIROMENT = 'TEST';
 
     // DBの切り替え
@@ -19,10 +16,8 @@ class DaoFactory {
     
     public static function getConnection() {
         
-        if (DaoFactory::ENVIROMENT === 'XAMPP') {
-            return new XamppPDO();
-        } elseif (DaoFactory::ENVIROMENT === 'MAMP') {
-            return new MampPDO();
+        if (DaoFactory::ENVIROMENT === 'DEV') {
+            return new MyPDO();
         } elseif (DaoFactory::ENVIROMENT === 'TEST') {
             return new TestPDO();
         }
