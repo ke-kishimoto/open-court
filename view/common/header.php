@@ -19,6 +19,7 @@
         <?php endif; ?>
         <li class="<?php echo htmlspecialchars($_SESSION['loginClass']) ?>"><a class="drawer-menu-item" href="/user/signout">ログアウト</a></li>
         <li class=""><a class="drawer-menu-item" href="/inquiry/inquiry">お問い合わせ</a></li>
+        <li class=""><a class="drawer-menu-item" href="/troubleReport/index">障害報告・要望</a></li>
       </ul>
     </nav>
 

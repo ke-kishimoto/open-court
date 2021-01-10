@@ -4,13 +4,15 @@ define('LINE_API_URL', 'https://notify-api.line.me/api/notify');
 use entity\Participant;
 use entity\Inquiry;
 use dao\ConfigDao;
+use entity\TroubleReport;
 use Exception;
 
 // LINE通知用
 class LineApi 
 {
     // 個人の予約通知
-    public function reserve_notify(Participant $participant, $title, $date, $companion = 0){   
+    public function reserve_notify(Participant $participant, $title, $date, $companion = 0)
+    {   
         
         if ($participant->occupation == '1') {
             $occupation = '社会人';
@@ -42,7 +44,8 @@ class LineApi
     }
 
     // キャンセル通知
-    public function cancel_notify($name, $title, $date){
+    public function cancel_notify($name, $title, $date)
+    {
         $message = "予約がキャンセルされました\n";
         $message .=  "イベント : " . $title . "\n";
         $message .=  "日付 : " . $date . "\n";
@@ -54,7 +57,8 @@ class LineApi
     }  
 
     // 複数人予約
-    public function multiple_reserve($name, int $count) {
+    public function multiple_reserve($name, int $count) 
+    {
         $message = "予約が入りました\n";
         $message .= "{$name}さんが{$count}件のイベントを予約しました";
 
@@ -62,7 +66,8 @@ class LineApi
     }
 
     // お問い合わせ
-    public function inquiry(Inquiry $inquiry) {
+    public function inquiry(Inquiry $inquiry) 
+    {
         $message = "お問い合わせが入りました\n";
         $message .=  "対象イベント : {$inquiry->gameTitle}\n";
         $message .=  "名前 : {$inquiry->name} \n";
@@ -72,8 +77,29 @@ class LineApi
         return $this->line_notify($message);
     }
 
+    // 不具合・要望報告
+    public function troubleReport(TroubleReport $troubleReport)
+    {
+        $categoryName = '';
+        if($troubleReport->category == 1) {
+            $categoryName = '障害・不具合';
+        } elseif ($troubleReport->category == 2) {
+            $categoryName = '要望';
+        } else {
+            $categoryName = 'その他';
+        }
+        $message = "不具合報告・要望\n";
+        $message .=  "名前 : {$troubleReport->name} \n";
+        $message .=  "カテゴリ : {$categoryName}\n";
+        $message .= "タイトル : {$troubleReport->title} \n";
+        $message .= "詳細 : {$troubleReport->content} \n";
+
+        return $this->line_notify($message);
+    }
+
     // LINE通知用のfunction
-    private function line_notify($message) {
+    private function line_notify($message) 
+    {
         // 連想配列作ってるだけ
         $data = array(
             "message" => $message
