@@ -37,6 +37,8 @@ $(function() {
             return confirm('削除してもよろしいですか');
         });
     }
+
+    // テンプレのプルダウン選択時
     $('#template').change(function() {
         $.ajax({
         url:'/api/event/getEventTemplate',
@@ -63,7 +65,8 @@ $(function() {
         // Ajaxリクエストが成功・失敗どちらでも発動
         .always( (data) => {
         })
-    })
+    });
+
     // キャンセル待ち⇔解除の処理
     $('.waiting').on('click', function() {
         $.ajax({
@@ -264,6 +267,27 @@ $(function() {
         // Ajaxリクエストが成功・失敗どちらでも発動
         .always( (data) => {
         })
-        
+    });
+
+    // お知らせのプルダウン選択時
+    $('#notice').change(function() {
+        $.ajax({
+        url:'/api/event/getNotice',
+        type:'POST',
+        data:{
+            'id':$('#notice').val(),
+        }
+        })
+        // Ajaxリクエストが成功した時発動
+        .done( (data) => {
+            $('#title').val(data.title);
+            $('#content').val(data.content);
+        })
+        // Ajaxリクエストが失敗した時発動
+        .fail( (data) => {
+        })
+        // Ajaxリクエストが成功・失敗どちらでも発動
+        .always( (data) => {
+        })
     });
 });

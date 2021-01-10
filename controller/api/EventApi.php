@@ -7,6 +7,7 @@ use dao\DefaultCompanionDao;
 use dao\EventTemplateDao;
 use dao\UsersDao;
 use dao\InquiryDao;
+use dao\NoticeDao;
 
 class EventApi {
     
@@ -121,6 +122,15 @@ class EventApi {
         $info['waiting_flg'] = $participant['waiting_flg'];
 
         echo json_encode($info);
+    }
+
+    public function getNotice() {
+        header('Content-type: application/json; charset= UTF-8');
+    
+        $noticeDao = new NoticeDao();
+        $notice = $noticeDao->selectById(intval($_POST['id']));
+        
+        echo json_encode($notice);
     }
 
 }
