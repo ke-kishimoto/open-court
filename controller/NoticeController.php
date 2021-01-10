@@ -5,7 +5,7 @@ use dao\NoticeDao;
 
 class NoticeController extends BaseController {
     public function index() {
-        parent::adminHeader();
+        parent::userHeader();
 
         $noticeDao = new NoticeDao();
         $prepare = $noticeDao->query("
@@ -26,7 +26,7 @@ class NoticeController extends BaseController {
 
     public function detail()
     {
-        parent::adminHeader();
+        parent::userHeader();
 
         $noticeDao = new NoticeDao();
         $prepare = $noticeDao->query("
