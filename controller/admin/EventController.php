@@ -11,7 +11,8 @@ use Exception;
 class EventController extends BaseController
 {
 
-    public function eventTemplate() {
+    public function eventTemplate() 
+    {
         parent::adminHeader();
 
         // テンプレ一覧
@@ -31,16 +32,16 @@ class EventController extends BaseController
         include('./view/admin/common/footer.php');
     }
 
-    public function eventTempleteComplete() {
+    public function eventTempleteComplete() 
+    {
         parent::adminHeader();
 
         if (isset($_POST["csrf_token"]) 
         && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 
-            $msg = '';
+            $eventTemplateDao = new EventTemplateDao();
             if (isset($_POST['register'])) {
                 // 登録・修正''
-                $msg = '登録';
                 $eventTemplate = new EventTemplate();
                 $eventTemplate->templateName = $_POST['template_name'];
                 $eventTemplate->title = $_POST['title'];
@@ -51,9 +52,7 @@ class EventController extends BaseController
                 $eventTemplate->price1 = (int)$_POST['price1'];
                 $eventTemplate->price2 = (int)$_POST['price2'];
                 $eventTemplate->price3 = (int)$_POST['price3'];
-                
-                $eventTemplateDao = new EventTemplateDao();
-                
+                                
                 if($_POST['id'] == '' || isset($_POST['new'])) {
                     $eventTemplateDao->insert($eventTemplate);
                 } else {
@@ -61,9 +60,7 @@ class EventController extends BaseController
                     $eventTemplateDao->update($eventTemplate);
                 }
             } else {
-                $eventTemplateDao = new EventTemplateDao();
                 if($_POST['id'] != '') {
-                    $msg = '削除';
                     $eventTemplateDao->updateDeleteFlg($_POST['id']);
                 }
             }
@@ -73,14 +70,15 @@ class EventController extends BaseController
         }
 
         $title = 'テンプレート登録完了';
+        $msg = 'テンプレートの更新が完了しました。';
         include('./view/admin/common/head.php');
         include('./view/admin/common/header.php');
-        $msg = 'テンプレートの更新が完了しました。';
         include('./view/admin/complete.php');
         include('./view/admin/common/footer.php');
     }
 
-    public function eventInfo() {
+    public function eventInfo() 
+    {
         parent::adminHeader();
 
         // テンプレ一覧
@@ -165,7 +163,8 @@ class EventController extends BaseController
         include('./view/admin/common/footer.php');
     }
 
-    public function eventComplete() {
+    public function eventComplete() 
+    {
         parent::adminHeader();
 
         if (isset($_POST["csrf_token"]) 

@@ -58,6 +58,11 @@ class UsersDao extends BaseDao
             when sex = 1 then '男性'
             when sex = 2 then '女性'
           end sex_name 
+        , case
+            when delete_flg = 1 then '有効'
+            when delete_flg = 9 then '削除済み' 
+            else ''
+          end status
         , case 
             when admin_flg = 1 then '管理者'
             else '一般'
