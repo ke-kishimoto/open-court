@@ -22,10 +22,13 @@ create table game_info (
     , price1 int
     , price2 int
     , price3 int
+    , expenses int -- 経費
     , delete_flg int default 1
     , register_date timestamp null default null
     , update_date timestamp null default null
 );
+-- 経費追加
+alter table game_info add column expenses int;
 
 -- イベントのテンプレ
 -- drop table event_template; 
