@@ -3,7 +3,7 @@ namespace controller;
 
 class HelpController extends BaseController {
     public function privacyPolicy() {
-        parent::adminHeader();
+        parent::userHeader();
 
         $title = 'プライバシーポリシー';
         include('./view/common/head.php');
