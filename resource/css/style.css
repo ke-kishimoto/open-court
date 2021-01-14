@@ -58,7 +58,8 @@ table tr.weekTit{
     color: white;
     border: 1px solid;
     border-radius: 10%;
-    font-size: 15px;
+    font-size: 12px;
+    padding: 3px;
     font-weight: bold;
     text-align: center;
     letter-spacing: 2px;
