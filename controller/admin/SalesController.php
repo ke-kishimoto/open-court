@@ -3,7 +3,9 @@ namespace controller\admin;
 
 use controller\BaseController;
 use dao\DetailDao;
+use dao\GameInfoDao;
 use dao\SalesDao;
+use entity\GameInfo;
 use entity\Participant;
 
 class SalesController extends BaseController
@@ -11,6 +13,14 @@ class SalesController extends BaseController
     public function index()
     {
         parent::adminHeader();
+
+        // CSFR対策
+        // 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
+        $toke_byte = openssl_random_pseudo_bytes(16);
+        $csrf_token = bin2hex($toke_byte);
+        // 生成したトークンをセッションに保存します
+        $_SESSION['csrf_token'] = $csrf_token;
+        
         // 年月の取得
         $year = isset($_GET['year']) ? intval($_GET['year']) : date('Y') ;
         $month = isset($_GET['month']) ? intval($_GET['month']) : date('n');
@@ -22,13 +32,6 @@ class SalesController extends BaseController
         $salesDao = new SalesDao();
         $eventList = $salesDao->getMonthSales($year, $month);
         
-        $total_cnt = 0;
-        $total_amount = 0;
-        foreach ($eventList as $event){
-            $total_cnt += (int)$event['cnt'];
-            $total_amount += (int)$event['amount'];
-        }
-
         $title = '売上管理';
         $adminFlg = '0';
         include('./view/admin/common/head.php');
@@ -90,7 +93,37 @@ class SalesController extends BaseController
         } else {
             header('Location: /index.php');
         }
+    }
 
+    public function updateExpenses()
+    {
+        parent::adminHeader();
+
+        $errMsg = '';
+        if (isset($_POST["csrf_token"]) 
+        && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
+
+            $count = isset($_POST['count']) ? $_POST['count'] : 0;
+
+            $GameInfoDao = new GameInfoDao();
+            for($i = 0; $i < $count; $i++) {
+                $p = $GameInfoDao->selectById((int)$_POST["id-{$i}"]);
+                $gameInfo = new GameInfo();
+                $gameInfo->id = $p['id'];
+                $gameInfo->expenses = $_POST["expenses-{$i}"];
+                $GameInfoDao->update($gameInfo);
+            }
+
+            $title = '経費更新完了';
+            $msg = '経費の更新が完了しました。';
+            $adminFlg = '0';
+            include('./view/admin/common/head.php');
+            include('./view/admin/common/header.php');
+            include('./view/admin/complete.php');
+            include('./view/admin/common/footer.php');
+        } else {
+            header('Location: /index.php');
+        }
     }
 
     public function year()

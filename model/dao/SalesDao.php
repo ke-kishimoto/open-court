@@ -53,6 +53,7 @@ class SalesDao extends BaseDao
         , max(title) title
         , coalesce(count(*) + (select count(*) from companion where participant_id in (select id from participant where game_id = g.id and delete_flg = 1) and delete_flg = 1 and attendance = 1 ), 0) cnt
         , sum(amount) + (select coalesce(sum(amount), 0) from companion where participant_id in (select id from participant where game_id = g.id and delete_flg = 1) and delete_flg = 1 and attendance = 1) amount
+        , expenses
         from participant p
         inner join game_info g
         on p.game_id = g.id

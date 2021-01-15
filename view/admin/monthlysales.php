@@ -10,31 +10,50 @@
     </tr>
 </table>
 <?php if (!empty($eventList)) : ?>
-    <table>
-        <a href="./year">年単位テスト</a>
-        <tr>
-            <th>日付</th>
-            <th>イベント名</th>
-            <th>参加人数</th>
-            <th>売上金額</th>
-        </tr>
-        <?php foreach ($eventList as $event) : ?>
+    <form action="/admin/sales/updateExpenses" method="post">
+        <table>
+            <a href="./year">年単位テスト</a>
             <tr>
-                <th><?php echo $event['date'] ?></th>
-                <th><a href="./detail?gameid=<?php echo $event['game_id'] ?>"><?php echo $event['title'] ?></a></th>
-                <th><?php echo $event['cnt'] ?></th>
-                <th><?php echo $event['amount'] ?></th>
+                <th>日付</th>
+                <th>イベント名</th>
+                <th>参加人数</th>
+                <th>売上金額</th>
+                <th>経費</th>
             </tr>
-        <?php endforeach ?>
-        <tr>
-            <th colspan="2">合計</th>
-            <th><?php echo $total_cnt ?></th>
-            <th><?php echo $total_amount ?></th>
-        </tr>
-    </table>
+            <?php $count = 0; 
+                  $total_cnt = 0;
+                  $total_amount = 0;
+                  $total_expenses = 0; ?>
+            <?php foreach ($eventList as $event) : ?>
+                <tr>
+                    <input type="hidden" name="id-<?php echo $count ?>" value="<?php echo $event['game_id'] ?>">
+                    <th><?php echo $event['date'] ?></th>
+                    <th><a href="./detail?gameid=<?php echo $event['game_id'] ?>"><?php echo $event['title'] ?></a></th>
+                    <th><?php echo $event['cnt'] ?></th>
+                    <th><?php echo $event['amount'] ?></th>
+                    <th><input type="number" name="expenses-<?php echo $count ?>" value="<?php echo $event['expenses'] ?>" class="form-control"></th>
+                </tr>
+                <?php $count++; 
+                      $total_cnt += (int)$event['cnt'];
+                      $total_amount += (int)$event['amount'];
+                      $total_expenses += (int)$event['expenses']; ?>
+            <?php endforeach ?>
+            <tr>
+                <th colspan="2">合計</th>
+                <th><?php echo $total_cnt ?></th>
+                <th><?php echo $total_amount ?></th>
+                <th><?php echo $total_expenses ?></th>
+            </tr>
+        </table>
+        <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+        <input type="hidden" name="count" value="<?php echo $count ?>">
+        <p>
+            <button type="submit" class="btn btn-primary">経費更新</button>
+        </p>
+    </form>
 <?php else : ?>
     <p>対象月にイベントはありません。</p>
 <?php endif ?>
-<p>
-    <a href="/admin/admin/index">トップに戻る</a>
-</p>
+    <p>
+        <a href="/admin/admin/index">トップに戻る</a>
+    </p>

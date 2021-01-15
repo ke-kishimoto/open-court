@@ -15,6 +15,7 @@ class GameInfo extends BaseEntity
     public $price1;
     public $price2;
     public $price3;
+    public $expenses;
 
     public function __construct()
     {
