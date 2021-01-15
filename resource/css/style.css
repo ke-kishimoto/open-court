@@ -113,12 +113,12 @@ table tr.weekTit{
     text-align: center;
 }
 
-.month {
+.month,.year{
     display: flex;
     justify-content: space-between;
 }
 
-.month a {
+.month a{
     width: 400px;
     display: inline-block;
     text-decoration: none;
@@ -128,7 +128,18 @@ table tr.weekTit{
     transition: .2s;
     text-align: center;
 }
-.month a:hover{
+.year a,.year p{
+    width: 50%;
+    display: inline-block;
+    text-decoration: none;
+    color: rgb(109, 109, 109);
+    font-size: 25px;
+    font-weight: bold;
+    transition: .2s;
+    text-align: center;
+    margin-bottom: 0px;
+}
+.month a:hover,.year a:hover{
     opacity: .5;
 }
 .month i{

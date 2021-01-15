@@ -1,17 +1,15 @@
 <table>
     <tr>
         <td colspan=7>
-            <!-- <div class="month">
-                <a href="./index?year=<?php echo htmlspecialchars($lastYear); ?>&month=<?php echo htmlspecialchars($lastmonth); ?>" class="lastMonthLink"><i class="fas fa-chevron-left"></i></a>
-                <a href="./index?year=<?php echo htmlspecialchars($year); ?>&month=<?php echo htmlspecialchars($month); ?>" class="MonthLink"><span id="year"><?php echo htmlspecialchars($year); ?></span>年<span id="this-month"><?php echo htmlspecialchars($month); ?></span>月</a>
-                <a href="./index?year=<?php echo htmlspecialchars($nextYear); ?>&month=<?php echo htmlspecialchars($nextmonth); ?>" class="nextMonthLink"><i class="fas fa-chevron-right"></i></a>
-            </div> -->
+            <div class="year">
+                <p>売上確認(年単位)</p>
+                <a href="./index">売上確認(月単位)へ</a>
+            </div>
         </td>
     </tr>
 </table>
 <?php if (!empty($salesYearList)) : ?>
     <table>
-        <a href="./year">年単位テスト</a>
         <tr>
             <th>年</th>
             <th>参加人数</th>
