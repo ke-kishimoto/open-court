@@ -19,6 +19,7 @@
                 <th>参加人数</th>
                 <th>売上金額</th>
                 <th>経費</th>
+                <th>粗利</th>
             </tr>
             <?php $count = 0; 
                   $total_cnt = 0;
@@ -32,6 +33,7 @@
                     <th><?php echo $event['cnt'] ?></th>
                     <th><?php echo $event['amount'] ?></th>
                     <th><input type="number" name="expenses-<?php echo $count ?>" value="<?php echo $event['expenses'] ?>" class="form-control"></th>
+                    <th><?php echo ($event['amount']-$event['expenses']) ?></th>
                 </tr>
                 <?php $count++; 
                       $total_cnt += (int)$event['cnt'];
@@ -43,6 +45,7 @@
                 <th><?php echo $total_cnt ?></th>
                 <th><?php echo $total_amount ?></th>
                 <th><?php echo $total_expenses ?></th>
+                <th><?php echo $total_amount - $total_expenses ?></th>
             </tr>
         </table>
         <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
