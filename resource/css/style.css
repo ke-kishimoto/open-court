@@ -118,7 +118,7 @@ table tr.weekTit{
     justify-content: space-between;
 }
 
-.month a{
+.month a, .month p{
     width: 400px;
     display: inline-block;
     text-decoration: none;
@@ -144,10 +144,6 @@ table tr.weekTit{
 }
 .month i{
     line-height: 36px;
-}
-.MonthLink{
-}
-.nextMonthLink{
 }
 
 .today {
@@ -223,6 +219,21 @@ a.link, .nolink{
     margin-right: 5px;
 }
 
+.sales-head {
+    display: flex;
+    justify-content: space-between;
+}
+.sales-head a, .sales-head p {
+    width: 400px;
+    display: inline-block;
+    text-decoration: none;
+    color: rgb(109, 109, 109);
+    font-size: 25px;
+    font-weight: bold;
+    transition: .2s;
+    text-align: center;
+}
+
 @media screen and (max-width:480px) { 
     .participant-header-menu {
         display: none;
@@ -243,6 +254,12 @@ a.link, .nolink{
         font-size: 12px;
         height: auto;
         letter-spacing: 0em;
+    }
+    a.sales-link {
+        font-size: 15px;
+    }
+    .sales-head a, .sales-head p  {
+        font-size: 15px;
     }
 }
 

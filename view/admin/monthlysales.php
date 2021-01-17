@@ -1,11 +1,15 @@
 <table>
     <tr>
-        <td colspan=7>
-            <div class="month">
+        <td colspan=5>
+            <div class="sales-head">
                 <a href="./index?year=<?php echo htmlspecialchars($lastYear); ?>&month=<?php echo htmlspecialchars($lastmonth); ?>" class="lastMonthLink"><i class="fas fa-chevron-left"></i></a>
                 <a href="./index?year=<?php echo htmlspecialchars($year); ?>&month=<?php echo htmlspecialchars($month); ?>" class="MonthLink"><span id="year"><?php echo htmlspecialchars($year); ?></span>年<span id="this-month"><?php echo htmlspecialchars($month); ?></span>月</a>
                 <a href="./index?year=<?php echo htmlspecialchars($nextYear); ?>&month=<?php echo htmlspecialchars($nextmonth); ?>" class="nextMonthLink"><i class="fas fa-chevron-right"></i></a>
-                <a href="./year">売上確認(年単位)へ</a>
+            </div>
+        </td>
+        <td colspan="2">
+            <div class="sales-head">
+                <a href="./year" class="sales-link">年別</a>
             </div>
         </td>
     </tr>

@@ -1,9 +1,13 @@
 <table>
     <tr>
-        <td colspan=7>
-            <div class="year">
-                <p>売上確認(年単位)</p>
-                <a href="./index">売上確認(月単位)へ</a>
+        <td colspan=2>
+            <div class="sales-head">
+                <p>売上集計表(年)</p>
+            </div>
+        </td>
+        <td>
+            <div class="sales-head">
+                <a href="./index">月別</a>
             </div>
         </td>
     </tr>
