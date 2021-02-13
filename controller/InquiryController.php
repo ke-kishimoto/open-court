@@ -43,7 +43,7 @@ class InquiryController extends BaseController
             $inquiry->email = $_POST['email'];
             $inquiry->content = $_POST['content'];
             $inquiry->statusFlg = 0;
-            $inquiry->registerDate = date('Y-m-d');
+            // $inquiry->registerDate = date('Y-m-d');
             $inquiry->updateDate = null;
             $inquiryDao->insert($inquiry);
 
