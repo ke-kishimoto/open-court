@@ -4,6 +4,7 @@ use dao\InquiryDao;
 use dao\GameInfoDao;
 use entity\Inquiry;
 use api\LineApi;
+use api\MailApi;
 
 class InquiryController extends BaseController
 {
@@ -56,6 +57,10 @@ class InquiryController extends BaseController
             // LINE通知用に参加者情報とイベント情報を取得
             $api = new LineApi();
             $api->inquiry($inquiry);
+
+            // メール送信
+            $mailApi = new MailApi();
+            $mailApi->inquiry_mail($inquiry);
     
         }
 

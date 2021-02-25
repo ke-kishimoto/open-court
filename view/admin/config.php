@@ -37,6 +37,10 @@
             <option value="1" <?php echo $config['waiting_flg_auto_update'] == '1' ? 'selected' : '' ?> >自動</option>
         </select>
     </p>
+    <hr>
+    <p>
+        SendGrid APIキー<input class="form-control"  type="text" name="sendgrid_api_key" value="<?php echo $config['sendgrid_api_key'] ?>">
+    </p>
     <p>
         <button class="btn btn-primary" type="submit" name="register">登録</button>
     </p>

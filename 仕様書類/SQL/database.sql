@@ -111,12 +111,14 @@ create table config(
     , bg_color varchar(30)  -- 背景色、何個か選べるようにする
     , logo_img_path varchar(200)
     , waiting_flg_auto_update int  -- キャンセル待ち自動更新区分 0：手動、1：自動
+    , sendgrid_api_key varchar(100) -- sendgridのAPIキー
     , delete_flg int default 1
     , register_date timestamp null default null
     , update_date timestamp null default null
 );
 
 alter table config add column delete_flg int default 1;
+alter table config add column sendgrid_api_key varchar(100);
 
 -- ユーザー
 -- drop table users;

@@ -8,6 +8,7 @@ class Config extends BaseEntity
     public $bgColor;
     public $logoImgPath;
     public $waitingFlgAutoUpdate;
+    public $sendgridApiKey;
 
     public function __construct()
     {

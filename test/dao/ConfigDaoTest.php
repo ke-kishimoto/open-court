@@ -37,6 +37,7 @@ class ConfigDaoTest extends TestCase
                         'system_title' => 'event calendar',
                         'bg_color' => 'orange',
                         'logo_img_path' => '',
+                        'sendgrid_api_key' => 'poiuy',
                         'register_date' => '2020-01-01 17:15:23',
                         'update_date' => '2020-01-01 17:15:23',
                         'waiting_flg_auto_update' => '1'
@@ -54,6 +55,7 @@ class ConfigDaoTest extends TestCase
         $config = $dao->selectById(1);
         $this->assertSame('1', $config['id'], 'id');
         $this->assertSame('abcde', $config['line_token'], 'line_token');
+        $this->assertSame('poiuy', $config['sendgrid_api_key'], 'sendgrid_api_key');
         $this->assertSame('event calendar', $config['system_title'], 'system_title');
         $this->assertSame('orange', $config['bg_color'], 'bg_color');
         $this->assertSame('', $config['logo_img_path'], 'logo_img_path');
@@ -71,6 +73,7 @@ class ConfigDaoTest extends TestCase
         $config = new Config();
         $config->id = 1;
         $config->lineToken = '123';
+        $config->sendgridApiKey = '456';
         $config->systemTitle = 'title';
         $config->bgColor = 'blue';
         $config->logoImgPath = '//img//logo.png';
@@ -81,6 +84,7 @@ class ConfigDaoTest extends TestCase
         $config = $dao->selectById(1);
         $this->assertSame('1', $config['id']);
         $this->assertSame('123', $config['line_token']);
+        $this->assertSame('456', $config['sendgrid_api_key']);
         $this->assertSame('title', $config['system_title']);
         $this->assertSame('blue', $config['bg_color']);
         $this->assertSame('//img//logo.png', $config['logo_img_path']);
