@@ -1,4 +1,5 @@
 <h1>ログイン</h1>
+<p><a href="/user/passwordforget">パスワードを忘れた方はこちら</a></p>
 <div>
     <form id="signIn_form" action="/user/signincheck" method="post" class="form-group">
         <p style="color: red;"><?php if(!empty($errMsg)){echo $errMsg;};?></p>

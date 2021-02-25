@@ -6,6 +6,7 @@ use dao\DefaultCompanionDao;
 use dao\DetailDao;
 use entity\Users;
 use entity\DefaultCompanion;
+use api\MailApi;
 use Exception;
 
 class UserController extends BaseController
@@ -303,6 +304,62 @@ class UserController extends BaseController
         include('./view/common/head.php');
         include('./view/common/header.php');
         include('./view/complete.php');
+    }
+
+    // パスワードを忘れた場合
+    public function passwordForget()
+    {
+        parent::userHeader();
+
+        $title = 'パスワードリセット';
+        include('./view/common/head.php');
+        include('./view/common/header.php');
+        include('./view/passwordForget.php');
+        include('./view/common/footer.php');
+    }
+
+    // パスワードリセット
+    public function passReset()
+    {
+        parent::userHeader();
+        $userDao = new UsersDao();
+        $email = $_POST['email'] ?? '';
+        $user = $userDao->getUserByEmail($email);
+
+        if(!$user) {
+            $errMsg = '入力されたメールアドレスによる登録がありません。';
+            $title = 'パスワードリセット';
+            include('./view/common/head.php');
+            include('./view/common/header.php');
+            include('./view/passwordForget.php');
+            include('./view/common/footer.php');
+        } else {
+            // 8文字で適当なパスワードを生成
+            $pass = substr(base_convert(md5(uniqid()), 16, 36), 0, 8);
+            $mailApi = new MailApi();
+            $responseCode = $mailApi->passreset_mail($email, $pass);
+            if($responseCode == 202 || $responseCode == 201) {
+                // ハッシュ化されたパスワード
+                $password = password_hash($pass, PASSWORD_DEFAULT);
+                $userDao->updatePass((int)$user['id'], $password);
+
+                $title = 'パスワードリセット完了';
+                $msg = 'パスワードリセットのメールを送信しました。ご確認ください。';
+                include('./view/common/head.php');
+                include('./view/common/header.php');
+                include('./view/complete.php');
+                include('./view/common/footer.php');
+
+            } else {
+                $errMsg = 'メールの送信に失敗しました。';
+                $title = 'パスワードリセット';
+                include('./view/common/head.php');
+                include('./view/common/header.php');
+                include('./view/passwordForget.php');
+                include('./view/common/footer.php');
+            }
+
+        }
     }
 
 }

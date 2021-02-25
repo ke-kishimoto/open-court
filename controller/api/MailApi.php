@@ -7,6 +7,22 @@ use Exception;
 
 class MailApi
 {
+    // パスワードリセットメール送信
+    public function passreset_mail(string $email, string $pass)
+    {
+        $subject = "【FromStreet】パスワードリセットのお知らせ";
+
+        $msg = "※このメールはシステムより自動送信されています。
+このメールに心当たりのない場合はお手数ですが削除をお願いします。
+
+下記のパスワードで再度ログインをしてパスワードを再設定してください。
+{$pass}
+";
+
+        return $this->send_mail($email, '', $subject, $msg);
+    }
+
+    // 問い合わせ確認メール送信
     public function inquiry_mail(Inquiry $inquiry) 
     {
         $subject = "【FromStreet】お問い合わせ確認";
