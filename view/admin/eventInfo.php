@@ -147,7 +147,7 @@
                                 -
                             </th>
                             <th>
-                                <a href="<?php dirname(__FILE__) ?>./ParticipantNameList.php?gameid=<?php echo $gameInfo['id'] ?>&occupation=0&sex=0&waiting_flg=1">
+                                <a href="/admin/participant/ParticipantNameList?gameid=<?php echo $gameInfo['id'] ?>&occupation=0&sex=0&waiting_flg=1">
                                     <span id="waiting_cnt"><?php echo $detail['waiting_cnt'] ?></span>人
                                 </a>
                             </th>
