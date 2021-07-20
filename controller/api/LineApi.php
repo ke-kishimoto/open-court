@@ -136,5 +136,135 @@ class LineApi
             return false;
         }
     }
+
+    //////////////////////////////
+    // LINE ログイン用
+    //////////////////////////////
+    public function getAccessToken($code) 
+    {
+        // config取得
+        $configDao = new ConfigDao();
+        $config = $configDao->selectById(1);
+
+        $CURLERR = NULL;
+
+        $headers = array(
+            'Content-Type: application/x-www-form-urlencoded'
+        );
+        $data = array(
+            'grant_type' => 'authorization_code',
+            'code' => $code,
+            'redirect_uri' => 'https://opencourt.eventmanc.com/',
+            'client_id' => $config['client_id'],
+            'client_secret' => $config['client_secret']
+        );
+
+        $url = 'https://api.line.me/oauth2/v2.1/token';
+
+        $ch = curl_init($url);
+
+        curl_setopt($ch, CURLOPT_POST, TRUE);                          //POSTで送信
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data)); //データをセット
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);                //受け取ったデータを変数に
+        $result = curl_exec($ch);
+
+        if(curl_errno($ch)){        //curlでエラー発生
+            $CURLERR .= 'curl_errno：' . curl_errno($ch) . "\n";
+            $CURLERR .= 'curl_error：' . curl_error($ch) . "\n";
+            $CURLERR .= '▼curl_getinfo' . "\n";
+            foreach(curl_getinfo($ch) as $key => $val){
+                $CURLERR .= '■' . $key . '：' . $val . "\n";
+            }
+            // echo nl2br($CURLERR);
+        }
+        curl_close($ch);
+        return json_decode($result);
+    }
+
+    public function tokenVerify($idToken)
+    {
+        // config取得
+        $configDao = new ConfigDao();
+        $config = $configDao->selectById(1);
+        $url = 'https://api.line.me/oauth2/v2.1/verify';
+        $ch = curl_init($url);
+        $data = array(
+            'id_token' => $idToken,
+            'client_id' => $config['client_id'],
+        );
+        curl_setopt($ch, CURLOPT_POST, TRUE);                          //POSTで送信
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data)); //データをセット
+
+        $result = curl_exec($ch);
+
+        curl_close($ch);
+        return json_decode($result);
+    }
+    
+    public function getLineProfile($accessToken)
+    {
+        $url = 'https://api.line.me/v2/profile';
+        $headers = array(
+            "Authorization: Bearer {$accessToken}"
+        );
+        // var_dump($headers);
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
+        $result = curl_exec($ch);
+        return json_decode($result);
+    }
+
+    // アクセストークンの取得からプロフィールの取得まで
+    public function getLineProfileByCode($code) 
+    {
+        // config取得
+        $configDao = new ConfigDao();
+        $config = $configDao->selectById(1);
+
+        // アクセストークンの取得
+        $headers = array(
+            'Content-Type: application/x-www-form-urlencoded'
+        );
+        $data = array(
+            'grant_type' => 'authorization_code',
+            'code' => $code,
+            'redirect_uri' => 'https://opencourt.eventmanc.com/',
+            'client_id' => $config['client_id'],
+            'client_secret' => $config['client_secret']
+        );
+
+        $url = 'https://api.line.me/oauth2/v2.1/token';
+        $ch = curl_init($url);
+
+        curl_setopt($ch, CURLOPT_POST, TRUE);                          //POSTで送信
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data)); //データをセット
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);                //受け取ったデータを変数に
+        $result = curl_exec($ch);
+
+        curl_close($ch);
+        $response = json_decode($result);
+
+        $accessToken = $response->access_token;
+        $idToken = $response->id_token;
+
+        // id tokenの検証
+        $response = $this->tokenVerify($idToken);
+
+        // プロフィールの取得
+        $url = 'https://api.line.me/v2/profile';
+        $headers = array(
+            "Authorization: Bearer {$accessToken}"
+        );
+        var_dump($headers);
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
+        $result = curl_exec($ch);
+        return json_decode($result);
+
+    }
 }
 
