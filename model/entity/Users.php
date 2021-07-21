@@ -12,6 +12,9 @@ class Users extends BaseEntity
 	public $sex;
 	public $remark;
 	public $tel;
+	public $lineId;
+	public $accessToken;
+	public $refreshToken;
 
 	public function __construct()
 	{

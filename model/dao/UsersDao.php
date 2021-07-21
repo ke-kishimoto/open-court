@@ -97,6 +97,16 @@ class UsersDao extends BaseDao
         return $prepare->fetch();
     }
 
+    // ユーザー取得(LINE ID)
+    public function getUserByLineId(String $lineId)
+    {
+        $sql = 'select * from users where line_id = :lineId and delete_flg = 1';
+        $prepare = $this->getPdo()->prepare($sql);
+        $prepare->bindValue(':lineId', $lineId, PDO::PARAM_STR);
+        $prepare->execute();
+        return $prepare->fetch();
+    }
+
     // 権限更新
     public function updateAdminFlg(int $id) 
     {

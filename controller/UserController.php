@@ -4,9 +4,12 @@ namespace controller;
 use dao\UsersDao;
 use dao\DefaultCompanionDao;
 use dao\DetailDao;
+use dao\ConfigDao;
 use entity\Users;
 use entity\DefaultCompanion;
 use api\MailApi;
+// use api\LineApi;
+use service\UserService;
 use Exception;
 
 class UserController extends BaseController
@@ -361,5 +364,80 @@ class UserController extends BaseController
 
         }
     }
+    // LINEでログイン
+    public function lineLogin()
+    {
+        parent::userHeader();
 
+        // アクセストークン取得用認可コード
+        $code = $_GET['code'];
+        // $state = $_GET['state'];
+
+        $service = new UserService();
+        $user = $service->lineLogin($code);
+
+        if($user['new']) {
+            $title = '新規登録';
+            $id = $user['id'];
+            $companions = [];
+            include('./view/common/head.php');
+            include('./view/common/header.php');
+            include('./view/lineSignUp.php');
+            include('./view/common/footer.php');
+        } else {
+            // 存在するなら、そのままセッションに保存してログイン状態に持っていきたい
+            $_SESSION['user'] = $user;
+            header('Location: /index.php');
+        }
+    }
+    // LINEで初回ログイン時
+    public function lineSignupComplete()
+    {
+        parent::userHeader();
+        $usersDao = new UsersDao();
+
+        $user = new Users();
+        $user->occupation = $_POST['occupation'];
+        $user->sex = $_POST['sex'];
+        $user->remark = $_POST['remark'];
+        try {
+            // トランザクション開始
+            $usersDao->getPdo()->beginTransaction();
+            $defaultCompanionDao = new DefaultCompanionDao();
+            // 更新
+            $user->id = $_POST['id'];
+            $usersDao->update($user);
+    
+            // 同伴者の登録
+            if($_POST['companion'] > 0) {
+                $id = $usersDao->getUsersId($user);
+                $defaultCompanionDao->setPdo($usersDao->getPdo());
+                for($i = 1; $i <= $_POST['companion']; $i++) {
+                    // $defaultCompanion = new DefaultCompanion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
+                    $defaultCompanion = new DefaultCompanion();
+                    $defaultCompanion->userId = $id; 
+                    $defaultCompanion->occupation = $_POST['occupation-' . $i];
+                    $defaultCompanion->sex = $_POST['sex-' . $i];
+                    $defaultCompanion->name = $_POST['name-' . $i];
+                    $defaultCompanionDao->insert($defaultCompanion);
+                }
+            }
+            $usersDao->getPdo()->commit();
+    
+        } catch(Exception $ex) {
+            $usersDao->getPdo()->rollBack();
+        }
+        $user = $usersDao->selectById($user->id);
+        $_SESSION['user'] = $user;
+
+        $title = 'ユーザー登録完了';
+        $msg = 'ユーザー登録が完了しました。';
+        include('./view/common/head.php');
+        include('./view/common/header.php');
+        include('./view/complete.php');
+        include('./view/common/footer.php');
+    }
+
+
+    
 }
