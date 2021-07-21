@@ -21,10 +21,13 @@
             名前
             <input id="name" class="form-control" type="text" name="name" required maxlength="50" value="<?php echo !isset($_SESSION['user']) ? '' : $_SESSION['user']['name'] ?>">
         </p>
-        <p>
-            メール ※新規の方は必須
-            <input class="form-control" type="email" name="email" maxlength="50" value="<?php echo !isset($_SESSION['user']) ? '' : $_SESSION['user']['email'] ?>">
-        </p>
+        <?php if(!(isset($_SESSION['user']) && !empty($_SESSION['user']['line_id'] ?? ''))): ?>
+                    <p>
+                        メールアドレス ※必須
+                        <input id="email" class="form-control" type="email" name="email" maxlength="50" required value="<?php echo !isset($_SESSION['user']) ? '' : $_SESSION['user']['email'] ?>">
+                    </p>
+                <?php endif; ?>
+                <input type="hidden" id="line_id" name="line_id" value="<?php echo htmlspecialchars(!isset($_SESSION['user']) ? '' : $_SESSION['user']['line_id'] ?? '') ?>">
         <p>
             備考
             <textarea class="form-control" name="remark" maxlength="200"><?php echo !isset($_SESSION['user']) ? '' : $_SESSION['user']['remark'] ?></textarea>

@@ -252,13 +252,17 @@ class UserController extends BaseController
         }
     }
 
-    // 参加者リスト一覧
+    // 参加イベント一覧
     public function participatingEventList() {
         parent::userHeader();
 
         if(isset($_SESSION['user'])) {
             $detailDao = new DetailDao();
-            $eventList = $detailDao->getEventListByEmail($_SESSION['user']['email'], date('Y-m-d'));
+            if(isset($_SESSION['user']['email']) && !empty($_SESSION['user']['email'])) {
+                $eventList = $detailDao->getEventListByEmail($_SESSION['user']['email'], date('Y-m-d'));
+            } elseif(isset($_SESSION['user']['line_id']) && !empty($_SESSION['user']['line_id'])) {
+                $eventList = $detailDao->getEventListByLineId($_SESSION['user']['line_id'], date('Y-m-d'));
+            }
         
             $title = '参加イベントリスト';
             include('./view/common/head.php');

@@ -11,13 +11,13 @@ use service\EventService;
 class ParticipantController extends BaseController
 {
 
-    // 参加一括登録処理
+    // 参加一括登録画面
     public function eventBatchRegist() {
         parent::userHeader();
 
         $gameInfoDao = new GameInfoDao();
         date_default_timezone_set('Asia/Tokyo');
-        $gameInfoList = $gameInfoDao->getGameInfoListByAfterDate(date('Y-m-d'), $_SESSION['user']['email']);
+        $gameInfoList = $gameInfoDao->getGameInfoListByAfterDate(date('Y-m-d'), $_SESSION['user']['email'] ?? '', $_SESSION['user']['line_id'] ?? '');
 
         // CSFR対策
         // 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
@@ -58,9 +58,10 @@ class ParticipantController extends BaseController
             $participant->occupation = (int)$_POST['occupation'];
             $participant->sex = (int)$_POST['sex'];
             $participant->name = $_POST['name'];
-            $participant->email = $_POST['email'];
+            $participant->email = $_POST['email'] ?? '';
             $participant->waitingFlg = 0;
             $participant->remark = $_POST['remark'];
+            $participant->lineId = $_POST['line_id'];
             
             $companion = [];
             for($i = 1; $i <= $_POST['companion']; $i++) {
@@ -142,15 +143,24 @@ class ParticipantController extends BaseController
         $_SESSION['csrf_token'] = $csrf_token;
 
         if (isset($_SESSION['user'])) {
-            $prepare = $detailDao->query(
-                "select * from participant 
+            if(isset($_SESSION['user']['email']) && !empty($_SESSION['user']['email'])) {
+                $sql = "select * from participant 
                 where game_id = :game_id
-                and email = :email
-                and delete_flg = 1
-                "
+                and email = :param
+                and delete_flg = 1";
+                $param = $_SESSION['user']['email'];
+            } elseif(isset($_SESSION['user']['line_id']) && !empty($_SESSION['user']['line_id'])) {
+                $sql = "select * from participant 
+                where game_id = :game_id
+                and line_id = :param
+                and delete_flg = 1";
+                $param = $_SESSION['user']['line_id'];
+            }
+            $prepare = $detailDao->query(
+                $sql
             , [
                 'game_id' => $gameInfo['id']
-                , 'email' =>$_SESSION['user']['email']
+                , 'param' =>$param
             ]);
             $participant = $prepare->fetch();
             if(!empty($participant)) {
@@ -269,7 +279,7 @@ class ParticipantController extends BaseController
             $service = new EventService();
             $participant = new Participant();
             $participant->gameId = (int)$_POST['game_id'];
-            $participant->email = $_POST['email'];
+            $participant->email = $_POST['email'] ?? '';
             if(isset($_POST['password']) && isset($_SESSION['user'])) {
                 $password = $_POST['password'];
                 $userId = $_SESSION['user']['id'];

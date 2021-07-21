@@ -42,18 +42,24 @@ class GameInfoDao extends BaseDao
     }
 
     // 一括予約用
-    public function getGameInfoListByAfterDate($date, $email = '') 
+    public function getGameInfoListByAfterDate($date, $email = '', $lineId = '') 
     {
         $sql = $this->getGameInfoListSQL();
         $sql .= " where game_date >= :date and g.delete_flg = 1 ";
         if ($email !== '') {
             $sql .= " and not exists(select * from participant where game_id = g.id and email = :email)";
         }
+        if ($lineId !== '') {
+            $sql .= " and not exists(select * from participant where game_id = g.id and line_id = :lineId)";
+        }
         $sql .= " group by g.id order by max(g.game_date), max(g.start_time)";
         $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':date', $date);
         if ($email !== '') {
             $prepare->bindValue(':email', $email);
+        }
+        if ($lineId !== '') {
+            $prepare->bindValue(':lineId', $lineId);
         }
         $prepare->execute();
 

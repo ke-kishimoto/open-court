@@ -238,11 +238,21 @@ class DetailDao extends BaseDao
         $sql = "select max(id) id
                 from participant 
                 where game_id = :game_id
-                and email = :email
                 and delete_flg = '1'";
+        if(!empty($participant->email)) {
+            $sql .= " and email = :email ";
+        }
+        if(!empty($participant->lineId)) {
+            $sql .= " and line_id = :lineId ";
+        }
         $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':game_id', $participant->gameId, PDO::PARAM_INT);
-        $prepare->bindValue(':email', $participant->email, PDO::PARAM_STR);
+        if(!empty($participant->email)) {
+            $prepare->bindValue(':email', $participant->email, PDO::PARAM_STR);
+        }
+        if(!empty($participant->lineId)) {
+            $prepare->bindValue(':lineId', $participant->lineId, PDO::PARAM_STR);
+        }
 
         $prepare->execute();
         $info = $prepare->fetch();
@@ -276,13 +286,14 @@ class DetailDao extends BaseDao
     }
 
     // メールアドレスによる削除処理
-    public function deleteByMailAddress(int $gameId, string $email) 
+    public function deleteByMailAddress(int $gameId, string $email, string $lineId) 
     {
         // 存在チェック
         // $participant = new Participant($gameId, 0, 0, '', $email, 0, '');
         $participant = new Participant();
         $participant->gameId = $gameId;
         $participant->email = $email;
+        $participant->lineId = $lineId;
         $id = $this->getParticipantId($participant);
         if ($id == null) {
             return 0;
@@ -293,10 +304,21 @@ class DetailDao extends BaseDao
         $prepare->bindValue(':participant_id', $id, PDO::PARAM_INT);
         $prepare->execute();
         // 参加者削除
-        $sql = 'delete from participant where game_id = :game_id and email = :email';
+        $sql = 'delete from participant where game_id = :game_id ';
+        if(!empty($participant->email)) {
+            $sql .= ' and email = :email ';
+        }
+        if(!empty($participant->lineId)) {
+            $sql .= ' and line_id = :lineId ';
+        }
         $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
-        $prepare->bindValue(':email', $email, PDO::PARAM_STR);
+        if(!empty($participant->email)) {
+            $prepare->bindValue(':email', $email, PDO::PARAM_STR);
+        }
+        if(!empty($participant->lineId)) {
+            $prepare->bindValue(':lineId', $lineId, PDO::PARAM_STR);
+        }
         $prepare->execute();
         return $prepare->rowCount();
     }
@@ -304,15 +326,40 @@ class DetailDao extends BaseDao
     // 参加済み、参加予定のイベントリスト
     public function getEventListByEmail(string $email, string $gameDate) 
     {
+        // $sql = 'select g.*
+        // from participant p
+        // join game_info g
+        // on p.game_id = g.id
+        // where p.email = :email 
+        // and g.delete_flg = 1
+        // order by g.game_date, g.start_time';
+        // $prepare = $this->getPdo()->prepare($sql);
+        // $prepare->bindValue(':email', $email, PDO::PARAM_STR);
+        // // $prepare->bindValue(':game_date', $gameDate, PDO::PARAM_STR);
+        // $prepare->execute();
+        // return $prepare->fetchAll();
+        return $this->getEventList('email', $email);
+    }
+
+    public function getEventListByLineId(string $email, string $gameDate) 
+    {
+        return $this->getEventList('lineId', $email);
+    }
+
+    private function getEventList($paramType, $param)
+    {
         $sql = 'select g.*
         from participant p
         join game_info g
-        on p.game_id = g.id
-        where p.email = :email 
-        and g.delete_flg = 1
-        order by g.game_date, g.start_time';
+        on p.game_id = g.id';
+        if ($paramType === 'email') {
+            $sql .= ' where p.email = :param ';
+        } elseif($paramType === 'lineId') {
+            $sql .= ' where p.line_id = :param ';
+        }
+        $sql .= 'and g.delete_flg = 1 order by g.game_date, g.start_time';
         $prepare = $this->getPdo()->prepare($sql);
-        $prepare->bindValue(':email', $email, PDO::PARAM_STR);
+        $prepare->bindValue(':param', $param, PDO::PARAM_STR);
         // $prepare->bindValue(':game_date', $gameDate, PDO::PARAM_STR);
         $prepare->execute();
         return $prepare->fetchAll();
