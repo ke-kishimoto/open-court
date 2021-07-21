@@ -15,6 +15,7 @@ class Participant extends BaseEntity
     public $amount;
     public $amountRemark;
     public $tel;
+    public $lineId;
 
     public function __construct()
     {

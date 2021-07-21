@@ -197,9 +197,10 @@ class ParticipantController extends BaseController
             $participant->occupation = (int)$_POST['occupation'];
             $participant->sex = (int)$_POST['sex'];
             $participant->name = $_POST['name'];
-            $participant->email = $_POST['email'];
+            $participant->email = $_POST['email'] ?? '';
             $participant->waitingFlg = 0;
             $participant->remark = $_POST['remark'];
+            $participant->lineId = $_POST['line_id'];
         
             $companion = [];
             for($i = 1; $i <= $_POST['companion']; $i++) {

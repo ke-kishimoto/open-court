@@ -45,6 +45,7 @@ class ParticipantController extends BaseController
             $participant['sex_name'] = '男性';
             $participant['companion'] = 0;
             $participant['remark'] = '';
+            $participant['line_id'] = '';
 
             $companionList = array();
 
