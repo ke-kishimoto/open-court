@@ -20,7 +20,7 @@
     <hr>
     <p>LINEでログイン</p>
     <div class="line-login">
-        <a href="https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=1656224816&redirect_uri=https%3A%2F%2Fopencourt.eventmanc.com%2F&user%2Flinelogin%2Fstate=12345abcde&scope=profile%20openid">
+        <a href="https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=1656224816&redirect_uri=https%3A%2F%2Fopencourt.eventmanc.com%2Fuser%2Flinelogin%2F&state=12345abcde&scope=profile%20openid">
             <img id="btn-line" src="/resource/images/DeskTop/2x/20dp/btn_login_base.png">
         </a>
     </div>
