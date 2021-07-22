@@ -182,6 +182,54 @@ class LineApi
         return json_decode($result);
     }
 
+    // access_tokenの検証
+    public function accessTokenVerify($accessToken)
+    {
+        $url = 'https://api.line.me/oauth2/v2.1/verify';
+        $ch = curl_init($url);
+        $data = array(
+            'access_token' => $accessToken,
+        );
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data)); //データをセット
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
+        $result = curl_exec($ch);
+        $httpcode = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+        curl_close($ch);
+
+        if($httpcode === 200) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // access_tokenの更新
+    public function updateToken($refreshToken)
+    {
+        $configDao = new ConfigDao();
+        $config = $configDao->selectById(1);
+        $url = 'https://api.line.me/oauth2/v2.1/token';
+        $ch = curl_init($url);
+        $headers = array(
+            'Content-Type: application/x-www-form-urlencoded'
+        );
+        $data = array(
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $refreshToken,
+            'client_id' => $config['client_id'],
+            'client_secret' => $config['client_secret'],
+        );
+        curl_setopt($ch, CURLOPT_POST, TRUE);                          //POSTで送信
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data)); //データをセット
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
+
+        $result = curl_exec($ch);
+
+        curl_close($ch);
+        return json_decode($result);
+    }
+
+    // id_tokenの検証
     public function tokenVerify($idToken)
     {
         // config取得
