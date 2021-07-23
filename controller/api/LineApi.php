@@ -342,7 +342,7 @@ class LineApi
         curl_setopt($ch, CURLOPT_POST, TRUE);                          //POSTで送信
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_POSTFIELDS, ($data)); //データをセット
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
 
         curl_exec($ch);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);  // ステータスコードを受け取る
@@ -369,7 +369,7 @@ class LineApi
         $message = "下記の予約をキャンセルしました。\n";
         $message .= "イベント：{$title}\n";
         $message .= "日付：{$date}\n";
-        
+
         return $message;
     }
 }
