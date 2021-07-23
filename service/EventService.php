@@ -70,7 +70,6 @@ class EventService
     public function oneParticipantRegist(Participant $participant, array $companions, int $notifyFlg = 1) {
         $detailDao = new DetailDao();
         $gameInfoDao = new GameInfoDao();
-        $gameInfo = $gameInfoDao->selectById($participant->gameId);
         $errMsg = '';
         try {
             // トランザクション開始
@@ -82,6 +81,7 @@ class EventService
             $errMsg = 'エラーが発生しました。';
             $detailDao->getPdo()->rollBack();
         }
+        $gameInfo = $gameInfoDao->selectById($participant->gameId);
         // 予約の通知
         $api = new LineApi();
         // 管理者への通知
