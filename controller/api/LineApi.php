@@ -435,14 +435,14 @@ class LineApi
                             ]
                         ]
                     ]);
+                    curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, ($data)); //データをセット
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
+        
+                    curl_exec($ch);
+                    curl_close($ch);
                 }
-                curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
-                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, ($data)); //データをセット
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
-    
-                curl_exec($ch);
-                curl_close($ch);
             }
 
         }
