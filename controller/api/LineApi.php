@@ -462,7 +462,7 @@ class LineApi
                     $text .= "日付：{$gameInfo['game_date']}\n";
                     $text .= "開始時刻：{$gameInfo['start_time']}\n";
                     $text .= "場所：{$gameInfo['place']}\n";
-                    $text .= "備考：{$gameInfo['remark']}\n";
+                    $text .= "詳細：{$gameInfo['detail']}\n";
                     $text .= "\n";
                     $text .= "予約しますか？";
 
@@ -525,7 +525,7 @@ class LineApi
                     $participant->email = $user['email'] ?? '';
                     $participant->tel = $user['tel'];
                     $participant->remark = $user['remark'];
-                    $participant->lineId = $user['lineId'];
+                    $participant->lineId = $user['line_id'];
 
                     // 予約
                     $eventService->oneParticipantRegist($participant, []);

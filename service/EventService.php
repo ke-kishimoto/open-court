@@ -86,7 +86,7 @@ class EventService
         $api = new LineApi();
         // 管理者への通知
         if(!$errMsg && $notifyFlg === 1) {
-            $api->reserve_notify($participant, $gameInfo['title'], $gameInfo['game_date'], $_POST['companion']);
+            $api->reserve_notify($participant, $gameInfo['title'], $gameInfo['game_date'], $_POST['companion'] ?? '0');
         }
         // 本人への通知
         if(!empty($participant->lineId)) {
@@ -135,7 +135,7 @@ class EventService
     // 登録共通処理
     private function participantRegist(DetailDao $detailDao, GameInfoDao $gameInfoDao, Participant $participant, array $companions) {
         $errMsg = '';
-        if($participant->email !== '' && $detailDao->existsCheck($participant->gameId, $participant->email)) {
+        if(!empty($participant->email) && $detailDao->existsCheck($participant->gameId, $participant->email)) {
             $errMsg = '既に登録済みのため登録できません。';
         } else {
             // キャンセル待ちになるかどうかのチェック
