@@ -193,7 +193,7 @@ class LineApi
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data)); //データをセット
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
         $result = curl_exec($ch);
-        $httpcode = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+        $httpcode = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);  // ステータスコードを受け取る
         curl_close($ch);
 
         if($httpcode === 200) {
@@ -314,6 +314,63 @@ class LineApi
         $result = curl_exec($ch);
         return json_decode($result);
 
+    }
+    //////////////////////////////
+    // LINE Messaging
+    //////////////////////////////
+    public function pushMessage($userId, $msg = '')
+    {
+        // config取得
+        $configDao = new ConfigDao();
+        $config = $configDao->selectById(1);
+
+        $url = 'https://api.line.me/v2/bot/message/push';
+        $ch = curl_init($url);
+        $headers = array(
+            "Content-Type: application/json",
+            "Authorization: Bearer {$config['channel_access_token']}"
+        );
+        $data = json_encode([
+            'to' => "{$userId}",
+            'messages' => [
+                [
+                    'type' => 'text',
+                    'text' => "{$msg}"
+                ],
+            ]
+        ]);
+        curl_setopt($ch, CURLOPT_POST, TRUE);                          //POSTで送信
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, ($data)); //データをセット
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
+
+        curl_exec($ch);
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);  // ステータスコードを受け取る
+        curl_close($ch);
+        // $response = json_decode($result);
+        return (int)$httpcode;
+
+    }
+
+    public function createReservationMessage($title, $date, $startTime)
+    {
+        $message = "下記のイベントで予約が確定しました。\n";
+        $message .= "イベント：{$title}\n";
+        $message .= "日付：{$date}\n";
+        $message .= "開始時間：{$startTime}\n";
+        $message .= "\n";
+        $message .= "キャンセルの場合はシステム上から事前にキャンセルをお願いします。\n";
+        $message .= "問い合わせはこのLINEから連絡お願いします。\n";
+
+        return $message;
+    }
+    public function createCancelMessage($title, $date)
+    {
+        $message = "下記の予約をキャンセルしました。\n";
+        $message .= "イベント：{$title}\n";
+        $message .= "日付：{$date}\n";
+        
+        return $message;
     }
 }
 
