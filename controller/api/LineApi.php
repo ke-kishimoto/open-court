@@ -4,6 +4,7 @@ define('LINE_API_URL', 'https://notify-api.line.me/api/notify');
 use entity\Participant;
 use entity\Inquiry;
 use dao\ConfigDao;
+use dao\GameInfoDao;
 use entity\TroubleReport;
 use Exception;
 
@@ -390,14 +391,30 @@ class LineApi
             }
             if($event['message']['type'] === 'text') {
                 $text = $event['message']['text'];
-    
+                
                 if($text === '予約') {
+                    $gameInfoDao = new GameInfoDao();
+                    $gameInfoList = $gameInfoDao->getGameInfoListByAfterDate(date('Y-m-d'), '', $event['source']['userId']);
+                    $items = [];
+                    foreach($gameInfoList as $gameInfo) {
+                        $items[] = [
+                            'type' => 'action', 
+                            'action' => [
+                                'type' => 'postback',
+                                'label' => 'select',
+                                'data' => "id={$gameInfo['id']}",
+                                'displayText' => "{$gameInfo['game_date']} {$gameInfo['short_title']}"
+                            ]
+                        ];
+                        if(count($items) >= 13) {
+                            break;
+                        }
+                    }
                     // 応答メッセージを返す
                     // config取得
                     $configDao = new ConfigDao();
                     $config = $configDao->selectById(1);
                     $url = 'https://api.line.me/v2/bot/message/reply'; // リプライ
-                    // $url = 'https://api.line.me/v2/bot/message/push'; // プッシュ
     
                     $ch = curl_init($url);
                     $headers = array(
@@ -406,12 +423,16 @@ class LineApi
                     );
                     $data = json_encode([
                         'replyToken' => "{$event['replyToken']}",
-                        // 'to' => $userId,
                         'messages' => [
+                            // [
+                            //     'type' => 'text',
+                            //     'text' => "{$text}"
+                            // ],
                             [
-                                'type' => 'text',
-                                'text' => "{$text}"
-                            ],
+                                'quickReply' => [
+                                    'items' =>  $items
+                                ]
+                            ]
                         ]
                     ]);
                 }
