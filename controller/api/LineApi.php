@@ -431,6 +431,7 @@ class LineApi
                             [
                                 'quickReply' => [
                                     'items' =>  [
+                                        [
                                         'type' => 'action', 
                                         'action' => [
                                             'type' => 'postback',
@@ -445,6 +446,7 @@ class LineApi
                                                 'label' => 'select',
                                                 'data' => "id=2",
                                                 'displayText' => "7/2 イベント2"
+                                        ]
                                         ]
                                     ]
                                 ]
