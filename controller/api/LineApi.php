@@ -352,6 +352,7 @@ class LineApi
 
     }
 
+    // 予約時のメッセージ作成
     public function createReservationMessage($title, $date, $startTime)
     {
         $message = "下記のイベントで予約が確定しました。\n";
@@ -360,10 +361,11 @@ class LineApi
         $message .= "開始時間：{$startTime}\n";
         $message .= "\n";
         $message .= "キャンセルの場合はシステム上から事前にキャンセルをお願いします。\n";
-        $message .= "問い合わせはこのLINEから連絡お願いします。\n";
+        // $message .= "問い合わせはこのLINEから連絡お願いします。\n";
 
         return $message;
     }
+    // キャンセルのメッセージ作成
     public function createCancelMessage($title, $date)
     {
         $message = "下記の予約をキャンセルしました。\n";
@@ -371,6 +373,60 @@ class LineApi
         $message .= "日付：{$date}\n";
 
         return $message;
+    }
+
+    // webhook
+    public function webhook()
+    {
+        // webhookリクエストを受け取る
+
+        // $events =  $_POST['events'];
+        $json = file_get_contents("php://input");
+        $contents = json_decode($json, true);
+        $events = $contents['events'];
+        foreach($events as $event) {
+            if ($event['mode'] !== 'active') {
+                continue;
+            }
+            $userId = $event['source']['userId'];
+            $text = $event['message']['text'];
+
+            if($text === '予約') {
+                // 応答メッセージを返す
+                // config取得
+                $configDao = new ConfigDao();
+                $config = $configDao->selectById(1);
+                $url = 'https://api.line.me/v2/bot/message/reply';
+                $ch = curl_init($url);
+                $headers = array(
+                    "Content-Type: application/json",
+                    "Authorization: Bearer {$config['channel_access_token']}"
+                );
+                $data = json_encode([
+                    'replyToken' => "{$event['replyToken']}",
+                    'messages' => [
+                        [
+                            'type' => 'text',
+                            'text' => "{$text}"
+                        ],
+                    ]
+                ]);
+            }
+            curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
+        }
+
+        // var_dump($contents);
+
+
+        
+
+        // 予約
+        // 確認
+        // キャンセル
+        // 問い合わせ
+
+        // レスポンス
+        echo json_encode('{}');
     }
 }
 
