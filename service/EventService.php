@@ -89,7 +89,7 @@ class EventService
             $api->reserve_notify($participant, $gameInfo['title'], $gameInfo['game_date'], $_POST['companion']);
         }
         // 本人への通知
-        if(!empty($participant->line_id)) {
+        if(!empty($participant->lineId)) {
             $msg = $api->createReservationMessage($gameInfo['title'], $gameInfo['game_date'], $gameInfo['start_time']);
             $api->pushMessage($participant->line_id, $msg);
         }
