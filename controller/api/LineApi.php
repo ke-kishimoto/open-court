@@ -522,7 +522,7 @@ class LineApi
                     $participant->occupation = $user['occupation'];
                     $participant->sex = $user['sex'];
                     $participant->name = $user['name'];
-                    $participant->email = $user['email'];
+                    $participant->email = $user['email'] ?? '';
                     $participant->tel = $user['tel'];
                     $participant->remark = $user['remark'];
                     $participant->lineId = $user['lineId'];
