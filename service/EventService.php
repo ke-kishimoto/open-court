@@ -86,11 +86,11 @@ class EventService
         $api = new LineApi();
         // 管理者への通知
         if(!$errMsg && $notifyFlg === 1) {
-            $api->reserve_notify($participant, $gameInfo['title'], $gameInfo['date'], $_POST['companion']);
+            $api->reserve_notify($participant, $gameInfo['title'], $gameInfo['game_date'], $_POST['companion']);
         }
         // 本人への通知
         if(!empty($participant->line_id)) {
-            $msg = $api->createReservationMessage($gameInfo['title'], $gameInfo['date'], $gameInfo['start_time']);
+            $msg = $api->createReservationMessage($gameInfo['title'], $gameInfo['game_date'], $gameInfo['start_time']);
             $api->pushMessage($participant->line_id, $msg);
         }
 
