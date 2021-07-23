@@ -389,7 +389,7 @@ class LineApi
             if ($event['mode'] !== 'active') {
                 continue;
             }
-            // if($event['message']['type'] === 'text') {
+            if($event['message']['type'] === 'text') {
                 $text = $event['message']['text'];
                 
                 if($text === '予約') {
@@ -424,10 +424,10 @@ class LineApi
                     $data = json_encode([
                         'replyToken' => "{$event['replyToken']}",
                         'messages' => [
-                            // [
-                            //     'type' => 'text',
-                            //     'text' => "{$text}"
-                            // ],
+                            [
+                                'type' => 'text',
+                                'text' => "{$text}"
+                            ],
                             [
                                 'quickReply' => [
                                     'items' =>  $items
@@ -443,7 +443,7 @@ class LineApi
                     curl_exec($ch);
                     curl_close($ch);
                 }
-            // }
+            }
 
         }
 
