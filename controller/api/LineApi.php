@@ -5,7 +5,9 @@ use entity\Participant;
 use entity\Inquiry;
 use dao\ConfigDao;
 use dao\GameInfoDao;
+use dao\UsersDao;
 use entity\TroubleReport;
+use service\EventService;
 use Exception;
 
 // LINE通知用
@@ -409,6 +411,7 @@ class LineApi
                                 'displayText' => "{$gameInfo['game_date']} {$gameInfo['short_title']}"
                             ]
                         ];
+                        // 表示できるのが最大13件らしいので
                         if(count($items) >= 13) {
                             break;
                         }
@@ -460,6 +463,8 @@ class LineApi
                     $text .= "開始時刻：{$gameInfo['start_time']}\n";
                     $text .= "場所：{$gameInfo['place']}\n";
                     $text .= "備考：{$gameInfo['remark']}\n";
+                    $text .= "\n";
+                    $text .= "予約しますか？";
 
                     $url = 'https://api.line.me/v2/bot/message/reply'; // リプライ
     
@@ -507,6 +512,23 @@ class LineApi
                     curl_exec($ch);
                     curl_close($ch);
 
+                }
+                if(isset($data['action']) && $data['action'] === 'reserve') {
+                    $eventService = new EventService();
+                    $userDao = new UsersDao();
+                    $user = $userDao->getUserByLineId($event['source']['userId']);
+                    $participant = new Participant();
+                    $participant->gameId = $data['id'];
+                    $participant->occupation = $user['occupation'];
+                    $participant->sex = $user['sex'];
+                    $participant->name = $user['name'];
+                    $participant->email = $user['email'];
+                    $participant->tel = $user['tel'];
+                    $participant->remark = $user['remark'];
+                    $participant->lineId = $user['lineId'];
+
+                    // 予約
+                    $eventService->oneParticipantRegist($participant, []);
                 }
             }
         }
