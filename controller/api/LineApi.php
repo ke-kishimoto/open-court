@@ -401,7 +401,7 @@ class LineApi
                             'type' => 'action', 
                             'action' => [
                                 'type' => 'postback',
-                                'label' => 'select',
+                                'label' => "{$gameInfo['game_date']} {$gameInfo['short_title']}",
                                 'data' => "id={$gameInfo['id']}",
                                 'displayText' => "{$gameInfo['game_date']} {$gameInfo['short_title']}"
                             ]
@@ -426,37 +426,11 @@ class LineApi
                         'messages' => [
                             [
                                 'type' => 'text',
-                                'text' => "{$text}"
-                            ],
-                            [
+                                'text' => "予約したいイベントを選択してください。",                            
                                 'quickReply' => [
-                                    'items' =>  [
-                                        [
-                                        'type' => 'action', 
-                                        'action' => [
-                                            'type' => 'postback',
-                                            'label' => 'select',
-                                            'data' => "id=1",
-                                            'displayText' => "7/1 イベント1"
-                                        ],
-                                        [
-                                            'type' => 'action', 
-                                            'action' => [
-                                                'type' => 'postback',
-                                                'label' => 'select',
-                                                'data' => "id=2",
-                                                'displayText' => "7/2 イベント2"
-                                        ]
-                                        ]
-                                    ]
+                                    'items' =>  $items
                                 ]
                             ]
-                        ]
-                            // [
-                            //     'quickReply' => [
-                            //         'items' =>  $items
-                            //     ]
-                            // ]
                         ]
                     ]);
                     curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
