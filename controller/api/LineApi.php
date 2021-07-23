@@ -430,9 +430,31 @@ class LineApi
                             ],
                             [
                                 'quickReply' => [
-                                    'items' =>  $items
+                                    'items' =>  [
+                                        'type' => 'action', 
+                                        'action' => [
+                                            'type' => 'postback',
+                                            'label' => 'select',
+                                            'data' => "id=1",
+                                            'displayText' => "7/1 イベント1"
+                                        ],
+                                        [
+                                            'type' => 'action', 
+                                            'action' => [
+                                                'type' => 'postback',
+                                                'label' => 'select',
+                                                'data' => "id=2",
+                                                'displayText' => "7/2 イベント2"
+                                        ]
+                                    ]
                                 ]
                             ]
+                        ]
+                            // [
+                            //     'quickReply' => [
+                            //         'items' =>  $items
+                            //     ]
+                            // ]
                         ]
                     ]);
                     curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
