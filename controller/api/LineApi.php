@@ -388,38 +388,45 @@ class LineApi
             if ($event['mode'] !== 'active') {
                 continue;
             }
-            $userId = $event['source']['userId'];
-            $text = $event['message']['text'];
-
-            if($text === '予約') {
-                // 応答メッセージを返す
-                // config取得
-                $configDao = new ConfigDao();
-                $config = $configDao->selectById(1);
-                $url = 'https://api.line.me/v2/bot/message/reply';
-                $ch = curl_init($url);
-                $headers = array(
-                    "Content-Type: application/json",
-                    "Authorization: Bearer {$config['channel_access_token']}"
-                );
-                $data = json_encode([
-                    'replyToken' => "{$event['replyToken']}",
-                    'messages' => [
-                        [
-                            'type' => 'text',
-                            'text' => "{$text}"
-                        ],
-                    ]
-                ]);
+            if($event['message']['type'] === 'text') {
+                $text = $event['message']['text'];
+    
+                if($text === '予約') {
+                    // 応答メッセージを返す
+                    // config取得
+                    $configDao = new ConfigDao();
+                    $config = $configDao->selectById(1);
+                    $url = 'https://api.line.me/v2/bot/message/reply'; // リプライ
+                    // $url = 'https://api.line.me/v2/bot/message/push'; // プッシュ
+    
+                    $ch = curl_init($url);
+                    $headers = array(
+                        "Content-Type: application/json",
+                        "Authorization: Bearer {$config['channel_access_token']}"
+                    );
+                    $data = json_encode([
+                        'replyToken' => "{$event['replyToken']}",
+                        // 'to' => $userId,
+                        'messages' => [
+                            [
+                                'type' => 'text',
+                                'text' => "{$text}"
+                            ],
+                        ]
+                    ]);
+                }
+                curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, ($data)); //データをセット
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
+    
+                curl_exec($ch);
+                curl_close($ch);
             }
-            curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
+
         }
 
         // var_dump($contents);
-
-
-        
-
         // 予約
         // 確認
         // キャンセル
