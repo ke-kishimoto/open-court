@@ -280,6 +280,7 @@ class ParticipantController extends BaseController
             $participant = new Participant();
             $participant->gameId = (int)$_POST['game_id'];
             $participant->email = $_POST['email'] ?? '';
+            $participant->lineId = $_POST['line_id'] ?? '';
             if(isset($_POST['password']) && isset($_SESSION['user'])) {
                 $password = $_POST['password'];
                 $userId = $_SESSION['user']['id'];

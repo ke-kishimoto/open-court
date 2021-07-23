@@ -43,7 +43,13 @@ class EventService
             $rowCount = $detailDao->deleteByMailAddress($participant['game_id'], $participant['email'], $participant['line_id']);
         
             $api = new LineApi();
+            // 管理者への通知
             $api->cancel_notify($participant['name'], $gameInfo['title'], $gameInfo['game_date']);
+            // 本人への通知
+            if(!empty($participant['line_id'])) {
+                $msg = $api->createCancelMessage($gameInfo['title'], $gameInfo['game_date']);
+                $api->pushMessage($participant['line_id'], $msg);
+            }
 
             $configDao = new ConfigDao();
             $config = $configDao->selectById(1);
@@ -58,18 +64,18 @@ class EventService
             }
         }
         return '';
-        
     }
 
     // １イベントへの参加
-    public function oneParticipantRegist(Participant $paricipant, array $companions, int $notifyFlg = 1) {
+    public function oneParticipantRegist(Participant $participant, array $companions, int $notifyFlg = 1) {
         $detailDao = new DetailDao();
         $gameInfoDao = new GameInfoDao();
+        $gameInfo = $gameInfoDao->selectById($participant->gameId);
         $errMsg = '';
         try {
             // トランザクション開始
             $detailDao->getPdo()->beginTransaction();
-            $errMsg = $this->participantRegist($detailDao, $gameInfoDao, $paricipant, $companions);
+            $errMsg = $this->participantRegist($detailDao, $gameInfoDao, $participant, $companions);
             $detailDao->getPdo()->commit();
         } catch(Exception $ex) {
             // ロールバック
@@ -77,10 +83,17 @@ class EventService
             $detailDao->getPdo()->rollBack();
         }
         // 予約の通知
+        $api = new LineApi();
+        // 管理者への通知
         if(!$errMsg && $notifyFlg === 1) {
-            $api = new LineApi();
-            $api->reserve_notify($paricipant, $_POST['title'], $_POST['date'], $_POST['companion']);
+            $api->reserve_notify($participant, $gameInfo['title'], $gameInfo['date'], $_POST['companion']);
         }
+        // 本人への通知
+        if(!empty($participant->line_id)) {
+            $msg = $api->createReservationMessage($gameInfo['title'], $gameInfo['date'], $gameInfo['start_time']);
+            $api->pushMessage($participant->line_id, $msg);
+        }
+
         return $errMsg;
     }
     // 一活参加登録
@@ -106,14 +119,20 @@ class EventService
             $detailDao->getPdo()->rollBack();
         }
         // 予約の通知
+        $api = new LineApi();
+        // 管理者への通知
         if($count) {
-            $api = new LineApi();
             $api->multiple_reserve($paricipant->name, $count);
         }
+        if(!empty($paricipant->lineId)) {
+            $msg = "{$count}件のイベントを予約しました。詳細は参加イベント一覧画面をご確認ください。";
+            $api->pushMessage($paricipant->lineId, $msg);
+        }
+        // 本人への通知
         return $count;
     }
 
-    // 登録処理
+    // 登録共通処理
     private function participantRegist(DetailDao $detailDao, GameInfoDao $gameInfoDao, Participant $participant, array $companions) {
         $errMsg = '';
         if($participant->email !== '' && $detailDao->existsCheck($participant->gameId, $participant->email)) {
