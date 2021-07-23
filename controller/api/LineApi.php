@@ -385,15 +385,18 @@ class LineApi
         $json = file_get_contents("php://input");
         $contents = json_decode($json, true);
         $events = $contents['events'];
+
         foreach($events as $event) {
             if ($event['mode'] !== 'active') {
                 continue;
             }
-            if($event['message']['type'] === 'text') {
+            $configDao = new ConfigDao();
+            $config = $configDao->selectById(1);
+            $gameInfoDao = new GameInfoDao();
+            if(isset($event['message']) && $event['message']['type'] === 'text') {
                 $text = $event['message']['text'];
                 
                 if($text === '予約') {
-                    $gameInfoDao = new GameInfoDao();
                     $gameInfoList = $gameInfoDao->getGameInfoListByAfterDate(date('Y-m-d'), '', $event['source']['userId']);
                     $items = [];
                     foreach($gameInfoList as $gameInfo) {
@@ -402,7 +405,7 @@ class LineApi
                             'action' => [
                                 'type' => 'postback',
                                 'label' => "{$gameInfo['game_date']} {$gameInfo['short_title']}",
-                                'data' => "id={$gameInfo['id']}",
+                                'data' => "action=select&id={$gameInfo['id']}",
                                 'displayText' => "{$gameInfo['game_date']} {$gameInfo['short_title']}"
                             ]
                         ];
@@ -412,8 +415,7 @@ class LineApi
                     }
                     // 応答メッセージを返す
                     // config取得
-                    $configDao = new ConfigDao();
-                    $config = $configDao->selectById(1);
+                    
                     $url = 'https://api.line.me/v2/bot/message/reply'; // リプライ
     
                     $ch = curl_init($url);
@@ -442,7 +444,71 @@ class LineApi
                     curl_close($ch);
                 }
             }
+            if(isset($event['postback'])) {
+                $data = explode('&', $event['postback']['data']);
+                // 文字列から連想配列を作成
+                foreach($data as $item) {
+                    $keyValue = explode('=', $item);
+                    $data[$keyValue[0]] = $keyValue[1];    
+                }
+                if(isset($data['action']) && $data['action'] === 'select') {
+                    // イベントの詳細情報を表示する
+                    $gameInfo = $gameInfoDao->selectById($data['id']);
+                    $text = "イベント詳細\n";
+                    $text .= "イベント：{$gameInfo['title']}\n";
+                    $text .= "日付：{$gameInfo['game_date']}\n";
+                    $text .= "開始時刻：{$gameInfo['start_time']}\n";
+                    $text .= "場所：{$gameInfo['place']}\n";
+                    $text .= "備考：{$gameInfo['remark']}\n";
 
+                    $url = 'https://api.line.me/v2/bot/message/reply'; // リプライ
+    
+                    $ch = curl_init($url);
+                    $headers = array(
+                        "Content-Type: application/json",
+                        "Authorization: Bearer {$config['channel_access_token']}"
+                    );
+                    $data = json_encode([
+                        'replyToken' => "{$event['replyToken']}",
+                        'messages' => [
+                            [
+                                'type' => 'text',
+                                'text' => $text,                            
+                                'quickReply' => [
+                                    'items' =>  [
+                                        [
+                                            'type' => 'action',
+                                            'action' => [
+                                                'type' => 'postback',
+                                                'label' => 'はい',
+                                                'data' => "action=reserve&id={$gameInfo['id']}",
+                                                'displayText' => 'はい'
+                                            ]
+                                        ],
+                                        [
+                                            'type' => 'action',
+                                            'action' => [
+                                                'type' => 'postback',
+                                                'label' => 'いいえ',
+                                                'data' => "action=no&id={$gameInfo['id']}",
+                                                'displayText' => 'いいえ'
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]);
+                    curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, ($data)); //データをセット
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
+        
+                    curl_exec($ch);
+                    curl_close($ch);
+
+                }
+            }
         }
 
         // var_dump($contents);
