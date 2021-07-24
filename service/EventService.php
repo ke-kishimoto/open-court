@@ -55,10 +55,19 @@ class EventService
             $config = $configDao->selectById(1);
             // キャンセル待ちの自動繰り上げ
             if($config['waiting_flg_auto_update'] == 1) {
+                // 通知用のメッセージ
+                $msg = "以下のイベントでキャンセル者が出たため、キャンセル待ちが解除されました。ご確認お願いします。\n";
+                $msg .= "タイトル：{$gameInfo['title']}\n";
+                $msg .= "日付：{$gameInfo['game_date']}\n";
+                $msg .= "開始時刻：{$gameInfo['start_time']}\n";
                 $waitingList = $detailDao->getWitingList($participant['game_id']);
                 foreach($waitingList as $waitingMember) {
                     if(!$detailDao->limitCheck($participant['game_id'], 1 + $waitingMember['cnt'])) {
                         $detailDao->updateWaitingFlg($waitingMember['id']);
+                        // LINEでログインしたユーザーの場合、くり上がりを通知する
+                        if(!empty($waitingMember['line_id'])) {
+                            $api->pushMessage($waitingMember['line_id'], $msg);
+                        }
                     }
                 }
             }

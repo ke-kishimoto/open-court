@@ -458,14 +458,15 @@ class LineApi
                     } else {
                         $msg = "予約済みイベント一覧\n";
                         foreach($gameInfoList as $gameInfo) {
-                            $msg .= "--------------------\n";
-                            $msg .= "日付：{$gameInfo['game_date']}\n";
+                            $msg .= "----------------------------------------\n";
                             $msg .= "タイトル：{$gameInfo['title']}\n";
+                            $msg .= "日付：{$gameInfo['game_date']}\n";
+                            $msg .= "開始時刻{$gameInfo['start_time']}\n";
                             if($gameInfo['waiting_flg'] == '1') {
                                 $msg .= "※キャンセル待ち\n";
                             }
                         }
-                        $msg .= "--------------------\n";
+                        $msg .= "----------------------------------------\n";
                         $msg .= "合計" . count($gameInfoList) . "件\n";
                     }
                     // 応答メッセージを返す 
