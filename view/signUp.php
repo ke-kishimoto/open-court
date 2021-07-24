@@ -1,9 +1,11 @@
 <div>
-  <div class="explain-box">
-      <span class="explain-tit"><?php echo $title ?></span>
-      <p>イベントへ応募時、以下の入力項目がデフォルトで設定されます</p>
-  </div>
-  <a class="btn btn-sm btn-outline-dark <?php echo $mode == 'new' ? 'hidden' : '' ?>" href="/user/passwordchange" role="button">パスワード変更</a>
+    <div class="explain-box">
+        <span class="explain-tit"><?php echo $title ?></span>
+        <p>イベントへ応募時、以下の入力項目がデフォルトで設定されます</p>
+    </div>
+    <a class="btn btn-sm btn-outline-dark <?php echo ($mode === 'new' || !empty($user['line_id'])) ? 'hidden' : '' ?>" href="/user/passwordchange" role="button">
+      パスワード変更
+    </a>
     <form id="signUp_form" action="/user/signupcomplete" method="post" class="form-group">
         <input type="hidden" id="update-mode" name="mode" value="<?php echo $mode ?>">
         <input type="hidden" id="id" name="id" value="<?php echo $id ?>">
@@ -27,7 +29,7 @@
             名前
             <input id="name" class="form-control" type="text" name="name" required maxlength="50" value="<?php echo $user['name'] ?>">
         </p>
-        <p>
+        <p class="<?php echo !empty($user['line_id']) ? 'hidden' : '' ?>">
             メール
             <input class="form-control" type="email" name="email" required maxlength="50" value="<?php echo $user['email'] ?>">
         </p>
@@ -76,10 +78,12 @@
         </form>
     </div>
     <hr>
-    <p>LINEでログイン</p>
-    <div class="line-login">
-        <a href="https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=1656224816&redirect_uri=https%3A%2F%2Fopencourt.eventmanc.com%2Fuser%2Flinelogin&state=12345abcde&bot_prompt=aggressive&scope=profile%20openid">
-            <img id="btn-line" src="/resource/images/DeskTop/2x/20dp/btn_login_base.png">
-        </a>
+    <div class="<?php echo $mode == 'update' ? 'hidden' : '' ?>">
+        <p>LINEでログイン</p>
+        <div class="line-login">
+            <a href="https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=1656224816&redirect_uri=https%3A%2F%2Fopencourt.eventmanc.com%2Fuser%2Flinelogin&state=12345abcde&bot_prompt=aggressive&scope=profile%20openid">
+                <img id="btn-line" src="/resource/images/DeskTop/2x/20dp/btn_login_base.png">
+            </a>
+        </div>
     </div>
 </div>
