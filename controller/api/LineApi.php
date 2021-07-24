@@ -396,8 +396,17 @@ class LineApi
             $configDao = new ConfigDao();
             $config = $configDao->selectById(1);
             $gameInfoDao = new GameInfoDao();
+
             if(isset($event['message']) && $event['message']['type'] === 'text') {
                 $text = $event['message']['text'];
+
+                $url = 'https://api.line.me/v2/bot/message/reply'; // リプライ
+                $ch = curl_init($url);
+                $headers = array(
+                    "Content-Type: application/json",
+                    "Authorization: Bearer {$config['channel_access_token']}"
+                );
+
                 // 予約
                 if($text === '予約' || 'キャンセル') {
                     if($text === '予約') {
@@ -426,15 +435,7 @@ class LineApi
                             break;
                         }
                     }
-                    // 応答メッセージを返す
-                    
-                    $url = 'https://api.line.me/v2/bot/message/reply'; // リプライ
-    
-                    $ch = curl_init($url);
-                    $headers = array(
-                        "Content-Type: application/json",
-                        "Authorization: Bearer {$config['channel_access_token']}"
-                    );
+                    // 応答メッセージを返す 
                     $data = json_encode([
                         'replyToken' => "{$event['replyToken']}",
                         'messages' => [
@@ -447,14 +448,35 @@ class LineApi
                             ]
                         ]
                     ]);
-                    curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
-                    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, ($data)); //データをセット
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
-        
-                    curl_exec($ch);
-                    curl_close($ch);
+                } elseif($text === '予約確認') {
+                    $detailDao = new DetailDao();
+                    $gameInfoList = $detailDao->getEventListByLineId($event['source']['userId'], date('Y-m-d'));
+                    if(count($gameInfoList) === 0) {
+                        $msg = '予約済みのイベントはありません。';
+                    } else {
+                        $msg = "予約済みイベント一覧\n";
+                        foreach($gameInfoList as $gameInfo) {
+                            $msg .= "・{$gameInfo['game_date']} {$gameInfo['title']}\n";
+                        }
+                    }
+                    // 応答メッセージを返す 
+                    $data = json_encode([
+                        'replyToken' => "{$event['replyToken']}",
+                        'messages' => [
+                            [
+                                'type' => 'text',
+                                'text' => $msg,
+                            ]
+                        ]
+                    ]);
                 }
+                // リクエストの送信
+                curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, ($data)); //データをセット
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
+                curl_exec($ch);
+                curl_close($ch);
             }
             if(isset($event['postback'])) {
                 $data = explode('&', $event['postback']['data']);
