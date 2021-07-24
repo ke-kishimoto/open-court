@@ -508,7 +508,11 @@ class LineApi
                     $text .= "詳細：{$gameInfo['detail']}\n";
                     $text .= "\n";
                     if($data['mode'] === 'reserve') {
-                        $text .= "予約しますか？";
+                        if($gameInfo['limit_number'] <= $gameInfo['participants_number']) {
+                            $text .= "予約しますか？（キャンセル待ち）";
+                        } else {
+                            $text .= "予約しますか？";
+                        }
                     } elseif($data['mode'] === 'cancel') {
                         $text .= "キャンセルしますか？";
                     }
