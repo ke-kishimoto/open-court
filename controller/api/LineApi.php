@@ -14,6 +14,8 @@ use Exception;
 // LINE通知用
 class LineApi 
 {
+    const QUICK_REPLY_NUM = 13;  // クイックリプライできるのが最大13件らしい
+
     // 個人の予約通知
     public function reserve_notify(Participant $participant, $title, $date, $companion = 0)
     {   
@@ -430,8 +432,8 @@ class LineApi
                                 'displayText' => "{$gameInfo['game_date']} {$gameInfo['short_title']}"
                             ]
                         ];
-                        // 表示できるのが最大13件らしいので
-                        if(count($items) >= 13) {
+                        
+                        if(count($items) >= self::QUICK_REPLY_NUM) {
                             break;
                         }
                     }
@@ -456,8 +458,15 @@ class LineApi
                     } else {
                         $msg = "予約済みイベント一覧\n";
                         foreach($gameInfoList as $gameInfo) {
-                            $msg .= "・{$gameInfo['game_date']} {$gameInfo['title']}\n";
+                            $msg .= "--------------------\n";
+                            $msg .= "日付：{$gameInfo['game_date']}\n";
+                            $msg .= "タイトル：{$gameInfo['title']}\n";
+                            if($gameInfo['waiting_flg'] == '1') {
+                                $msg .= "※キャンセル待ち\n";
+                            }
                         }
+                        $msg .= "--------------------\n";
+                        $msg = "合計" . count($gameInfoList) . "件\n";
                     }
                     // 応答メッセージを返す 
                     $data = json_encode([
@@ -588,13 +597,6 @@ class LineApi
             }
         }
 
-        // var_dump($contents);
-        // 予約
-        // 確認
-        // キャンセル
-        // 問い合わせ
-
-        // レスポンス
         echo json_encode('{}');
     }
 }

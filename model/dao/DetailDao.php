@@ -336,7 +336,7 @@ class DetailDao extends BaseDao
 
     private function getEventList($paramType, $param, $date)
     {
-        $sql = 'select g.*
+        $sql = 'select g.*, p.waiting_flg
         from participant p
         join game_info g
         on p.game_id = g.id';
