@@ -503,6 +503,8 @@ class LineApi
                     $text .= "日付：{$gameInfo['game_date']}\n";
                     $text .= "開始時刻：{$gameInfo['start_time']}\n";
                     $text .= "場所：{$gameInfo['place']}\n";
+                    $text .= "人数上限：{$gameInfo['limit_number']}人\n";
+                    $text .= "参加予定：{$gameInfo['participants_number']}人\n";
                     $text .= "詳細：{$gameInfo['detail']}\n";
                     $text .= "\n";
                     if($data['mode'] === 'reserve') {

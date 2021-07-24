@@ -12,6 +12,27 @@ class GameInfoDao extends BaseDao
         parent::__construct();
         $this->tableName = 'game_info';
     }
+
+    // オーバーライド
+    public function selectById(int $id) 
+    {
+        $sql = "select 
+        g.*
+        , count(p.id) + coalesce(sum(cnt), 0) participants_number
+        from game_info g 
+        left join (select *
+                    , (select count(*) from companion where participant_id = participant.id) cnt
+                    from participant
+                    where waiting_flg = 0
+                    and delete_flg = 1) p
+        on g.id = p.game_id
+        where g.id = :id";
+        $prepare = $this->getPdo()->prepare($sql);
+        $prepare->bindValue(':id', $id);
+        $prepare->execute();
+
+        return $prepare->fetch();
+    }
    
     // 一覧表示用
     public function getGameInfoList($year, $month) 
