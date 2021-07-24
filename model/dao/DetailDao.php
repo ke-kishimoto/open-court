@@ -286,7 +286,7 @@ class DetailDao extends BaseDao
     }
 
     // メールアドレスによる削除処理
-    public function deleteByMailAddress(int $gameId, string $email, string $lineId) 
+    public function deleteByMailAddress(int $gameId, string $email = '', string $lineId = '') 
     {
         // 存在チェック
         // $participant = new Participant($gameId, 0, 0, '', $email, 0, '');
