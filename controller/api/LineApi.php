@@ -403,10 +403,12 @@ class LineApi
                     if($text === '予約') {
                         $gameInfoList = $gameInfoDao->getGameInfoListByAfterDate(date('Y-m-d'), '', $event['source']['userId']);
                         $msg = '予約したいイベントを選択してください。';
+                        $mode = 'reserve';
                     } else {
                         $detailDao = new DetailDao();
                         $gameInfoList = $detailDao->getEventListByLineId($event['source']['userId'], date('Y-m-d'));
                         $msg = 'キャンセルしたいイベントを選択してください。';
+                        $mode = 'cancel';
                     }
                     $items = [];
                     foreach($gameInfoList as $gameInfo) {
@@ -415,7 +417,7 @@ class LineApi
                             'action' => [
                                 'type' => 'postback',
                                 'label' => "{$gameInfo['game_date']} {$gameInfo['short_title']}",
-                                'data' => "action=select&id={$gameInfo['id']}",
+                                'data' => "action=select&mode={$mode}&id={$gameInfo['id']}",
                                 'displayText' => "{$gameInfo['game_date']} {$gameInfo['short_title']}"
                             ]
                         ];
@@ -471,7 +473,11 @@ class LineApi
                     $text .= "場所：{$gameInfo['place']}\n";
                     $text .= "詳細：{$gameInfo['detail']}\n";
                     $text .= "\n";
-                    $text .= "予約しますか？";
+                    if($data['mode'] === 'reserve') {
+                        $text .= "予約しますか？";
+                    } elseif($data['mode'] === 'cancel') {
+                        $text .= "キャンセルしますか？";
+                    }
 
                     $url = 'https://api.line.me/v2/bot/message/reply'; // リプライ
     
@@ -493,7 +499,7 @@ class LineApi
                                             'action' => [
                                                 'type' => 'postback',
                                                 'label' => 'はい',
-                                                'data' => "action=reserve&id={$gameInfo['id']}",
+                                                'data' => "action={$data['mode']}&id={$gameInfo['id']}",
                                                 'displayText' => 'はい'
                                             ]
                                         ],
@@ -520,7 +526,8 @@ class LineApi
                     curl_close($ch);
 
                 }
-                if(isset($data['action']) && $data['action'] === 'reserve') {
+                if(isset($data['action'])) {
+
                     $eventService = new EventService();
                     $userDao = new UsersDao();
                     $user = $userDao->getUserByLineId($event['source']['userId']);
@@ -534,8 +541,11 @@ class LineApi
                     $participant->remark = $user['remark'];
                     $participant->lineId = $user['line_id'];
 
-                    // 予約
-                    $eventService->oneParticipantRegist($participant, []);
+                    if($data['action'] === 'reserve') {
+                        $eventService->oneParticipantRegist($participant, []);
+                    } elseif ($data['action'] === 'cancel') {
+                        $eventService->cancelComplete($participant, '', $user['id']);
+                    }
                 }
             }
         }
