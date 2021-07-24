@@ -408,7 +408,7 @@ class LineApi
                 );
 
                 // 予約
-                if($text === '予約' || 'キャンセル') {
+                if($text === '予約' || $text === 'キャンセル') {
                     if($text === '予約') {
                         $gameInfoList = $gameInfoDao->getGameInfoListByAfterDate(date('Y-m-d'), '', $event['source']['userId']);
                         $msg = '予約したいイベントを選択してください。';
@@ -466,6 +466,16 @@ class LineApi
                             [
                                 'type' => 'text',
                                 'text' => $msg,
+                            ]
+                        ]
+                    ]);
+                } else {
+                    $data = json_encode([
+                        'replyToken' => "{$event['replyToken']}",
+                        'messages' => [
+                            [
+                                'type' => 'text',
+                                'text' => '恐れ入りますが送信されたメッセージには対応しておりません。',
                             ]
                         ]
                     ]);
