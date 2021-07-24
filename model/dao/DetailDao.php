@@ -324,29 +324,17 @@ class DetailDao extends BaseDao
     }
 
     // 参加済み、参加予定のイベントリスト
-    public function getEventListByEmail(string $email, string $gameDate) 
+    public function getEventListByEmail(string $email, string $gameDate = '') 
     {
-        // $sql = 'select g.*
-        // from participant p
-        // join game_info g
-        // on p.game_id = g.id
-        // where p.email = :email 
-        // and g.delete_flg = 1
-        // order by g.game_date, g.start_time';
-        // $prepare = $this->getPdo()->prepare($sql);
-        // $prepare->bindValue(':email', $email, PDO::PARAM_STR);
-        // // $prepare->bindValue(':game_date', $gameDate, PDO::PARAM_STR);
-        // $prepare->execute();
-        // return $prepare->fetchAll();
-        return $this->getEventList('email', $email);
+        return $this->getEventList('email', $email, $gameDate);
     }
 
-    public function getEventListByLineId(string $email, string $gameDate) 
+    public function getEventListByLineId(string $lineId, string $gameDate = '') 
     {
-        return $this->getEventList('lineId', $email);
+        return $this->getEventList('lineId', $lineId, $gameDate);
     }
 
-    private function getEventList($paramType, $param)
+    private function getEventList($paramType, $param, $date)
     {
         $sql = 'select g.*
         from participant p
@@ -357,10 +345,15 @@ class DetailDao extends BaseDao
         } elseif($paramType === 'lineId') {
             $sql .= ' where p.line_id = :param ';
         }
+        if(!empty($date)) {
+            $sql .= ' and game_date >= :date ';
+        }
         $sql .= 'and g.delete_flg = 1 order by g.game_date, g.start_time';
         $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':param', $param, PDO::PARAM_STR);
-        // $prepare->bindValue(':game_date', $gameDate, PDO::PARAM_STR);
+        if(!empty($date)) {
+            $prepare->bindValue(':game_date', $date, PDO::PARAM_STR);
+        }
         $prepare->execute();
         return $prepare->fetchAll();
     }

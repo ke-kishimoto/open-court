@@ -5,6 +5,7 @@ use entity\Participant;
 use entity\Inquiry;
 use dao\ConfigDao;
 use dao\GameInfoDao;
+use dao\DetailDao;
 use dao\UsersDao;
 use entity\TroubleReport;
 use service\EventService;
@@ -397,9 +398,16 @@ class LineApi
             $gameInfoDao = new GameInfoDao();
             if(isset($event['message']) && $event['message']['type'] === 'text') {
                 $text = $event['message']['text'];
-                
-                if($text === '予約') {
-                    $gameInfoList = $gameInfoDao->getGameInfoListByAfterDate(date('Y-m-d'), '', $event['source']['userId']);
+                // 予約
+                if($text === '予約' || 'キャンセル') {
+                    if($text === '予約') {
+                        $gameInfoList = $gameInfoDao->getGameInfoListByAfterDate(date('Y-m-d'), '', $event['source']['userId']);
+                        $msg = '予約したいイベントを選択してください。';
+                    } else {
+                        $detailDao = new DetailDao();
+                        $gameInfoList = $detailDao->getEventListByLineId($event['source']['userId'], date('Y-m-d'));
+                        $msg = 'キャンセルしたいイベントを選択してください。';
+                    }
                     $items = [];
                     foreach($gameInfoList as $gameInfo) {
                         $items[] = [
@@ -417,7 +425,6 @@ class LineApi
                         }
                     }
                     // 応答メッセージを返す
-                    // config取得
                     
                     $url = 'https://api.line.me/v2/bot/message/reply'; // リプライ
     
@@ -431,7 +438,7 @@ class LineApi
                         'messages' => [
                             [
                                 'type' => 'text',
-                                'text' => "予約したいイベントを選択してください。",                            
+                                'text' => $msg,                            
                                 'quickReply' => [
                                     'items' =>  $items
                                 ]
