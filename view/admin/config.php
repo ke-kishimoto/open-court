@@ -41,6 +41,19 @@
     <p>
         SendGrid APIキー<input class="form-control"  type="text" name="sendgrid_api_key" value="<?php echo $config['sendgrid_api_key'] ?>">
     </p>
+    <hr>
+    <p>
+        LINE API用
+    </p>
+    <p>
+        クライアントID<input class="form-control"  type="text" name="client_id" value="<?php echo $config['client_id'] ?>">
+    </p>
+    <p>
+        クライアントシークレット<input class="form-control"  type="text" name="client_secret" value="<?php echo $config['client_secret'] ?>">
+    </p>
+    <p>
+        チャネルアクセストークン<input class="form-control"  type="text" name="channel_access_token" value="<?php echo $config['channel_access_token'] ?>">
+    </p>
     <p>
         <button class="btn btn-primary" type="submit" name="register">登録</button>
     </p>

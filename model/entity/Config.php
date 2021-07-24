@@ -9,6 +9,10 @@ class Config extends BaseEntity
     public $logoImgPath;
     public $waitingFlgAutoUpdate;
     public $sendgridApiKey;
+    public $clientId;
+    public $clientSecret;
+    public $channelAccessToken;
+
 
     public function __construct()
     {

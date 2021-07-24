@@ -44,6 +44,9 @@ class ConfigController extends BaseController
             $config->systemTitle = $_POST['system_title'];
             $config->bgColor = $_POST['bg_color'];
             $config->waitingFlgAutoUpdate = $_POST['waiting_flg_auto_update'];
+            $config->clientId = $_POST['client_id'];
+            $config->clientSecret = $_POST['client_secret'];
+            $config->channelAccessToken = $_POST['channel_access_token'];
             if(empty($cfg)) {
                 $configDao->insert($config);
             } else {
