@@ -364,7 +364,7 @@ class LineApi
         $message .= "日付：{$date}\n";
         $message .= "開始時間：{$startTime}\n";
         $message .= "\n";
-        $message .= "キャンセルの場合はシステム上から事前にキャンセルをお願いします。\n";
+        $message .= "キャンセルの場合はシステム上、またはLINEのメニューから事前にキャンセルをお願いします。\n";
         // $message .= "問い合わせはこのLINEから連絡お願いします。\n";
 
         return $message;
