@@ -380,7 +380,7 @@ class UserController extends BaseController
         $service = new UserService();
         $user = $service->lineLogin($code);
 
-        if($user['new']) {
+        if($user['new'] || (empty($user['occupation'] || empty($user['sex'])))) {
             $title = '新規登録';
             $id = $user['id'];
             $companions = [];

@@ -154,7 +154,9 @@ class EventService
             // イベント情報取得
             $gameInfo = $gameInfoDao->selectById($participant->gameId);
             // 参加費の取得
-            $participant->amount = $this->getAmount($participant->occupation, $gameInfo);
+            if(!empty($participant->occupation)) {
+                $participant->amount = $this->getAmount($participant->occupation, $gameInfo);
+            }
             // 登録
             $detailDao->insert($participant);
             
