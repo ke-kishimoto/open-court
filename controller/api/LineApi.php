@@ -466,7 +466,7 @@ class LineApi
                             }
                         }
                         $msg .= "--------------------\n";
-                        $msg = "合計" . count($gameInfoList) . "件\n";
+                        $msg .= "合計" . count($gameInfoList) . "件\n";
                     }
                     // 応答メッセージを返す 
                     $data = json_encode([
