@@ -352,7 +352,7 @@ class DetailDao extends BaseDao
         $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':param', $param, PDO::PARAM_STR);
         if(!empty($date)) {
-            $prepare->bindValue(':game_date', $date, PDO::PARAM_STR);
+            $prepare->bindValue(':date', $date, PDO::PARAM_STR);
         }
         $prepare->execute();
         return $prepare->fetchAll();
