@@ -391,13 +391,28 @@ class LineApi
         $contents = json_decode($json, true);
         $events = $contents['events'];
 
+        $configDao = new ConfigDao();
+        $config = $configDao->selectById(1);
+
+        // 署名の検証
+        $lineSignature = getallheaders()['x-line-signature'];
+
+        $channelSecret = $config['channel_access_token']; // Channel secret string
+        $hash = hash_hmac('sha256', $json, $channelSecret, true);
+        $signature = base64_encode($hash);
+        // Compare x-line-signature request header string and the signature
+        if($signature !== $lineSignature) {
+            return;
+        }
+
+
         foreach($events as $event) {
             if ($event['mode'] !== 'active') {
                 continue;
             }
-            $configDao = new ConfigDao();
-            $config = $configDao->selectById(1);
+            
             $gameInfoDao = new GameInfoDao();
+
 
             if(isset($event['message']) && $event['message']['type'] === 'text') {
                 $text = $event['message']['text'];

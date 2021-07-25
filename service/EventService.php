@@ -40,7 +40,8 @@ class EventService
             $gameInfoDao = new GameInfoDao();
             $gameInfo = $gameInfoDao->selectById($participant['game_id']);
         
-            $rowCount = $detailDao->deleteByMailAddress($participant['game_id'], $participant['email'] ?? '', $participant['line_id'] ?? '');
+            // メールアドレスかLINE IDで削除する
+            $detailDao->deleteByMailAddress($participant['game_id'], $participant['email'] ?? '', $participant['line_id'] ?? '');
         
             $api = new LineApi();
             // 管理者への通知
