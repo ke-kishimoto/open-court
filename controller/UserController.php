@@ -18,6 +18,11 @@ class UserController extends BaseController
     // サインイン（ログイン）
     public function signIn() {
         parent::userHeader();
+        $configDao = new ConfigDao();
+        $config = $configDao->selectById(1);
+        // 10桁のランダム英数字
+        $state = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz'), 0, 10);
+        $_SESSION['state'] = $state;
         $title = 'ログイン';
         include('./view/common/head.php');
         include('./view/common/header.php');
@@ -57,6 +62,11 @@ class UserController extends BaseController
     // サインアップ
     public function signUp() {
         parent::userHeader();
+        $configDao = new ConfigDao();
+        $config = $configDao->selectById(1);
+        // 10桁のランダム英数字
+        $state = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz'), 0, 10);
+        $_SESSION['state'] = $state;
         $user = array(
             'id' => ''
             , 'name' => ''
@@ -375,7 +385,13 @@ class UserController extends BaseController
 
         // アクセストークン取得用認可コード
         $code = $_GET['code'];
-        // $state = $_GET['state'];
+        $state = $_GET['state'];
+        // CORS対策
+        if($state !== $_SESSION['state']) {
+            // ユーザーを取得せずにトップ画面に遷移
+            header('Location: /index.php');
+            return;
+        }
 
         $service = new UserService();
         $user = $service->lineLogin($code);

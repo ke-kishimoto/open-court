@@ -81,7 +81,7 @@
     <div class="<?php echo $mode == 'update' ? 'hidden' : '' ?>">
         <p>LINEでログイン</p>
         <div class="line-login">
-            <a href="https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=1656224816&redirect_uri=https%3A%2F%2Fopencourt.eventmanc.com%2Fuser%2Flinelogin&state=12345abcde&bot_prompt=aggressive&scope=profile%20openid">
+            <a href="https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=<?php echo $config['client_id'] ?>&redirect_uri=https%3A%2F%2Fopencourt.eventmanc.com%2Fuser%2Flinelogin&state=<?php echo $state ?>&bot_prompt=aggressive&scope=profile%20openid">
                 <img id="btn-line" src="/resource/images/DeskTop/2x/20dp/btn_login_base.png">
             </a>
         </div>
