@@ -395,16 +395,17 @@ class LineApi
         $config = $configDao->selectById(1);
 
         // 署名の検証
-        $lineSignature = getallheaders()['x-line-signature'];
-
-        $channelSecret = $config['channel_access_token']; // Channel secret string
+        // $httpHeaders = getallheaders();
+        // $lineSignature = $httpHeaders["X-Line-Signature"];
+        // 上でも取得できるが、大文字小文字を区別しないためには下記で取得が無難
+        $lineSignature = $_SERVER['HTTP_X_LINE_SIGNATURE'];
+        $channelSecret = $config['channel_secret']; // Channel secret string
         $hash = hash_hmac('sha256', $json, $channelSecret, true);
         $signature = base64_encode($hash);
         // Compare x-line-signature request header string and the signature
         if($signature !== $lineSignature) {
             return;
         }
-
 
         foreach($events as $event) {
             if ($event['mode'] !== 'active') {
