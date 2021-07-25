@@ -47,6 +47,7 @@ class ConfigController extends BaseController
             $config->clientId = $_POST['client_id'];
             $config->clientSecret = $_POST['client_secret'];
             $config->channelAccessToken = $_POST['channel_access_token'];
+            $config->channelSecret = $_POST['channel_secret'];
             if(empty($cfg)) {
                 $configDao->insert($config);
             } else {

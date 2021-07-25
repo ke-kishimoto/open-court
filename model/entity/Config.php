@@ -12,6 +12,7 @@ class Config extends BaseEntity
     public $clientId;
     public $clientSecret;
     public $channelAccessToken;
+    public $channelSecret;
 
 
     public function __construct()

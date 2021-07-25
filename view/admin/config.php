@@ -55,6 +55,9 @@
         チャネルアクセストークン<input class="form-control"  type="text" name="channel_access_token" value="<?php echo $config['channel_access_token'] ?>">
     </p>
     <p>
+        チャネルシークレット<input class="form-control"  type="text" name="channel_secret" value="<?php echo $config['channel_secret'] ?>">
+    </p>
+    <p>
         <button class="btn btn-primary" type="submit" name="register">登録</button>
     </p>
 </form>
