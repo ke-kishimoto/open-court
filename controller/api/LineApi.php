@@ -345,7 +345,7 @@ class LineApi
                 ],
             ]
         ]);
-        curl_setopt($ch, CURLOPT_POST, TRUE);                          //POSTで送信
+        curl_setopt($ch, CURLOPT_POST, TRUE); //POSTで送信
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_POSTFIELDS, ($data)); //データをセット
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
@@ -414,7 +414,6 @@ class LineApi
             
             $gameInfoDao = new GameInfoDao();
 
-
             if(isset($event['message']) && $event['message']['type'] === 'text') {
                 $text = $event['message']['text'];
 
@@ -425,7 +424,7 @@ class LineApi
                     "Authorization: Bearer {$config['channel_access_token']}"
                 );
 
-                // 予約
+                // 予約・キャンセル
                 if($text === '予約' || $text === 'キャンセル') {
                     if($text === '予約') {
                         $gameInfoList = $gameInfoDao->getGameInfoListByAfterDate(date('Y-m-d'), '', $event['source']['userId']);
@@ -515,6 +514,7 @@ class LineApi
                 curl_close($ch);
             }
             if(isset($event['postback'])) {
+                // クイックリプライからの返信時の処理
                 $data = explode('&', $event['postback']['data']);
                 // 文字列から連想配列を作成
                 foreach($data as $item) {
@@ -606,9 +606,9 @@ class LineApi
                     $participant->lineId = $user['line_id'];
 
                     if($data['action'] === 'reserve') {
-                        $eventService->oneParticipantRegist($participant, []);
+                        $eventService->oneParticipantRegist($participant, [], EventService::MODE_LINE);
                     } elseif ($data['action'] === 'cancel') {
-                        $eventService->cancelComplete($participant, '', $user['id']);
+                        $eventService->cancelComplete($participant, '', $user['id'], EventService::MODE_LINE);
                     }
                 }
             }

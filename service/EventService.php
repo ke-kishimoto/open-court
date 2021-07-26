@@ -13,11 +13,17 @@ use entity\Participant;
 
 class EventService
 {
+    const MODE_USER = 0;
+    const MODE_ADMIN = 1;
+    const MODE_LINE = 2;
+
     // イベント参加のキャンセル
-    public function cancelComplete(Participant $participant, $password, $userId)
+    public function cancelComplete(Participant $participant, $password, $userId, int $mode = self::MODE_USER)
     {
         $detailDao = new DetailDao();
         $id = $detailDao->getParticipantId($participant);
+        $configDao = new ConfigDao();
+        $config = $configDao->selectById(1);
         
         $errMsg = '';
         if(!empty($participant->email)) {
@@ -45,9 +51,11 @@ class EventService
         
             $api = new LineApi();
             // 管理者への通知
-            $api->cancel_notify($participant['name'], $gameInfo['title'], $gameInfo['game_date']);
+            if(!$errMsg && $config['line_notify_flg'] == '1') {
+                $api->cancel_notify($participant['name'], $gameInfo['title'], $gameInfo['game_date']);
+            }
             // 本人への通知
-            if(!empty($participant['line_id'])) {
+            if(!empty($participant['line_id']) && $mode === self::MODE_USER) {
                 $msg = $api->createCancelMessage($gameInfo['title'], $gameInfo['game_date']);
                 $api->pushMessage($participant['line_id'], $msg);
             }
@@ -77,9 +85,11 @@ class EventService
     }
 
     // １イベントへの参加
-    public function oneParticipantRegist(Participant $participant, array $companions, int $notifyFlg = 1) {
+    public function oneParticipantRegist(Participant $participant, array $companions, int $mode = self::MODE_USER) {
         $detailDao = new DetailDao();
         $gameInfoDao = new GameInfoDao();
+        $configDao = new ConfigDao();
+        $config = $configDao->selectById(1);
         $errMsg = '';
         try {
             // トランザクション開始
@@ -95,11 +105,11 @@ class EventService
         // 予約の通知
         $api = new LineApi();
         // 管理者への通知
-        if(!$errMsg && $notifyFlg === 1) {
+        if(!$errMsg && $config['line_notify_flg'] == '1') {
             $api->reserve_notify($participant, $gameInfo['title'], $gameInfo['game_date'], $_POST['companion'] ?? '0');
         }
         // 本人への通知
-        if(!empty($participant->lineId)) {
+        if(!empty($participant->lineId) && $mode === self::MODE_USER) {
             $msg = $api->createReservationMessage($gameInfo['title'], $gameInfo['game_date'], $gameInfo['start_time']);
             $api->pushMessage($participant->lineId, $msg);
         }
@@ -134,11 +144,11 @@ class EventService
         if($count) {
             $api->multiple_reserve($paricipant->name, $count);
         }
+        // 本人への通知
         if(!empty($paricipant->lineId)) {
             $msg = "{$count}件のイベントを予約しました。詳細は参加イベント一覧画面をご確認ください。";
             $api->pushMessage($paricipant->lineId, $msg);
         }
-        // 本人への通知
         return $count;
     }
 

@@ -99,7 +99,7 @@ class ParticipantController extends BaseController
                     $participant->id = $_POST['id'];
                     $service->participantUpdate($participant, $companions);
                 } else {
-                    $service->oneParticipantRegist($participant, $companions, 0);
+                    $service->oneParticipantRegist($participant, $companions, EventService::MODE_ADMIN);
                 }
             } else {
                 $detailDao = new DetailDao();

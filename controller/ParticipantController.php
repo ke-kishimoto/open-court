@@ -223,7 +223,7 @@ class ParticipantController extends BaseController
 
             $service = new EventService();
             if(isset($_POST['insert'])) {
-                $errMsg = $service->oneParticipantRegist($participant, $companion);
+                $errMsg = $service->oneParticipantRegist($participant, $companion, EventService::MODE_USER);
             } elseif(isset($_POST['update'])) {
                 $participant->id = $_POST['participantId'];
                 $errMsg = $service->participantUpdate($participant, $companion);
@@ -288,7 +288,7 @@ class ParticipantController extends BaseController
                 $password = '';
                 $userId = '';
             }
-            $errMsg = $service->cancelComplete($participant, $password, $userId);
+            $errMsg = $service->cancelComplete($participant, $password, $userId, EventService::MODE_USER);
         }
         
         if(empty($errMsg)) {
