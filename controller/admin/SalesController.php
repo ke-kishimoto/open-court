@@ -111,6 +111,8 @@ class SalesController extends BaseController
                 $gameInfo = new GameInfo();
                 $gameInfo->id = $p['id'];
                 $gameInfo->expenses = $_POST["expenses-{$i}"];
+                $gameInfo->participantnum = $_POST["cnt-{$i}"];
+                $gameInfo->amount = $_POST["amount-{$i}"];
                 $GameInfoDao->update($gameInfo);
             }
 

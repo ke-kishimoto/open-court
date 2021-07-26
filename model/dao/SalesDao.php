@@ -19,7 +19,7 @@ class SalesDao extends BaseDao
         from(
             select 
             p.id
-            , amount
+            , p.amount
             , date_format(g.game_date, '%Y') as date
             from participant p
             inner join game_info g
@@ -51,8 +51,8 @@ class SalesDao extends BaseDao
         p.game_id game_id
         , max(g.game_date) date
         , max(title) title
-        , coalesce(count(*) + (select count(*) from companion where participant_id in (select id from participant where game_id = g.id and delete_flg = 1) and delete_flg = 1 and attendance = 1 ), 0) cnt
-        , sum(amount) + (select coalesce(sum(amount), 0) from companion where participant_id in (select id from participant where game_id = g.id and delete_flg = 1) and delete_flg = 1 and attendance = 1) amount
+        , coalesce(participantnum, count(*) + (select count(*) from companion where participant_id in (select id from participant where game_id = g.id and delete_flg = 1) and delete_flg = 1 and attendance = 1 ), 0) cnt
+        , coalesce(g.amount, sum(p.amount) + (select coalesce(sum(amount), 0) from companion where participant_id in (select id from participant where game_id = g.id and delete_flg = 1) and delete_flg = 1 and attendance = 1)) amount
         , expenses
         from participant p
         inner join game_info g
@@ -83,7 +83,7 @@ class SalesDao extends BaseDao
             when attendance = 1 then '出席'
             else '欠席'
           end attendance_name
-        , amount
+        , p.amount
         , amount_remark
         from participant p
         inner join game_info g

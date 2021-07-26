@@ -34,8 +34,8 @@
                     <input type="hidden" name="id-<?php echo $count ?>" value="<?php echo $event['game_id'] ?>">
                     <th><?php echo $event['date'] ?></th>
                     <th><a href="./detail?gameid=<?php echo $event['game_id'] ?>"><?php echo $event['title'] ?></a></th>
-                    <th><?php echo $event['cnt'] ?></th>
-                    <th><?php echo $event['amount'] ?></th>
+                    <th><input type="number" name="cnt-<?php echo $count ?>" value="<?php echo $event['cnt'] ?>" class="form-control"></th>
+                    <th><input type="number" name="amount-<?php echo $count ?>" value="<?php echo $event['amount'] ?>" class="form-control"></th>
                     <th><input type="number" name="expenses-<?php echo $count ?>" value="<?php echo $event['expenses'] ?>" class="form-control"></th>
                     <th><?php echo ($event['amount']-$event['expenses']) ?></th>
                 </tr>
