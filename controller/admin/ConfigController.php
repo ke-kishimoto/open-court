@@ -40,6 +40,7 @@ class ConfigController extends BaseController
             $cfg = $configDao->selectById(1);
             $config->id = $_POST['id'];
             $config->lineToken = $_POST['line_token'];
+            $config->lineNotifyFlg = $_POST['line_notify_flg'];
             $config->sendgridApiKey = $_POST['sendgrid_api_key'] ?? '';
             $config->systemTitle = $_POST['system_title'];
             $config->bgColor = $_POST['bg_color'];

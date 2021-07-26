@@ -18,7 +18,14 @@
         4. 発行されたトークンをコピーし、入力フォームに貼り付けて更新を押下します。
     </p>
     <p>
-        LINEトークン<input class="form-control" type="text" name="line_token"  required value="<?php echo $config['line_token'] ?>">
+        LINE notify トークン<input class="form-control" type="text" name="line_token"  required value="<?php echo $config['line_token'] ?>">
+    </p>
+    <p>
+        通知設定
+        <select class="form-control" name="line_notify_flg">
+            <option value="1" <?php echo $config['line_notify_flg'] == '1' ? 'selected' : '' ?>>通知する</option>
+            <option value="0" <?php echo $config['line_notify_flg'] == '0' ? 'selected' : '' ?>>通知しない</option>
+        </select>
     </p>
     <hr>
     <p>背景色</p>
