@@ -35,22 +35,6 @@
             <button class="btn btn-secondary" id="btn-companion-add" type="button">同伴者追加</button>
             <button class="btn btn-danger" id="btn-companion-del" type="button">同伴者削除</button>
         </p>
-        <?php for($i = 0;$i < count($companions); $i++): ?>
-            <div id="douhan-<?php echo $i + 1 ?>">
-            <?php echo $i+1 ?>人目
-            <select id="occupation-<?php echo $i + 1 ?>" name="occupation-<?php echo $i + 1 ?>" class="custom-select mr-sm-2">
-                <option value="1" <?php echo $companions[$i]['occupation'] == '1' ? 'selected' : ''; ?>>社会人</option>
-                <option value="2" <?php echo $companions[$i]['occupation'] == '2' ? 'selected' : ''; ?>>大学・専門学校</option>
-                <option value="3" <?php echo $companions[$i]['occupation'] == '3' ? 'selected' : ''; ?>>高校</option>
-            </select>
-            <select id="sex-<?php echo $i + 1 ?>" name="sex-<?php echo $i + 1 ?>" class="custom-select mr-sm-2">
-                <option value="1" <?php echo $companions[$i]['sex'] == '1' ? 'selected' : ''; ?>>男性</option>
-                <option value="2" <?php echo $companions[$i]['sex'] == '2' ? 'selected' : ''; ?>>女性</option>
-            </select>
-            <input id="name-<?php echo $i + 1 ?>" class="form-control" type="text" name="name-<?php echo $i + 1 ?>" required maxlength="50" value="<?php echo $companions[$i]['name']; ?>">
-            </div>
-            <br>
-        <?php endfor ?>
         <button class="btn btn-primary" type="submit">登録</button>
     </form>
     <br>

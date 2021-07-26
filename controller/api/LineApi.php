@@ -3,6 +3,7 @@ namespace api;
 define('LINE_API_URL', 'https://notify-api.line.me/api/notify');
 use entity\Participant;
 use entity\Inquiry;
+use entity\Users;
 use dao\ConfigDao;
 use dao\GameInfoDao;
 use dao\DetailDao;
@@ -414,6 +415,20 @@ class LineApi
             
             $gameInfoDao = new GameInfoDao();
 
+            // 友達追加された場合
+            if(isset($event['type']) && $event['type'] === 'follow') {
+                $userDao = new UsersDao();
+                $user = $userDao->getUserByLineId($event['source']['userId']);
+                if(!$user) {
+                    // ユーザーが存在しない場合は登録する
+                    $user = new Users();
+                    $user->adminFlg = 0;
+                    $user->lineId = $event['source']['userId'];
+                    $userDao->insert($user);
+                }
+            }
+
+            // メッセージが送信された場合
             if(isset($event['message']) && $event['message']['type'] === 'text') {
                 $text = $event['message']['text'];
 
@@ -513,8 +528,8 @@ class LineApi
                 curl_exec($ch);
                 curl_close($ch);
             }
+            // クイックリプライから返信があった場合
             if(isset($event['postback'])) {
-                // クイックリプライからの返信時の処理
                 $data = explode('&', $event['postback']['data']);
                 // 文字列から連想配列を作成
                 foreach($data as $item) {
@@ -590,7 +605,7 @@ class LineApi
                     curl_close($ch);
 
                 }
-                if(isset($data['action'])) {
+                if(isset($data['action']) && ($data['action'] === 'reserve' || $data['action'] === 'cancel')) {
 
                     $eventService = new EventService();
                     $userDao = new UsersDao();

@@ -401,7 +401,7 @@ class UserController extends BaseController
         if($user['new'] || (empty($user['occupation'] || empty($user['sex'])))) {
             $title = '新規登録';
             $id = $user['id'];
-            $companions = [];
+            // $companions = [];
             include('./view/common/head.php');
             include('./view/common/header.php');
             include('./view/lineSignUp.php');
@@ -430,20 +430,21 @@ class UserController extends BaseController
             $user->id = $_POST['id'];
             $usersDao->update($user);
     
-            // 同伴者の登録
-            if($_POST['companion'] > 0) {
-                $id = $usersDao->getUsersId($user);
-                $defaultCompanionDao->setPdo($usersDao->getPdo());
-                for($i = 1; $i <= $_POST['companion']; $i++) {
-                    // $defaultCompanion = new DefaultCompanion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
-                    $defaultCompanion = new DefaultCompanion();
-                    $defaultCompanion->userId = $id; 
-                    $defaultCompanion->occupation = $_POST['occupation-' . $i];
-                    $defaultCompanion->sex = $_POST['sex-' . $i];
-                    $defaultCompanion->name = $_POST['name-' . $i];
-                    $defaultCompanionDao->insert($defaultCompanion);
-                }
-            }
+            // // 同伴者の登録
+            // // LINEで予約の場合は同伴者を考慮しにくいので、一旦保留
+            // if($_POST['companion'] > 0) {
+            //     $id = $usersDao->getUsersId($user);
+            //     $defaultCompanionDao->setPdo($usersDao->getPdo());
+            //     for($i = 1; $i <= $_POST['companion']; $i++) {
+            //         // $defaultCompanion = new DefaultCompanion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
+            //         $defaultCompanion = new DefaultCompanion();
+            //         $defaultCompanion->userId = $id; 
+            //         $defaultCompanion->occupation = $_POST['occupation-' . $i];
+            //         $defaultCompanion->sex = $_POST['sex-' . $i];
+            //         $defaultCompanion->name = $_POST['name-' . $i];
+            //         $defaultCompanionDao->insert($defaultCompanion);
+            //     }
+            // }
             $usersDao->getPdo()->commit();
     
         } catch(Exception $ex) {
