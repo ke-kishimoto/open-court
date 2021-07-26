@@ -10,36 +10,55 @@ class SalesDao extends BaseDao
         $this->tableName = 'participant';
     }
 
+    public function getYearMonthSales($year)
+    {
+        $sql = "select date_format(game_date, '%m') month, sum(participantnum) cnt, sum(amount) amount
+        from game_info
+        where date_format(game_date, '%Y') = :year
+        and delete_flg = 1
+        group by date_format(game_date, '%m')
+        order by date_format(game_date, '%m')";
+        $prepare = $this->getPdo()->prepare($sql);
+        $prepare->bindValue(':year', $year, PDO::PARAM_STR);
+        $prepare->execute();
+        return $prepare->fetchAll();
+    }
+
     public function getYearSales()
     {
-        $sql = "select 
-        date
-        ,count(id) as cnt
-        ,sum(amount) as amount
-        from(
-            select 
-            p.id
-            , p.amount
-            , date_format(g.game_date, '%Y') as date
-            from participant p
-            inner join game_info g
-            on p.game_id = g.id
-            where  p.delete_flg = 1
-            and p.attendance = 1
-            union all
-            select  
-            participant_id
-            , c.amount
-            , date_format(g.game_date, '%Y') as date
-            from companion c
-            inner join participant p on  c.participant_id = p.id
-            inner join game_info g on g.id = p.game_id
-            where participant_id in (select id from participant where delete_flg = 1)
-            and c.delete_flg = 1
-            and p.attendance = 1
-         ) as tmp
-        group by date
-        order by date";
+        $sql = "select date_format(game_date, '%Y') date, sum(participantnum) cnt, sum(amount) amount
+        from game_info
+        where delete_flg = 1
+        group by date_format(game_date, '%Y')
+        order by date_format(game_date, '%Y')";
+        // $sql = "select 
+        // date
+        // ,count(id) as cnt
+        // ,sum(amount) as amount
+        // from(
+        //     select 
+        //     p.id
+        //     , p.amount
+        //     , date_format(g.game_date, '%Y') as date
+        //     from participant p
+        //     inner join game_info g
+        //     on p.game_id = g.id
+        //     where  p.delete_flg = 1
+        //     and p.attendance = 1
+        //     union all
+        //     select  
+        //     participant_id
+        //     , c.amount
+        //     , date_format(g.game_date, '%Y') as date
+        //     from companion c
+        //     inner join participant p on  c.participant_id = p.id
+        //     inner join game_info g on g.id = p.game_id
+        //     where participant_id in (select id from participant where delete_flg = 1)
+        //     and c.delete_flg = 1
+        //     and p.attendance = 1
+        //  ) as tmp
+        // group by date
+        // order by date";
         $prepare = $this->getPdo()->prepare($sql);
         $prepare->execute();
         return $prepare->fetchAll();

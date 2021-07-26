@@ -40,6 +40,28 @@ class SalesController extends BaseController
         include('./view/admin/common/footer.php');
     }
 
+    public function month()
+    {
+        parent::adminHeader();
+        $year = isset($_GET['year']) ? intval($_GET['year']) : date('Y') ;
+        $salesDao = new SalesDao();
+        $salesMonthList = $salesDao->getYearMonthSales($year);
+
+        $total_cnt = 0;
+        $total_amount = 0;
+        foreach ($salesMonthList as $month) {
+            $total_cnt += (int)$month['cnt'];
+            $total_amount += (int)$month['amount'];
+        }
+
+        $title = '売上管理';
+        $adminFlg = '0';
+        include('./view/admin/common/head.php');
+        include('./view/admin/common/header.php');
+        include('./view/admin/monthlysales2.php');
+        include('./view/admin/common/footer.php');
+    }
+
     public function detail()
     {
         parent::adminHeader();
@@ -110,9 +132,9 @@ class SalesController extends BaseController
                 $p = $GameInfoDao->selectById((int)$_POST["id-{$i}"]);
                 $gameInfo = new GameInfo();
                 $gameInfo->id = $p['id'];
-                $gameInfo->expenses = $_POST["expenses-{$i}"];
-                $gameInfo->participantnum = $_POST["cnt-{$i}"];
-                $gameInfo->amount = $_POST["amount-{$i}"];
+                $gameInfo->expenses = (int)$_POST["expenses-{$i}"];
+                $gameInfo->participantnum = (int)$_POST["cnt-{$i}"];
+                $gameInfo->amount = (int)$_POST["amount-{$i}"];
                 $GameInfoDao->update($gameInfo);
             }
 

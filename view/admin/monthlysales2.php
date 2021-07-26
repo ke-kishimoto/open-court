@@ -1,8 +1,10 @@
 <table>
     <tr>
-        <td>
+        <td colspan=2>
             <div class="sales-head">
-                <p>売上集計表(年)</p>
+                <a href="./month?year=<?php echo htmlspecialchars($year - 1); ?>" class="lastMonthLink"><i class="fas fa-chevron-left"></i></a>
+                <a href="./month?year=<?php echo htmlspecialchars($year); ?>" class="MonthLink"><span id="year"><?php echo htmlspecialchars($year); ?></span>年</a>
+                <a href="./month?year=<?php echo htmlspecialchars($year + 1); ?>" class="nextMonthLink"><i class="fas fa-chevron-right"></i></a>
             </div>
         </td>
         <td>
@@ -12,24 +14,23 @@
         </td>
         <td>
             <div class="sales-head">
-                <a href="./month">月別</a>
+                <a href="./year">年別</a>
             </div>
         </td>
     </tr>
 </table>
-<?php if (!empty($salesYearList)) : ?>
+<?php if (!empty($salesMonthList)) : ?>
     <table>
         <tr>
-            <th>年</th>
+            <th>月</th>
             <th>参加人数</th>
             <th>売上金額</th>
         </tr>
-        <?php foreach ($salesYearList as $year) : ?>
+        <?php foreach ($salesMonthList as $month) : ?>
             <tr>
-                <th><?php echo $year['date'] ?></th>
-                <!-- <th><a href="./detail?gameid=<?php echo $event['game_id'] ?>"><?php echo $event['title'] ?></a></th> -->
-                <th><?php echo $year['cnt'] ?></th>
-                <th><?php echo $year['amount'] ?></th>
+                <th><?php echo $month['month'] ?></th>
+                <th><?php echo $month['cnt'] ?></th>
+                <th><?php echo $month['amount'] ?></th>
             </tr>
         <?php endforeach ?>
         <tr>
