@@ -594,6 +594,8 @@ class LineApi
 
                     $eventService = new EventService();
                     $userDao = new UsersDao();
+                    $gameInfoDao = new GameInfoDao();
+                    $gameInfo = $gameInfoDao->selectById((int)$data['id']);
                     $user = $userDao->getUserByLineId($event['source']['userId']);
                     $participant = new Participant();
                     $participant->gameId = $data['id'];
@@ -607,9 +609,27 @@ class LineApi
 
                     if($data['action'] === 'reserve') {
                         $eventService->oneParticipantRegist($participant, [], EventService::MODE_LINE);
+                        $text = $this->createReservationMessage($gameInfo['title'], $gameInfo['game_date'], $gameInfo['start_time']);
                     } elseif ($data['action'] === 'cancel') {
                         $eventService->cancelComplete($participant, '', $user['id'], EventService::MODE_LINE);
+                        $text = $this->createCancelMessage($gameInfo['title'], $gameInfo['game_date']);
                     }
+                    // 完了メッセージ送信
+                    $url = 'https://api.line.me/v2/bot/message/reply'; // リプライ
+                    $ch = curl_init($url);
+                    $headers = array(
+                        "Content-Type: application/json",
+                        "Authorization: Bearer {$config['channel_access_token']}"
+                    );
+                    $data = json_encode([
+                        'replyToken' => "{$event['replyToken']}",
+                        'messages' => [
+                            [
+                                'type' => 'text',
+                                'text' => $text,                            
+                            ]
+                        ]
+                    ]);
                 }
             }
         }

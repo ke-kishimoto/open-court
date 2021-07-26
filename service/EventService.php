@@ -51,7 +51,7 @@ class EventService
         
             $api = new LineApi();
             // 管理者への通知
-            if(!$errMsg && $config['line_notify_flg'] == '1') {
+            if(!$errMsg && $config['line_notify_flg'] == '1' && $mode !== self::MODE_ADMIN) {
                 $api->cancel_notify($participant['name'], $gameInfo['title'], $gameInfo['game_date']);
             }
             // 本人への通知
@@ -105,7 +105,7 @@ class EventService
         // 予約の通知
         $api = new LineApi();
         // 管理者への通知
-        if(!$errMsg && $config['line_notify_flg'] == '1') {
+        if(!$errMsg && $config['line_notify_flg'] == '1' && $mode !== self::MODE_ADMIN) {
             $api->reserve_notify($participant, $gameInfo['title'], $gameInfo['game_date'], $_POST['companion'] ?? '0');
         }
         // 本人への通知
