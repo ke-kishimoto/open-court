@@ -388,10 +388,12 @@ class UserController extends BaseController
         $state = $_GET['state'];
         // CORS対策
         if($state !== $_SESSION['state']) {
+            unset($_SESSION['state']);
             // ユーザーを取得せずにトップ画面に遷移
             header('Location: /index.php');
             return;
         }
+        unset($_SESSION['state']);
 
         $service = new UserService();
         $user = $service->lineLogin($code);
