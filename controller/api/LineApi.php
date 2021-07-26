@@ -415,18 +415,18 @@ class LineApi
             
             $gameInfoDao = new GameInfoDao();
 
-            // 友達追加された場合
-            if(isset($event['type']) && $event['type'] === 'follow') {
-                $userDao = new UsersDao();
-                $user = $userDao->getUserByLineId($event['source']['userId']);
-                if(!$user) {
-                    // ユーザーが存在しない場合は登録する
-                    $user = new Users();
-                    $user->adminFlg = 0;
-                    $user->lineId = $event['source']['userId'];
-                    $userDao->insert($user);
-                }
-            }
+            // // 友達追加された場合
+            // if(isset($event['type']) && $event['type'] === 'follow') {
+            //     $userDao = new UsersDao();
+            //     $user = $userDao->getUserByLineId($event['source']['userId']);
+            //     if(!$user) {
+            //         // ユーザーが存在しない場合は登録する
+            //         $user = new Users();
+            //         $user->adminFlg = 0;
+            //         $user->lineId = $event['source']['userId'];
+            //         $userDao->insert($user);
+            //     }
+            // }
 
             // メッセージが送信された場合
             if(isset($event['message']) && $event['message']['type'] === 'text') {
