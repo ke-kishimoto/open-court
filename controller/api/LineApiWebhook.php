@@ -56,7 +56,7 @@ class LineApiWebhook
             $data[$keyValue[0]] = $keyValue[1];    
         }
         if(isset($data['action']) && $data['action'] === 'profile') {
-            $this->profileRegist($event, $channelAccessToken);
+            $this->profileRegist($event, $channelAccessToken, $data);
         } elseif(isset($data['action']) && $data['action'] === 'select') {
             $this->eventDetail($event, $channelAccessToken, $data);
         } elseif(isset($data['action']) && ($data['action'] === 'reserve' || $data['action'] === 'cancel')) {
@@ -144,9 +144,19 @@ class LineApiWebhook
     {
         $userDao = new UsersDao();
         $user = $userDao->getUserByLineId($event['source']['userId']);
-        $text = "表示名：{$user['name']}";
-        $text .= "職種：{$user['occupation']}";
-        $text .= "性別：{$user['sex']}";
+        $text = "表示名：{$user['name']}\n";
+        if($user['occupation'] == '1') {
+            $text .= "職種：社会人\n";
+        } elseif($user['occupation'] == '2') {
+            $text .= "職種：学生\n";
+        } elseif($user['occupation'] == '3') {
+            $text .= "職種：高校生\n";
+        }
+        if($user['sex'] == '1') {
+            $text .= "性別：男性\n";
+        } elseif($user['sex'] == '2') {
+            $text .= "性別：女性\n";
+        }
 
         return json_encode([
             'replyToken' => "{$event['replyToken']}",
@@ -252,7 +262,7 @@ class LineApiWebhook
         ]);
     }
 
-    private function profileRegist($event, $channelAccessToken)
+    private function profileRegist($event, $channelAccessToken, $data)
     {
         $userDao = new UsersDao();
         $userInfo = $userDao->getUserByLineId($event['source']['userId']);
