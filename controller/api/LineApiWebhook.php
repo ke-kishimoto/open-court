@@ -32,6 +32,8 @@ class LineApiWebhook
             $data = $this->occupationSelect($event);
         } elseif($text === '性別') {
             $data = $this->genderSelect($event);
+        } elseif($text === 'プロフィール確認') {
+            $data = $this->profileConfirmation($event);
         } else {
             $data = $this->atherMessage($event);
         }
@@ -136,6 +138,26 @@ class LineApiWebhook
                 ]
             ]
         ]);
+    }
+
+    private function profileConfirmation($event)
+    {
+        $userDao = new UsersDao();
+        $user = $userDao->getUserByLineId($event['source']['userId']);
+        $text = "表示名：{$user['name']}";
+        $text .= "職種：{$user['occupation']}";
+        $text .= "性別：{$user['sex']}";
+
+        return json_encode([
+            'replyToken' => "{$event['replyToken']}",
+            'messages' => [
+                [
+                    'type' => 'text',
+                    'text' => $text,
+                ]
+            ]
+        ]);
+
     }
 
     private function occupationSelect($event) 
@@ -354,7 +376,7 @@ class LineApiWebhook
         $participant->remark = $user['remark'];
         $participant->lineId = $user['line_id'];
 
-        if(isEmpty($user['occupation']) || isEmpty($user['sex'])) {
+        if(empty($user['occupation']) || empty($user['sex'])) {
             $text = 'プロフィールに未設定の項目があるため更新できません。プロフィール設定から設定を行ってください。';
         } else {
             if($data['action'] === 'reserve') {
