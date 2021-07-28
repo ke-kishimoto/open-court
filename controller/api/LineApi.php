@@ -509,6 +509,75 @@ class LineApi
                             ]
                         ]
                     ]);
+                } elseif($text === '職種') {
+                    $data = json_encode([
+                        'replyToken' => "{$event['replyToken']}",
+                        'messages' => [
+                            [
+                                'type' => 'text',
+                                'text' =>  '職種を選択してください。（高校生以下の場合は高校生を選択してください）',                            
+                                'quickReply' => [
+                                    'items' =>  [
+                                        'type' => 'action',
+                                        'action' => [
+                                            'type' => 'postback',
+                                            'label' => '社会人',
+                                            'data' => "action=profile&type=occupation&id=1",
+                                            'displayText' => '社会人'
+                                        ]
+                                    ],
+                                    [
+                                        'type' => 'action',
+                                        'action' => [
+                                            'type' => 'postback',
+                                            'label' => '学生（大学・専門学校）',
+                                            'data' => "action=profile&type=occupation&id=2",
+                                            'displayText' => '学生（大学・専門学校）'
+                                        ]
+                                    ],
+                                    [
+                                        'type' => 'action',
+                                        'action' => [
+                                            'type' => 'postback',
+                                            'label' => '高校生',
+                                            'data' => "action=profile&type=occupation&id=3",
+                                            'displayText' => '高校生'
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]);
+                } elseif($text === '性別') {
+                    $data = json_encode([
+                        'replyToken' => "{$event['replyToken']}",
+                        'messages' => [
+                            [
+                                'type' => 'text',
+                                'text' =>  '性別を選択してください。',                            
+                                'quickReply' => [
+                                    'items' =>  [
+                                        'type' => 'action',
+                                        'action' => [
+                                            'type' => 'postback',
+                                            'label' => '男性',
+                                            'data' => "action=profile&type=sex&id=1",
+                                            'displayText' => '男性'
+                                        ]
+                                    ],
+                                    [
+                                        'type' => 'action',
+                                        'action' => [
+                                            'type' => 'postback',
+                                            'label' => '女性',
+                                            'data' => "action=profile&type=sex&id=2",
+                                            'displayText' => '女性'
+                                        ]
+                                    ],
+                                ]
+                            ]
+                        ]
+                    ]);
                 } else {
                     $data = json_encode([
                         'replyToken' => "{$event['replyToken']}",
@@ -535,6 +604,9 @@ class LineApi
                 foreach($data as $item) {
                     $keyValue = explode('=', $item);
                     $data[$keyValue[0]] = $keyValue[1];    
+                }
+                if(isset($data['action']) && $data['action'] === 'profile') {
+
                 }
                 if(isset($data['action']) && $data['action'] === 'select') {
                     // イベントの詳細情報を表示する
