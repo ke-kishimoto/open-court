@@ -268,8 +268,16 @@ class LineApiWebhook
         $userInfo = $userDao->getUserByLineId($event['source']['userId']);
         $user = new Users();
         $user->id = $userInfo['id'];
-        $user->occupation = $data['occupation'] ?? $userInfo['occupation'];
-        $user->sex = $data['sex'] ?? $userInfo['sex'];
+        if($data['type'] === 'occupation') {
+            $user->occupation = $data['id'];
+        } else {
+            $user->occupation = $userInfo['occupation'];
+        }
+        if($data['type'] === 'sex') {
+            $user->sex = $data['id'];
+        } else {
+            $user->sex = $userInfo['sex'];
+        }
         $userDao->update($user);
         $text = '登録完了しました。';
 
