@@ -1,6 +1,7 @@
 <?php
 namespace api;
 define('LINE_API_URL', 'https://notify-api.line.me/api/notify');
+use api\LineApiWebhook;
 use entity\Participant;
 use entity\Inquiry;
 use entity\Users;
@@ -387,7 +388,6 @@ class LineApi
     {
         // webhookリクエストを受け取る
 
-        // $events =  $_POST['events'];
         $json = file_get_contents("php://input");
         $contents = json_decode($json, true);
         $events = $contents['events'];
@@ -413,7 +413,7 @@ class LineApi
                 continue;
             }
             
-            $gameInfoDao = new GameInfoDao();
+            // $gameInfoDao = new GameInfoDao();
 
             // // 友達追加された場合
             // if(isset($event['type']) && $event['type'] === 'follow') {
@@ -428,303 +428,350 @@ class LineApi
             //     }
             // }
 
+            $webhook = new LineApiWebhook();
+
             // メッセージが送信された場合
             if(isset($event['message']) && $event['message']['type'] === 'text') {
-                $text = $event['message']['text'];
 
-                $url = 'https://api.line.me/v2/bot/message/reply'; // リプライ
-                $ch = curl_init($url);
-                $headers = array(
-                    "Content-Type: application/json",
-                    "Authorization: Bearer {$config['channel_access_token']}"
-                );
+                $webhook->receiveMessageText($event, $config['channel_access_token']);
 
-                // 予約・キャンセル
-                if($text === '予約' || $text === 'キャンセル') {
-                    if($text === '予約') {
-                        $gameInfoList = $gameInfoDao->getGameInfoListByAfterDate(date('Y-m-d'), '', $event['source']['userId']);
-                        $msg = '予約したいイベントを選択してください。';
-                        $mode = 'reserve';
-                    } else {
-                        $detailDao = new DetailDao();
-                        $gameInfoList = $detailDao->getEventListByLineId($event['source']['userId'], date('Y-m-d'));
-                        $msg = 'キャンセルしたいイベントを選択してください。';
-                        $mode = 'cancel';
-                    }
-                    $items = [];
-                    foreach($gameInfoList as $gameInfo) {
-                        $items[] = [
-                            'type' => 'action', 
-                            'action' => [
-                                'type' => 'postback',
-                                'label' => "{$gameInfo['game_date']} {$gameInfo['short_title']}",
-                                'data' => "action=select&mode={$mode}&id={$gameInfo['id']}",
-                                'displayText' => "{$gameInfo['game_date']} {$gameInfo['short_title']}"
-                            ]
-                        ];
+                // $text = $event['message']['text'];
+
+                // $url = 'https://api.line.me/v2/bot/message/reply'; // リプライ
+                // $ch = curl_init($url);
+                // $headers = array(
+                //     "Content-Type: application/json",
+                //     "Authorization: Bearer {$config['channel_access_token']}"
+                // );
+
+                // // 予約・キャンセル
+                // if($text === '予約' || $text === 'キャンセル') {
+                //     if($text === '予約') {
+                //         $gameInfoList = $gameInfoDao->getGameInfoListByAfterDate(date('Y-m-d'), '', $event['source']['userId']);
+                //         $msg = '予約したいイベントを選択してください。';
+                //         $mode = 'reserve';
+                //     } else {
+                //         $detailDao = new DetailDao();
+                //         $gameInfoList = $detailDao->getEventListByLineId($event['source']['userId'], date('Y-m-d'));
+                //         $msg = 'キャンセルしたいイベントを選択してください。';
+                //         $mode = 'cancel';
+                //     }
+                //     $items = [];
+                //     foreach($gameInfoList as $gameInfo) {
+                //         $items[] = [
+                //             'type' => 'action', 
+                //             'action' => [
+                //                 'type' => 'postback',
+                //                 'label' => "{$gameInfo['game_date']} {$gameInfo['short_title']}",
+                //                 'data' => "action=select&mode={$mode}&id={$gameInfo['id']}",
+                //                 'displayText' => "{$gameInfo['game_date']} {$gameInfo['short_title']}"
+                //             ]
+                //         ];
                         
-                        if(count($items) >= self::QUICK_REPLY_NUM) {
-                            break;
-                        }
-                    }
-                    // 応答メッセージを返す 
-                    $data = json_encode([
-                        'replyToken' => "{$event['replyToken']}",
-                        'messages' => [
-                            [
-                                'type' => 'text',
-                                'text' => $msg,                            
-                                'quickReply' => [
-                                    'items' =>  $items
-                                ]
-                            ]
-                        ]
-                    ]);
-                } elseif($text === '予約確認') {
-                    $detailDao = new DetailDao();
-                    $gameInfoList = $detailDao->getEventListByLineId($event['source']['userId'], date('Y-m-d'));
-                    if(count($gameInfoList) === 0) {
-                        $msg = '予約済みのイベントはありません。';
-                    } else {
-                        $msg = "予約済みイベント一覧\n";
-                        foreach($gameInfoList as $gameInfo) {
-                            $msg .= "----------------------------------------\n";
-                            $msg .= "タイトル：{$gameInfo['title']}\n";
-                            $msg .= "日付：{$gameInfo['game_date']}\n";
-                            $msg .= "開始時刻{$gameInfo['start_time']}\n";
-                            if($gameInfo['waiting_flg'] == '1') {
-                                $msg .= "※キャンセル待ち\n";
-                            }
-                        }
-                        $msg .= "----------------------------------------\n";
-                        $msg .= "合計" . count($gameInfoList) . "件\n";
-                    }
-                    // 応答メッセージを返す 
-                    $data = json_encode([
-                        'replyToken' => "{$event['replyToken']}",
-                        'messages' => [
-                            [
-                                'type' => 'text',
-                                'text' => $msg,
-                            ]
-                        ]
-                    ]);
-                } elseif($text === '職種') {
-                    $data = json_encode([
-                        'replyToken' => "{$event['replyToken']}",
-                        'messages' => [
-                            [
-                                'type' => 'text',
-                                'text' =>  '職種を選択してください。（高校生以下の場合は高校生を選択してください）',                            
-                                'quickReply' => [
-                                    'items' =>  [
-                                        'type' => 'action',
-                                        'action' => [
-                                            'type' => 'postback',
-                                            'label' => '社会人',
-                                            'data' => "action=profile&type=occupation&id=1",
-                                            'displayText' => '社会人'
-                                        ]
-                                    ],
-                                    [
-                                        'type' => 'action',
-                                        'action' => [
-                                            'type' => 'postback',
-                                            'label' => '学生（大学・専門学校）',
-                                            'data' => "action=profile&type=occupation&id=2",
-                                            'displayText' => '学生（大学・専門学校）'
-                                        ]
-                                    ],
-                                    [
-                                        'type' => 'action',
-                                        'action' => [
-                                            'type' => 'postback',
-                                            'label' => '高校生',
-                                            'data' => "action=profile&type=occupation&id=3",
-                                            'displayText' => '高校生'
-                                        ]
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]);
-                } elseif($text === '性別') {
-                    $data = json_encode([
-                        'replyToken' => "{$event['replyToken']}",
-                        'messages' => [
-                            [
-                                'type' => 'text',
-                                'text' =>  '性別を選択してください。',                            
-                                'quickReply' => [
-                                    'items' =>  [
-                                        'type' => 'action',
-                                        'action' => [
-                                            'type' => 'postback',
-                                            'label' => '男性',
-                                            'data' => "action=profile&type=sex&id=1",
-                                            'displayText' => '男性'
-                                        ]
-                                    ],
-                                    [
-                                        'type' => 'action',
-                                        'action' => [
-                                            'type' => 'postback',
-                                            'label' => '女性',
-                                            'data' => "action=profile&type=sex&id=2",
-                                            'displayText' => '女性'
-                                        ]
-                                    ],
-                                ]
-                            ]
-                        ]
-                    ]);
-                } else {
-                    $data = json_encode([
-                        'replyToken' => "{$event['replyToken']}",
-                        'messages' => [
-                            [
-                                'type' => 'text',
-                                'text' => '恐れ入りますが送信されたメッセージには対応しておりません。',
-                            ]
-                        ]
-                    ]);
-                }
-                // リクエストの送信
-                curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
-                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, ($data)); //データをセット
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
-                curl_exec($ch);
-                curl_close($ch);
+                //         if(count($items) >= self::QUICK_REPLY_NUM) {
+                //             break;
+                //         }
+                //     }
+                //     // 応答メッセージを返す 
+                //     $data = json_encode([
+                //         'replyToken' => "{$event['replyToken']}",
+                //         'messages' => [
+                //             [
+                //                 'type' => 'text',
+                //                 'text' => $msg,                            
+                //                 'quickReply' => [
+                //                     'items' =>  $items
+                //                 ]
+                //             ]
+                //         ]
+                //     ]);
+                // } elseif($text === '予約確認') {
+                //     $detailDao = new DetailDao();
+                //     $gameInfoList = $detailDao->getEventListByLineId($event['source']['userId'], date('Y-m-d'));
+                //     if(count($gameInfoList) === 0) {
+                //         $msg = '予約済みのイベントはありません。';
+                //     } else {
+                //         $msg = "予約済みイベント一覧\n";
+                //         foreach($gameInfoList as $gameInfo) {
+                //             $msg .= "----------------------------------------\n";
+                //             $msg .= "タイトル：{$gameInfo['title']}\n";
+                //             $msg .= "日付：{$gameInfo['game_date']}\n";
+                //             $msg .= "開始時刻{$gameInfo['start_time']}\n";
+                //             if($gameInfo['waiting_flg'] == '1') {
+                //                 $msg .= "※キャンセル待ち\n";
+                //             }
+                //         }
+                //         $msg .= "----------------------------------------\n";
+                //         $msg .= "合計" . count($gameInfoList) . "件\n";
+                //     }
+                //     // 応答メッセージを返す 
+                //     $data = json_encode([
+                //         'replyToken' => "{$event['replyToken']}",
+                //         'messages' => [
+                //             [
+                //                 'type' => 'text',
+                //                 'text' => $msg,
+                //             ]
+                //         ]
+                //     ]);
+                // } elseif($text === '職種') {
+                //     $data = json_encode([
+                //         'replyToken' => "{$event['replyToken']}",
+                //         'messages' => [
+                //             [
+                //                 'type' => 'text',
+                //                 'text' =>  '職種を選択してください。（高校生以下の場合は高校生を選択してください）',                            
+                //                 'quickReply' => [
+                //                     'items' => [
+                //                         [
+                //                         'type' => 'action',
+                //                         'action' => [
+                //                             'type' => 'postback',
+                //                             'label' => '社会人',
+                //                             'data' => "action=profile&type=occupation&id=1",
+                //                             'displayText' => '社会人'
+                //                             ]
+                //                         ],
+                //                         [
+                //                         'type' => 'action',
+                //                         'action' => [
+                //                             'type' => 'postback',
+                //                             'label' => '学生（大学・専門学校）',
+                //                             'data' => "action=profile&type=occupation&id=2",
+                //                             'displayText' => '学生（大学・専門学校）'
+                //                             ]
+                //                         ],
+                //                         [
+                //                         'type' => 'action',
+                //                         'action' => [
+                //                             'type' => 'postback',
+                //                             'label' => '高校生',
+                //                             'data' => "action=profile&type=occupation&id=3",
+                //                             'displayText' => '高校生'
+                //                             ]
+                //                         ]
+                //                     ]
+                //                 ]
+                //             ]
+                //         ]
+                //     ]);
+                // } elseif($text === '性別') {
+                //     $data = json_encode([
+                //         'replyToken' => "{$event['replyToken']}",
+                //         'messages' => [
+                //             [
+                //                 'type' => 'text',
+                //                 'text' =>  '性別を選択してください。',                            
+                //                 'quickReply' => [
+                //                     'items' =>  [
+                //                         [
+                //                         'type' => 'action',
+                //                         'action' => [
+                //                             'type' => 'postback',
+                //                             'label' => '男性',
+                //                             'data' => "action=profile&type=sex&id=1",
+                //                             'displayText' => '男性'
+                //                             ]
+                //                         ],
+                //                         [
+                //                         'type' => 'action',
+                //                         'action' => [
+                //                             'type' => 'postback',
+                //                             'label' => '女性',
+                //                             'data' => "action=profile&type=sex&id=2",
+                //                             'displayText' => '女性'
+                //                             ]
+                //                         ],
+                //                     ]
+                //                 ]
+                //             ]   
+                //         ]
+                //     ]);
+                // } else {
+                //     $data = json_encode([
+                //         'replyToken' => "{$event['replyToken']}",
+                //         'messages' => [
+                //             [
+                //                 'type' => 'text',
+                //                 'text' => '恐れ入りますが送信されたメッセージには対応しておりません。',
+                //             ]
+                //         ]
+                //     ]);
+                // }
+                // // リクエストの送信
+                // curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
+                // curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                // curl_setopt($ch, CURLOPT_POSTFIELDS, ($data)); //データをセット
+                // curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
+                // curl_exec($ch);
+                // curl_close($ch);
             }
             // クイックリプライから返信があった場合
             if(isset($event['postback'])) {
-                $data = explode('&', $event['postback']['data']);
-                // 文字列から連想配列を作成
-                foreach($data as $item) {
-                    $keyValue = explode('=', $item);
-                    $data[$keyValue[0]] = $keyValue[1];    
-                }
-                if(isset($data['action']) && $data['action'] === 'profile') {
 
-                }
-                if(isset($data['action']) && $data['action'] === 'select') {
-                    // イベントの詳細情報を表示する
-                    $gameInfo = $gameInfoDao->selectById($data['id']);
-                    $text = "イベント詳細\n";
-                    $text .= "イベント：{$gameInfo['title']}\n";
-                    $text .= "日付：{$gameInfo['game_date']}\n";
-                    $text .= "開始時刻：{$gameInfo['start_time']}\n";
-                    $text .= "場所：{$gameInfo['place']}\n";
-                    $text .= "人数上限：{$gameInfo['limit_number']}人\n";
-                    $text .= "参加予定：{$gameInfo['participants_number']}人\n";
-                    $text .= "詳細：{$gameInfo['detail']}\n";
-                    $text .= "\n";
-                    if($data['mode'] === 'reserve') {
-                        if($gameInfo['limit_number'] <= $gameInfo['participants_number']) {
-                            $text .= "予約しますか？（キャンセル待ち）";
-                        } else {
-                            $text .= "予約しますか？";
-                        }
-                    } elseif($data['mode'] === 'cancel') {
-                        $text .= "キャンセルしますか？";
-                    }
+                $webhook->receivePostback($event, $config['channel_access_token']);
 
-                    $url = 'https://api.line.me/v2/bot/message/reply'; // リプライ
+                // $data = explode('&', $event['postback']['data']);
+                // // 文字列から連想配列を作成
+                // foreach($data as $item) {
+                //     $keyValue = explode('=', $item);
+                //     $data[$keyValue[0]] = $keyValue[1];    
+                // }
+                // if(isset($data['action']) && $data['action'] === 'profile') {
+                //     $userDao = new UsersDao();
+                //     $userInfo = $userDao->getUserByLineId($event['source']['userId']);
+                //     $user = new Users();
+                //     $user->id = $userInfo['id'];
+                //     $user->occupation = $data['occupation'] ?? $userInfo['occupation'];
+                //     $user->sex = $data['sex'] ?? $userInfo['sex'];
+                //     $userDao->update($user);
+                //     $text = '登録完了しました。';
+
+                //     // 完了メッセージ送信
+                //     $url = 'https://api.line.me/v2/bot/message/reply'; // リプライ
+                //     $ch = curl_init($url);
+                //     $headers = array(
+                //         "Content-Type: application/json",
+                //         "Authorization: Bearer {$config['channel_access_token']}"
+                //     );
+                //     $data = json_encode([
+                //         'replyToken' => "{$event['replyToken']}",
+                //         'messages' => [
+                //             [
+                //                 'type' => 'text',
+                //                 'text' => $text,                            
+                //             ]
+                //         ]
+                //     ]);
+                //     curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
+                //     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                //     curl_setopt($ch, CURLOPT_POSTFIELDS, ($data)); //データをセット
+                //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
+        
+                //     curl_exec($ch);
+                //     curl_close($ch);
+                // }
+                // if(isset($data['action']) && $data['action'] === 'select') {
+                //     // イベントの詳細情報を表示する
+                //     $gameInfo = $gameInfoDao->selectById($data['id']);
+                //     $text = "イベント詳細\n";
+                //     $text .= "イベント：{$gameInfo['title']}\n";
+                //     $text .= "日付：{$gameInfo['game_date']}\n";
+                //     $text .= "開始時刻：{$gameInfo['start_time']}\n";
+                //     $text .= "場所：{$gameInfo['place']}\n";
+                //     $text .= "人数上限：{$gameInfo['limit_number']}人\n";
+                //     $text .= "参加予定：{$gameInfo['participants_number']}人\n";
+                //     $text .= "詳細：{$gameInfo['detail']}\n";
+                //     $text .= "\n";
+                //     if($data['mode'] === 'reserve') {
+                //         if($gameInfo['limit_number'] <= $gameInfo['participants_number']) {
+                //             $text .= "予約しますか？（キャンセル待ち）";
+                //         } else {
+                //             $text .= "予約しますか？";
+                //         }
+                //     } elseif($data['mode'] === 'cancel') {
+                //         $text .= "キャンセルしますか？";
+                //     }
+
+                //     $url = 'https://api.line.me/v2/bot/message/reply'; // リプライ
     
-                    $ch = curl_init($url);
-                    $headers = array(
-                        "Content-Type: application/json",
-                        "Authorization: Bearer {$config['channel_access_token']}"
-                    );
-                    $data = json_encode([
-                        'replyToken' => "{$event['replyToken']}",
-                        'messages' => [
-                            [
-                                'type' => 'text',
-                                'text' => $text,                            
-                                'quickReply' => [
-                                    'items' =>  [
-                                        [
-                                            'type' => 'action',
-                                            'action' => [
-                                                'type' => 'postback',
-                                                'label' => 'はい',
-                                                'data' => "action={$data['mode']}&id={$gameInfo['id']}",
-                                                'displayText' => 'はい'
-                                            ]
-                                        ],
-                                        [
-                                            'type' => 'action',
-                                            'action' => [
-                                                'type' => 'postback',
-                                                'label' => 'いいえ',
-                                                'data' => "action=no&id={$gameInfo['id']}",
-                                                'displayText' => 'いいえ'
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]);
-                    curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
-                    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, ($data)); //データをセット
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
+                //     $ch = curl_init($url);
+                //     $headers = array(
+                //         "Content-Type: application/json",
+                //         "Authorization: Bearer {$config['channel_access_token']}"
+                //     );
+                //     $data = json_encode([
+                //         'replyToken' => "{$event['replyToken']}",
+                //         'messages' => [
+                //             [
+                //                 'type' => 'text',
+                //                 'text' => $text,                            
+                //                 'quickReply' => [
+                //                     'items' =>  [
+                //                         [
+                //                             'type' => 'action',
+                //                             'action' => [
+                //                                 'type' => 'postback',
+                //                                 'label' => 'はい',
+                //                                 'data' => "action={$data['mode']}&id={$gameInfo['id']}",
+                //                                 'displayText' => 'はい'
+                //                             ]
+                //                         ],
+                //                         [
+                //                             'type' => 'action',
+                //                             'action' => [
+                //                                 'type' => 'postback',
+                //                                 'label' => 'いいえ',
+                //                                 'data' => "action=no&id={$gameInfo['id']}",
+                //                                 'displayText' => 'いいえ'
+                //                             ]
+                //                         ]
+                //                     ]
+                //                 ]
+                //             ]
+                //         ]
+                //     ]);
+                //     curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
+                //     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                //     curl_setopt($ch, CURLOPT_POSTFIELDS, ($data)); //データをセット
+                //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
         
-                    curl_exec($ch);
-                    curl_close($ch);
+                //     curl_exec($ch);
+                //     curl_close($ch);
 
-                }
-                if(isset($data['action']) && ($data['action'] === 'reserve' || $data['action'] === 'cancel')) {
+                // }
+                // if(isset($data['action']) && ($data['action'] === 'reserve' || $data['action'] === 'cancel')) {
 
-                    $eventService = new EventService();
-                    $userDao = new UsersDao();
-                    $gameInfoDao = new GameInfoDao();
-                    $gameInfo = $gameInfoDao->selectById((int)$data['id']);
-                    $user = $userDao->getUserByLineId($event['source']['userId']);
-                    $participant = new Participant();
-                    $participant->gameId = $data['id'];
-                    $participant->occupation = $user['occupation'];
-                    $participant->sex = $user['sex'];
-                    $participant->name = $user['name'];
-                    $participant->email = $user['email'] ?? '';
-                    $participant->tel = $user['tel'];
-                    $participant->remark = $user['remark'];
-                    $participant->lineId = $user['line_id'];
+                //     $eventService = new EventService();
+                //     $userDao = new UsersDao();
+                //     $gameInfoDao = new GameInfoDao();
+                //     $gameInfo = $gameInfoDao->selectById((int)$data['id']);
+                //     $user = $userDao->getUserByLineId($event['source']['userId']);
+                //     $participant = new Participant();
+                //     $participant->gameId = $data['id'];
+                //     $participant->occupation = $user['occupation'];
+                //     $participant->sex = $user['sex'];
+                //     $participant->name = $user['name'];
+                //     $participant->email = $user['email'] ?? '';
+                //     $participant->tel = $user['tel'];
+                //     $participant->remark = $user['remark'];
+                //     $participant->lineId = $user['line_id'];
 
-                    if($data['action'] === 'reserve') {
-                        $eventService->oneParticipantRegist($participant, [], EventService::MODE_LINE);
-                        $text = $this->createReservationMessage($gameInfo['title'], $gameInfo['game_date'], $gameInfo['start_time']);
-                    } elseif ($data['action'] === 'cancel') {
-                        $eventService->cancelComplete($participant, '', $user['id'], EventService::MODE_LINE);
-                        $text = $this->createCancelMessage($gameInfo['title'], $gameInfo['game_date']);
-                    }
-                    // 完了メッセージ送信
-                    $url = 'https://api.line.me/v2/bot/message/reply'; // リプライ
-                    $ch = curl_init($url);
-                    $headers = array(
-                        "Content-Type: application/json",
-                        "Authorization: Bearer {$config['channel_access_token']}"
-                    );
-                    $data = json_encode([
-                        'replyToken' => "{$event['replyToken']}",
-                        'messages' => [
-                            [
-                                'type' => 'text',
-                                'text' => $text,                            
-                            ]
-                        ]
-                    ]);
-                    curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
-                    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, ($data)); //データをセット
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
+                //     if(isEmpty($user['occupation']) || isEmpty($user['sex'])) {
+                //         $text = 'プロフィールに未設定の項目があるため更新できません。プロフィール設定から設定を行ってください。';
+                //     } else {
+                //         if($data['action'] === 'reserve') {
+                //             $eventService->oneParticipantRegist($participant, [], EventService::MODE_LINE);
+                //             $text = $this->createReservationMessage($gameInfo['title'], $gameInfo['game_date'], $gameInfo['start_time']);
+                //         } elseif ($data['action'] === 'cancel') {
+                //             $eventService->cancelComplete($participant, '', $user['id'], EventService::MODE_LINE);
+                //             $text = $this->createCancelMessage($gameInfo['title'], $gameInfo['game_date']);
+                //         }
+                //     }
+                //     // 完了メッセージ送信
+                //     $url = 'https://api.line.me/v2/bot/message/reply'; // リプライ
+                //     $ch = curl_init($url);
+                //     $headers = array(
+                //         "Content-Type: application/json",
+                //         "Authorization: Bearer {$config['channel_access_token']}"
+                //     );
+                //     $data = json_encode([
+                //         'replyToken' => "{$event['replyToken']}",
+                //         'messages' => [
+                //             [
+                //                 'type' => 'text',
+                //                 'text' => $text,                            
+                //             ]
+                //         ]
+                //     ]);
+                //     curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
+                //     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                //     curl_setopt($ch, CURLOPT_POSTFIELDS, ($data)); //データをセット
+                //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
         
-                    curl_exec($ch);
-                    curl_close($ch);
-                }
+                //     curl_exec($ch);
+                //     curl_close($ch);
+                // }
             }
         }
 
