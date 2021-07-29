@@ -28,12 +28,16 @@ class LineApi
             $occupation = '大学・専門学校';
         } elseif ($participant->occupation == '3') {
             $occupation = '高校生';
+        } else {
+            $occupation = '未設定';
         }
 
         if($participant->sex == '1') {
             $sex = '男性';
-        } else {
+        } elseif($participant->sex == '2') {
             $sex = '女性';
+        } else {
+            $sex = '未設定';
         }
 
         $message = "予約が入りました\n";
@@ -413,32 +417,20 @@ class LineApi
                 continue;
             }
             
-            // // 友達追加された場合
-            // if(isset($event['type']) && $event['type'] === 'follow') {
-            //     $userDao = new UsersDao();
-            //     $user = $userDao->getUserByLineId($event['source']['userId']);
-            //     if(!$user) {
-            //         // ユーザーが存在しない場合は登録する
-            //         $user = new Users();
-            //         $user->adminFlg = 0;
-            //         $user->lineId = $event['source']['userId'];
-            //         $userDao->insert($user);
-            //     }
-            // }
-
             $webhook = new LineApiWebhook();
 
+            // 友達追加された場合
+            if(isset($event['type']) && $event['type'] === 'follow') {
+                $webhook->addFriend($event);
+            }
+            
             // メッセージが送信された場合
             if(isset($event['message']) && $event['message']['type'] === 'text') {
-
                 $webhook->receiveMessageText($event, $config['channel_access_token']);
-
             }
             // クイックリプライから返信があった場合
             if(isset($event['postback'])) {
-
                 $webhook->receivePostback($event, $config['channel_access_token']);
-
             }
         }
 

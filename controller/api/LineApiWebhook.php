@@ -64,6 +64,19 @@ class LineApiWebhook
         }
     }
 
+    public function addFriend($event)
+    {
+        $userDao = new UsersDao();
+        $user = $userDao->getUserByLineId($event['source']['userId']);
+        if(!$user) {
+            // ユーザーが存在しない場合は登録する
+            $user = new Users();
+            $user->adminFlg = 0;
+            $user->lineId = $event['source']['userId'];
+            $userDao->insert($user);
+        }
+    }
+
     // イベント選択のクイックリプライを返す
     private function eventSelect($event, $text)
     {
@@ -151,11 +164,15 @@ class LineApiWebhook
             $text .= "職種：学生\n";
         } elseif($user['occupation'] == '3') {
             $text .= "職種：高校生\n";
+        } else {
+            $text .= "職種：未設定\n";
         }
         if($user['sex'] == '1') {
-            $text .= "性別：男性\n";
+            $text .= "性別：男性";
         } elseif($user['sex'] == '2') {
-            $text .= "性別：女性\n";
+            $text .= "性別：女性";
+        } else {
+            $text .= "性別：未設定";
         }
 
         return json_encode([

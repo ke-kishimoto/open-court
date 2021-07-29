@@ -398,7 +398,8 @@ class UserController extends BaseController
         $service = new UserService();
         $user = $service->lineLogin($code);
 
-        if($user['new'] || (empty($user['occupation'] || empty($user['sex'])))) {
+        // 名前・職種・性別が設定されていない場合は登録画面に遷移
+        if(empty($user['name']) || empty($user['occupation']) || empty($user['sex'])) {
             $title = '新規登録';
             $id = $user['id'];
             // $companions = [];

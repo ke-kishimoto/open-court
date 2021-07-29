@@ -26,22 +26,31 @@ class UserService
         $userDao = new UsersDao();
         $user = $userDao->getUserByLineId($response->sub);
 
-        // 存在する場合はそのままreturn
         if($user) {
-            $user['new'] = false;
-            return $user;
+            // 存在する場合
+            if(empty($user['name'])) {
+                $user->name = $response->name;
+                $user->adminFlg = 0;
+                $user->lineId = $response->sub;
+                $user->accessToken = $accessToken;
+                $user->refreshToken = $refreshToken;
+                $userDao->update($user);
+            } else {
+                return $user;
+            }
+        } else {
+            // 存在しない場合
+            $user = new Users();
+            $user->name = $response->name;
+            $user->adminFlg = 0;
+            $user->lineId = $response->sub;
+            $user->accessToken = $accessToken;
+            $user->refreshToken = $refreshToken;
+            $userDao->insert($user);
         }
-        $user = new Users();
-        $user->name = $response->name;
-        $user->adminFlg = 0;
-        $user->lineId = $response->sub;
-        $user->accessToken = $accessToken;
-        $user->refreshToken = $refreshToken;
-        $userDao->insert($user);
 
         // 再取得
         $user = $userDao->getUserByLineId($response->sub);
-        $user['new'] = true;
         return $user;
 
     }
