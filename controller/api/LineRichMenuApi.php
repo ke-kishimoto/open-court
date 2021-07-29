@@ -21,7 +21,6 @@ class LineRichMenuApi
         $richMenu = $this->createRichMenu($data);
         $mainMenuId = $richMenu->richMenuId; 
         var_dump($mainMenuId);
-        
         // プロフィールメニュー
         $data = $this->profileMenu();
         $richMenu = $this->createRichMenu($data);
@@ -32,33 +31,41 @@ class LineRichMenuApi
         $richMenu = $this->createRichMenu($data);
         $eventMenuId = $richMenu->richMenuId;
         var_dump($eventMenuId);
+        // コンタクトメニュー
+        $data = $this->contactMenu();
+        $richMenu = $this->createRichMenu($data);
+        $contactMenuId = $richMenu->richMenuId;
+        var_dump($contactMenuId);
+
 
         // 画像のアップロード
         // index.phpと同じフォルダに画像ファイルがある必要がある。
         var_dump($this->uploadRichImg($mainMenuId, 'richmenu_main.jpg'));
         var_dump($this->uploadRichImg($profileMenuId, 'richmenu_profile.jpg'));
         var_dump($this->uploadRichImg($eventMenuId, 'richmenu_event.jpg'));
+        var_dump($this->uploadRichImg($contactMenuId, 'richmenu_contact.jpg'));
 
         // デフォルトの設定  // 画像の設定ができないとうまくいかない
         var_dump($this->setDefaultLiMenu($mainMenuId));
 
-        // // エイリアスの削除
-        // var_dump($this->deleteLichMenuAiliasId('richmenu-alias-main'));
-        // var_dump($this->deleteLichMenuAiliasId('richmenu-alias-profile'));
-        // var_dump($this->deleteLichMenuAiliasId('richmenu-alias-event'));
+        // エイリアスの削除
+        var_dump($this->deleteLichMenuAiliasId('richmenu-alias-main'));
+        var_dump($this->deleteLichMenuAiliasId('richmenu-alias-profile'));
+        var_dump($this->deleteLichMenuAiliasId('richmenu-alias-event'));
+        var_dump($this->deleteLichMenuAiliasId('richmenu-alias-contact'));
 
-        // // エイリアスの作成 // ここも、画像がアップされていないとうまくいかない
-        // var_dump($this->createRichMenuAlias('richmenu-alias-main', $mainMenuId));
-        // var_dump($this->createRichMenuAlias('richmenu-alias-profile', $profileMenuId));
-        // var_dump($this->createRichMenuAlias('richmenu-alias-event', $eventMenuId));
+        // 削除してから実行しても、コンフリクトでエラーが出ることがある。。
+        // エイリアスの作成 // ここも、画像がアップされていないとうまくいかない
+        var_dump($this->createRichMenuAlias('richmenu-alias-main', $mainMenuId));
+        var_dump($this->createRichMenuAlias('richmenu-alias-profile', $profileMenuId));
+        var_dump($this->createRichMenuAlias('richmenu-alias-event', $eventMenuId));
+        var_dump($this->createRichMenuAlias('richmenu-alias-contact', $contactMenuId));
 
-        // エイリアスの更新
-        // メイン
-        $this->updateRichMenuAiliasId('richmenu-alias-main', $mainMenuId);
-        // プロフィール
-        $this->updateRichMenuAiliasId('richmenu-alias-profile', $profileMenuId);
-        // イベント
-        $this->updateRichMenuAiliasId('richmenu-alias-event', $eventMenuId);
+        // // エイリアスの更新 // 作成でコンフリクトのエラーが出た時はここで更新処理を実行
+        // $this->updateRichMenuAiliasId('richmenu-alias-main', $mainMenuId);
+        // $this->updateRichMenuAiliasId('richmenu-alias-profile', $profileMenuId);
+        // $this->updateRichMenuAiliasId('richmenu-alias-event', $eventMenuId);
+        // $this->updateRichMenuAiliasId('richmenu-alias-contact', $contactMenuId);
         
     }
 
@@ -113,10 +120,7 @@ class LineRichMenuApi
             "Content-Type: application/json",
             "Authorization: Bearer {$config['channel_access_token']}"
         );
-        // $data = $this->mainMenu(); // 作成済み
-        // $data = $this->profileMenu(); // 作成済み
-        // $data = $this->eventMenu(); // 
-
+    
         curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_POSTFIELDS, ($data)); //データをセット
@@ -303,8 +307,8 @@ class LineRichMenuApi
                 ],
                 'action' => [
                     'type' => 'message',
-                    'label' => '性別設定',
-                    'text' => '性別',
+                    'label' => 'プロフィール確認',
+                    'text' => 'プロフィール確認',
                 ],
             ],
             [
@@ -329,8 +333,77 @@ class LineRichMenuApi
                 ],
                 'action' => [
                     'type' => 'message',
-                    'label' => 'プロフィール確認',
-                    'text' => 'プロフィール確認',
+                    'label' => '性別設定',
+                    'text' => '性別',
+                ],
+            ],
+            ]
+        ]);
+    }
+
+    private function contactMenu()
+    {
+        return json_encode([
+            'size' => [
+                "width" => 2500,
+                "height" => 1686,
+            ],
+            'selected' => false,
+            'name' => 'profile menu',
+            'chatBarText' => 'コンタクトメニュー',
+            'areas' => [
+                [
+                'bounds' => [
+                    "x" => 0,
+                    "y" => 0,
+                    "width" => 1250,
+                    "height" => 843,
+                ],
+                'action' => [
+                    'type' => 'richmenuswitch',
+                    'label' => 'メインメニュー',
+                    'richMenuAliasId' => 'richmenu-alias-main',
+                    'data' => 'richmenu-changed-to-main',
+                ],
+                
+            ],
+            [
+                'bounds' => [
+                    "x" => 1251,
+                    "y" => 0,
+                    "width" => 1250,
+                    "height" => 843,
+                ],
+                'action' => [
+                    'type' => 'message',
+                    'label' => 'お問い合わせ',
+                    'text' => 'お問い合わせ',
+                ],
+            ],
+            [
+                'bounds' => [
+                    "x" => 0,
+                    "y" => 844,
+                    "width" => 1250,
+                    "height" => 843,
+                ],
+                'action' => [
+                    'type' => 'message',
+                    'label' => 'ご意見・ご要望',
+                    'text' => 'ご意見・ご要望',
+                ],
+            ],
+            [
+                'bounds' => [
+                    "x" => 1251,
+                    "y" => 844,
+                    "width" => 1250,
+                    "height" => 843,
+                ],
+                'action' => [
+                    'type' => 'message',
+                    'label' => 'XXXX',
+                    'text' => 'XXXX',
                 ],
             ],
             ]
@@ -512,7 +585,7 @@ class LineRichMenuApi
         $configDao = new ConfigDao();
         $config = $configDao->selectById(1);
 
-        $url = "https://api.line.me/v2/bot/richmenu/alias/{richMenuAliasId}";
+        $url = "https://api.line.me/v2/bot/richmenu/alias/{$richMenuAliasId}";
         $ch = curl_init($url);
         $headers = array(
             "Authorization: Bearer {$config['channel_access_token']}",
