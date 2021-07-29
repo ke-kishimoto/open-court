@@ -1,10 +1,8 @@
 <?php
 namespace controller;
-use dao\InquiryDao;
 use dao\GameInfoDao;
 use entity\Inquiry;
-use api\LineApi;
-use api\MailApi;
+use service\InquiryService;
 
 class InquiryController extends BaseController
 {
@@ -35,32 +33,46 @@ class InquiryController extends BaseController
 
         $errMsg = '';
         if(isset($_POST)) {
-            $inquiryDao = new InquiryDao();
-            $gameId = (int)$_POST['game_id'];
-            // $inquiry = new Inquiry($gameId, $_POST['name'], $_POST['email'], $_POST['content'], 0, date('Y-m-d'), null);
-            $inquiry = new Inquiry();
-            $inquiry->gameId = $gameId;
-            $inquiry->name = $_POST['name'];
-            $inquiry->email = $_POST['email'];
-            $inquiry->content = $_POST['content'];
-            $inquiry->statusFlg = 0;
-            // $inquiry->registerDate = date('Y-m-d');
-            $inquiry->updateDate = null;
-            $inquiryDao->insert($inquiry);
+            if (isset($_POST["csrf_token"]) && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
+                $gameId = (int)$_POST['game_id'];
+                // $inquiry = new Inquiry($gameId, $_POST['name'], $_POST['email'], $_POST['content'], 0, date('Y-m-d'), null);
+                $inquiry = new Inquiry();
+                $inquiry->gameId = $gameId;
+                $inquiry->name = $_POST['name'];
+                $inquiry->email = $_POST['email'];
+                $inquiry->content = $_POST['content'];
+                $inquiry->statusFlg = 0;
+                if(isset($_SESSION['user'])) {
+                    $inquiry->lineId = $_SESSION['user']['line_id'] ?? '';
+                }
+                // $inquiry->registerDate = date('Y-m-d');
+                $inquiry->updateDate = null;
+                
+                $service = new InquiryService();
+                $service->sendInquiry($inquiry);
+                // $inquiryDao = new InquiryDao();
+                // $inquiryDao->insert($inquiry);
+                
+                // $inquiry->gameTitle = '';
+                // if($inquiry->gameId) {
+                //     $gameInfoDao = new GameInfoDao();
+                //     $gameInfo = $gameInfoDao->selectById($inquiry->gameId);
+                //     $inquiry->gameTitle = $gameInfo['title'];
+                // }
 
-            $inquiry->gameTitle = '';
-            if($gameId) {
-                $gameInfoDao = new GameInfoDao();
-                $gameInfo = $gameInfoDao->selectById($gameId);
-                $inquiry->gameTitle = $gameInfo['title'];
+                // // LINE通知用に参加者情報とイベント情報を取得
+                // $api = new LineApi();
+                // $api->inquiry($inquiry);
+    
+                // // メール送信
+                // if(!empty($inquiry->email)) {
+                //     $mailApi = new MailApi();
+                //     $mailApi->inquiry_mail($inquiry);
+                // }
+
+                unset($_SESSION['csrf_token']);
+
             }
-            // LINE通知用に参加者情報とイベント情報を取得
-            $api = new LineApi();
-            $api->inquiry($inquiry);
-
-            // メール送信
-            $mailApi = new MailApi();
-            $mailApi->inquiry_mail($inquiry);
     
         }
 
