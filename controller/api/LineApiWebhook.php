@@ -372,14 +372,49 @@ class LineApiWebhook
             "Content-Type: application/json",
             "Authorization: Bearer {$channelAccessToken}"
         );
+        // クイックリプライVer
+        // $data = json_encode([
+        //     'replyToken' => "{$event['replyToken']}",
+        //     'messages' => [
+        //         [
+        //             'type' => 'text',
+        //             'text' => $text,                            
+        //             'quickReply' => [
+        //                 'items' =>  [
+        //                     [
+        //                         'type' => 'action',
+        //                         'action' => [
+        //                             'type' => 'postback',
+        //                             'label' => 'はい',
+        //                             'data' => "action={$data['mode']}&id={$gameInfo['id']}",
+        //                             'displayText' => 'はい'
+        //                         ]
+        //                     ],
+        //                     [
+        //                         'type' => 'action',
+        //                         'action' => [
+        //                             'type' => 'postback',
+        //                             'label' => 'いいえ',
+        //                             'data' => "action=no&id={$gameInfo['id']}",
+        //                             'displayText' => 'いいえ'
+        //                         ]
+        //                     ]
+        //                 ]
+        //             ]
+        //         ]
+        //     ]
+        // ]);
+        // 確認テンプレート
         $data = json_encode([
             'replyToken' => "{$event['replyToken']}",
             'messages' => [
                 [
-                    'type' => 'text',
-                    'text' => $text,                            
-                    'quickReply' => [
-                        'items' =>  [
+                    'type' => 'template',
+                    'altText' => 'this is a confirm template',                            
+                    'template' => [
+                        "type" => "confirm",
+                        "text" => $text,
+                        "actions" => [
                             [
                                 'type' => 'action',
                                 'action' => [
@@ -398,7 +433,7 @@ class LineApiWebhook
                                     'displayText' => 'いいえ'
                                 ]
                             ]
-                        ]
+                        ],
                     ]
                 ]
             ]
