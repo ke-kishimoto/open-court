@@ -207,41 +207,86 @@ class LineApiWebhook
 
     private function occupationSelect($event) 
     {
+        // クイックリプライVer
+        // return json_encode([
+        //     'replyToken' => "{$event['replyToken']}",
+        //     'messages' => [
+        //         [
+        //             'type' => 'text',
+        //             'text' =>  '職種を選択してください。（高校生以下の場合は高校生を選択してください）',                            
+        //             'quickReply' => [
+        //                 'items' => [
+        //                     [
+        //                     'type' => 'action',
+        //                     'action' => [
+        //                         'type' => 'postback',
+        //                         'label' => '社会人',
+        //                         'data' => "action=profile&type=occupation&id=1",
+        //                         'displayText' => '社会人'
+        //                         ]
+        //                     ],
+        //                     [
+        //                     'type' => 'action',
+        //                     'action' => [
+        //                         'type' => 'postback',
+        //                         'label' => '学生（大学・専門学校）',
+        //                         'data' => "action=profile&type=occupation&id=2",
+        //                         'displayText' => '学生（大学・専門学校）'
+        //                         ]
+        //                     ],
+        //                     [
+        //                     'type' => 'action',
+        //                     'action' => [
+        //                         'type' => 'postback',
+        //                         'label' => '高校生',
+        //                         'data' => "action=profile&type=occupation&id=3",
+        //                         'displayText' => '高校生'
+        //                         ]
+        //                     ]
+        //                 ]
+        //             ]
+        //         ]
+        //     ]
+        // ]);
+
+        // ボタンテンプレートVer
         return json_encode([
             'replyToken' => "{$event['replyToken']}",
-            'messages' => [
+            'messages' => 
+            [
                 [
-                    'type' => 'text',
-                    'text' =>  '職種を選択してください。（高校生以下の場合は高校生を選択してください）',                            
-                    'quickReply' => [
-                        'items' => [
+                    "type" => "template",
+                    "altText" => "This is a buttons template",
+                    "template"=> 
+                    [
+                        "type" => "buttons",
+                        "text" => "職種を選択してください。（高校生以下の場合は高校生を選択してください）",
+                        "actions" => 
+                        [
                             [
-                            'type' => 'action',
-                            'action' => [
                                 'type' => 'postback',
                                 'label' => '社会人',
                                 'data' => "action=profile&type=occupation&id=1",
                                 'displayText' => '社会人'
-                                ]
                             ],
                             [
-                            'type' => 'action',
-                            'action' => [
                                 'type' => 'postback',
                                 'label' => '学生（大学・専門学校）',
                                 'data' => "action=profile&type=occupation&id=2",
                                 'displayText' => '学生（大学・専門学校）'
-                                ]
                             ],
                             [
-                            'type' => 'action',
-                            'action' => [
                                 'type' => 'postback',
                                 'label' => '高校生',
                                 'data' => "action=profile&type=occupation&id=3",
                                 'displayText' => '高校生'
-                                ]
-                            ]
+                            ],
+                            [
+                                'type' => 'postback',
+                                'label' => '設定しない',
+                                'data' => "action=profile&type=occupation&id=0",
+                                'displayText' => '設定しない'
+                            ],
                         ]
                     ]
                 ]
@@ -287,32 +332,40 @@ class LineApiWebhook
 
         // ボタンテンプレートVer
         return json_encode([
-            "type" => "template",
-            "altText" => "This is a buttons template",
-            "template"=> [
-                "type" => "buttons",
-                "text" => "性別を選択してください。",
-                "actions" => [
+            'replyToken' => "{$event['replyToken']}",
+            'messages' => 
+            [
+                [
+                    "type" => "template",
+                    "altText" => "This is a buttons template",
+                    "template"=> 
                     [
-                        'type' => 'postback',
-                        'label' => '男性',
-                        'data' => "action=profile&type=sex&id=1",
-                        'displayText' => '男性'
-                    ],
-                    [
-                        'type' => 'postback',
-                        'label' => '女性',
-                        'data' => "action=profile&type=sex&id=2",
-                        'displayText' => '女性'
-                    ],
-                    [
-                        'type' => 'postback',
-                        'label' => '設定しない',
-                        'data' => "action=profile&type=sex&id=0",
-                        'displayText' => '設定しない'
-                    ],
+                        "type" => "buttons",
+                        "text" => "性別を選択してください。",
+                        "actions" => 
+                        [
+                            [
+                                'type' => 'postback',
+                                'label' => '男性',
+                                'data' => "action=profile&type=sex&id=1",
+                                'displayText' => '男性'
+                            ],
+                            [
+                                'type' => 'postback',
+                                'label' => '女性',
+                                'data' => "action=profile&type=sex&id=2",
+                                'displayText' => '女性'
+                            ],
+                            [
+                                'type' => 'postback',
+                                'label' => '設定しない',
+                                'data' => "action=profile&type=sex&id=0",
+                                'displayText' => '設定しない'
+                            ],
+                        ]
+                    ]
                 ]
-            ],
+            ]
         ]);
     }
 
