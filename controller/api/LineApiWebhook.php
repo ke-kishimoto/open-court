@@ -34,6 +34,8 @@ class LineApiWebhook
             $data = $this->genderSelect($event);
         } elseif($text === 'プロフィール確認') {
             $data = $this->profileConfirmation($event);
+        } elseif($text === 'お問い合わせ') {
+            $data = $this->inquiry($event);
         } else {
             $data = $this->atherMessage($event);
         }
@@ -64,6 +66,7 @@ class LineApiWebhook
         }
     }
 
+    // 友達追加された時の処理
     public function addFriend($event)
     {
         $userDao = new UsersDao();
@@ -75,6 +78,21 @@ class LineApiWebhook
             $user->lineId = $event['source']['userId'];
             $userDao->insert($user);
         }
+    }
+
+    // お問い合わせ選択時
+    private function inquiry($event)
+    {
+        $text = "問い合わせを行う場合は、1行目に「問い合わせ」と入力し、2行目以降から問い合わせ内容を記載の上メッセージを送信ください。";
+        return json_encode([
+            'replyToken' => "{$event['replyToken']}",
+            'messages' => [
+                [
+                    'type' => 'text',
+                    'text' => $text,
+                ]
+            ]
+        ]);
     }
 
     // イベント選択のクイックリプライを返す

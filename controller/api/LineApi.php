@@ -4,19 +4,13 @@ define('LINE_API_URL', 'https://notify-api.line.me/api/notify');
 use api\LineApiWebhook;
 use entity\Participant;
 use entity\Inquiry;
-use entity\Users;
 use dao\ConfigDao;
-use dao\GameInfoDao;
-use dao\DetailDao;
-use dao\UsersDao;
 use entity\TroubleReport;
-use service\EventService;
 use Exception;
 
 // LINE通知用
 class LineApi 
 {
-    const QUICK_REPLY_NUM = 13;  // クイックリプライできるのが最大13件らしい
 
     // 個人の予約通知
     public function reserve_notify(Participant $participant, $title, $date, $companion = 0)
@@ -361,7 +355,6 @@ class LineApi
         curl_close($ch);
         // $response = json_decode($result);
         return (int)$httpcode;
-
     }
 
     // 予約時のメッセージ作成
