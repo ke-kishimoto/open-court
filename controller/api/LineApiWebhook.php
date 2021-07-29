@@ -249,38 +249,70 @@ class LineApiWebhook
         ]);
     }
 
+    // 性別の選択
     private function genderSelect($event)
     {
+        // クイックリプライのVer
+        // return json_encode([
+        //     'replyToken' => "{$event['replyToken']}",
+        //     'messages' => [
+        //         [
+        //             'type' => 'text',
+        //             'text' =>  '性別を選択してください。',                            
+        //             'quickReply' => [
+        //                 'items' =>  [
+        //                     [
+        //                     'type' => 'action',
+        //                     'action' => [
+        //                         'type' => 'postback',
+        //                         'label' => '男性',
+        //                         'data' => "action=profile&type=sex&id=1",
+        //                         'displayText' => '男性'
+        //                         ]
+        //                     ],
+        //                     [
+        //                     'type' => 'action',
+        //                     'action' => [
+        //                         'type' => 'postback',
+        //                         'label' => '女性',
+        //                         'data' => "action=profile&type=sex&id=2",
+        //                         'displayText' => '女性'
+        //                         ]
+        //                     ],
+        //                 ]
+        //             ]
+        //         ]   
+        //     ]
+        // ]);
+
+        // ボタンテンプレートVer
         return json_encode([
-            'replyToken' => "{$event['replyToken']}",
-            'messages' => [
-                [
-                    'type' => 'text',
-                    'text' =>  '性別を選択してください。',                            
-                    'quickReply' => [
-                        'items' =>  [
-                            [
-                            'type' => 'action',
-                            'action' => [
-                                'type' => 'postback',
-                                'label' => '男性',
-                                'data' => "action=profile&type=sex&id=1",
-                                'displayText' => '男性'
-                                ]
-                            ],
-                            [
-                            'type' => 'action',
-                            'action' => [
-                                'type' => 'postback',
-                                'label' => '女性',
-                                'data' => "action=profile&type=sex&id=2",
-                                'displayText' => '女性'
-                                ]
-                            ],
-                        ]
-                    ]
-                ]   
-            ]
+            "type" => "template",
+            "altText" => "This is a buttons template",
+            "template"=> [
+                "type" => "buttons",
+                "text" => "性別を選択してください。",
+                "actions" => [
+                    [
+                        'type' => 'postback',
+                        'label' => '男性',
+                        'data' => "action=profile&type=sex&id=1",
+                        'displayText' => '男性'
+                    ],
+                    [
+                        'type' => 'postback',
+                        'label' => '女性',
+                        'data' => "action=profile&type=sex&id=2",
+                        'displayText' => '女性'
+                    ],
+                    [
+                        'type' => 'postback',
+                        'label' => '設定しない',
+                        'data' => "action=profile&type=sex&id=0",
+                        'displayText' => '設定しない'
+                    ],
+                ]
+            ],
         ]);
     }
 
@@ -303,12 +335,12 @@ class LineApiWebhook
         $userInfo = $userDao->getUserByLineId($event['source']['userId']);
         $user = new Users();
         $user->id = $userInfo['id'];
-        if($data['type'] === 'occupation') {
+        if($data['type'] === 'occupation' && $data['id'] != 0) {
             $user->occupation = $data['id'];
         } else {
             $user->occupation = $userInfo['occupation'];
         }
-        if($data['type'] === 'sex') {
+        if($data['type'] === 'sex' && $data['id'] != 0) {
             $user->sex = $data['id'];
         } else {
             $user->sex = $userInfo['sex'];
@@ -353,7 +385,7 @@ class LineApiWebhook
         $text .= "場所：{$gameInfo['place']}\n";
         $text .= "人数上限：{$gameInfo['limit_number']}人\n";
         $text .= "参加予定：{$gameInfo['participants_number']}人\n";
-        $text .= "詳細：{$gameInfo['detail']}\n";
+        // $text .= "詳細：{$gameInfo['detail']}\n";  // 確認テンプレートの場合文字数制限で表示できない
         $text .= "\n";
         if($data['mode'] === 'reserve') {
             if($gameInfo['limit_number'] <= $gameInfo['participants_number']) {
@@ -404,7 +436,8 @@ class LineApiWebhook
         //         ]
         //     ]
         // ]);
-        // 確認テンプレート
+
+        // 確認テンプレートVer
         $data = json_encode([
             'replyToken' => "{$event['replyToken']}",
             'messages' => [
@@ -416,22 +449,16 @@ class LineApiWebhook
                         "text" => $text,
                         "actions" => [
                             [
-                                'type' => 'action',
-                                'action' => [
-                                    'type' => 'postback',
-                                    'label' => 'はい',
-                                    'data' => "action={$data['mode']}&id={$gameInfo['id']}",
-                                    'displayText' => 'はい'
-                                ]
+                                'type' => 'postback',
+                                'label' => 'はい',
+                                'data' => "action={$data['mode']}&id={$gameInfo['id']}",
+                                'displayText' => 'はい'
                             ],
                             [
-                                'type' => 'action',
-                                'action' => [
-                                    'type' => 'postback',
-                                    'label' => 'いいえ',
-                                    'data' => "action=no&id={$gameInfo['id']}",
-                                    'displayText' => 'いいえ'
-                                ]
+                                'type' => 'postback',
+                                'label' => 'いいえ',
+                                'data' => "action=no&id={$gameInfo['id']}",
+                                'displayText' => 'いいえ'
                             ]
                         ],
                     ]
