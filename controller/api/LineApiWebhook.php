@@ -5,7 +5,6 @@ use api\LineApi;
 use dao\GameInfoDao;
 use dao\DetailDao;
 use dao\UsersDao;
-use entity\Participant;
 use service\EventService;
 
 class LineApiWebhook
@@ -572,15 +571,24 @@ class LineApiWebhook
         $gameInfoDao = new GameInfoDao();
         $gameInfo = $gameInfoDao->selectById((int)$data['id']);
         $user = $userDao->getUserByLineId($event['source']['userId']);
-        $participant = new Participant();
-        $participant->gameId = $data['id'];
-        $participant->occupation = $user['occupation'];
-        $participant->sex = $user['sex'];
-        $participant->name = $user['name'];
-        $participant->email = $user['email'] ?? '';
-        $participant->tel = $user['tel'];
-        $participant->remark = $user['remark'];
-        $participant->lineId = $user['line_id'];
+        // $participant = new Participant();
+        // $participant->gameId = $data['id'];
+        // $participant->occupation = $user['occupation'];
+        // $participant->sex = $user['sex'];
+        // $participant->name = $user['name'];
+        // $participant->email = $user['email'] ?? '';
+        // $participant->tel = $user['tel'];
+        // $participant->remark = $user['remark'];
+        // $participant->lineId = $user['line_id'];
+        $participant = [];
+        $participant['game_id'] = $data['id'];
+        $participant['occupation'] = $user['occupation'];
+        $participant['sex'] = $user['sex'];
+        $participant['name'] = $user['name'];
+        $participant['email'] = $user['email'] ?? '';
+        $participant['tel'] = $user['tel'];
+        $participant['remark'] = $user['remark'];
+        $participant['line_id'] = $user['line_id'];
 
         if(empty($user['occupation']) || empty($user['sex'])) {
             $text = 'プロフィールに未設定の項目があるため更新できません。プロフィール設定から設定を行ってください。';

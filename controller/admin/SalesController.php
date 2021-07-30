@@ -5,7 +5,6 @@ use controller\BaseController;
 use dao\DetailDao;
 use dao\GameInfoDao;
 use dao\SalesDao;
-use entity\Participant;
 
 class SalesController extends BaseController
 {
@@ -96,11 +95,16 @@ class SalesController extends BaseController
             $detailDao = new DetailDao();
             for($i = 0; $i < $count; $i++) {
                 $p = $detailDao->selectById((int)$_POST["id-{$i}"]);
-                $participant = new Participant();
-                $participant->id = $p['id'];
-                $participant->attendance = $_POST["attendance-{$i}"];
-                $participant->amount = (int)$_POST["amount-{$i}"];
-                $participant->amountRemark = $_POST["amount_remark-{$i}"];
+                // $participant = new Participant();
+                // $participant->id = $p['id'];
+                // $participant->attendance = $_POST["attendance-{$i}"];
+                // $participant->amount = (int)$_POST["amount-{$i}"];
+                // $participant->amountRemark = $_POST["amount_remark-{$i}"];
+                $participant = [];
+                $participant['id'] = $p['id'];
+                $participant['attendance'] = $_POST["attendance-{$i}"];
+                $participant['amount'] = (int)$_POST["amount-{$i}"];
+                $participant['amount_remark'] = $_POST["amount_remark-{$i}"];
                 $detailDao->update($participant);
             }
 

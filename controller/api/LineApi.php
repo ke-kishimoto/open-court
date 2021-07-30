@@ -2,7 +2,6 @@
 namespace api;
 define('LINE_API_URL', 'https://notify-api.line.me/api/notify');
 use api\LineApiWebhook;
-use entity\Participant;
 use dao\ConfigDao;
 use Exception;
 
@@ -11,22 +10,22 @@ class LineApi
 {
 
     // 個人の予約通知
-    public function reserve_notify(Participant $participant, $title, $date, $companion = 0)
+    public function reserve_notify($participant, $title, $date, $companion = 0)
     {   
         
-        if ($participant->occupation == '1') {
+        if ($participant['occupation'] == '1') {
             $occupation = '社会人';
-        } elseif ($participant->occupation == '2') {
+        } elseif ($participant['occupation'] == '2') {
             $occupation = '大学・専門学校';
-        } elseif ($participant->occupation == '3') {
+        } elseif ($participant['occupation'] == '3') {
             $occupation = '高校生';
         } else {
             $occupation = '未設定';
         }
 
-        if($participant->sex == '1') {
+        if($participant['sex'] == '1') {
             $sex = '男性';
-        } elseif($participant->sex == '2') {
+        } elseif($participant['sex'] == '2') {
             $sex = '女性';
         } else {
             $sex = '未設定';
@@ -36,11 +35,11 @@ class LineApi
         $message .=  "イベント : " . $title . "\n";
         $message .=  "日付 : " . $date . "\n";
         $message .= "--------------------\n";
-        $message .=  "名前 : " . $participant->name . "\n";
+        $message .=  "名前 : " . $participant['name'] . "\n";
         $message .=  "職種 : " . $occupation . "\n";
         $message .=  "性別 : " . $sex . "\n";
-        $message .=  "連絡先 : " . $participant->email . "\n";
-        $message .=  "備考 : " . $participant->remark . "\n";
+        $message .=  "連絡先 : " . $participant['email'] . "\n";
+        $message .=  "備考 : " . $participant['remark'] . "\n";
         $message .=  "同伴者数 : " . $companion . "\n";
         $message .= "--------------------\n";
 

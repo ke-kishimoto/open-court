@@ -1,6 +1,5 @@
 <?php
 namespace controller;
-use entity\Participant;
 use dao\DetailDao;
 use dao\GameInfoDao;
 use dao\CompanionDao;
@@ -52,15 +51,25 @@ class ParticipantController extends BaseController
         if (isset($_POST["csrf_token"]) 
         && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 
-            $participant = new Participant();
-            $participant->gameId = 0;
-            $participant->occupation = (int)$_POST['occupation'];
-            $participant->sex = (int)$_POST['sex'];
-            $participant->name = $_POST['name'];
-            $participant->email = $_POST['email'] ?? '';
-            $participant->waitingFlg = 0;
-            $participant->remark = $_POST['remark'];
-            $participant->lineId = $_POST['line_id'];
+            // $participant = new Participant();
+            // $participant->gameId = 0;
+            // $participant->occupation = (int)$_POST['occupation'];
+            // $participant->sex = (int)$_POST['sex'];
+            // $participant->name = $_POST['name'];
+            // $participant->email = $_POST['email'] ?? '';
+            // $participant->waitingFlg = 0;
+            // $participant->remark = $_POST['remark'];
+            // $participant->lineId = $_POST['line_id'];
+
+            $participant = [];
+            $participant['game_id'] = 0;
+            $participant['occupation'] = (int)$_POST['occupation'];
+            $participant['sex'] = (int)$_POST['sex'];
+            $participant['name'] = $_POST['name'];
+            $participant['email'] = $_POST['email'] ?? '';
+            $participant['waiting_flg'] = 0;
+            $participant['remark'] = $_POST['remark'];
+            $participant['line_id'] = $_POST['line_id'] ?? '';
             
             $companion = [];
             for($i = 1; $i <= $_POST['companion']; $i++) {
@@ -206,15 +215,25 @@ class ParticipantController extends BaseController
         if (isset($_POST["csrf_token"]) 
         && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 
-            $participant = new Participant();
-            $participant->gameId = (int)$_POST['game_id'];
-            $participant->occupation = (int)$_POST['occupation'];
-            $participant->sex = (int)$_POST['sex'];
-            $participant->name = $_POST['name'];
-            $participant->email = $_POST['email'] ?? '';
-            $participant->waitingFlg = 0;
-            $participant->remark = $_POST['remark'];
-            $participant->lineId = $_POST['line_id'];
+            // $participant = new Participant();
+            // $participant->gameId = (int)$_POST['game_id'];
+            // $participant->occupation = (int)$_POST['occupation'];
+            // $participant->sex = (int)$_POST['sex'];
+            // $participant->name = $_POST['name'];
+            // $participant->email = $_POST['email'] ?? '';
+            // $participant->waitingFlg = 0;
+            // $participant->remark = $_POST['remark'];
+            // $participant->lineId = $_POST['line_id'];
+
+            $participant = [];
+            $participant['game_id'] = (int)$_POST['game_id'];
+            $participant['occupation'] = (int)$_POST['occupation'];
+            $participant['sex'] = (int)$_POST['sex'];
+            $participant['name'] = $_POST['name'];
+            $participant['email'] = $_POST['email'] ?? '';
+            $participant['waiting_flg'] = 0;
+            $participant['remark'] = $_POST['remark'];
+            $participant['line_id'] = $_POST['line_id'] ?? '';
         
             $companion = [];
             for($i = 1; $i <= $_POST['companion']; $i++) {
@@ -234,7 +253,7 @@ class ParticipantController extends BaseController
             if(isset($_POST['insert'])) {
                 $errMsg = $service->oneParticipantRegist($participant, $companion, EventService::MODE_USER);
             } elseif(isset($_POST['update'])) {
-                $participant->id = $_POST['participantId'];
+                $participant['id'] = $_POST['participantId'];
                 $errMsg = $service->participantUpdate($participant, $companion);
             }
 
@@ -286,10 +305,14 @@ class ParticipantController extends BaseController
         if(isset($_POST)) {
 
             $service = new EventService();
-            $participant = new Participant();
-            $participant->gameId = (int)$_POST['game_id'];
-            $participant->email = $_POST['email'] ?? '';
-            $participant->lineId = $_POST['line_id'] ?? '';
+            // $participant = new Participant();
+            // $participant->gameId = (int)$_POST['game_id'];
+            // $participant->email = $_POST['email'] ?? '';
+            // $participant->lineId = $_POST['line_id'] ?? '';
+            $participant = [];
+            $participant['game_id'] = (int)$_POST['game_id'];
+            $participant['email'] = $_POST['email'] ?? '';
+            $participant['line_id'] = $_POST['line_id'] ?? '';
             if(isset($_POST['password']) && isset($_SESSION['user'])) {
                 $password = $_POST['password'];
                 $userId = $_SESSION['user']['id'];

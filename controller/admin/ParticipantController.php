@@ -4,7 +4,6 @@ use controller\BaseController;
 use dao\DetailDao;
 use dao\CompanionDao;
 use dao\UsersDao;
-use entity\Participant;
 use service\EventService;
 
 class ParticipantController extends BaseController
@@ -76,13 +75,21 @@ class ParticipantController extends BaseController
 
             if (isset($_POST['register'])) {
                 $service = new EventService();
-                $participant = new Participant();
-                $participant->gameId = (int)$_POST['game_id'];
-                $participant->occupation = (int)$_POST['occupation'];
-                $participant->sex = (int)$_POST['sex'];
-                $participant->name = $_POST['name'];
-                $participant->email = $_POST['email'];
-                $participant->remark = $_POST['remark'];
+                // $participant = new Participant();
+                // $participant->gameId = (int)$_POST['game_id'];
+                // $participant->occupation = (int)$_POST['occupation'];
+                // $participant->sex = (int)$_POST['sex'];
+                // $participant->name = $_POST['name'];
+                // $participant->email = $_POST['email'];
+                // $participant->remark = $_POST['remark'];
+
+                $participant = [];
+                $participant['game_id'] = (int)$_POST['game_id'];
+                $participant['occupation'] = (int)$_POST['occupation'];
+                $participant['sex'] = (int)$_POST['sex'];
+                $participant['name'] = $_POST['name'];
+                $participant['email'] = $_POST['email'];
+                $participant['remark'] = $_POST['remark'];
 
                 $companions = [];
                 if($_POST['companion'] > 0) {
@@ -99,7 +106,7 @@ class ParticipantController extends BaseController
                     }
                 }
                 if($_POST['id'] !== '') {
-                    $participant->id = $_POST['id'];
+                    $participant['id'] = $_POST['id'];
                     $service->participantUpdate($participant, $companions);
                 } else {
                     $service->oneParticipantRegist($participant, $companions, EventService::MODE_ADMIN);

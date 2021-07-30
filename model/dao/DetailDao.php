@@ -4,7 +4,6 @@ namespace dao;
 use dao\GameInfoDao;
 
 use PDO;
-use entity\Participant;
 
 class DetailDao extends BaseDao
 {
@@ -233,25 +232,25 @@ class DetailDao extends BaseDao
     }
 
     // 参加者idの取得
-    public function getParticipantId(Participant $participant) 
+    public function getParticipantId($participant) 
     {
         $sql = "select max(id) id
                 from participant 
                 where game_id = :game_id
                 and delete_flg = '1'";
-        if(!empty($participant->email)) {
+        if(!empty($participant['email'])) {
             $sql .= " and email = :email ";
         }
-        if(!empty($participant->lineId)) {
+        if(!empty($participant['line_id'])) {
             $sql .= " and line_id = :lineId ";
         }
         $prepare = $this->getPdo()->prepare($sql);
-        $prepare->bindValue(':game_id', $participant->gameId, PDO::PARAM_INT);
-        if(!empty($participant->email)) {
-            $prepare->bindValue(':email', $participant->email, PDO::PARAM_STR);
+        $prepare->bindValue(':game_id', $participant['game_id'], PDO::PARAM_INT);
+        if(!empty($participant['email'])) {
+            $prepare->bindValue(':email', $participant['email'], PDO::PARAM_STR);
         }
-        if(!empty($participant->lineId)) {
-            $prepare->bindValue(':lineId', $participant->lineId, PDO::PARAM_STR);
+        if(!empty($participant['line_id'])) {
+            $prepare->bindValue(':lineId', $participant['line_id'], PDO::PARAM_STR);
         }
 
         $prepare->execute();
@@ -275,9 +274,12 @@ class DetailDao extends BaseDao
     public function existsCheck(int $gameId, string $email) 
     {
         // $participant = new Participant($gameId, 0, 0, '', $email, 0, '');
-        $participant = new Participant();
-        $participant->gameId = $gameId;
-        $participant->email = $email;
+        // $participant = new Participant();
+        // $participant->gameId = $gameId;
+        // $participant->email = $email;
+        $participant = [];
+        $participant['game_id'] = $gameId;
+        $participant['email'] = $email;
         $id = $this->getParticipantId($participant);
         if (isset($id)) {
             return true;
@@ -290,10 +292,14 @@ class DetailDao extends BaseDao
     {
         // 存在チェック
         // $participant = new Participant($gameId, 0, 0, '', $email, 0, '');
-        $participant = new Participant();
-        $participant->gameId = $gameId;
-        $participant->email = $email;
-        $participant->lineId = $lineId;
+        // $participant = new Participant();
+        // $participant->gameId = $gameId;
+        // $participant->email = $email;
+        // $participant->lineId = $lineId;
+        $participant = [];
+        $participant['game_id'] = $gameId;
+        $participant['email'] = $email;
+        $participant['line_id'] = $lineId;
         $id = $this->getParticipantId($participant);
         if ($id == null) {
             return 0;
@@ -305,18 +311,18 @@ class DetailDao extends BaseDao
         $prepare->execute();
         // 参加者削除
         $sql = 'delete from participant where game_id = :game_id ';
-        if(!empty($participant->email)) {
+        if(!empty($participant['email'])) {
             $sql .= ' and email = :email ';
         }
-        if(!empty($participant->lineId)) {
+        if(!empty($participant['line_id'])) {
             $sql .= ' and line_id = :lineId ';
         }
         $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
-        if(!empty($participant->email)) {
+        if(!empty($participant['email'])) {
             $prepare->bindValue(':email', $email, PDO::PARAM_STR);
         }
-        if(!empty($participant->lineId)) {
+        if(!empty($participant['line_id'])) {
             $prepare->bindValue(':lineId', $lineId, PDO::PARAM_STR);
         }
         $prepare->execute();
