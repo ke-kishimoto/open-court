@@ -185,9 +185,12 @@ class EventService
                 $companionDao = new CompanionDao();
                 $companionDao->setPdo($detailDao->getPdo());
                 foreach($companions as $companion) {
-                    $companion->participantId = (int)$id;
-                    $companion->attendance = $participant->attendance;
-                    $companion->amount = $this->getAmount($companion->occupation,$gameInfo);
+                    // $companion->participantId = (int)$id;
+                    // $companion->attendance = $participant->attendance;
+                    // $companion->amount = $this->getAmount($companion->occupation,$gameInfo);
+                    $companion['participant_id'] = (int)$id;
+                    $companion['attendance'] = $participant->attendance;
+                    $companion['amount'] = $this->getAmount($companion['occupation'],$gameInfo);
                     $companionDao->insert($companion);
                 }
             }
@@ -227,9 +230,12 @@ class EventService
                 $id = $detailDao->getParticipantId($participant);
                 $companionDao->setPdo($detailDao->getPdo());
                 foreach($companions as $companion) {
-                    $companion->participantId = (int)$id;
-                    $companion->attendance = $participant->attendance;
-                    $companion->amount = $this->getAmount($companion->occupation,$gameInfo);
+                    // $companion->participantId = (int)$id;
+                    // $companion->attendance = $participant->attendance;
+                    // $companion->amount = $this->getAmount($companion->occupation,$gameInfo);
+                    $companion['participant_id'] = (int)$id;
+                    $companion['attendance'] = $participant->attendance;
+                    $companion['amount'] = $this->getAmount($companion['occupation'],$gameInfo);
                     $companionDao->insert($companion);
                 }
             }

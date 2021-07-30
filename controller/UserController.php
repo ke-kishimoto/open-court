@@ -6,7 +6,6 @@ use dao\DefaultCompanionDao;
 use dao\DetailDao;
 use dao\ConfigDao;
 use entity\Users;
-use entity\DefaultCompanion;
 use api\MailApi;
 // use api\LineApi;
 use service\UserService;
@@ -102,7 +101,7 @@ class UserController extends BaseController
                     $errMsg = 'パスワードが異なっています。';            
                 }
                 // メールアドレスによる重複チェック
-                if($usersDao->existsCheck($_POST['email'])){
+                if(isset($_POST['email']) && $usersDao->existsCheck($_POST['email'])){
                     $errMsg = '入力されたメールアドレスは既に登録済みです。';
                 }
             }
@@ -115,7 +114,7 @@ class UserController extends BaseController
                     $password = '';
                 }
                 $users = new Users();
-                $users->email = $_POST['email'];
+                $users->email = $_POST['email'] ?? '';
                 $users->name = $_POST['name'];
                 $users->password =  $password;
                 $users->occupation = $_POST['occupation'];
@@ -144,11 +143,17 @@ class UserController extends BaseController
                         $defaultCompanionDao->setPdo($usersDao->getPdo());
                         for($i = 1; $i <= $_POST['companion']; $i++) {
                             // $defaultCompanion = new DefaultCompanion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
-                            $defaultCompanion = new DefaultCompanion();
-                            $defaultCompanion->userId = $id; 
-                            $defaultCompanion->occupation = $_POST['occupation-' . $i];
-                            $defaultCompanion->sex = $_POST['sex-' . $i];
-                            $defaultCompanion->name = $_POST['name-' . $i];
+                            // $defaultCompanion = new DefaultCompanion();
+                            // $defaultCompanion->userId = $id; 
+                            // $defaultCompanion->occupation = $_POST['occupation-' . $i];
+                            // $defaultCompanion->sex = $_POST['sex-' . $i];
+                            // $defaultCompanion->name = $_POST['name-' . $i];
+                            $defaultCompanion = [];
+                            $defaultCompanion['user_id'] = $id; 
+                            $defaultCompanion['occupation'] = $_POST['occupation-' . $i];
+                            $defaultCompanion['sex'] = $_POST['sex-' . $i];
+                            $defaultCompanion['name'] = $_POST['name-' . $i];
+                            
                             $defaultCompanionDao->insert($defaultCompanion);
                         }
                     }
@@ -439,10 +444,10 @@ class UserController extends BaseController
             //     for($i = 1; $i <= $_POST['companion']; $i++) {
             //         // $defaultCompanion = new DefaultCompanion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
             //         $defaultCompanion = new DefaultCompanion();
-            //         $defaultCompanion->userId = $id; 
-            //         $defaultCompanion->occupation = $_POST['occupation-' . $i];
-            //         $defaultCompanion->sex = $_POST['sex-' . $i];
-            //         $defaultCompanion->name = $_POST['name-' . $i];
+            //         $defaultCompanion['user_id'] = $id; 
+            //         $defaultCompanion['occupation'] = $_POST['occupation-' . $i];
+            //         $defaultCompanion['sex'] = $_POST['sex-' . $i];
+            //         $defaultCompanion['name'] = $_POST['name-' . $i];
             //         $defaultCompanionDao->insert($defaultCompanion);
             //     }
             // }

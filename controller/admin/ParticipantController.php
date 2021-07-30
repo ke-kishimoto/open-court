@@ -4,7 +4,6 @@ use controller\BaseController;
 use dao\DetailDao;
 use dao\CompanionDao;
 use dao\UsersDao;
-use entity\Companion;
 use entity\Participant;
 use service\EventService;
 
@@ -88,10 +87,14 @@ class ParticipantController extends BaseController
                 $companions = [];
                 if($_POST['companion'] > 0) {
                     for($i = 1; $i <= $_POST['companion']; $i++) {
-                        $companion = new Companion();
-                        $companion->occupation =  $_POST['occupation-' . $i];
-                        $companion->sex = $_POST['sex-' . $i];
-                        $companion->name =  $_POST['name-' . $i];
+                        // $companion = new Companion();
+                        // $companion->occupation =  $_POST['occupation-' . $i];
+                        // $companion->sex = $_POST['sex-' . $i];
+                        // $companion->name =  $_POST['name-' . $i];
+                        $companion = [];
+                        $companion['occupation'] =  $_POST['occupation-' . $i];
+                        $companion['sex'] = $_POST['sex-' . $i];
+                        $companion['name'] =  $_POST['name-' . $i];
                         $companions[] = $companion;
                     }
                 }
