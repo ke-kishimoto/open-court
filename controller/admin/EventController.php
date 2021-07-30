@@ -2,7 +2,6 @@
 namespace controller\admin;
 use controller\BaseController;
 use entity\GameInfo;
-use entity\EventTemplate;
 use dao\EventTemplateDao;
 use dao\GameInfoDao;
 use dao\DetailDao;
@@ -42,21 +41,32 @@ class EventController extends BaseController
             $eventTemplateDao = new EventTemplateDao();
             if (isset($_POST['register'])) {
                 // 登録・修正''
-                $eventTemplate = new EventTemplate();
-                $eventTemplate->templateName = $_POST['template_name'];
-                $eventTemplate->title = $_POST['title'];
-                $eventTemplate->shortTitle = $_POST['short_title'];
-                $eventTemplate->place = $_POST['place'];
-                $eventTemplate->limitNumber = $_POST['limit_number'];
-                $eventTemplate->detail = $_POST['detail'];
-                $eventTemplate->price1 = (int)$_POST['price1'];
-                $eventTemplate->price2 = (int)$_POST['price2'];
-                $eventTemplate->price3 = (int)$_POST['price3'];
+                // $eventTemplate = new EventTemplate();
+                // $eventTemplate->templateName = $_POST['template_name'];
+                // $eventTemplate->title = $_POST['title'];
+                // $eventTemplate->shortTitle = $_POST['short_title'];
+                // $eventTemplate->place = $_POST['place'];
+                // $eventTemplate->limitNumber = $_POST['limit_number'];
+                // $eventTemplate->detail = $_POST['detail'];
+                // $eventTemplate->price1 = (int)$_POST['price1'];
+                // $eventTemplate->price2 = (int)$_POST['price2'];
+                // $eventTemplate->price3 = (int)$_POST['price3'];
+
+                $eventTemplate = [];
+                $eventTemplate['template_name'] = $_POST['template_name'];
+                $eventTemplate['title'] = $_POST['title'];
+                $eventTemplate['short_title'] = $_POST['short_title'];
+                $eventTemplate['place'] = $_POST['place'];
+                $eventTemplate['limit_number'] = $_POST['limit_number'];
+                $eventTemplate['detail'] = $_POST['detail'];
+                $eventTemplate['price1'] = (int)$_POST['price1'];
+                $eventTemplate['price2'] = (int)$_POST['price2'];
+                $eventTemplate['price3'] = (int)$_POST['price3'];
                                 
                 if($_POST['id'] == '' || isset($_POST['new'])) {
                     $eventTemplateDao->insert($eventTemplate);
                 } else {
-                    $eventTemplate->id = $_POST['id'];
+                    $eventTemplate['id'] = $_POST['id'];
                     $eventTemplateDao->update($eventTemplate);
                 }
             } else {
