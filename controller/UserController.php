@@ -5,7 +5,6 @@ use dao\UsersDao;
 use dao\DefaultCompanionDao;
 use dao\DetailDao;
 use dao\ConfigDao;
-use entity\Users;
 use api\MailApi;
 // use api\LineApi;
 use service\UserService;
@@ -113,14 +112,22 @@ class UserController extends BaseController
                 } else {
                     $password = '';
                 }
-                $users = new Users();
-                $users->email = $_POST['email'] ?? '';
-                $users->name = $_POST['name'];
-                $users->password =  $password;
-                $users->occupation = $_POST['occupation'];
-                $users->sex = $_POST['sex'];
-                $users->remark = $_POST['remark'];
-                $users->adminFlg = 0;
+                // $users = new Users();
+                // $users->email = $_POST['email'] ?? '';
+                // $users->name = $_POST['name'];
+                // $users->password =  $password;
+                // $users->occupation = $_POST['occupation'];
+                // $users->sex = $_POST['sex'];
+                // $users->remark = $_POST['remark'];
+                // $users->adminFlg = 0;
+                $users = [];
+                $users['email'] = $_POST['email'] ?? '';
+                $users['name'] = $_POST['name'];
+                $users['password'] =  $password;
+                $users['occupation'] = $_POST['occupation'];
+                $users['sex'] = $_POST['sex'];
+                $users['remark'] = $_POST['remark'];
+                $users['admin_flg'] = 0;
             
                 try {
                     // トランザクション開始
@@ -131,10 +138,11 @@ class UserController extends BaseController
                         $usersDao->insert($users);
                     } else {
                         // 更新
-                        $users->id = $_POST['id'];
+                        // $users->id = $_POST['id'];
+                        $users['id'] = $_POST['id'];
                         $usersDao->update($users);
                         // 同伴者の削除
-                        $defaultCompanionDao->deleteByuserId($users->id);
+                        $defaultCompanionDao->deleteByuserId($users['id']);
                     }
             
                     // 同伴者の登録
@@ -424,16 +432,20 @@ class UserController extends BaseController
         parent::userHeader();
         $usersDao = new UsersDao();
 
-        $user = new Users();
-        $user->occupation = $_POST['occupation'];
-        $user->sex = $_POST['sex'];
-        $user->remark = $_POST['remark'];
+        // $user = new Users();
+        // $user->occupation = $_POST['occupation'];
+        // $user->sex = $_POST['sex'];
+        // $user->remark = $_POST['remark'];
+        $user = [];
+        $user['occupation'] = $_POST['occupation'];
+        $user['sex'] = $_POST['sex'];
+        $user['remark'] = $_POST['remark'];
         try {
             // トランザクション開始
             $usersDao->getPdo()->beginTransaction();
             $defaultCompanionDao = new DefaultCompanionDao();
             // 更新
-            $user->id = $_POST['id'];
+            $user['id'] = $_POST['id'];
             $usersDao->update($user);
     
             // // 同伴者の登録
@@ -456,7 +468,7 @@ class UserController extends BaseController
         } catch(Exception $ex) {
             $usersDao->getPdo()->rollBack();
         }
-        $user = $usersDao->selectById($user->id);
+        $user = $usersDao->selectById($user['id']);
         $_SESSION['user'] = $user;
 
         $title = 'ユーザー登録完了';
@@ -467,6 +479,4 @@ class UserController extends BaseController
         include('./view/common/footer.php');
     }
 
-
-    
 }

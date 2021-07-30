@@ -5,7 +5,6 @@ use api\LineApi;
 use dao\GameInfoDao;
 use dao\DetailDao;
 use dao\UsersDao;
-use entity\Users;
 use entity\Participant;
 use service\EventService;
 
@@ -74,9 +73,12 @@ class LineApiWebhook
         $user = $userDao->getUserByLineId($event['source']['userId']);
         if(!$user) {
             // ユーザーが存在しない場合は登録する
-            $user = new Users();
-            $user->adminFlg = 0;
-            $user->lineId = $event['source']['userId'];
+            // $user = new Users();
+            // $user->adminFlg = 0;
+            // $user->lineId = $event['source']['userId'];
+            $user = [];
+            $user['admin_flg'] = 0;
+            $user['line_id'] = $event['source']['userId'];
             $userDao->insert($user);
         }
     }
@@ -421,17 +423,18 @@ class LineApiWebhook
     {
         $userDao = new UsersDao();
         $userInfo = $userDao->getUserByLineId($event['source']['userId']);
-        $user = new Users();
-        $user->id = $userInfo['id'];
+        // $user = new Users();
+        $user = [];
+        $user['id'] = $userInfo['id'];
         if($data['type'] === 'occupation' && $data['id'] != 0) {
-            $user->occupation = $data['id'];
+            $user['occupation'] = $data['id'];
         } else {
-            $user->occupation = $userInfo['occupation'];
+            $user['occupation'] = $userInfo['occupation'];
         }
         if($data['type'] === 'sex' && $data['id'] != 0) {
-            $user->sex = $data['id'];
+            $user['sex'] = $data['id'];
         } else {
-            $user->sex = $userInfo['sex'];
+            $user['sex'] = $userInfo['sex'];
         }
         $userDao->update($user);
         $text = '登録完了しました。';

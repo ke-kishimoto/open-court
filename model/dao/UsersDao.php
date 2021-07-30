@@ -2,7 +2,6 @@
 namespace dao;
 
 use PDO;
-use entity\Users;
 
 class UsersDao extends BaseDao
 {
@@ -26,14 +25,14 @@ class UsersDao extends BaseDao
     }
 
     // ユーザーのidの取得
-    public function getUsersId(Users $user) 
+    public function getUsersId($user) 
     {
         $sql = "select max(id) id
                 from users 
                 where email = :email
                 and delete_flg = '1'";
         $prepare = $this->getPdo()->prepare($sql);
-        $prepare->bindValue(':email', $user->email, PDO::PARAM_STR);
+        $prepare->bindValue(':email', $user['email'], PDO::PARAM_STR);
 
         $prepare->execute();
         $info = $prepare->fetch();
@@ -78,8 +77,10 @@ class UsersDao extends BaseDao
     public function existsCheck(string $email) 
     {
         // $users = new Users('',$email, '', '', '', '', '');
-        $user = new Users();
-        $user->email = $email;
+        // $user = new Users();
+        // $user->email = $email;
+        $user = [];
+        $user['email'] = $email;
         $id = $this->getUsersId($user);
         if (isset($id)) {
             return true;
