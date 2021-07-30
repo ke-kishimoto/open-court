@@ -2,7 +2,6 @@
 namespace dao;
 
 use dao\BaseDao;
-use entity\Notice;
 
 require_once(__DIR__.'/BaseDao.php');
 
