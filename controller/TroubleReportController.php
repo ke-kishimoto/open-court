@@ -1,7 +1,6 @@
 <?php
 namespace controller;
 use dao\TroubleReportDao;
-use entity\TroubleReport;
 use api\LineApi;
 
 class TroubleReportController extends BaseController
@@ -31,12 +30,19 @@ class TroubleReportController extends BaseController
         $errMsg = '';
         if(isset($_POST)) {
             $troubleReportDao = new TroubleReportDao();
-            $troubleReport = new TroubleReport();
-            $troubleReport->name = $_POST['name'];
-            $troubleReport->category = (int)$_POST['category'];
-            $troubleReport->title = $_POST['title'];
-            $troubleReport->content = $_POST['content'];
-            $troubleReport->statusFlg = 0;
+            // $troubleReport = new TroubleReport();
+            // $troubleReport->name = $_POST['name'];
+            // $troubleReport->category = (int)$_POST['category'];
+            // $troubleReport->title = $_POST['title'];
+            // $troubleReport->content = $_POST['content'];
+            // $troubleReport->statusFlg = 0;
+            $troubleReport = [];
+            $troubleReport['name'] = $_POST['name'];
+            $troubleReport['category'] = (int)$_POST['category'];
+            $troubleReport['title'] = $_POST['title'];
+            $troubleReport['content'] = $_POST['content'];
+            $troubleReport['status_flg'] = 0;
+
             $troubleReportDao->insert($troubleReport);
 
             // LINE通知用に参加者情報とイベント情報を取得

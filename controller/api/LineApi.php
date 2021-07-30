@@ -5,7 +5,6 @@ use api\LineApiWebhook;
 use entity\Participant;
 use entity\Inquiry;
 use dao\ConfigDao;
-use entity\TroubleReport;
 use Exception;
 
 // LINE通知用
@@ -84,21 +83,21 @@ class LineApi
     }
 
     // 不具合・要望報告
-    public function troubleReport(TroubleReport $troubleReport)
+    public function troubleReport($troubleReport)
     {
         $categoryName = '';
-        if($troubleReport->category == 1) {
+        if($troubleReport['category'] == 1) {
             $categoryName = '障害・不具合';
-        } elseif ($troubleReport->category == 2) {
+        } elseif ($troubleReport['category'] == 2) {
             $categoryName = '要望';
         } else {
             $categoryName = 'その他';
         }
         $message = "不具合報告・要望\n";
-        $message .=  "名前 : {$troubleReport->name} \n";
+        $message .=  "名前 : {$troubleReport['name']} \n";
         $message .=  "カテゴリ : {$categoryName}\n";
-        $message .= "タイトル : {$troubleReport->title} \n";
-        $message .= "詳細 : {$troubleReport->content} \n";
+        $message .= "タイトル : {$troubleReport['title']} \n";
+        $message .= "詳細 : {$troubleReport['content']} \n";
 
         return $this->line_notify($message);
     }
