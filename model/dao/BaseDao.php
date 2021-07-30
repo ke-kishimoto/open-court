@@ -111,7 +111,8 @@ class BaseDao
             $prepare->bindValue($key, $value);
         }
         $prepare->bindValue(':updateDate', date('Y-m-d H:i:s'), PDO::PARAM_STR);
-        $prepare->bindValue(':id', $entity->id, PDO::PARAM_INT);
+        $id = isset($entity->id) ? $entity->id : $entity['id'];
+        $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
     }
 
