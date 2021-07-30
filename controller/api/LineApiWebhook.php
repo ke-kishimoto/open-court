@@ -12,6 +12,7 @@ use service\EventService;
 class LineApiWebhook
 {
     const QUICK_REPLY_NUM = 13;  // クイックリプライできるのが最大13件らしい
+    const CAROUSEL_NUM = 10; // カルーセルは最大10件らしい
 
     // メッセージを受信した時
     public function receiveMessageText($event, $channelAccessToken)
@@ -109,31 +110,62 @@ class LineApiWebhook
             $msg = 'キャンセルしたいイベントを選択してください。';
             $mode = 'cancel';
         }
-        $items = [];
+        // $items = [];
+        $columns = [];
         foreach($gameInfoList as $gameInfo) {
-            $items[] = [
-                'type' => 'action', 
-                'action' => [
+            // クイックリプライVer
+            // $items[] = [
+            //     'type' => 'action', 
+            //     'action' => [
+            //         'type' => 'postback',
+            //         'label' => "{$gameInfo['game_date']} {$gameInfo['short_title']}",
+            //         'data' => "action=select&mode={$mode}&id={$gameInfo['id']}",
+            //         'displayText' => "{$gameInfo['game_date']} {$gameInfo['short_title']}"
+            //     ]
+            // ];
+            // if(count($items) >= self::QUICK_REPLY_NUM) {
+            //     break;
+            // }
+
+            // カルーセルVer
+            $columns[] = [
+                "text" => "イベント詳細\n イベント：{$gameInfo['title']}\n 日付：{$gameInfo['game_date']}\n
+                開始時刻：{$gameInfo['start_time']}\n 場所：{$gameInfo['place']}\n 人数上限：{$gameInfo['limit_number']}人\n 参加予定：{$gameInfo['participants_number']}人\n",
+                "actions" => [
                     'type' => 'postback',
-                    'label' => "{$gameInfo['game_date']} {$gameInfo['short_title']}",
+                    'label' => "予約する",
                     'data' => "action=select&mode={$mode}&id={$gameInfo['id']}",
-                    'displayText' => "{$gameInfo['game_date']} {$gameInfo['short_title']}"
-                ]
+                    'displayText' => "予約する"
+                ],
             ];
-            
-            if(count($items) >= self::QUICK_REPLY_NUM) {
+            if(count($columns) >= self::CAROUSEL_NUM) {
                 break;
             }
         }
-        // 応答メッセージを返す 
+        // // 応答メッセージを返す //  クイックリプライVer
+        // return json_encode([
+        //     'replyToken' => "{$event['replyToken']}",
+        //     'messages' => [
+        //         [
+        //             'type' => 'text',
+        //             'text' => $msg,                            
+        //             'quickReply' => [
+        //                 'items' =>  $items
+        //             ]
+        //         ]
+        //     ]
+        // ]);
+
+        // 応答メッセージを返す // カルーセルVer
         return json_encode([
             'replyToken' => "{$event['replyToken']}",
             'messages' => [
                 [
-                    'type' => 'text',
-                    'text' => $msg,                            
-                    'quickReply' => [
-                        'items' =>  $items
+                    'type' => 'template',
+                    "altText" => "this is a carousel template",
+                    'template' => [
+                        "type" => "carousel",
+                        "columns" => $columns
                     ]
                 ]
             ]
@@ -205,6 +237,7 @@ class LineApiWebhook
 
     }
 
+    // 職種表示用
     private function occupationSelect($event) 
     {
         // クイックリプライVer
