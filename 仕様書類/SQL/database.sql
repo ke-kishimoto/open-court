@@ -22,13 +22,18 @@ create table game_info (
     , price1 int
     , price2 int
     , price3 int
+    , amount int
+    , participantnum int
     , expenses int -- 経費
     , delete_flg int default 1
     , register_date timestamp null default null
     , update_date timestamp null default null
 );
 -- 経費追加
-alter table game_info add column expenses int;
+-- alter table game_info add column expenses int;
+-- alter table game_info add column amount int; -- 売上金額
+-- alter table game_info add column participantnum int; -- 参加人数
+
 
 -- イベントのテンプレ
 -- drop table event_template; 
@@ -63,6 +68,7 @@ create table participant (
     , amount int           -- 回収金額
     , amount_remark varchar(200) -- 売上備考
     , tel varchar(13)      -- 電話番号
+    , line_id varchar(255) -- LINE ID
     , delete_flg int default 1
     , register_date timestamp null default null   -- 登録日時
     , update_date timestamp null default null     -- 更新日時
@@ -71,11 +77,13 @@ create table participant (
 create index participant_idx_game on participant (game_id); 
 
 -- 出欠と回収金額
-alter table participant add column attendance int default 1; 
-alter table participant add column amount int;
-alter table participant add column amount_remark varchar(200);
+-- alter table participant add column attendance int default 1; 
+-- alter table participant add column amount int;
+-- alter table participant add column amount_remark varchar(200);
 -- 電話番号
-alter table participant add column tel varchar(13);
+-- alter table participant add column tel varchar(13);
+-- LINEログイン用
+-- alter table participant add column line_id varchar(255);
 
 
 -- 同伴者
@@ -97,28 +105,39 @@ create table companion (
 create index companion_idx_participant on companion (participant_id);
 
 -- 出欠と回収金額
-alter table companion add column attendance int default 1; 
-alter table companion add column amount int;
-alter table companion add column amount_remark varchar(200);
+-- alter table companion add column attendance int default 1; 
+-- alter table companion add column amount int;
+-- alter table companion add column amount_remark varchar(200);
 
 -- 設定
 -- 後々はユーザー単位にしたいな
 -- drop table config;
 create table config(
     id serial primary key
+    , line_notify_flg int
     , line_token varchar(200)
     , system_title varchar(30)
     , bg_color varchar(30)  -- 背景色、何個か選べるようにする
     , logo_img_path varchar(200)
     , waiting_flg_auto_update int  -- キャンセル待ち自動更新区分 0：手動、1：自動
     , sendgrid_api_key varchar(100) -- sendgridのAPIキー
+    , client_id varchar(255) -- LINE API用クライアントID
+    , client_secret varchar(255) -- LINE API用クライアントシークレット
+    , channel_access_token varchar(255)
+    , channel_secret varchar(255)
     , delete_flg int default 1
     , register_date timestamp null default null
     , update_date timestamp null default null
 );
 
-alter table config add column delete_flg int default 1;
-alter table config add column sendgrid_api_key varchar(100);
+-- alter table config add column delete_flg int default 1;
+-- alter table config add column sendgrid_api_key varchar(100);
+-- LINE API用追加
+-- alter table config add column client_id varchar(255);
+-- alter table config add column client_secret varchar(255);
+-- alter table config add column channel_access_token varchar(255);
+-- alter table config add column channel_secret varchar(255);
+-- alter table config add column line_notify_flg int;
 
 -- ユーザー
 -- drop table users;
@@ -131,14 +150,20 @@ create table users(
   , occupation int        -- 職種  1：社会、2：大学生、3：高校生
   , sex int               -- 性別  1：男、2：女
   , remark varchar(200)   -- 備考
+  , line_id varchar(255)
+  , tel varchar(13)
+  , access_token varchar(255)
+  , refresh_token varchar(255)
   , register_date timestamp null default null   -- 登録日時
   , update_date timestamp null default null     -- 更新日時
   , delete_flg int default 1
-  , tel varchar(13)
 );
 -- 電話番号
-alter table users add column tel varchar(13);
-
+-- alter table users add column tel varchar(13);
+-- LINEログイン用
+-- alter table users add column line_id varchar(255);
+-- alter table users add column access_token varchar(255);
+-- alter table users add column refresh_token varchar(255);
 
 -- ユーザーに付随する同伴者の初期値
 -- drop table default_companion;
@@ -160,15 +185,17 @@ create table inquiry(
     , game_id int
     , name varchar(50)
     , email varchar(50)
+    , line_id varchar(255)
     , content varchar(2000)
     , status_flg int  -- 0：未完了、1：完了済み
     , register_date timestamp null default null
     , update_date timestamp null default null
     , delete_flg int default 1
 );
-
 -- 削除フラグ追加
-alter table inquiry add column delete_flg int default 1;
+-- alter table inquiry add column delete_flg int default 1;
+-- LINEログイン用
+alter table inquiry add column line_id varchar(255);
 
 -- お知らせ
 -- drop table notice;
@@ -195,4 +222,18 @@ create table trouble_report(
     , register_date timestamp null default null
     , update_date timestamp null default null
 );
+
+-- drop table api_log
+create table api_log(
+    id serial primary key
+    , api_name varchar(255)
+    , method_name varchar(255)
+    , request_name varchar(255)
+    , detail varchar(255)
+    , status_code int
+    , delete_flg int default 1
+    , register_date timestamp null default null
+    , update_date timestamp null default null
+);
+
 

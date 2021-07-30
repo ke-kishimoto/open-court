@@ -4,8 +4,6 @@ namespace dao;
 
 use dao\DaoFactory;
 use PDO;
-use entity\BaseEntity;
-use phpDocumentor\Reflection\Types\Array_;
 
 class BaseDao
 {
@@ -48,7 +46,7 @@ class BaseDao
         return $prepare->fetchAll();
     }
 
-    public function insert(BaseEntity $entity)
+    public function insert($entity)
     {
         $sql = "insert into {$this->tableName} (";
         $i = 0;
@@ -88,7 +86,7 @@ class BaseDao
         $prepare->execute();
     }
 
-    public function update(BaseEntity $entity)
+    public function update($entity)
     {
         $sql = "update {$this->tableName} set ";
         $i = 0;
