@@ -8,7 +8,6 @@ use Exception;
 use dao\UsersDao;
 use dao\GameInfoDao;
 use api\LineApi;
-use entity\GameInfo;
 use entity\Participant;
 
 class EventService

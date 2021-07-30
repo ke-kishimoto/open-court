@@ -1,7 +1,6 @@
 <?php
 namespace controller\admin;
 use controller\BaseController;
-use entity\GameInfo;
 use dao\EventTemplateDao;
 use dao\GameInfoDao;
 use dao\DetailDao;
@@ -184,24 +183,38 @@ class EventController extends BaseController
             if (isset($_POST['register'])) {
                 // 登録・修正''
                 $msg = '登録';
-                $gameInfo = new GameInfo();
-                $gameInfo->title = $_POST['title'];
-                $gameInfo->shortTitle = $_POST['short_title'];
-                $gameInfo->gameDate = $_POST['game_date'];
-                $gameInfo->startTime = $_POST['start_time'];
-                $gameInfo->endTime = $_POST['end_time'];
-                $gameInfo->place = $_POST['place'];
-                $gameInfo->limitNumber = $_POST['limit_number'];
-                $gameInfo->detail = $_POST['detail'];
-                $gameInfo->price1 = (int)$_POST['price1'];
-                $gameInfo->price2 = (int)$_POST['price2'];
-                $gameInfo->price3 = (int)$_POST['price3'];
+                // $gameInfo = new GameInfo();
+                // $gameInfo->title = $_POST['title'];
+                // $gameInfo->shortTitle = $_POST['short_title'];
+                // $gameInfo->gameDate = $_POST['game_date'];
+                // $gameInfo->startTime = $_POST['start_time'];
+                // $gameInfo->endTime = $_POST['end_time'];
+                // $gameInfo->place = $_POST['place'];
+                // $gameInfo->limitNumber = $_POST['limit_number'];
+                // $gameInfo->detail = $_POST['detail'];
+                // $gameInfo->price1 = (int)$_POST['price1'];
+                // $gameInfo->price2 = (int)$_POST['price2'];
+                // $gameInfo->price3 = (int)$_POST['price3'];
+
+                $gameInfo = [];
+                $gameInfo['title'] = $_POST['title'];
+                $gameInfo['short_title'] = $_POST['short_title'];
+                $gameInfo['game_date'] = $_POST['game_date'];
+                $gameInfo['start_time'] = $_POST['start_time'];
+                $gameInfo['end_time'] = $_POST['end_time'];
+                $gameInfo['place'] = $_POST['place'];
+                $gameInfo['limit_number'] = $_POST['limit_number'];
+                $gameInfo['detail'] = $_POST['detail'];
+                $gameInfo['price1'] = (int)$_POST['price1'];
+                $gameInfo['price2'] = (int)$_POST['price2'];
+                $gameInfo['price3'] = (int)$_POST['price3'];
                 
                 $gameInfoDao = new GameInfoDao();
                 if(empty($_POST['game_id']) || $_POST['game_id'] == '') {
                     $gameInfoDao->insert($gameInfo);
                 } else {
-                    $gameInfo->id = $_POST['game_id'];
+                    // $gameInfo->id = $_POST['game_id'];
+                    $gameInfo['id'] = $_POST['game_id'];
                     $gameInfoDao->update($gameInfo);
                 }
             } else {

@@ -5,7 +5,6 @@ use controller\BaseController;
 use dao\DetailDao;
 use dao\GameInfoDao;
 use dao\SalesDao;
-use entity\GameInfo;
 use entity\Participant;
 
 class SalesController extends BaseController
@@ -130,11 +129,16 @@ class SalesController extends BaseController
             $GameInfoDao = new GameInfoDao();
             for($i = 0; $i < $count; $i++) {
                 $p = $GameInfoDao->selectById((int)$_POST["id-{$i}"]);
-                $gameInfo = new GameInfo();
-                $gameInfo->id = $p['id'];
-                $gameInfo->expenses = (int)$_POST["expenses-{$i}"];
-                $gameInfo->participantnum = (int)$_POST["cnt-{$i}"];
-                $gameInfo->amount = (int)$_POST["amount-{$i}"];
+                // $gameInfo = new GameInfo();
+                // $gameInfo->id = $p['id'];
+                // $gameInfo->expenses = (int)$_POST["expenses-{$i}"];
+                // $gameInfo->participantnum = (int)$_POST["cnt-{$i}"];
+                // $gameInfo->amount = (int)$_POST["amount-{$i}"];
+                $gameInfo = [];
+                $gameInfo['id'] = $p['id'];
+                $gameInfo['expenses'] = (int)$_POST["expenses-{$i}"];
+                $gameInfo['participantnum'] = (int)$_POST["cnt-{$i}"];
+                $gameInfo['amount'] = (int)$_POST["amount-{$i}"];
                 $GameInfoDao->update($gameInfo);
             }
 
