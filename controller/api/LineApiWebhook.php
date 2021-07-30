@@ -132,10 +132,12 @@ class LineApiWebhook
                 "text" => "イベント詳細\n イベント：{$gameInfo['title']}\n 日付：{$gameInfo['game_date']}\n
                 開始時刻：{$gameInfo['start_time']}\n 場所：{$gameInfo['place']}\n 人数上限：{$gameInfo['limit_number']}人\n 参加予定：{$gameInfo['participants_number']}人\n",
                 "actions" => [
+                    [
                     'type' => 'postback',
-                    'label' => "予約する",
+                    'label' => "{$text}する",
                     'data' => "action=select&mode={$mode}&id={$gameInfo['id']}",
-                    'displayText' => "予約する"
+                    'displayText' => "{$text}する"
+                    ]
                 ],
             ];
             if(count($columns) >= self::CAROUSEL_NUM) {
