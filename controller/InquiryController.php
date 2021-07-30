@@ -1,7 +1,6 @@
 <?php
 namespace controller;
 use dao\GameInfoDao;
-use entity\Inquiry;
 use service\InquiryService;
 
 class InquiryController extends BaseController
@@ -36,17 +35,23 @@ class InquiryController extends BaseController
             if (isset($_POST["csrf_token"]) && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
                 $gameId = (int)$_POST['game_id'];
                 // $inquiry = new Inquiry($gameId, $_POST['name'], $_POST['email'], $_POST['content'], 0, date('Y-m-d'), null);
-                $inquiry = new Inquiry();
-                $inquiry->gameId = $gameId;
-                $inquiry->name = $_POST['name'];
-                $inquiry->email = $_POST['email'];
-                $inquiry->content = $_POST['content'];
-                $inquiry->statusFlg = 0;
+                // $inquiry = new Inquiry();
+                // $inquiry->gameId = $gameId;
+                // $inquiry->name = $_POST['name'];
+                // $inquiry->email = $_POST['email'];
+                // $inquiry->content = $_POST['content'];
+                // $inquiry->statusFlg = 0;
+                $inquiry = [];
+                $inquiry['game_id'] = $gameId;
+                $inquiry['name'] = $_POST['name'];
+                $inquiry['email'] = $_POST['email'];
+                $inquiry['content'] = $_POST['content'];
+                $inquiry['status_flg'] = 0;
                 if(isset($_SESSION['user'])) {
-                    $inquiry->lineId = $_SESSION['user']['line_id'] ?? '';
+                    $inquiry['line_id'] = $_SESSION['user']['line_id'] ?? '';
                 }
                 // $inquiry->registerDate = date('Y-m-d');
-                $inquiry->updateDate = null;
+                $inquiry['update_date'] = null;
                 
                 $service = new InquiryService();
                 $service->sendInquiry($inquiry);

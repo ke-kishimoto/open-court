@@ -1,7 +1,6 @@
 <?php
 namespace api;
 require_once('vendor/autoload.php');
-use entity\Inquiry;
 use dao\ConfigDao;
 use Exception;
 
@@ -23,7 +22,7 @@ class MailApi
     }
 
     // 問い合わせ確認メール送信
-    public function inquiry_mail(Inquiry $inquiry) 
+    public function inquiry_mail($inquiry) 
     {
         $subject = "【FromStreet】お問い合わせ確認";
 
@@ -36,11 +35,11 @@ class MailApi
 
 
 ------------------------------
-{$inquiry->content}\n
+{$inquiry['content']}\n
 ------------------------------
 ";
 
-      return $this->send_mail($inquiry->email, $inquiry->name, $subject, $msg);
+      return $this->send_mail($inquiry['email'], $inquiry['name'], $subject, $msg);
 
     }
 

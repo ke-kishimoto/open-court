@@ -3,7 +3,6 @@ namespace api;
 define('LINE_API_URL', 'https://notify-api.line.me/api/notify');
 use api\LineApiWebhook;
 use entity\Participant;
-use entity\Inquiry;
 use dao\ConfigDao;
 use Exception;
 
@@ -71,13 +70,13 @@ class LineApi
     }
 
     // お問い合わせ
-    public function inquiry(Inquiry $inquiry) 
+    public function inquiry($inquiry) 
     {
         $message = "お問い合わせが入りました\n";
-        $message .=  "対象イベント : {$inquiry->gameTitle}\n";
-        $message .=  "名前 : {$inquiry->name} \n";
-        $message .= "連絡先 : {$inquiry->email} \n";
-        $message .= "問い合わせ内容 : {$inquiry->content} \n";
+        $message .=  "対象イベント : {$inquiry['game_title']}\n";
+        $message .=  "名前 : {$inquiry['name']} \n";
+        $message .= "連絡先 : {$inquiry['email']} \n";
+        $message .= "問い合わせ内容 : {$inquiry['content']} \n";
 
         return $this->line_notify($message);
     }
