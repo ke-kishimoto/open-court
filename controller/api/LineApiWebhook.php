@@ -107,36 +107,42 @@ class LineApiWebhook
         ]);
     }
 
-    // イベント選択時
+    // イベント選択時 カルーセルVer
     private function eventSelect($event, $text)
     {
         if($text === '予約') {
             $gameInfoDao = new GameInfoDao();
             $gameInfoList = $gameInfoDao->getGameInfoListByAfterDate(date('Y-m-d'), '', $event['source']['userId']);
-            // $msg = '予約したいイベントを選択してください。';
+            if(!$gameInfoList) {
+                return json_encode([
+                    'replyToken' => "{$event['replyToken']}",
+                    'messages' => [
+                        [
+                            'type' => 'text',
+                            'text' => '開催予定のイベントはありません。',
+                        ]
+                    ]
+                ]);
+            }
             $mode = 'reserve';
         } else {
             $detailDao = new DetailDao();
             $gameInfoList = $detailDao->getEventListByLineId($event['source']['userId'], date('Y-m-d'));
-            // $msg = 'キャンセルしたいイベントを選択してください。';
+            if(!$gameInfoList) {
+                return json_encode([
+                    'replyToken' => "{$event['replyToken']}",
+                    'messages' => [
+                        [
+                            'type' => 'text',
+                            'text' => '予約されたイベントはありません。',
+                        ]
+                    ]
+                ]);
+            }
             $mode = 'cancel';
         }
-        // $items = [];
         $columns = [];
         foreach($gameInfoList as $gameInfo) {
-            // クイックリプライVer
-            // $items[] = [
-            //     'type' => 'action', 
-            //     'action' => [
-            //         'type' => 'postback',
-            //         'label' => "{$gameInfo['game_date']} {$gameInfo['short_title']}",
-            //         'data' => "action=select&mode={$mode}&id={$gameInfo['id']}",
-            //         'displayText' => "{$gameInfo['game_date']} {$gameInfo['short_title']}"
-            //     ]
-            // ];
-            // if(count($items) >= self::QUICK_REPLY_NUM) {
-            //     break;
-            // }
 
             // カルーセルVer
             $columns[] = [
@@ -154,19 +160,6 @@ class LineApiWebhook
                 break;
             }
         }
-        // // 応答メッセージを返す //  クイックリプライVer
-        // return json_encode([
-        //     'replyToken' => "{$event['replyToken']}",
-        //     'messages' => [
-        //         [
-        //             'type' => 'text',
-        //             'text' => $msg,                            
-        //             'quickReply' => [
-        //                 'items' =>  $items
-        //             ]
-        //         ]
-        //     ]
-        // ]);
 
         // 応答メッセージを返す // カルーセルVer
         return json_encode([
@@ -183,6 +176,50 @@ class LineApiWebhook
             ]
         ]);
     }
+
+    // イベントセレクト時 クイックリプライVer
+    private function eventSelectQuick($event, $text)
+    {
+        if($text === '予約') {
+            $gameInfoDao = new GameInfoDao();
+            $gameInfoList = $gameInfoDao->getGameInfoListByAfterDate(date('Y-m-d'), '', $event['source']['userId']);
+            $msg = '予約したいイベントを選択してください。';
+            $mode = 'reserve';
+        } else {
+            $detailDao = new DetailDao();
+            $gameInfoList = $detailDao->getEventListByLineId($event['source']['userId'], date('Y-m-d'));
+            $msg = 'キャンセルしたいイベントを選択してください。';
+            $mode = 'cancel';
+        }
+        $items = [];
+        foreach($gameInfoList as $gameInfo) {
+            $items[] = [
+                'type' => 'action', 
+                'action' => [
+                    'type' => 'postback',
+                    'label' => "{$gameInfo['game_date']} {$gameInfo['short_title']}",
+                    'data' => "action=select&mode={$mode}&id={$gameInfo['id']}",
+                    'displayText' => "{$gameInfo['game_date']} {$gameInfo['short_title']}"
+                ]
+            ];
+            if(count($items) >= self::QUICK_REPLY_NUM) {
+                break;
+            }
+        }
+        return json_encode([
+            'replyToken' => "{$event['replyToken']}",
+            'messages' => [
+                [
+                    'type' => 'text',
+                    'text' => $msg,                            
+                    'quickReply' => [
+                        'items' =>  $items
+                    ]
+                ]
+            ]
+        ]);
+    }
+
 
     private function bookingConfirmation($event)
     {
@@ -249,52 +286,9 @@ class LineApiWebhook
 
     }
 
-    // 職種表示用
+    // 職種選択 ボタンテンプレートVer
     private function occupationSelect($event) 
     {
-        // クイックリプライVer
-        // return json_encode([
-        //     'replyToken' => "{$event['replyToken']}",
-        //     'messages' => [
-        //         [
-        //             'type' => 'text',
-        //             'text' =>  '職種を選択してください。（高校生以下の場合は高校生を選択してください）',                            
-        //             'quickReply' => [
-        //                 'items' => [
-        //                     [
-        //                     'type' => 'action',
-        //                     'action' => [
-        //                         'type' => 'postback',
-        //                         'label' => '社会人',
-        //                         'data' => "action=profile&type=occupation&id=1",
-        //                         'displayText' => '社会人'
-        //                         ]
-        //                     ],
-        //                     [
-        //                     'type' => 'action',
-        //                     'action' => [
-        //                         'type' => 'postback',
-        //                         'label' => '学生（大学・専門学校）',
-        //                         'data' => "action=profile&type=occupation&id=2",
-        //                         'displayText' => '学生（大学・専門学校）'
-        //                         ]
-        //                     ],
-        //                     [
-        //                     'type' => 'action',
-        //                     'action' => [
-        //                         'type' => 'postback',
-        //                         'label' => '高校生',
-        //                         'data' => "action=profile&type=occupation&id=3",
-        //                         'displayText' => '高校生'
-        //                         ]
-        //                     ]
-        //                 ]
-        //             ]
-        //         ]
-        //     ]
-        // ]);
-
-        // ボタンテンプレートVer
         return json_encode([
             'replyToken' => "{$event['replyToken']}",
             'messages' => 
@@ -339,43 +333,54 @@ class LineApiWebhook
         ]);
     }
 
-    // 性別の選択
+    // 職種選択 クイックリプライVer
+    private function occupationSelectQuick($event) {
+        return json_encode([
+            'replyToken' => "{$event['replyToken']}",
+            'messages' => [
+                [
+                    'type' => 'text',
+                    'text' =>  '職種を選択してください。（高校生以下の場合は高校生を選択してください）',                            
+                    'quickReply' => [
+                        'items' => [
+                            [
+                            'type' => 'action',
+                            'action' => [
+                                'type' => 'postback',
+                                'label' => '社会人',
+                                'data' => "action=profile&type=occupation&id=1",
+                                'displayText' => '社会人'
+                                ]
+                            ],
+                            [
+                            'type' => 'action',
+                            'action' => [
+                                'type' => 'postback',
+                                'label' => '学生（大学・専門学校）',
+                                'data' => "action=profile&type=occupation&id=2",
+                                'displayText' => '学生（大学・専門学校）'
+                                ]
+                            ],
+                            [
+                            'type' => 'action',
+                            'action' => [
+                                'type' => 'postback',
+                                'label' => '高校生',
+                                'data' => "action=profile&type=occupation&id=3",
+                                'displayText' => '高校生'
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+    }
+
+
+    // 性別の選択　ボタンテンプレートVer
     private function genderSelect($event)
     {
-        // クイックリプライのVer
-        // return json_encode([
-        //     'replyToken' => "{$event['replyToken']}",
-        //     'messages' => [
-        //         [
-        //             'type' => 'text',
-        //             'text' =>  '性別を選択してください。',                            
-        //             'quickReply' => [
-        //                 'items' =>  [
-        //                     [
-        //                     'type' => 'action',
-        //                     'action' => [
-        //                         'type' => 'postback',
-        //                         'label' => '男性',
-        //                         'data' => "action=profile&type=sex&id=1",
-        //                         'displayText' => '男性'
-        //                         ]
-        //                     ],
-        //                     [
-        //                     'type' => 'action',
-        //                     'action' => [
-        //                         'type' => 'postback',
-        //                         'label' => '女性',
-        //                         'data' => "action=profile&type=sex&id=2",
-        //                         'displayText' => '女性'
-        //                         ]
-        //                     ],
-        //                 ]
-        //             ]
-        //         ]   
-        //     ]
-        // ]);
-
-        // ボタンテンプレートVer
         return json_encode([
             'replyToken' => "{$event['replyToken']}",
             'messages' => 
@@ -410,6 +415,40 @@ class LineApiWebhook
                         ]
                     ]
                 ]
+            ]
+        ]);
+    }
+
+    private function genderSelectQuick($event) {
+        return json_encode([
+            'replyToken' => "{$event['replyToken']}",
+            'messages' => [
+                [
+                    'type' => 'text',
+                    'text' =>  '性別を選択してください。',                            
+                    'quickReply' => [
+                        'items' =>  [
+                            [
+                            'type' => 'action',
+                            'action' => [
+                                'type' => 'postback',
+                                'label' => '男性',
+                                'data' => "action=profile&type=sex&id=1",
+                                'displayText' => '男性'
+                                ]
+                            ],
+                            [
+                            'type' => 'action',
+                            'action' => [
+                                'type' => 'postback',
+                                'label' => '女性',
+                                'data' => "action=profile&type=sex&id=2",
+                                'displayText' => '女性'
+                                ]
+                            ],
+                        ]
+                    ]
+                ]   
             ]
         ]);
     }
@@ -477,15 +516,6 @@ class LineApiWebhook
         // イベントの詳細情報を表示する
         $gameInfoDao = new GameInfoDao();
         $gameInfo = $gameInfoDao->selectById($data['id']);
-        // $text = "イベント詳細\n";
-        // $text .= "イベント：{$gameInfo['title']}\n";
-        // $text .= "日付：{$gameInfo['game_date']}\n";
-        // $text .= "開始時刻：{$gameInfo['start_time']}\n";
-        // $text .= "場所：{$gameInfo['place']}\n";
-        // $text .= "人数上限：{$gameInfo['limit_number']}人\n";
-        // $text .= "参加予定：{$gameInfo['participants_number']}人\n";
-        // // $text .= "詳細：{$gameInfo['detail']}\n";  // 確認テンプレートの場合文字数制限で表示できない
-        // $text .= "\n";
         $info = $this->getEventInfoLong($gameInfo);
 
         if($data['mode'] === 'reserve') {
