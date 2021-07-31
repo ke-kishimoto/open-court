@@ -5,6 +5,7 @@ use api\LineApi;
 use dao\GameInfoDao;
 use dao\DetailDao;
 use dao\UsersDao;
+use dao\ApiLogDao;
 use service\EventService;
 
 class LineApiWebhook
@@ -43,8 +44,20 @@ class LineApiWebhook
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_POSTFIELDS, ($data)); //データをセット
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
-        curl_exec($ch);
+        $result = json_decode(curl_exec($ch));
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);  // ステータスコードを受け取る
         curl_close($ch);
+
+        // ログ出力
+        $apiLog = [];
+        $apiLog['api_name'] = 'line';
+        $apiLog['method_name'] = 'receiveMessageText';
+        $apiLog['request_name'] = 'bot/message/reply';
+        $apiLog['detail'] = $text;
+        $apiLog['status_code'] = (int)$httpcode;
+        $apiLog['result_message'] = isset($result->message) ? $result->message : '';
+        $apiLogDao = new ApiLogDao();
+        $apiLogDao->insert($apiLog);
     }
 
     // postbackを受信した時

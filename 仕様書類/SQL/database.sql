@@ -223,7 +223,7 @@ create table trouble_report(
     , update_date timestamp null default null
 );
 
--- drop table api_log
+-- drop table api_log;
 create table api_log(
     id serial primary key
     , api_name varchar(255)
@@ -231,6 +231,7 @@ create table api_log(
     , request_name varchar(255)
     , detail varchar(255)
     , status_code int
+    , result_message varchar(2000)
     , delete_flg int default 1
     , register_date timestamp null default null
     , update_date timestamp null default null

@@ -3,6 +3,7 @@ namespace api;
 define('LINE_API_URL', 'https://notify-api.line.me/api/notify');
 use api\LineApiWebhook;
 use dao\ConfigDao;
+use dao\ApiLogDao;
 use Exception;
 
 // LINE通知用
@@ -172,15 +173,15 @@ class LineApi
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);                //受け取ったデータを変数に
         $result = curl_exec($ch);
 
-        if(curl_errno($ch)){        //curlでエラー発生
-            $CURLERR .= 'curl_errno：' . curl_errno($ch) . "\n";
-            $CURLERR .= 'curl_error：' . curl_error($ch) . "\n";
-            $CURLERR .= '▼curl_getinfo' . "\n";
-            foreach(curl_getinfo($ch) as $key => $val){
-                $CURLERR .= '■' . $key . '：' . $val . "\n";
-            }
-            // echo nl2br($CURLERR);
-        }
+        // if(curl_errno($ch)){        //curlでエラー発生
+        //     $CURLERR .= 'curl_errno：' . curl_errno($ch) . "\n";
+        //     $CURLERR .= 'curl_error：' . curl_error($ch) . "\n";
+        //     $CURLERR .= '▼curl_getinfo' . "\n";
+        //     foreach(curl_getinfo($ch) as $key => $val){
+        //         $CURLERR .= '■' . $key . '：' . $val . "\n";
+        //     }
+        //     // echo nl2br($CURLERR);
+        // }
         curl_close($ch);
         return json_decode($result);
     }
@@ -351,6 +352,7 @@ class LineApi
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);  // ステータスコードを受け取る
         curl_close($ch);
         // $response = json_decode($result);
+
         return (int)$httpcode;
     }
 
