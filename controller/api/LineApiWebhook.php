@@ -472,6 +472,10 @@ class LineApiWebhook
 
     private function profileRegist($event, $channelAccessToken, $data)
     {
+        if($data['id'] == 0) {
+            return;
+        }
+
         $userDao = new UsersDao();
         $userInfo = $userDao->getUserByLineId($event['source']['userId']);
         // $user = new Users();
