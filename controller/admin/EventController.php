@@ -40,17 +40,7 @@ class EventController extends BaseController
             $eventTemplateDao = new EventTemplateDao();
             if (isset($_POST['register'])) {
                 // 登録・修正''
-                // $eventTemplate = new EventTemplate();
-                // $eventTemplate->templateName = $_POST['template_name'];
-                // $eventTemplate->title = $_POST['title'];
-                // $eventTemplate->shortTitle = $_POST['short_title'];
-                // $eventTemplate->place = $_POST['place'];
-                // $eventTemplate->limitNumber = $_POST['limit_number'];
-                // $eventTemplate->detail = $_POST['detail'];
-                // $eventTemplate->price1 = (int)$_POST['price1'];
-                // $eventTemplate->price2 = (int)$_POST['price2'];
-                // $eventTemplate->price3 = (int)$_POST['price3'];
-
+    
                 $eventTemplate = [];
                 $eventTemplate['template_name'] = $_POST['template_name'];
                 $eventTemplate['title'] = $_POST['title'];
@@ -183,19 +173,7 @@ class EventController extends BaseController
             if (isset($_POST['register'])) {
                 // 登録・修正''
                 $msg = '登録';
-                // $gameInfo = new GameInfo();
-                // $gameInfo->title = $_POST['title'];
-                // $gameInfo->shortTitle = $_POST['short_title'];
-                // $gameInfo->gameDate = $_POST['game_date'];
-                // $gameInfo->startTime = $_POST['start_time'];
-                // $gameInfo->endTime = $_POST['end_time'];
-                // $gameInfo->place = $_POST['place'];
-                // $gameInfo->limitNumber = $_POST['limit_number'];
-                // $gameInfo->detail = $_POST['detail'];
-                // $gameInfo->price1 = (int)$_POST['price1'];
-                // $gameInfo->price2 = (int)$_POST['price2'];
-                // $gameInfo->price3 = (int)$_POST['price3'];
-
+        
                 $gameInfo = [];
                 $gameInfo['title'] = $_POST['title'];
                 $gameInfo['short_title'] = $_POST['short_title'];
@@ -213,7 +191,6 @@ class EventController extends BaseController
                 if(empty($_POST['game_id']) || $_POST['game_id'] == '') {
                     $gameInfoDao->insert($gameInfo);
                 } else {
-                    // $gameInfo->id = $_POST['game_id'];
                     $gameInfo['id'] = $_POST['game_id'];
                     $gameInfoDao->update($gameInfo);
                 }

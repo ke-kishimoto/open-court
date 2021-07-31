@@ -76,9 +76,6 @@ class UsersDao extends BaseDao
     // メールアドレスによる存在チェック
     public function existsCheck(string $email) 
     {
-        // $users = new Users('',$email, '', '', '', '', '');
-        // $user = new Users();
-        // $user->email = $email;
         $user = [];
         $user['email'] = $email;
         $id = $this->getUsersId($user);

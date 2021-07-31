@@ -273,10 +273,6 @@ class DetailDao extends BaseDao
     // メールアドレスによる存在チェック
     public function existsCheck(int $gameId, string $email) 
     {
-        // $participant = new Participant($gameId, 0, 0, '', $email, 0, '');
-        // $participant = new Participant();
-        // $participant->gameId = $gameId;
-        // $participant->email = $email;
         $participant = [];
         $participant['game_id'] = $gameId;
         $participant['email'] = $email;
@@ -291,11 +287,6 @@ class DetailDao extends BaseDao
     public function deleteByMailAddress(int $gameId, string $email = '', string $lineId = '') 
     {
         // 存在チェック
-        // $participant = new Participant($gameId, 0, 0, '', $email, 0, '');
-        // $participant = new Participant();
-        // $participant->gameId = $gameId;
-        // $participant->email = $email;
-        // $participant->lineId = $lineId;
         $participant = [];
         $participant['game_id'] = $gameId;
         $participant['email'] = $email;

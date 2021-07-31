@@ -51,16 +51,6 @@ class ParticipantController extends BaseController
         if (isset($_POST["csrf_token"]) 
         && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 
-            // $participant = new Participant();
-            // $participant->gameId = 0;
-            // $participant->occupation = (int)$_POST['occupation'];
-            // $participant->sex = (int)$_POST['sex'];
-            // $participant->name = $_POST['name'];
-            // $participant->email = $_POST['email'] ?? '';
-            // $participant->waitingFlg = 0;
-            // $participant->remark = $_POST['remark'];
-            // $participant->lineId = $_POST['line_id'];
-
             $participant = [];
             $participant['game_id'] = 0;
             $participant['occupation'] = (int)$_POST['occupation'];
@@ -215,16 +205,6 @@ class ParticipantController extends BaseController
         if (isset($_POST["csrf_token"]) 
         && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 
-            // $participant = new Participant();
-            // $participant->gameId = (int)$_POST['game_id'];
-            // $participant->occupation = (int)$_POST['occupation'];
-            // $participant->sex = (int)$_POST['sex'];
-            // $participant->name = $_POST['name'];
-            // $participant->email = $_POST['email'] ?? '';
-            // $participant->waitingFlg = 0;
-            // $participant->remark = $_POST['remark'];
-            // $participant->lineId = $_POST['line_id'];
-
             $participant = [];
             $participant['game_id'] = (int)$_POST['game_id'];
             $participant['occupation'] = (int)$_POST['occupation'];
@@ -305,10 +285,6 @@ class ParticipantController extends BaseController
         if(isset($_POST)) {
 
             $service = new EventService();
-            // $participant = new Participant();
-            // $participant->gameId = (int)$_POST['game_id'];
-            // $participant->email = $_POST['email'] ?? '';
-            // $participant->lineId = $_POST['line_id'] ?? '';
             $participant = [];
             $participant['game_id'] = (int)$_POST['game_id'];
             $participant['email'] = $_POST['email'] ?? '';

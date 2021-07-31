@@ -35,18 +35,6 @@ class ConfigController extends BaseController
             // 登録・修正
             $configDao = new ConfigDao();
             $cfg = $configDao->selectById(1);
-            // $config = new Config();
-            // $config->id = $_POST['id'];
-            // $config->lineToken = $_POST['line_token'];
-            // $config->lineNotifyFlg = $_POST['line_notify_flg'];
-            // $config->sendgridApiKey = $_POST['sendgrid_api_key'] ?? '';
-            // $config->systemTitle = $_POST['system_title'];
-            // $config->bgColor = $_POST['bg_color'];
-            // $config->waitingFlgAutoUpdate = $_POST['waiting_flg_auto_update'];
-            // $config->clientId = $_POST['client_id'];
-            // $config->clientSecret = $_POST['client_secret'];
-            // $config->channelAccessToken = $_POST['channel_access_token'];
-            // $config->channelSecret = $_POST['channel_secret'];
             $config = [];
             $config['id'] = $_POST['id'];
             $config['line_token'] = $_POST['line_token'];

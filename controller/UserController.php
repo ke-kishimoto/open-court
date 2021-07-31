@@ -112,14 +112,6 @@ class UserController extends BaseController
                 } else {
                     $password = '';
                 }
-                // $users = new Users();
-                // $users->email = $_POST['email'] ?? '';
-                // $users->name = $_POST['name'];
-                // $users->password =  $password;
-                // $users->occupation = $_POST['occupation'];
-                // $users->sex = $_POST['sex'];
-                // $users->remark = $_POST['remark'];
-                // $users->adminFlg = 0;
                 $users = [];
                 $users['email'] = $_POST['email'] ?? '';
                 $users['name'] = $_POST['name'];
@@ -138,7 +130,6 @@ class UserController extends BaseController
                         $usersDao->insert($users);
                     } else {
                         // 更新
-                        // $users->id = $_POST['id'];
                         $users['id'] = $_POST['id'];
                         $usersDao->update($users);
                         // 同伴者の削除
@@ -150,12 +141,6 @@ class UserController extends BaseController
                         $id = $usersDao->getUsersId($users);
                         $defaultCompanionDao->setPdo($usersDao->getPdo());
                         for($i = 1; $i <= $_POST['companion']; $i++) {
-                            // $defaultCompanion = new DefaultCompanion($id, $_POST['occupation-' . $i], $_POST['sex-' . $i], $_POST['name-' . $i]);
-                            // $defaultCompanion = new DefaultCompanion();
-                            // $defaultCompanion->userId = $id; 
-                            // $defaultCompanion->occupation = $_POST['occupation-' . $i];
-                            // $defaultCompanion->sex = $_POST['sex-' . $i];
-                            // $defaultCompanion->name = $_POST['name-' . $i];
                             $defaultCompanion = [];
                             $defaultCompanion['user_id'] = $id; 
                             $defaultCompanion['occupation'] = $_POST['occupation-' . $i];
@@ -432,10 +417,6 @@ class UserController extends BaseController
         parent::userHeader();
         $usersDao = new UsersDao();
 
-        // $user = new Users();
-        // $user->occupation = $_POST['occupation'];
-        // $user->sex = $_POST['sex'];
-        // $user->remark = $_POST['remark'];
         $user = [];
         $user['occupation'] = $_POST['occupation'];
         $user['sex'] = $_POST['sex'];

@@ -30,12 +30,6 @@ class TroubleReportController extends BaseController
         $errMsg = '';
         if(isset($_POST)) {
             $troubleReportDao = new TroubleReportDao();
-            // $troubleReport = new TroubleReport();
-            // $troubleReport->name = $_POST['name'];
-            // $troubleReport->category = (int)$_POST['category'];
-            // $troubleReport->title = $_POST['title'];
-            // $troubleReport->content = $_POST['content'];
-            // $troubleReport->statusFlg = 0;
             $troubleReport = [];
             $troubleReport['name'] = $_POST['name'];
             $troubleReport['category'] = (int)$_POST['category'];

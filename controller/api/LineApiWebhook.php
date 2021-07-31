@@ -72,9 +72,6 @@ class LineApiWebhook
         $user = $userDao->getUserByLineId($event['source']['userId']);
         if(!$user) {
             // ユーザーが存在しない場合は登録する
-            // $user = new Users();
-            // $user->adminFlg = 0;
-            // $user->lineId = $event['source']['userId'];
             $user = [];
             $user['admin_flg'] = 0;
             $user['line_id'] = $event['source']['userId'];
@@ -571,15 +568,6 @@ class LineApiWebhook
         $gameInfoDao = new GameInfoDao();
         $gameInfo = $gameInfoDao->selectById((int)$data['id']);
         $user = $userDao->getUserByLineId($event['source']['userId']);
-        // $participant = new Participant();
-        // $participant->gameId = $data['id'];
-        // $participant->occupation = $user['occupation'];
-        // $participant->sex = $user['sex'];
-        // $participant->name = $user['name'];
-        // $participant->email = $user['email'] ?? '';
-        // $participant->tel = $user['tel'];
-        // $participant->remark = $user['remark'];
-        // $participant->lineId = $user['line_id'];
         $participant = [];
         $participant['game_id'] = $data['id'];
         $participant['occupation'] = $user['occupation'];

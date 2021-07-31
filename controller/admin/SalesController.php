@@ -95,11 +95,6 @@ class SalesController extends BaseController
             $detailDao = new DetailDao();
             for($i = 0; $i < $count; $i++) {
                 $p = $detailDao->selectById((int)$_POST["id-{$i}"]);
-                // $participant = new Participant();
-                // $participant->id = $p['id'];
-                // $participant->attendance = $_POST["attendance-{$i}"];
-                // $participant->amount = (int)$_POST["amount-{$i}"];
-                // $participant->amountRemark = $_POST["amount_remark-{$i}"];
                 $participant = [];
                 $participant['id'] = $p['id'];
                 $participant['attendance'] = $_POST["attendance-{$i}"];
@@ -133,11 +128,6 @@ class SalesController extends BaseController
             $GameInfoDao = new GameInfoDao();
             for($i = 0; $i < $count; $i++) {
                 $p = $GameInfoDao->selectById((int)$_POST["id-{$i}"]);
-                // $gameInfo = new GameInfo();
-                // $gameInfo->id = $p['id'];
-                // $gameInfo->expenses = (int)$_POST["expenses-{$i}"];
-                // $gameInfo->participantnum = (int)$_POST["cnt-{$i}"];
-                // $gameInfo->amount = (int)$_POST["amount-{$i}"];
                 $gameInfo = [];
                 $gameInfo['id'] = $p['id'];
                 $gameInfo['expenses'] = (int)$_POST["expenses-{$i}"];

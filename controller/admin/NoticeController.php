@@ -37,9 +37,6 @@ class NoticeController extends BaseController
 
             $noticeDao = new NoticeDao();
             if (isset($_POST['register'])) {
-                // $notice = new Notice();
-                // $notice->title = $_POST['title'];
-                // $notice->content = $_POST['content'];
                 $notice = [];
                 $notice['title'] = $_POST['title'];
                 $notice['content'] = $_POST['content'];

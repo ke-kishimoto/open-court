@@ -34,13 +34,6 @@ class InquiryController extends BaseController
         if(isset($_POST)) {
             if (isset($_POST["csrf_token"]) && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
                 $gameId = (int)$_POST['game_id'];
-                // $inquiry = new Inquiry($gameId, $_POST['name'], $_POST['email'], $_POST['content'], 0, date('Y-m-d'), null);
-                // $inquiry = new Inquiry();
-                // $inquiry->gameId = $gameId;
-                // $inquiry->name = $_POST['name'];
-                // $inquiry->email = $_POST['email'];
-                // $inquiry->content = $_POST['content'];
-                // $inquiry->statusFlg = 0;
                 $inquiry = [];
                 $inquiry['game_id'] = $gameId;
                 $inquiry['name'] = $_POST['name'];
@@ -50,31 +43,11 @@ class InquiryController extends BaseController
                 if(isset($_SESSION['user'])) {
                     $inquiry['line_id'] = $_SESSION['user']['line_id'] ?? '';
                 }
-                // $inquiry->registerDate = date('Y-m-d');
                 $inquiry['update_date'] = null;
                 
                 $service = new InquiryService();
                 $service->sendInquiry($inquiry);
-                // $inquiryDao = new InquiryDao();
-                // $inquiryDao->insert($inquiry);
-                
-                // $inquiry->gameTitle = '';
-                // if($inquiry->gameId) {
-                //     $gameInfoDao = new GameInfoDao();
-                //     $gameInfo = $gameInfoDao->selectById($inquiry->gameId);
-                //     $inquiry->gameTitle = $gameInfo['title'];
-                // }
-
-                // // LINE通知用に参加者情報とイベント情報を取得
-                // $api = new LineApi();
-                // $api->inquiry($inquiry);
-    
-                // // メール送信
-                // if(!empty($inquiry->email)) {
-                //     $mailApi = new MailApi();
-                //     $mailApi->inquiry_mail($inquiry);
-                // }
-
+            
                 unset($_SESSION['csrf_token']);
 
             }
