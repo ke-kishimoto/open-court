@@ -65,15 +65,16 @@ class UserController extends BaseController
         // 10桁のランダム英数字
         $state = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz'), 0, 10);
         $_SESSION['state'] = $state;
-        $user = array(
+        $user = [
             'id' => ''
             , 'name' => ''
             , 'occupation' => '1'
             , 'sex' => '1'
             , 'email' => ''
+            , 'line_id' => ''
             , 'password' => ''
             , 'remark' =>''
-        );
+        ];
         $companions = [];
         $title = '新規登録';
         $mode = 'new';

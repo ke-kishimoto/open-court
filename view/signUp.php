@@ -31,7 +31,7 @@
         </p>
         <p class="<?php echo !empty($user['line_id']) ? 'hidden' : '' ?>">
             メール
-            <?php echo !empty($user['line_id']) ? '<input class="form-control" type="email" name="email" required maxlength="50" value="<?php echo $user["email"] ?>">' : '' ?>
+            <?php echo !empty($user['line_id']) ? '' : '<input class="form-control" type="email" name="email" required maxlength="50" value="' . $user["email"] . '">' ?>
         </p>
         <div id="password-area">
             <p>
