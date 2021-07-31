@@ -415,6 +415,10 @@ class LineApi
             if(isset($event['type']) && $event['type'] === 'follow') {
                 $webhook->addFriend($event);
             }
+            // 友達解除された場合
+            if(isset($event['type']) && $event['type'] === 'unfollow') {
+                $webhook->unfollow($event);
+            }
             
             // メッセージが送信された場合
             if(isset($event['message']) && $event['message']['type'] === 'text') {

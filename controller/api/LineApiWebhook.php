@@ -91,6 +91,16 @@ class LineApiWebhook
             $userDao->insert($user);
         }
     }
+    // ブロックされた時の処理
+    public function unfollow($event)
+    {
+        $userDao = new UsersDao();
+        $user = $userDao->getUserByLineId($event['source']['userId']);
+        if($user) {
+            // ユーザーを削除する
+            $userDao->delete($user['id']);
+        }
+    }
 
     // お問い合わせ選択時
     private function inquiry($event)
