@@ -572,7 +572,7 @@ class LineApiWebhook
         //     ]
         // ]);
 
-        $data = [
+        $body = [
             'replyToken' => "{$event['replyToken']}",
             'messages' => 
                 [
@@ -584,7 +584,7 @@ class LineApiWebhook
             ];
 
         if($data['mode'] === 'reserve' || $data['mode'] === 'cancel') {
-            $data['messages'][] = [
+            $body['messages'][] = [
                 'type' => 'template',
                 'altText' => 'this is a confirm template',                            
                 'template' => [
@@ -609,7 +609,7 @@ class LineApiWebhook
         }
 
         // 確認テンプレートVer
-        // $data = json_encode([
+        // $body = json_encode([
         //     'replyToken' => "{$event['replyToken']}",
         //     'messages' => [
         //         [
@@ -640,10 +640,10 @@ class LineApiWebhook
         //         ]
         //     ]
         // ]);
-        $data = json_encode($data);
+        $body = json_encode($body);
         curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, ($data)); //データをセット
+        curl_setopt($ch, CURLOPT_POSTFIELDS, ($body)); //データをセット
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
 
         curl_exec($ch);
