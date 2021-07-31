@@ -79,7 +79,7 @@ class LineApiWebhook
     }
 
     // 友達追加された時の処理
-    public function addFriend($event)
+    public function addFriend($event, $channelAccessToken)
     {
         $userDao = new UsersDao();
         $user = $userDao->getUserByLineId($event['source']['userId']);
@@ -88,6 +88,17 @@ class LineApiWebhook
             $user = [];
             $user['admin_flg'] = 0;
             $user['line_id'] = $event['source']['userId'];
+
+            // プロフィール取得
+            $url = "https://api.line.me/v2/bot/profile/{$event['source']['userId']}"; // リプライ
+            $ch = curl_init($url);
+            $headers = array(
+                "Authorization: Bearer {$channelAccessToken}"
+            );
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
+            $result = json_decode(curl_exec($ch));
+            $user['name'] = isset($result->displayName) ? $result->displayName : '';
             $userDao->insert($user);
         }
     }

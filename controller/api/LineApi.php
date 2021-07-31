@@ -413,7 +413,7 @@ class LineApi
 
             // 友達追加された場合
             if(isset($event['type']) && $event['type'] === 'follow') {
-                $webhook->addFriend($event);
+                $webhook->addFriend($event, $config['channel_access_token']);
             }
             // 友達解除された場合
             if(isset($event['type']) && $event['type'] === 'unfollow') {
