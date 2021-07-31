@@ -107,18 +107,18 @@ class LineApiWebhook
         ]);
     }
 
-    // イベント選択のクイックリプライを返す
+    // イベント選択時
     private function eventSelect($event, $text)
     {
         if($text === '予約') {
             $gameInfoDao = new GameInfoDao();
             $gameInfoList = $gameInfoDao->getGameInfoListByAfterDate(date('Y-m-d'), '', $event['source']['userId']);
-            $msg = '予約したいイベントを選択してください。';
+            // $msg = '予約したいイベントを選択してください。';
             $mode = 'reserve';
         } else {
             $detailDao = new DetailDao();
             $gameInfoList = $detailDao->getEventListByLineId($event['source']['userId'], date('Y-m-d'));
-            $msg = 'キャンセルしたいイベントを選択してください。';
+            // $msg = 'キャンセルしたいイベントを選択してください。';
             $mode = 'cancel';
         }
         // $items = [];
@@ -140,14 +140,13 @@ class LineApiWebhook
 
             // カルーセルVer
             $columns[] = [
-                "text" => "イベント詳細\n イベント：{$gameInfo['title']}\n 日付：{$gameInfo['game_date']}\n
-                開始時刻：{$gameInfo['start_time']}\n 場所：{$gameInfo['place']}\n 人数上限：{$gameInfo['limit_number']}人\n 参加予定：{$gameInfo['participants_number']}人\n",
+                "text" => $this->getEventInfoShort($gameInfo),
                 "actions" => [
                     [
                     'type' => 'postback',
-                    'label' => "{$text}する",
+                    'label' => "詳細確認",
                     'data' => "action=select&mode={$mode}&id={$gameInfo['id']}",
-                    'displayText' => "{$text}する"
+                    'displayText' => "詳細確認"
                     ]
                 ],
             ];
@@ -478,23 +477,25 @@ class LineApiWebhook
         // イベントの詳細情報を表示する
         $gameInfoDao = new GameInfoDao();
         $gameInfo = $gameInfoDao->selectById($data['id']);
-        $text = "イベント詳細\n";
-        $text .= "イベント：{$gameInfo['title']}\n";
-        $text .= "日付：{$gameInfo['game_date']}\n";
-        $text .= "開始時刻：{$gameInfo['start_time']}\n";
-        $text .= "場所：{$gameInfo['place']}\n";
-        $text .= "人数上限：{$gameInfo['limit_number']}人\n";
-        $text .= "参加予定：{$gameInfo['participants_number']}人\n";
-        // $text .= "詳細：{$gameInfo['detail']}\n";  // 確認テンプレートの場合文字数制限で表示できない
-        $text .= "\n";
+        // $text = "イベント詳細\n";
+        // $text .= "イベント：{$gameInfo['title']}\n";
+        // $text .= "日付：{$gameInfo['game_date']}\n";
+        // $text .= "開始時刻：{$gameInfo['start_time']}\n";
+        // $text .= "場所：{$gameInfo['place']}\n";
+        // $text .= "人数上限：{$gameInfo['limit_number']}人\n";
+        // $text .= "参加予定：{$gameInfo['participants_number']}人\n";
+        // // $text .= "詳細：{$gameInfo['detail']}\n";  // 確認テンプレートの場合文字数制限で表示できない
+        // $text .= "\n";
+        $info = $this->getEventInfoLong($gameInfo);
+
         if($data['mode'] === 'reserve') {
             if($gameInfo['limit_number'] <= $gameInfo['participants_number']) {
-                $text .= "予約しますか？（キャンセル待ち）";
+                $text = "予約しますか？（キャンセル待ち）";
             } else {
-                $text .= "予約しますか？";
+                $text = "予約しますか？";
             }
         } elseif($data['mode'] === 'cancel') {
-            $text .= "キャンセルしますか？";
+            $text = "キャンセルしますか？";
         }
 
         $url = 'https://api.line.me/v2/bot/message/reply'; // リプライ
@@ -541,6 +542,10 @@ class LineApiWebhook
         $data = json_encode([
             'replyToken' => "{$event['replyToken']}",
             'messages' => [
+                [
+                    'type' => 'text',
+                    'text' => $info,
+                ],
                 [
                     'type' => 'template',
                     'altText' => 'this is a confirm template',                            
@@ -627,5 +632,24 @@ class LineApiWebhook
 
         curl_exec($ch);
         curl_close($ch);
+    }
+
+    private function getEventInfoShort($gameInfo)
+    {
+        return "イベント詳細\n イベント：{$gameInfo['title']}\n 日付：{$gameInfo['game_date']}\n 開始時刻：{$gameInfo['start_time']}\n 場所：{$gameInfo['place']}";
+    }
+
+    private function getEventInfoLong($gameInfo)
+    {
+        $text = "イベント詳細\n";
+        $text .= "イベント：{$gameInfo['title']}\n";
+        $text .= "日付：{$gameInfo['game_date']}\n";
+        $text .= "開始時刻：{$gameInfo['start_time']}\n";
+        $text .= "場所：{$gameInfo['place']}\n";
+        $text .= "人数上限：{$gameInfo['limit_number']}人\n";
+        $text .= "参加予定：{$gameInfo['participants_number']}人\n";
+        $text .= "参加費：「社会人：{$gameInfo['price1']}」「学生：{$gameInfo['price2']}」「高校生：{$gameInfo['price3']}」\n";
+        $text .= "詳細：{$gameInfo['detail']}\n";
+        return $text;
     }
 }
