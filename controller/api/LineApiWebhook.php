@@ -311,6 +311,96 @@ class LineApiWebhook
 
     }
 
+    private function addDouhan($event, $channelAccessToken, $id)
+    {
+
+        $url = 'https://api.line.me/v2/bot/message/reply'; // リプライ
+        $ch = curl_init($url);
+        $headers = array(
+            "Content-Type: application/json",
+            "Authorization: Bearer {$channelAccessToken}"
+        );
+
+        $body = json_encode([
+            'replyToken' => "{$event['replyToken']}",
+            'messages' => 
+            [
+                [
+                    "type" => "template",
+                    "altText" => "This is a buttons template",
+                    "template"=> 
+                    [
+                        "type" => "buttons",
+                        "text" => "同伴者の人数を選択してください。",
+                        "actions" => 
+                        [
+                            [
+                                'type' => 'postback',
+                                'label' => '1人',
+                                'data' => "action=reserve&id={$id}&douhan=yes&num=1",
+                                'displayText' => '1人'
+                            ],
+                            [
+                                'type' => 'postback',
+                                'label' => '2人',
+                                'data' => "action=reserve&id={$id}&douhan=yes&num=2",
+                                'displayText' => '2人'
+                            ],
+                            [
+                                'type' => 'postback',
+                                'label' => '3人',
+                                'data' => "action=reserve&id={$id}&douhan=yes&num=3",
+                                'displayText' => '3人'
+                            ],
+                            // [
+                            //     'type' => 'postback',
+                            //     'label' => '4人',
+                            //     'data' => "action=reserve&id={$id}&douhan=yes&num=4",
+                            //     'displayText' => '4人'
+                            // ],
+                            // [
+                            //     'type' => 'postback',
+                            //     'label' => '5人',
+                            //     'data' => "action=reserve&id={$id}&douhan=yes&num=5",
+                            //     'displayText' => '5人'
+                            // ],
+                            // [
+                            //     'type' => 'postback',
+                            //     'label' => '6人',
+                            //     'data' => "action=reserve&id={$id}&douhan=yes&num=6",
+                            //     'displayText' => '6人'
+                            // ],
+                            [
+                                'type' => 'postback',
+                                'label' => '追加しない',
+                                'data' => "action=reserve&id={$id}&douhan=yes&num=7",
+                                'displayText' => '追加しない'
+                            ],
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+
+        curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, ($body)); //データをセット
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); //受け取ったデータを変数に
+        $result = json_decode(curl_exec($ch));
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);  // ステータスコードを受け取る
+        curl_close($ch);
+
+        // ログ出力
+        $apiLog = [];
+        $apiLog['api_name'] = 'line';
+        $apiLog['method_name'] = 'addDouhan';
+        $apiLog['request_name'] = 'bot/message/reply';
+        $apiLog['status_code'] = (int)$httpcode;
+        $apiLog['result_message'] = isset($result->message) ? $result->message : '';
+        $apiLogDao = new ApiLogDao();
+        $apiLogDao->insert($apiLog);
+    }
+
     // 職種選択 ボタンテンプレートVer
     private function occupationSelect($event) 
     {
@@ -649,15 +739,15 @@ class LineApiWebhook
                     "actions" => [
                         [
                             'type' => 'postback',
-                            'label' => 'キャンセルする',
+                            'label' => 'する',
                             'data' => "action={$data['mode']}&id={$gameInfo['id']}",
-                            'displayText' => 'キャンセルする'
+                            'displayText' => 'する'
                         ],
                         [
                             'type' => 'postback',
-                            'label' => 'キャンセルしない',
+                            'label' => 'しない',
                             'data' => "action=no&id={$gameInfo['id']}",
-                            'displayText' => 'キャンセルしない'
+                            'displayText' => 'しない'
                         ]
                     ],
                 ]
@@ -727,9 +817,28 @@ class LineApiWebhook
             $text = 'プロフィールに未設定の項目があるため更新できません。プロフィール設定から設定を行ってください。';
         } else {
             if($data['action'] === 'reserve') {
-                $eventService->oneParticipantRegist($participant, [], EventService::MODE_LINE);
-                $lineApi = new LineApi();
-                $text = $lineApi->createReservationMessage($gameInfo['title'], $gameInfo['game_date'], $gameInfo['start_time']);
+                if($data['douhan'] === 'no') {
+                    $eventService->oneParticipantRegist($participant, [], EventService::MODE_LINE);
+                    $lineApi = new LineApi();
+                    $text = $lineApi->createReservationMessage($gameInfo['title'], $gameInfo['game_date'], $gameInfo['start_time']);
+                } elseif($data['douhan'] === 'yes' && !isset($data['num'])) {
+                    $this->addDouhan($event, $channelAccessToken, $data['id']);
+                    return ;
+                } elseif($data['douhan'] === 'yes' && isset($data['num'])) {
+                    $num = (int)$data['num'];
+                    $companion = [];
+                    for($i = 1; $i <= $num; $i++) {
+                        $companion[] = 
+                        [
+                            'occupation' => $participant['occupation'],
+                            'sex' => $participant['sex'],
+                            'name' => "同伴{$i}({$participant['name']})"
+                        ];
+                    }
+                    $eventService->oneParticipantRegist($participant, $companion, EventService::MODE_LINE);
+                    $lineApi = new LineApi();
+                    $text = $lineApi->createReservationMessage($gameInfo['title'], $gameInfo['game_date'], $gameInfo['start_time']);
+                }
             } elseif ($data['action'] === 'cancel') {
                 $eventService->cancelComplete($participant, '', $user['id'], EventService::MODE_LINE);
                 $lineApi = new LineApi();
