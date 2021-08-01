@@ -26,16 +26,15 @@
         </tr>
         <?php foreach ($salesYearList as $year) : ?>
             <tr>
-                <th><?php echo $year['date'] ?></th>
-                <!-- <th><a href="./detail?gameid=<?php echo $event['game_id'] ?>"><?php echo $event['title'] ?></a></th> -->
-                <th><?php echo $year['cnt'] ?></th>
-                <th><?php echo $year['amount'] ?></th>
+                <td><?php echo $year['date'] ?></td>
+                <td><?php echo $year['cnt'] ?></td>
+                <td><?php echo $year['amount'] ?></td>
             </tr>
         <?php endforeach ?>
         <tr>
-            <th colspan="1">合計</th>
-            <th><?php echo $total_cnt ?></th>
-            <th><?php echo $total_amount ?></th>
+            <td>合計</td>
+            <td><?php echo $total_cnt ?></td>
+            <td><?php echo $total_amount ?></td>
         </tr>
     </table>
 <?php else : ?>
