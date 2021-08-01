@@ -26,16 +26,12 @@ class LineApiWebhook
         // dataの取得
         if($text === '予約' || $text === 'キャンセル' || $text === '予約確認') {
             $data = $this->eventSelect($event, $text);
-        // } elseif($text === '予約確認') {
-        //     $data = $this->bookingConfirmation($event);
         } elseif($text === '職種') {
             $data = $this->occupationSelect($event);
         } elseif($text === '性別') {
             $data = $this->genderSelect($event);
         } elseif($text === 'プロフィール確認') {
             $data = $this->profileConfirmation($event);
-        // } elseif($text === 'お問い合わせ') {
-        //     $data = $this->inquiry($event);
         } else {
             $data = $this->atherMessage($event);
         }
@@ -113,21 +109,6 @@ class LineApiWebhook
         }
     }
 
-    // // お問い合わせ選択時
-    // private function inquiry($event)
-    // {
-    //     $text = "問い合わせを行う場合は、1行目に「問い合わせ」と入力し、2行目以降から問い合わせ内容を記載の上メッセージを送信ください。";
-    //     return json_encode([
-    //         'replyToken' => "{$event['replyToken']}",
-    //         'messages' => [
-    //             [
-    //                 'type' => 'text',
-    //                 'text' => $text,
-    //             ]
-    //         ]
-    //     ]);
-    // }
-
     // イベント選択時 カルーセルVer
     private function eventSelect($event, $text)
     {
@@ -202,80 +183,8 @@ class LineApiWebhook
         ]);
     }
 
-    // // イベントセレクト時 クイックリプライVer
-    // private function eventSelectQuick($event, $text)
-    // {
-    //     if($text === '予約') {
-    //         $gameInfoDao = new GameInfoDao();
-    //         $gameInfoList = $gameInfoDao->getGameInfoListByAfterDate(date('Y-m-d'), '', $event['source']['userId']);
-    //         $msg = '予約したいイベントを選択してください。';
-    //         $mode = 'reserve';
-    //     } else {
-    //         $detailDao = new DetailDao();
-    //         $gameInfoList = $detailDao->getEventListByLineId($event['source']['userId'], date('Y-m-d'));
-    //         $msg = 'キャンセルしたいイベントを選択してください。';
-    //         $mode = 'cancel';
-    //     }
-    //     $items = [];
-    //     foreach($gameInfoList as $gameInfo) {
-    //         $items[] = [
-    //             'type' => 'action', 
-    //             'action' => [
-    //                 'type' => 'postback',
-    //                 'label' => "{$gameInfo['game_date']} {$gameInfo['short_title']}",
-    //                 'data' => "action=select&mode={$mode}&id={$gameInfo['id']}",
-    //                 'displayText' => "{$gameInfo['game_date']} {$gameInfo['short_title']}"
-    //             ]
-    //         ];
-    //         if(count($items) >= self::QUICK_REPLY_NUM) {
-    //             break;
-    //         }
-    //     }
-    //     return json_encode([
-    //         'replyToken' => "{$event['replyToken']}",
-    //         'messages' => [
-    //             [
-    //                 'type' => 'text',
-    //                 'text' => $msg,                            
-    //                 'quickReply' => [
-    //                     'items' =>  $items
-    //                 ]
-    //             ]
-    //         ]
-    //     ]);
-    // }
+    
 
-
-    // private function bookingConfirmation($event)
-    // {
-    //     $detailDao = new DetailDao();
-    //     $gameInfoList = $detailDao->getEventListByLineId($event['source']['userId'], date('Y-m-d'));
-    //     if(count($gameInfoList) === 0) {
-    //         $msg = '予約済みのイベントはありません。';
-    //     } else {
-    //         $msg = "予約済みイベント一覧\n";
-    //         foreach($gameInfoList as $gameInfo) {
-    //             $msg .= "----------------------------------------\n";
-    //             $msg .= "タイトル：{$gameInfo['title']}\n";
-    //             $msg .= "日付：{$gameInfo['game_date']}\n";
-    //             $msg .= "開始時刻{$gameInfo['start_time']}\n";
-    //             if($gameInfo['waiting_flg'] == '1') {
-    //                 $msg .= "※キャンセル待ち\n";
-    //             }
-    //         }
-    //         $msg .= "----------------------------------------\n";
-    //         $msg .= "合計" . count($gameInfoList) . "件\n";
-    //     }
-    //     return json_encode([
-    //         'replyToken' => "{$event['replyToken']}",
-    //         'messages' => [
-    //             [
-    //                 'type' => 'text',
-    //                 'text' => $msg,
-    //             ]
-    //         ]
-    //     ]);
-    // }
 
     private function profileConfirmation($event)
     {
@@ -327,7 +236,7 @@ class LineApiWebhook
             [
                 [
                     "type" => "template",
-                    "altText" => "This is a buttons template",
+                    "altText" => "同伴者選択",
                     "template"=> 
                     [
                         "type" => "buttons",
@@ -357,18 +266,6 @@ class LineApiWebhook
                             //     'label' => '4人',
                             //     'data' => "action=reserve&id={$id}&douhan=yes&num=4",
                             //     'displayText' => '4人'
-                            // ],
-                            // [
-                            //     'type' => 'postback',
-                            //     'label' => '5人',
-                            //     'data' => "action=reserve&id={$id}&douhan=yes&num=5",
-                            //     'displayText' => '5人'
-                            // ],
-                            // [
-                            //     'type' => 'postback',
-                            //     'label' => '6人',
-                            //     'data' => "action=reserve&id={$id}&douhan=yes&num=6",
-                            //     'displayText' => '6人'
                             // ],
                             [
                                 'type' => 'postback',
@@ -410,7 +307,7 @@ class LineApiWebhook
             [
                 [
                     "type" => "template",
-                    "altText" => "This is a buttons template",
+                    "altText" => "職種選択",
                     "template"=> 
                     [
                         "type" => "buttons",
@@ -448,50 +345,7 @@ class LineApiWebhook
         ]);
     }
 
-    // // 職種選択 クイックリプライVer
-    // private function occupationSelectQuick($event) {
-    //     return json_encode([
-    //         'replyToken' => "{$event['replyToken']}",
-    //         'messages' => [
-    //             [
-    //                 'type' => 'text',
-    //                 'text' =>  '職種を選択してください。（高校生以下の場合は高校生を選択してください）',                            
-    //                 'quickReply' => [
-    //                     'items' => [
-    //                         [
-    //                         'type' => 'action',
-    //                         'action' => [
-    //                             'type' => 'postback',
-    //                             'label' => '社会人',
-    //                             'data' => "action=profile&type=occupation&id=1",
-    //                             'displayText' => '社会人'
-    //                             ]
-    //                         ],
-    //                         [
-    //                         'type' => 'action',
-    //                         'action' => [
-    //                             'type' => 'postback',
-    //                             'label' => '学生（大学・専門学校）',
-    //                             'data' => "action=profile&type=occupation&id=2",
-    //                             'displayText' => '学生（大学・専門学校）'
-    //                             ]
-    //                         ],
-    //                         [
-    //                         'type' => 'action',
-    //                         'action' => [
-    //                             'type' => 'postback',
-    //                             'label' => '高校生',
-    //                             'data' => "action=profile&type=occupation&id=3",
-    //                             'displayText' => '高校生'
-    //                             ]
-    //                         ]
-    //                     ]
-    //                 ]
-    //             ]
-    //         ]
-    //     ]);
-    // }
-
+    
 
     // 性別の選択　ボタンテンプレートVer
     private function genderSelect($event)
@@ -502,7 +356,7 @@ class LineApiWebhook
             [
                 [
                     "type" => "template",
-                    "altText" => "This is a buttons template",
+                    "altText" => "性別設定",
                     "template"=> 
                     [
                         "type" => "buttons",
@@ -534,40 +388,7 @@ class LineApiWebhook
         ]);
     }
 
-    // private function genderSelectQuick($event) {
-    //     return json_encode([
-    //         'replyToken' => "{$event['replyToken']}",
-    //         'messages' => [
-    //             [
-    //                 'type' => 'text',
-    //                 'text' =>  '性別を選択してください。',                            
-    //                 'quickReply' => [
-    //                     'items' =>  [
-    //                         [
-    //                         'type' => 'action',
-    //                         'action' => [
-    //                             'type' => 'postback',
-    //                             'label' => '男性',
-    //                             'data' => "action=profile&type=sex&id=1",
-    //                             'displayText' => '男性'
-    //                             ]
-    //                         ],
-    //                         [
-    //                         'type' => 'action',
-    //                         'action' => [
-    //                             'type' => 'postback',
-    //                             'label' => '女性',
-    //                             'data' => "action=profile&type=sex&id=2",
-    //                             'displayText' => '女性'
-    //                             ]
-    //                         ],
-    //                     ]
-    //                 ]
-    //             ]   
-    //         ]
-    //     ]);
-    // }
-
+    
     public function atherMessage($event)
     {
         return json_encode([
@@ -701,7 +522,7 @@ class LineApiWebhook
         if($data['mode'] === 'reserve') {
             $body['messages'][] = [
                 "type" => "template",
-                "altText" => "This is a buttons template",
+                "altText" => "予約確認",
                 "template"=> 
                 [
                     "type" => "buttons",
@@ -888,4 +709,127 @@ class LineApiWebhook
         $text .= "詳細：{$gameInfo['detail']}\n";
         return $text;
     }
+
+    // private function genderSelectQuick($event) {
+    //     return json_encode([
+    //         'replyToken' => "{$event['replyToken']}",
+    //         'messages' => [
+    //             [
+    //                 'type' => 'text',
+    //                 'text' =>  '性別を選択してください。',                            
+    //                 'quickReply' => [
+    //                     'items' =>  [
+    //                         [
+    //                         'type' => 'action',
+    //                         'action' => [
+    //                             'type' => 'postback',
+    //                             'label' => '男性',
+    //                             'data' => "action=profile&type=sex&id=1",
+    //                             'displayText' => '男性'
+    //                             ]
+    //                         ],
+    //                         [
+    //                         'type' => 'action',
+    //                         'action' => [
+    //                             'type' => 'postback',
+    //                             'label' => '女性',
+    //                             'data' => "action=profile&type=sex&id=2",
+    //                             'displayText' => '女性'
+    //                             ]
+    //                         ],
+    //                     ]
+    //                 ]
+    //             ]   
+    //         ]
+    //     ]);
+    // }
+
+    // // 職種選択 クイックリプライVer
+    // private function occupationSelectQuick($event) {
+    //     return json_encode([
+    //         'replyToken' => "{$event['replyToken']}",
+    //         'messages' => [
+    //             [
+    //                 'type' => 'text',
+    //                 'text' =>  '職種を選択してください。（高校生以下の場合は高校生を選択してください）',                            
+    //                 'quickReply' => [
+    //                     'items' => [
+    //                         [
+    //                         'type' => 'action',
+    //                         'action' => [
+    //                             'type' => 'postback',
+    //                             'label' => '社会人',
+    //                             'data' => "action=profile&type=occupation&id=1",
+    //                             'displayText' => '社会人'
+    //                             ]
+    //                         ],
+    //                         [
+    //                         'type' => 'action',
+    //                         'action' => [
+    //                             'type' => 'postback',
+    //                             'label' => '学生（大学・専門学校）',
+    //                             'data' => "action=profile&type=occupation&id=2",
+    //                             'displayText' => '学生（大学・専門学校）'
+    //                             ]
+    //                         ],
+    //                         [
+    //                         'type' => 'action',
+    //                         'action' => [
+    //                             'type' => 'postback',
+    //                             'label' => '高校生',
+    //                             'data' => "action=profile&type=occupation&id=3",
+    //                             'displayText' => '高校生'
+    //                             ]
+    //                         ]
+    //                     ]
+    //                 ]
+    //             ]
+    //         ]
+    //     ]);
+    // }
+
+    // // イベントセレクト時 クイックリプライVer
+    // private function eventSelectQuick($event, $text)
+    // {
+    //     if($text === '予約') {
+    //         $gameInfoDao = new GameInfoDao();
+    //         $gameInfoList = $gameInfoDao->getGameInfoListByAfterDate(date('Y-m-d'), '', $event['source']['userId']);
+    //         $msg = '予約したいイベントを選択してください。';
+    //         $mode = 'reserve';
+    //     } else {
+    //         $detailDao = new DetailDao();
+    //         $gameInfoList = $detailDao->getEventListByLineId($event['source']['userId'], date('Y-m-d'));
+    //         $msg = 'キャンセルしたいイベントを選択してください。';
+    //         $mode = 'cancel';
+    //     }
+    //     $items = [];
+    //     foreach($gameInfoList as $gameInfo) {
+    //         $items[] = [
+    //             'type' => 'action', 
+    //             'action' => [
+    //                 'type' => 'postback',
+    //                 'label' => "{$gameInfo['game_date']} {$gameInfo['short_title']}",
+    //                 'data' => "action=select&mode={$mode}&id={$gameInfo['id']}",
+    //                 'displayText' => "{$gameInfo['game_date']} {$gameInfo['short_title']}"
+    //             ]
+    //         ];
+    //         if(count($items) >= self::QUICK_REPLY_NUM) {
+    //             break;
+    //         }
+    //     }
+    //     return json_encode([
+    //         'replyToken' => "{$event['replyToken']}",
+    //         'messages' => [
+    //             [
+    //                 'type' => 'text',
+    //                 'text' => $msg,                            
+    //                 'quickReply' => [
+    //                     'items' =>  $items
+    //                 ]
+    //             ]
+    //         ]
+    //     ]);
+    // }
+
+
 }
