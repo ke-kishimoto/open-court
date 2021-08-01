@@ -34,8 +34,8 @@ class LineApiWebhook
             $data = $this->genderSelect($event);
         } elseif($text === 'プロフィール確認') {
             $data = $this->profileConfirmation($event);
-        } elseif($text === 'お問い合わせ') {
-            $data = $this->inquiry($event);
+        // } elseif($text === 'お問い合わせ') {
+        //     $data = $this->inquiry($event);
         } else {
             $data = $this->atherMessage($event);
         }
@@ -113,20 +113,20 @@ class LineApiWebhook
         }
     }
 
-    // お問い合わせ選択時
-    private function inquiry($event)
-    {
-        $text = "問い合わせを行う場合は、1行目に「問い合わせ」と入力し、2行目以降から問い合わせ内容を記載の上メッセージを送信ください。";
-        return json_encode([
-            'replyToken' => "{$event['replyToken']}",
-            'messages' => [
-                [
-                    'type' => 'text',
-                    'text' => $text,
-                ]
-            ]
-        ]);
-    }
+    // // お問い合わせ選択時
+    // private function inquiry($event)
+    // {
+    //     $text = "問い合わせを行う場合は、1行目に「問い合わせ」と入力し、2行目以降から問い合わせ内容を記載の上メッセージを送信ください。";
+    //     return json_encode([
+    //         'replyToken' => "{$event['replyToken']}",
+    //         'messages' => [
+    //             [
+    //                 'type' => 'text',
+    //                 'text' => $text,
+    //             ]
+    //         ]
+    //     ]);
+    // }
 
     // イベント選択時 カルーセルVer
     private function eventSelect($event, $text)
@@ -608,25 +608,56 @@ class LineApiWebhook
                 ]
             ];
 
-        if($data['mode'] === 'reserve' || $data['mode'] === 'cancel') {
+        if($data['mode'] === 'reserve') {
+            $body['messages'][] = [
+                "type" => "template",
+                "altText" => "This is a buttons template",
+                "template"=> 
+                [
+                    "type" => "buttons",
+                    "text" => "{$text}",
+                    "actions" => 
+                    [
+                        [
+                            'type' => 'postback',
+                            'label' => '予約する',
+                            'data' => "action={$data['mode']}&id={$gameInfo['id']}&douhan=no",
+                            'displayText' => '予約する'
+                        ],
+                        [
+                            'type' => 'postback',
+                            'label' => '同伴者を追加して予約する',
+                            'data' => "action={$data['mode']}&id={$gameInfo['id']}&douhan=yes",
+                            'displayText' => '同伴者を追加して予約する'
+                        ],
+                        [
+                            'type' => 'postback',
+                            'label' => '予約しない',
+                            'data' => "action=no&id={$gameInfo['id']}",
+                            'displayText' => '予約しない'
+                        ],
+                    ]
+                ]
+                    ];
+        } elseif($data['mode'] === 'cancel') {
             $body['messages'][] = [
                 'type' => 'template',
-                'altText' => 'this is a confirm template',                            
+                'altText' => 'キャンセル確認',                            
                 'template' => [
                     "type" => "confirm",
                     "text" => $text,
                     "actions" => [
                         [
                             'type' => 'postback',
-                            'label' => 'はい',
+                            'label' => 'キャンセルする',
                             'data' => "action={$data['mode']}&id={$gameInfo['id']}",
-                            'displayText' => 'はい'
+                            'displayText' => 'キャンセルする'
                         ],
                         [
                             'type' => 'postback',
-                            'label' => 'いいえ',
+                            'label' => 'キャンセルしない',
                             'data' => "action=no&id={$gameInfo['id']}",
-                            'displayText' => 'いいえ'
+                            'displayText' => 'キャンセルしない'
                         ]
                     ],
                 ]
