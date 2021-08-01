@@ -31,11 +31,11 @@ class LineRichMenuApi
         $richMenu = $this->createRichMenu($data);
         $eventMenuId = $richMenu->richMenuId;
         var_dump($eventMenuId);
-        // コンタクトメニュー
-        $data = $this->contactMenu();
-        $richMenu = $this->createRichMenu($data);
-        $contactMenuId = $richMenu->richMenuId;
-        var_dump($contactMenuId);
+        // // コンタクトメニュー
+        // $data = $this->contactMenu();
+        // $richMenu = $this->createRichMenu($data);
+        // $contactMenuId = $richMenu->richMenuId;
+        // var_dump($contactMenuId);
 
 
         // 画像のアップロード
@@ -43,7 +43,7 @@ class LineRichMenuApi
         var_dump($this->uploadRichImg($mainMenuId, 'richmenu_main.jpg'));
         var_dump($this->uploadRichImg($profileMenuId, 'richmenu_profile.jpg'));
         var_dump($this->uploadRichImg($eventMenuId, 'richmenu_event.jpg'));
-        var_dump($this->uploadRichImg($contactMenuId, 'richmenu_contact.jpg'));
+        // var_dump($this->uploadRichImg($contactMenuId, 'richmenu_contact.jpg'));
 
         // デフォルトの設定  // 画像の設定ができないとうまくいかない
         var_dump($this->setDefaultLiMenu($mainMenuId));
@@ -52,14 +52,14 @@ class LineRichMenuApi
         var_dump($this->deleteLichMenuAiliasId('richmenu-alias-main'));
         var_dump($this->deleteLichMenuAiliasId('richmenu-alias-profile'));
         var_dump($this->deleteLichMenuAiliasId('richmenu-alias-event'));
-        var_dump($this->deleteLichMenuAiliasId('richmenu-alias-contact'));
+        // var_dump($this->deleteLichMenuAiliasId('richmenu-alias-contact'));
 
         // 削除してから実行しても、コンフリクトでエラーが出ることがある。。
         // エイリアスの作成 // ここも、画像がアップされていないとうまくいかない
         var_dump($this->createRichMenuAlias('richmenu-alias-main', $mainMenuId));
         var_dump($this->createRichMenuAlias('richmenu-alias-profile', $profileMenuId));
         var_dump($this->createRichMenuAlias('richmenu-alias-event', $eventMenuId));
-        var_dump($this->createRichMenuAlias('richmenu-alias-contact', $contactMenuId));
+        // var_dump($this->createRichMenuAlias('richmenu-alias-contact', $contactMenuId));
 
         // // エイリアスの更新 // 作成でコンフリクトのエラーが出た時はここで更新処理を実行
         // $this->updateRichMenuAiliasId('richmenu-alias-main', $mainMenuId);
@@ -163,10 +163,12 @@ class LineRichMenuApi
                     "height" => 843,
                 ],
                 'action' => [
-                    'type' => 'richmenuswitch',
+                    'type' => 'uri',
                     'label' => 'コンタクト',
-                    'richMenuAliasId' => 'richmenu-alias-contact',
-                    'data' => 'richmenu-changed-to-contact',
+                    'uri' => 'https://lin.ee/gi7g67H/',
+                    // 'type' => 'message',
+                    // 'label' => 'コンタクト',
+                    // 'text' => 'コンタクト',
                 ],
                 
             ],
