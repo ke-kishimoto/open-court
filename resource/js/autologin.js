@@ -1,10 +1,10 @@
 $(function() {
     // 自動ログイン
-    var session = window.sessionStorage;
-    var isLogin = session.getItem('eventScheduleIsLogin');
-    var strage = window.localStorage;
+    let session = window.sessionStorage;
+    let isLogin = session.getItem('eventScheduleIsLogin');
+    let strage = window.localStorage;
 
-    var user = JSON.parse(strage.getItem('eventScheduleUser'));
+    let user = JSON.parse(strage.getItem('eventScheduleUser'));
     if(user !== null && isLogin !== 'login') {
         // event.preventDefault(),
         $.ajax({

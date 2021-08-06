@@ -39,9 +39,10 @@
         <textarea id="remark" class="form-control" name="remark"><?php echo $participant['remark'] ?></textarea>
     <div id="douhan-0">
         </p>
+            <!-- <button id="companion-delete" class="btn btn-danger btn-companion-delete">削除</button> -->
             <input id="companion" name="companion" type="hidden" value="<?php echo count((array)$companionList) ?>">
             <button class="btn btn-secondary" id="btn-companion-add" type="button">同伴者追加</button>
-            <button class="btn btn-danger" id="btn-companion-del" type="button">同伴者削除</button>
+            <!-- <button class="btn btn-danger" id="btn-companion-del" type="button">同伴者削除</button> -->
         </p>
     </div>
     <?php for($i = 0;$i < count($companionList); $i++): ?>

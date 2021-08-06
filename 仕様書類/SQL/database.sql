@@ -1,4 +1,4 @@
--- DB名は任意。そのうち変えたい
+-- DB名は任意
 -- create database open_court;
 
 -- MAMP用接続
@@ -29,11 +29,6 @@ create table game_info (
     , register_date timestamp null default null
     , update_date timestamp null default null
 );
--- 経費追加
--- alter table game_info add column expenses int;
--- alter table game_info add column amount int; -- 売上金額
--- alter table game_info add column participantnum int; -- 参加人数
-
 
 -- イベントのテンプレ
 -- drop table event_template; 
@@ -76,16 +71,6 @@ create table participant (
 -- インデックス
 create index participant_idx_game on participant (game_id); 
 
--- 出欠と回収金額
--- alter table participant add column attendance int default 1; 
--- alter table participant add column amount int;
--- alter table participant add column amount_remark varchar(200);
--- 電話番号
--- alter table participant add column tel varchar(13);
--- LINEログイン用
--- alter table participant add column line_id varchar(255);
-
-
 -- 同伴者
 -- drop table companion;
 create table companion (
@@ -103,11 +88,6 @@ create table companion (
 );
 -- インデックス
 create index companion_idx_participant on companion (participant_id);
-
--- 出欠と回収金額
--- alter table companion add column attendance int default 1; 
--- alter table companion add column amount int;
--- alter table companion add column amount_remark varchar(200);
 
 -- 設定
 -- 後々はユーザー単位にしたいな
@@ -130,15 +110,6 @@ create table config(
     , update_date timestamp null default null
 );
 
--- alter table config add column delete_flg int default 1;
--- alter table config add column sendgrid_api_key varchar(100);
--- LINE API用追加
--- alter table config add column client_id varchar(255);
--- alter table config add column client_secret varchar(255);
--- alter table config add column channel_access_token varchar(255);
--- alter table config add column channel_secret varchar(255);
--- alter table config add column line_notify_flg int;
-
 -- ユーザー
 -- drop table users;
 create table users(
@@ -158,12 +129,6 @@ create table users(
   , update_date timestamp null default null     -- 更新日時
   , delete_flg int default 1
 );
--- 電話番号
--- alter table users add column tel varchar(13);
--- LINEログイン用
--- alter table users add column line_id varchar(255);
--- alter table users add column access_token varchar(255);
--- alter table users add column refresh_token varchar(255);
 
 -- ユーザーに付随する同伴者の初期値
 -- drop table default_companion;
@@ -192,10 +157,6 @@ create table inquiry(
     , update_date timestamp null default null
     , delete_flg int default 1
 );
--- 削除フラグ追加
--- alter table inquiry add column delete_flg int default 1;
--- LINEログイン用
-alter table inquiry add column line_id varchar(255);
 
 -- お知らせ
 -- drop table notice;
@@ -238,3 +199,5 @@ create table api_log(
 );
 
 
+-- テストデータ
+insert into config(system_title) values('イベント予約デモ');

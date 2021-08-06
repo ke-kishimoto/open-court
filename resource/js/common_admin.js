@@ -103,7 +103,7 @@ $(function() {
         .always( (data) => {
         })
     });
-    // 削除処理
+    // 参加者削除処理
     $('.btn-participant-delete').on('click', function() {
         if(window.confirm('削除してもよろしいですか')) {
             $.ajax({
@@ -138,15 +138,18 @@ $(function() {
             })
         }
     });
+    // イベント削除
     $('#btn-event-delete').on('click', function() {
         return confirm('削除してもよろしいですか');
     });
-
+    // 同伴者追加
     $('#btn-companion-add').on('click', function() {
-        var num = Number($('#companion').val());
-        var current = $('#douhan-' + num);
+        let num = Number($('#companion').val());
+        let current = $('#douhan-' + num);
         num++;
-        var div = $('<div>').attr('id', 'douhan-' + num).text(num + '人目');
+        let btn = $('<button>').attr('class', 'btn btn-danger btn-companion-delete').text('削除');
+        let div = $('<div>').attr('id', 'douhan-' + num).text(num + '人目  ');
+        div.append(btn);
         div.append($('#occupation').clone().attr('id', 'occupation-' + num).attr('name', 'occupation-' + num));
         div.append($('#sex').clone().attr('id', 'sex-' + num).attr('name', 'sex-' + num));
         div.append($('#name').clone().attr('id', 'name-' + num).attr('name', 'name-' + num).attr('placeholder', '名前').val(''));
@@ -154,6 +157,7 @@ $(function() {
         current.after(div);
         $('#companion').val(num);
     });
+    // 同伴者削除
     $('#btn-companion-del').on('click', function() {
         var num = Number($('#companion').val());
         if(num > 0) {
@@ -162,6 +166,7 @@ $(function() {
         }
         $('#companion').val(num);
     });
+    // 参加者登録
     $('#btn-participant-regist').on('click', function() {
         if($('#name').val() === '') {
             return true;
@@ -176,60 +181,58 @@ $(function() {
         }
         return confirm(msg);
     });
+    // ユーザー選択時
     $('#user').change(function() {
+        $.ajax({
+            url:'/api/event/getUserInfo',
+            type:'POST',
+            data:{
+                'user_id':$('#user').val()
+            }
+        })
+        .done( (user) => {
+            // 同伴者削除
+            for(let i = Number($('#companion').val()); i > 0; i--) {
+                $('#douhan-' + i).remove();
+            }
+            $('#companion').val(0);
+
+            // ユーザー情報セット
+            $('#name').val(user.name);
+            $('#occupation').val(user.occupation);
+            $('#sex').val(user.sex);
+            $('#email').val(user.email);
+            $('#remark').val(user.remark);
+            // 同伴者情報追加
             $.ajax({
-                url:'/api/event/getUserInfo',
+                url:'/api/event/GetDefaultCompanionList',
                 type:'POST',
                 data:{
-                    'user_id':$('#user').val()
+                    'id':user.id
                 }
             })
-            // Ajaxリクエストが成功した時発動
-            .done( (user) => {
-                // 同伴者削除
-                for(let i = Number($('#companion').val()); i > 0; i--) {
-                    $('#douhan-' + i).remove();
+            .done((conpanionList) => {
+                // console.log(conpanionList);
+                
+                for(let i = 0; i < conpanionList.length; i++) {
+                    var current = $('#douhan-' + i);
+                    let num = i + 1;
+                    var div = $('<div>').attr('id', 'douhan-' + num).text(num + '人目');
+                    div.append($('#occupation').clone().attr('id', 'occupation-' + num).attr('name', 'occupation-' + num).val(conpanionList[i].occupation));
+                    div.append($('#sex').clone().attr('id', 'sex-' + num).attr('name', 'sex-' + num).val(conpanionList[i].sex));
+                    div.append($('#name').clone().attr('id', 'name-' + num).attr('name', 'name-' + num).attr('placeholder', '名前').val(conpanionList[i].name));
+                    div.append($('<br>'));
+                    current.after(div);
+                    $('#companion').val(num);
                 }
-                $('#companion').val(0);
-
-                // ユーザー情報セット
-                $('#name').val(user.name);
-                $('#occupation').val(user.occupation);
-                $('#sex').val(user.sex);
-                $('#email').val(user.email);
-                $('#remark').val(user.remark);
-                // 同伴者情報追加
-                $.ajax({
-                    url:'/api/event/GetDefaultCompanionList',
-                    type:'POST',
-                    data:{
-                        'id':user.id
-                    }
-                })
-                .done((conpanionList) => {
-                    // console.log(conpanionList);
-                    
-                    for(let i = 0; i < conpanionList.length; i++) {
-                        var current = $('#douhan-' + i);
-                        let num = i + 1;
-                        var div = $('<div>').attr('id', 'douhan-' + num).text(num + '人目');
-                        div.append($('#occupation').clone().attr('id', 'occupation-' + num).attr('name', 'occupation-' + num).val(conpanionList[i].occupation));
-                        div.append($('#sex').clone().attr('id', 'sex-' + num).attr('name', 'sex-' + num).val(conpanionList[i].sex));
-                        div.append($('#name').clone().attr('id', 'name-' + num).attr('name', 'name-' + num).attr('placeholder', '名前').val(conpanionList[i].name));
-                        div.append($('<br>'));
-                        current.after(div);
-                        $('#companion').val(num);
-                    }
-                })
             })
-            // Ajaxリクエストが失敗した時発動
-            .fail( (data) => {
-            })
-            // Ajaxリクエストが成功・失敗どちらでも発動
-            .always( (data) => {
-            })
-        });
-
+        })
+        .fail( (data) => {
+        })
+        .always( (data) => {
+        })
+    });
+    // 権限の変更
     $('.change-authority').on('click', function() {
         $.ajax({
             url:'/api/event/updateAdminFlg',
@@ -241,15 +244,13 @@ $(function() {
         .done( (data) => {
             $('#authority-name-' + $(this).val()).text(data.authority_name);
         })
-        // Ajaxリクエストが失敗した時発動
         .fail( (data) => {
         })
-        // Ajaxリクエストが成功・失敗どちらでも発動
         .always( (data) => {
         })
         
     });
-
+    // 問い合わせのステータス変更
     $('.btn-inquiry-status').on('click', function() {
         $.ajax({
             url:'/api/event/updateInquiryStatusFlg',
@@ -261,10 +262,8 @@ $(function() {
         .done( (data) => {
             $(this)[0].disabled = true;
         })
-        // Ajaxリクエストが失敗した時発動
         .fail( (data) => {
         })
-        // Ajaxリクエストが成功・失敗どちらでも発動
         .always( (data) => {
         })
     });
@@ -278,15 +277,12 @@ $(function() {
             'id':$('#notice').val(),
         }
         })
-        // Ajaxリクエストが成功した時発動
         .done( (data) => {
             $('#title').val(data.title);
             $('#content').val(data.content);
         })
-        // Ajaxリクエストが失敗した時発動
         .fail( (data) => {
         })
-        // Ajaxリクエストが成功・失敗どちらでも発動
         .always( (data) => {
         })
     });

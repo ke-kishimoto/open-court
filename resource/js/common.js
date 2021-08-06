@@ -8,14 +8,14 @@ $(function() {
     }
     // 同伴者追加
     $('#btn-companion-add').on('click', function() {
-        var num = Number($('#companion').val());
+        let num = Number($('#companion').val());
         if(num > 9){
             $('#douhanErrMsg').css('display','block');
             return
         }
-        var current = $('#douhan-' + num);
+        let current = $('#douhan-' + num);
         num++;
-        var div = $('<div>').attr('id', 'douhan-' + num).text(num + '人目');
+        const div = $('<div>').attr('id', 'douhan-' + num).text(num + '人目');
         div.append($('#occupation').clone().attr('id', 'occupation-' + num).attr('name', 'occupation-' + num));
         div.append($('#sex').clone().attr('id', 'sex-' + num).attr('name', 'sex-' + num));
         div.append($('#name').clone().attr('id', 'name-' + num).attr('name', 'name-' + num).attr('placeholder', '名前').val(''));
@@ -25,7 +25,7 @@ $(function() {
     });
     // 同伴者削除
     $('#btn-companion-del').on('click', function() {
-        var num = Number($('#companion').val());
+        let num = Number($('#companion').val());
         if(num > 0) {
             $('#douhan-' + num).remove();
             num--;
@@ -40,11 +40,11 @@ $(function() {
         if($('#email').val() === '') {
             return true;
         }
-        var msg = '以下の内容で登録します\n' + 
+        let msg = '以下の内容で登録します\n' + 
         '名前：' + $('#name').val() + '\n';
         // '職種：' + $('#companion').val() + '\n' +
         // '性別：' + $('#sex').val();
-        var num = Number($('#companion').val());
+        let num = Number($('#companion').val());
         for(let i = 0; i < num; i++) {
             msg += '同伴者' + (i + 1) + '：' + $('#name-' + (i + 1)).val() + '\n';
         }
@@ -77,8 +77,8 @@ $(function() {
 
     // ログインボタン
     $('#btn-login').on('click', function() {
-        var userMail = $('#email').val();
-        var password = $('#password').val();
+        let userMail = $('#email').val();
+        let password = $('#password').val();
         if(userMail === '' || password === '') {
             return true;
         }
@@ -86,8 +86,8 @@ $(function() {
         //     console.log('サポートされていません。')
         // }
         if($('#autoLogin').val() === 'on') {
-            var strage = window.localStorage;
-            var user = {
+            let strage = window.localStorage;
+            let user = {
                 email: userMail,
                 pass: password,
             };

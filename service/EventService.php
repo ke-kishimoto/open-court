@@ -104,7 +104,7 @@ class EventService
         $api = new LineApi();
         // 管理者への通知
         if(!$errMsg && $config['line_notify_flg'] == '1' && $mode !== self::MODE_ADMIN) {
-            $api->reserve_notify($participant, $gameInfo['title'], $gameInfo['game_date'], $_POST['companion'] ?? '0');
+            $api->reserve_notify($participant, $gameInfo['title'], $gameInfo['game_date'], count($companions) ?? '0');
         }
         // 本人への通知
         if(!empty($participant['line_id']) && $mode === self::MODE_USER) {
