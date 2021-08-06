@@ -68,3 +68,8 @@
         <button class="btn btn-primary" type="submit" name="register">登録</button>
     </p>
 </form>
+<?php include('common/footer.php') ?>
+<script src="/resource/js/common_admin.js">
+</script>
+</body>
+</html>

@@ -24,7 +24,6 @@ class NoticeController extends BaseController
          include('./view/admin/common/head.php');
          include('./view/admin/common/header.php');
          include('./view/admin/notice.php');
-         include('./view/admin/common/footer.php');
 
     }
 
@@ -65,8 +64,6 @@ class NoticeController extends BaseController
         include('./view/admin/common/head.php');
         include('./view/admin/common/header.php');
         include('./view/admin/complete.php');
-        include('./view/admin/common/footer.php');
-
 
     }
 }

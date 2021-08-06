@@ -20,7 +20,6 @@ class ParticipantController extends BaseController
         include('./view/admin/common/head.php');
         include('./view/admin/common/header.php');
         include('./view/admin/participantNameList.php');
-        include('./view/admin/common/footer.php');
     }
 
     public function participantInfo() {
@@ -62,7 +61,6 @@ class ParticipantController extends BaseController
         include('./view/admin/common/head.php');
         include('./view/admin/common/header.php');
         include('./view/admin/participantInfo.php');
-        include('./view/admin/common/footer.php');
     }
 
     // 参加者登録
@@ -114,7 +112,6 @@ class ParticipantController extends BaseController
         include('./view/admin/common/header.php');
         $msg = '参加者の登録が完了しました。';
         include('./view/admin/complete.php');
-        include('./view/admin/common/footer.php');
     }
 
 }

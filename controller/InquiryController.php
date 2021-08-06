@@ -23,7 +23,6 @@ class InquiryController extends BaseController
         include('./view/common/head.php');
         include('./view/common/header.php');
         include('./view/inquiry.php');
-        include('./view/common/footer.php');
 
     }
 
@@ -59,7 +58,6 @@ class InquiryController extends BaseController
         include('./view/common/head.php');
         include('./view/common/header.php');
         include('./view/complete.php');
-        include('./view/common/footer.php');
     }
 }
 

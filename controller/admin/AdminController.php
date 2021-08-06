@@ -27,7 +27,6 @@ class AdminController extends BaseController
         include('./view/admin/common/header.php');
         include('./view/calendar.php');
         include('./view/eventList.php');
-        include('./view/admin/common/footer.php');
 
     }
 
@@ -41,7 +40,6 @@ class AdminController extends BaseController
         include('./view/admin/common/head.php');
         include('./view/admin/common/header.php');
         include('./view/admin/userList.php');
-        include('./view/admin/common/footer.php');
     }
 
     public function inquiryList() {
@@ -54,7 +52,6 @@ class AdminController extends BaseController
         include('./view/admin/common/head.php');
         include('./view/admin/common/header.php');
         include('./view/admin/inquiryList.php');
-        include('./view/admin/common/footer.php');
     }
 
     public function signin() {
@@ -81,7 +78,6 @@ class AdminController extends BaseController
         include('./view/admin/common/head.php');
         include('./view/admin/common/header.php');
         include('./view/admin/signIn.php');
-        include('./view/admin/common/footer.php');
     }
 
     public function signinCheck() {
@@ -106,8 +102,6 @@ class AdminController extends BaseController
             include('./view/admin/common/head.php');
             include('./view/admin/common/header.php');
             include('./view/admin/signIn.php');
-            include('./view/admin/common/footer.php');
-
         } else {
             header('Location: /admin/admin/index');
         }

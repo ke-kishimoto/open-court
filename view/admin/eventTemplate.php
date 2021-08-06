@@ -39,3 +39,8 @@
             <button id="btn-event-delete" class="btn btn-secondary" type="submit" name="delete">削除</button>
         </p>
     </form>
+<?php include('common/footer.php') ?>
+<script src="/resource/js/common_admin.js">
+</script>
+</body>
+</html>

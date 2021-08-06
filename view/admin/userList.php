@@ -16,3 +16,8 @@
 <?php else: ?>
     <p>現在登録したユーザーはいません</p>
 <?php endif ?>
+<?php include('common/footer.php') ?>
+<script src="/resource/js/common_admin.js">
+</script>
+</body>
+</html>

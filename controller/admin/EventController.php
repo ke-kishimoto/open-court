@@ -27,7 +27,6 @@ class EventController extends BaseController
         include('./view/admin/common/head.php');
         include('./view/admin/common/header.php');
         include('./view/admin/eventTemplate.php');
-        include('./view/admin/common/footer.php');
     }
 
     public function eventTempleteComplete() 
@@ -73,7 +72,6 @@ class EventController extends BaseController
         include('./view/admin/common/head.php');
         include('./view/admin/common/header.php');
         include('./view/admin/complete.php');
-        include('./view/admin/common/footer.php');
     }
 
     public function eventInfo() 
@@ -159,7 +157,6 @@ class EventController extends BaseController
         include('./view/admin/common/head.php');
         include('./view/admin/common/header.php');
         include('./view/admin/eventInfo.php');
-        include('./view/admin/common/footer.php');
     }
 
     public function eventComplete() 
@@ -216,7 +213,6 @@ class EventController extends BaseController
         include('./view/admin/common/head.php');
         include('./view/admin/common/header.php');
         include('./view/admin/eventComplete.php');
-        include('./view/admin/common/footer.php');
     }
 
 }

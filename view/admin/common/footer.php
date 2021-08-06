@@ -4,7 +4,7 @@
     <a href="/help/privacyPolicy/">プライバシーポリシー</a>
     <a href="/inquiry/inquiry">お問い合わせ</a>
 </footer>
-<script src="/resource/js/common_admin.js">
+<!-- <script src="/resource/js/common_admin.js">
 </script>
 </body>
-</html>
+</html> -->

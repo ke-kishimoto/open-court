@@ -69,3 +69,8 @@
     <p>
         <a href="/admin/admin/index">トップに戻る</a>
     </p>
+    <?php include('common/footer.php') ?>
+    <script src="/resource/js/common_admin.js">
+</script>
+</body>
+</html>

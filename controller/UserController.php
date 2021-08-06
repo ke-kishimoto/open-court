@@ -25,7 +25,6 @@ class UserController extends BaseController
         include('./view/common/head.php');
         include('./view/common/header.php');
         include('./view/signIn.php');
-        include('./view/common/footer.php');
     }
 
     // ログインチェック
@@ -51,7 +50,6 @@ class UserController extends BaseController
             include('./view/common/head.php');
             include('./view/common/header.php');
             include('./view/signIn.php');
-            include('./view/common/footer.php');
         } else {
             header('Location: /index.php');
         }
@@ -83,7 +81,6 @@ class UserController extends BaseController
         include('./view/common/head.php');
         include('./view/common/header.php');
         include('./view/signUp.php');
-        include('./view/common/footer.php');
     }
 
     // ユーザー登録
@@ -184,14 +181,12 @@ class UserController extends BaseController
             include('./view/common/head.php');
             include('./view/common/header.php');
             include('./view/signup.php');
-            include('./view/common/footer.php');
         } else {
             $title = 'ユーザー登録完了';
             $msg = 'ユーザー登録が完了しました。';
             include('./view/common/head.php');
             include('./view/common/header.php');
             include('./view/complete.php');
-            include('./view/common/footer.php');
         }
     }
 
@@ -213,7 +208,6 @@ class UserController extends BaseController
         include('./view/common/head.php');
         include('./view/common/header.php');
         include('./view/signUp.php');
-        include('./view/common/footer.php');
         
     }
 
@@ -225,7 +219,6 @@ class UserController extends BaseController
         include('./view/common/head.php');
         include('./view/common/header.php');
         include('./view/passwordChange.php');
-        include('./view/common/footer.php');
     }
 
     // パスワード変更処理
@@ -249,14 +242,12 @@ class UserController extends BaseController
                 include('./view/common/head.php');
                 include('./view/common/header.php');
                 include('./view/complete.php');
-                include('./view/common/footer.php');
             } else {
                 $title = 'パスワード変更';
                 
                 include('./view/common/head.php');
                 include('./view/common/header.php');
                 include('./view/passwordChange.php');
-                include('./view/common/footer.php');
             }
         }
     }
@@ -277,7 +268,6 @@ class UserController extends BaseController
             include('./view/common/head.php');
             include('./view/common/header.php');
             include('./view/participatingEventList.php');
-            include('./view/common/footer.php');
         
         } else {
             header('Location: /index.php');
@@ -331,7 +321,6 @@ class UserController extends BaseController
         include('./view/common/head.php');
         include('./view/common/header.php');
         include('./view/passwordForget.php');
-        include('./view/common/footer.php');
     }
 
     // パスワードリセット
@@ -348,7 +337,6 @@ class UserController extends BaseController
             include('./view/common/head.php');
             include('./view/common/header.php');
             include('./view/passwordForget.php');
-            include('./view/common/footer.php');
         } else {
             // 8文字で適当なパスワードを生成
             $pass = substr(base_convert(md5(uniqid()), 16, 36), 0, 8);
@@ -364,7 +352,6 @@ class UserController extends BaseController
                 include('./view/common/head.php');
                 include('./view/common/header.php');
                 include('./view/complete.php');
-                include('./view/common/footer.php');
 
             } else {
                 $errMsg = 'メールの送信に失敗しました。';
@@ -372,7 +359,6 @@ class UserController extends BaseController
                 include('./view/common/head.php');
                 include('./view/common/header.php');
                 include('./view/passwordForget.php');
-                include('./view/common/footer.php');
             }
 
         }
@@ -405,7 +391,6 @@ class UserController extends BaseController
             include('./view/common/head.php');
             include('./view/common/header.php');
             include('./view/lineSignUp.php');
-            include('./view/common/footer.php');
         } else {
             // 存在するなら、そのままセッションに保存してログイン状態に持っていきたい
             $_SESSION['user'] = $user;
@@ -458,7 +443,6 @@ class UserController extends BaseController
         include('./view/common/head.php');
         include('./view/common/header.php');
         include('./view/complete.php');
-        include('./view/common/footer.php');
     }
 
 }

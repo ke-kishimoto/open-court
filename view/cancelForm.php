@@ -17,3 +17,7 @@
         <?php endif; ?>
         <button id="btn-cancel" class="btn btn-primary" type="submit">参加キャンセル</button>
     </form>
+    <?php include('common/footer.php') ?>
+    <script src="/resource/js/common.js"></script>
+</body>
+</html>

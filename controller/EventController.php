@@ -25,7 +25,6 @@ class EventController extends BaseController
         include('./view/common/header.php');
         include('./view/calendar.php');
         include('./view/eventList.php');
-        include('./view/common/footer.php');
 
     }
 }

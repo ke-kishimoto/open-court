@@ -27,4 +27,8 @@
             削除
         </button>
     </form>
-
+    <?php include('common/footer.php') ?>
+    <script src="/resource/js/common_admin.js">
+</script>
+</body>
+</html>

@@ -21,7 +21,6 @@ class NoticeController extends BaseController {
         include('./view/common/head.php');
         include('./view/common/header.php');
         include('./view/news.php');
-        include('./view/common/footer.php');
     }
 
     public function detail()
@@ -44,6 +43,5 @@ class NoticeController extends BaseController {
         include('./view/common/head.php');
         include('./view/common/header.php');
         include('./view/newsdetail.php');
-        include('./view/common/footer.php');
     }
 }

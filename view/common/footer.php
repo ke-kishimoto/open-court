@@ -5,7 +5,7 @@
     <a href="/inquiry/inquiry">お問い合わせ</a>
     <a href="/notice/index">お知らせ</a>
 </footer>
-<script src="/resource/js/common.js">
+<!-- <script src="/resource/js/common.js">
 </script>
 </body>
-</html>
+</html> -->

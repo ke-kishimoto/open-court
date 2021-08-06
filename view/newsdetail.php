@@ -8,3 +8,7 @@
 <p>
     <?php echo $notice['content']; ?>
 </p>
+<?php include('common/footer.php') ?>
+<script src="/resource/js/common.js"></script>
+</body>
+</html>

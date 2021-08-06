@@ -18,3 +18,8 @@
 <p>
     <a href="/admin/event/eventInfo?gameid=<?php echo $gameId ?>">イベント詳細へ戻る</a>
 </p>
+<?php include('common/footer.php') ?>
+<script src="/resource/js/common_admin.js">
+</script>
+</body>
+</html>

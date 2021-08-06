@@ -40,7 +40,6 @@ class ParticipantController extends BaseController
         include('./view/common/head.php');
         include('./view/common/header.php');
         include('./view/eventBatchRegist.php');
-        include('./view/common/footer.php');
     }
 
     // 一括登録
@@ -88,7 +87,6 @@ class ParticipantController extends BaseController
             include('./view/common/head.php');
             include('./view/common/header.php');
             include('./view/complete.php');
-            include('./view/common/footer.php');
 
         } else {
             header('Location: /index.php');
@@ -194,7 +192,6 @@ class ParticipantController extends BaseController
         include('./view/common/head.php');
         include('./view/common/header.php');
         include('./view/detail.php');
-        include('./view/common/footer.php');
     }
 
     // 参加処理
@@ -244,14 +241,12 @@ class ParticipantController extends BaseController
                 include('./view/common/head.php');
                 include('./view/common/header.php');
                 include('./view/complete.php');
-                include('./view/common/footer.php');
             } else {
                 $title = 'イベント参加登録完了';
                 $msg = '入力されたメールアドレスで既に登録済みです。';
                 include('./view/common/head.php');
                 include('./view/common/header.php');
                 include('./view/complete.php');
-                include('./view/common/footer.php');
             }
         } else {
             header('Location: /index.php');
@@ -274,7 +269,6 @@ class ParticipantController extends BaseController
         include('./view/common/head.php');
         include('./view/common/header.php');
         include('./view/cancelForm.php');
-        include('./view/common/footer.php');
     }
 
     // キャンセル処理
@@ -305,7 +299,6 @@ class ParticipantController extends BaseController
             include('./view/common/head.php');
             include('./view/common/header.php');
             include('./view/complete.php');
-            include('./view/common/footer.php');
         } else {
             if(isset($_SESSION['user'])) {
                 $email = $_SESSION['user']['email'];
@@ -319,7 +312,6 @@ class ParticipantController extends BaseController
             include('./view/common/head.php');
             include('./view/common/header.php');
             include('./view/cancelForm.php');
-            include('./view/common/footer.php');
         }
     }
 

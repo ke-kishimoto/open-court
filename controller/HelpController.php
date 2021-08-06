@@ -9,6 +9,5 @@ class HelpController extends BaseController {
         include('./view/common/head.php');
         include('./view/common/header.php');
         include('./view/privacyPolicy.php');
-        include('./view/common/footer.php');
     }
 }

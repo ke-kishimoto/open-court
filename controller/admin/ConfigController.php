@@ -24,7 +24,6 @@ class ConfigController extends BaseController
         include('./view/admin/common/head.php');
         include('./view/admin/common/header.php');
         include('./view/admin/config.php');
-        include('./view/admin/common/footer.php');
     }
 
     public function configComplete() {
@@ -65,7 +64,6 @@ class ConfigController extends BaseController
         include('./view/admin/common/header.php');
         $msg = 'システム設定が完了しました。';
         include('./view/admin/complete.php');
-        include('./view/admin/common/footer.php');
     }
 }
 

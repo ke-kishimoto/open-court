@@ -40,3 +40,7 @@
     <p>現在参加登録されたイベントはありません。</p>
 <?php endif ?>
 <a href="./index.php">イベント一覧に戻る</a>
+<?php include('common/footer.php') ?>
+<script src="/resource/js/common.js"></script>
+</body>
+</html>

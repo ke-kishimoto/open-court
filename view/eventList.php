@@ -18,3 +18,7 @@
             </a>
     <?php endforeach; ?>
 </div>
+<?php include('common/footer.php') ?>
+<script src="/resource/js/common.js"></script>
+</body>
+</html>

@@ -14,3 +14,7 @@
         <button class="btn btn-primary" type="submit">登録</button>
     </form>
 </div>
+<?php include('common/footer.php') ?>
+<script src="/resource/js/common.js"></script>
+</body>
+</html>

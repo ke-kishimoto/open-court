@@ -35,7 +35,6 @@ class SalesController extends BaseController
         include('./view/admin/common/head.php');
         include('./view/admin/common/header.php');
         include('./view/admin/monthlysales.php');
-        include('./view/admin/common/footer.php');
     }
 
     public function month()
@@ -57,7 +56,6 @@ class SalesController extends BaseController
         include('./view/admin/common/head.php');
         include('./view/admin/common/header.php');
         include('./view/admin/monthlysales2.php');
-        include('./view/admin/common/footer.php');
     }
 
     public function detail()
@@ -79,7 +77,6 @@ class SalesController extends BaseController
         include('./view/admin/common/head.php');
         include('./view/admin/common/header.php');
         include('./view/admin/eventsales.php');
-        include('./view/admin/common/footer.php');
     }
 
     public function update()
@@ -109,7 +106,6 @@ class SalesController extends BaseController
             include('./view/admin/common/head.php');
             include('./view/admin/common/header.php');
             include('./view/admin/complete.php');
-            include('./view/admin/common/footer.php');
         } else {
             header('Location: /index.php');
         }
@@ -142,7 +138,6 @@ class SalesController extends BaseController
             include('./view/admin/common/head.php');
             include('./view/admin/common/header.php');
             include('./view/admin/complete.php');
-            include('./view/admin/common/footer.php');
         } else {
             header('Location: /index.php');
         }
@@ -166,6 +161,5 @@ class SalesController extends BaseController
         include('./view/admin/common/head.php');
         include('./view/admin/common/header.php');
         include('./view/admin/yearlysales.php');
-        include('./view/admin/common/footer.php');
     }
 }

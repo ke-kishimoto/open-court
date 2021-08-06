@@ -146,3 +146,7 @@
     連絡先: 09097893862<br>
     メール: fromstreetb@gmail.com<br>
 </p>
+<?php include('common/footer.php') ?>
+<script src="/resource/js/common.js"></script>
+</body>
+</html>
