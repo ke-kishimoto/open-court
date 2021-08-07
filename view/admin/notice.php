@@ -43,7 +43,7 @@
         },
         methods: {
             getNoticeList() {
-                params = new URLSearchParams();
+                let params = new URLSearchParams();
                 params.append('tableName', 'notice');
                 fetch('/api/data/selectAll', {
                     method: 'post',
@@ -65,7 +65,7 @@
                 this.content = '';
             },
             selectNotice() {
-                params = new URLSearchParams();
+                let params = new URLSearchParams();
                 params.append('tableName', 'notice');
                 params.append('id', event.target.value);
                 fetch('/api/data/selectById', {
@@ -87,7 +87,7 @@
                 if(this.noticeId != -1 && this.isnew === false) {
                     type = 'update'
                 }
-                params = new URLSearchParams();
+                let params = new URLSearchParams();
                 params.append('tableName', 'notice');
                 params.append('type', type);
                 params.append('id', this.noticeId);
@@ -109,7 +109,7 @@
             },
             deleteNotice() {
                 if (!confirm('削除してよろしいですか。')) return;
-                params = new URLSearchParams();
+                let params = new URLSearchParams();
                 params.append('tableName', 'notice');
                 params.append('id', this.noticeId);
                 fetch('/api/data/deleteById', {

@@ -23,7 +23,7 @@
         },
         methods: {
             getUserList() {
-                params = new URLSearchParams();
+                let params = new URLSearchParams();
                 params.append('tableName', 'users');
                 fetch('/api/data/selectAll', {
                     method: 'post',
@@ -37,7 +37,7 @@
                 .catch(errors => console.log(errors))
             },
             changeAuthority(user) {
-                params = new URLSearchParams();
+                let params = new URLSearchParams();
                 params.append('tableName', 'users');
                 params.append('id', user.id);
                 fetch('/api/data/updateFlg', {

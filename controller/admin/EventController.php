@@ -29,50 +29,50 @@ class EventController extends BaseController
         include('./view/admin/eventTemplate.php');
     }
 
-    public function eventTempleteComplete() 
-    {
-        parent::adminHeader();
+    // public function eventTempleteComplete() 
+    // {
+    //     parent::adminHeader();
 
-        if (isset($_POST["csrf_token"]) 
-        && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
+    //     if (isset($_POST["csrf_token"]) 
+    //     && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 
-            $eventTemplateDao = new EventTemplateDao();
-            if (isset($_POST['register'])) {
-                // 登録・修正''
+    //         $eventTemplateDao = new EventTemplateDao();
+    //         if (isset($_POST['register'])) {
+    //             // 登録・修正''
     
-                $eventTemplate = [];
-                $eventTemplate['template_name'] = $_POST['template_name'];
-                $eventTemplate['title'] = $_POST['title'];
-                $eventTemplate['short_title'] = $_POST['short_title'];
-                $eventTemplate['place'] = $_POST['place'];
-                $eventTemplate['limit_number'] = $_POST['limit_number'];
-                $eventTemplate['detail'] = $_POST['detail'];
-                $eventTemplate['price1'] = (int)$_POST['price1'];
-                $eventTemplate['price2'] = (int)$_POST['price2'];
-                $eventTemplate['price3'] = (int)$_POST['price3'];
+    //             $eventTemplate = [];
+    //             $eventTemplate['template_name'] = $_POST['template_name'];
+    //             $eventTemplate['title'] = $_POST['title'];
+    //             $eventTemplate['short_title'] = $_POST['short_title'];
+    //             $eventTemplate['place'] = $_POST['place'];
+    //             $eventTemplate['limit_number'] = $_POST['limit_number'];
+    //             $eventTemplate['detail'] = $_POST['detail'];
+    //             $eventTemplate['price1'] = (int)$_POST['price1'];
+    //             $eventTemplate['price2'] = (int)$_POST['price2'];
+    //             $eventTemplate['price3'] = (int)$_POST['price3'];
                                 
-                if($_POST['id'] == '' || isset($_POST['new'])) {
-                    $eventTemplateDao->insert($eventTemplate);
-                } else {
-                    $eventTemplate['id'] = $_POST['id'];
-                    $eventTemplateDao->update($eventTemplate);
-                }
-            } else {
-                if($_POST['id'] != '') {
-                    $eventTemplateDao->updateDeleteFlg($_POST['id']);
-                }
-            }
-            unset($_SESSION['csrf_token']);
-        } else {
-            header('Location: ./index.php');
-        }
+    //             if($_POST['id'] == '' || isset($_POST['new'])) {
+    //                 $eventTemplateDao->insert($eventTemplate);
+    //             } else {
+    //                 $eventTemplate['id'] = $_POST['id'];
+    //                 $eventTemplateDao->update($eventTemplate);
+    //             }
+    //         } else {
+    //             if($_POST['id'] != '') {
+    //                 $eventTemplateDao->updateDeleteFlg($_POST['id']);
+    //             }
+    //         }
+    //         unset($_SESSION['csrf_token']);
+    //     } else {
+    //         header('Location: ./index.php');
+    //     }
 
-        $title = 'テンプレート登録完了';
-        $msg = 'テンプレートの更新が完了しました。';
-        include('./view/admin/common/head.php');
-        include('./view/admin/common/header.php');
-        include('./view/admin/complete.php');
-    }
+    //     $title = 'テンプレート登録完了';
+    //     $msg = 'テンプレートの更新が完了しました。';
+    //     include('./view/admin/common/head.php');
+    //     include('./view/admin/common/header.php');
+    //     include('./view/admin/complete.php');
+    // }
 
     public function eventInfo() 
     {

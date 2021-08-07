@@ -232,7 +232,7 @@
                 this.price3 = 0
             },
             getGameInfo(id) {
-                params = new URLSearchParams();
+                let params = new URLSearchParams();
                 params.append('tableName', 'gameInfo');
                 params.append('id', id);
                 fetch('/api/data/selectById', {
@@ -257,7 +257,7 @@
                 .catch(errors => console.log(errors))
             },
             getTemplateList() {
-                params = new URLSearchParams();
+                let params = new URLSearchParams();
                 params.append('tableName', 'eventTemplate');
                 fetch('/api/data/selectAll', {
                     method: 'post',
@@ -272,7 +272,7 @@
                 .catch(errors => console.log(errors))
             },
             selectTemplate(){
-                params = new URLSearchParams();
+                let params = new URLSearchParams();
                 params.append('tableName', 'eventTemplate');
                 params.append('id', event.target.value);
                 fetch('/api/data/selectById', {
@@ -299,7 +299,7 @@
                 if(this.getParam('gameid') !== null) {
                     type = 'update'
                 }
-                params = new URLSearchParams();
+                let params = new URLSearchParams();
                 params.append('tableName', 'gameInfo');
                 params.append('type', type);
                 params.append('id', this.getParam('gameid'));
@@ -329,7 +329,7 @@
             },
             deleteGame() {
                 if (!confirm('削除してよろしいですか。')) return;
-                params = new URLSearchParams();
+                let params = new URLSearchParams();
                 params.append('tableName', 'gameInfo');
                 params.append('id', this.getParam('gameid'));
                 fetch('/api/data/deleteById', {

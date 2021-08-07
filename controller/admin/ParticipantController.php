@@ -63,13 +63,13 @@ class ParticipantController extends BaseController
         include('./view/admin/participantInfo.php');
     }
 
-    // 参加者登録
+    // 参加者登録  // 同伴者の登録で配列使わないといけないので色々後回し！
     public function participantRegist() 
     {
         parent::adminHeader();
 
-        if (isset($_POST["csrf_token"]) 
-        && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
+        // if (isset($_POST["csrf_token"]) 
+        // && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
 
             if (isset($_POST['register'])) {
                 $service = new EventService();
@@ -92,7 +92,7 @@ class ParticipantController extends BaseController
                         $companions[] = $companion;
                     }
                 }
-                if($_POST['id'] !== '') {
+                if(($_POST['id'] ?? '') !== '') {
                     $participant['id'] = $_POST['id'];
                     $service->participantUpdate($participant, $companions);
                 } else {
@@ -103,15 +103,17 @@ class ParticipantController extends BaseController
                 $detailDao->updateDeleteFlg($_POST['id']);
             }
             unset($_SESSION['csrf_token']);
-        } else {
-            header('Location: ./index.php');
-        }
+        // } else {
+        //     header('Location: ./index.php');
+        // }
 
-        $title = '参加者登録完了';
-        include('./view/admin/common/head.php');
-        include('./view/admin/common/header.php');
-        $msg = '参加者の登録が完了しました。';
-        include('./view/admin/complete.php');
+        // $title = '参加者登録完了';
+        // include('./view/admin/common/head.php');
+        // include('./view/admin/common/header.php');
+        // $msg = '参加者の登録が完了しました。';
+        // include('./view/admin/complete.php');
+
+        echo json_encode('{}');
     }
 
 }
