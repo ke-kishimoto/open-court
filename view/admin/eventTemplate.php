@@ -5,15 +5,6 @@
         <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
         <p>
 
-            <!-- 
-            <select name="id" id="template">
-            <option value=""></option>
-            <?php foreach ($eventTemplateList as $eventTemplate): ?>
-                <option value="<?php echo $eventTemplate['id'] ?>"><?php echo $eventTemplate['template_name'] ?></option>
-            <?php endforeach ?>
-            </select> 
-            -->
-            
             <select @change="selectTemplate($event)" v-model="selectedTemplate">
                 <option v-for="template in templateList" v-bind:key="template.id" v-bind:value="template.id">{{ template.template_name }}</option>
             </select>

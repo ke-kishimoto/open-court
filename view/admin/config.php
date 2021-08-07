@@ -1,75 +1,165 @@
-<h1>システム設定</h1>
-<hr>
-<form action="/admin/config/configComplete" method="post" class="form-group">
-    <p>システム名設定</p>
-    <p>
-        システム名<input class="form-control" type="text" name="system_title"  required value="<?php echo $config['system_title'] ?>">
-    </p>
+<div id="app">
+    <h1>システム設定</h1>
+    <p style="color:red">{{ msg }}</p>
     <hr>
-    <p>LINE通知設定</p>
-    <!-- その内ユーザーIDに修正 -->
-    <input type="hidden" name="id" value="1">
-    <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
-    <p>
-        参加者からの予約があった際にLINEへ通知を送るための設定画面です。<br> 
-        1. <a href="https://notify-bot.line.me/ja/" target="_blank">LINE notify</a>へアクセスし、ログインしてください。<br>
-        2. ログイン後は「マイページ」⇒「トークンの発行」を選択します。<br>
-        3. 通知設定が来るようにしたいグループを選択し、トークン名を発行ボタンを押下します。<br>
-        4. 発行されたトークンをコピーし、入力フォームに貼り付けて更新を押下します。
-    </p>
-    <p>
-        LINE notify トークン<input class="form-control" type="text" name="line_token"  required value="<?php echo $config['line_token'] ?>">
-    </p>
-    <p>
-        通知設定
-        <select class="form-control" name="line_notify_flg">
-            <option value="1" <?php echo $config['line_notify_flg'] == '1' ? 'selected' : '' ?>>通知する</option>
-            <option value="0" <?php echo $config['line_notify_flg'] == '0' ? 'selected' : '' ?>>通知しない</option>
-        </select>
-    </p>
-    <hr>
-    <p>背景色</p>
-    <p>
-        <select id="bg_color" name="bg_color" class="custom-select mr-sm-2">
-            <option value="white" <?php echo $config['bg_color'] == 'white' ? 'selected' : '' ?> >白</option>
-            <option value="orange" <?php echo $config['bg_color'] == 'orange' ? 'selected' : '' ?> >オレンジ</option>
-            <option value="pink" <?php echo $config['bg_color'] == 'pink' ? 'selected' : '' ?> >ピンク</option>
-        </select>
-    </p>
-    <hr>
-    <p>キャンセル待ちの更新</p>
-    <p>
-        <select id="waiting_flg_auto_update" name="waiting_flg_auto_update" class="custom-select mr-sm-2">
-            <option value="0" <?php echo $config['waiting_flg_auto_update'] == '0' ? 'selected' : '' ?> >手動</option>
-            <option value="1" <?php echo $config['waiting_flg_auto_update'] == '1' ? 'selected' : '' ?> >自動</option>
-        </select>
-    </p>
-    <hr>
-    <p>
-        SendGrid APIキー<input class="form-control"  type="text" name="sendgrid_api_key" value="<?php echo $config['sendgrid_api_key'] ?>">
-    </p>
-    <hr>
-    <p>
-        LINE API用
-    </p>
-    <p>
-        クライアントID<input class="form-control"  type="text" name="client_id" value="<?php echo $config['client_id'] ?>">
-    </p>
-    <p>
-        クライアントシークレット<input class="form-control"  type="text" name="client_secret" value="<?php echo $config['client_secret'] ?>">
-    </p>
-    <p>
-        チャネルアクセストークン<input class="form-control"  type="text" name="channel_access_token" value="<?php echo $config['channel_access_token'] ?>">
-    </p>
-    <p>
-        チャネルシークレット<input class="form-control"  type="text" name="channel_secret" value="<?php echo $config['channel_secret'] ?>">
-    </p>
-    <p>
-        <button class="btn btn-primary" type="submit" name="register">登録</button>
-    </p>
-</form>
+        <p>システム名設定</p>
+        <p>
+            システム名<input class="form-control" type="text" required v-model="systemTitle">
+        </p>
+        <hr>
+        <p>LINE通知設定</p>
+        <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
+        <p>
+            参加者からの予約があった際にLINEへ通知を送るための設定画面です。<br> 
+            1. <a href="https://notify-bot.line.me/ja/" target="_blank">LINE notify</a>へアクセスし、ログインしてください。<br>
+            2. ログイン後は「マイページ」⇒「トークンの発行」を選択します。<br>
+            3. 通知設定が来るようにしたいグループを選択し、トークン名を発行ボタンを押下します。<br>
+            4. 発行されたトークンをコピーし、入力フォームに貼り付けて更新を押下します。
+        </p>
+        <p>
+            LINE notify トークン<input class="form-control" type="text" required v-model="lineToken">
+        </p>
+        <p>
+            通知設定
+            <select class="form-control" v-model="lineNotifyFlg">
+            <option v-for="item in notifyOptions" v-bind:value="item.value">
+                {{ item.text }}
+            </option>
+            </select>
+        </p>
+        <hr>
+        <p>背景色</p>
+        <p>
+            <select id="bg_color" v-model="bgColor" class="custom-select mr-sm-2">
+            <option v-for="item in colors" v-bind:value="item.value">
+                {{ item.text }}
+            </option>
+            </select>
+        </p>
+        <hr>
+        <p>キャンセル待ちの更新</p>
+        <p>
+            <select id="waiting_flg_auto_update" v-model="waitingFlgAutoUpdate" class="custom-select mr-sm-2">
+            <option v-for="item in waithingOptions" v-bind:value="item.value">
+                {{ item.text }}
+            </option>
+            </select>
+        </p>
+        <hr>
+        <p>
+            SendGrid APIキー<input class="form-control"  type="text"  v-model="sendgridApiKey">
+        </p>
+        <hr>
+        <p>
+            LINE API用
+        </p>
+        <p>
+            LINE ログイン：クライアントID<input class="form-control"  type="text" v-model="clientId">
+        </p>
+        <p>
+            LINE ログイン：クライアントシークレット<input class="form-control"  type="text" v-model="clientSecret">
+        </p>
+        <p>
+            Messaging API：チャネルアクセストークン<input class="form-control"  type="text" v-model="channelAccessToken">
+        </p>
+        <p>
+            Messaging API：チャネルシークレット<input class="form-control"  type="text" v-model="channelSecret">
+        </p>
+        <p>
+            <button class="btn btn-primary" type="button" @click="register">登録</button>
+        </p>
+    </form>
+</div>
 <?php include('common/footer.php') ?>
-<script src="/resource/js/common_admin.js">
+<script src="/resource/js/common_admin.js"></script>
+<script src="/resource/js/vue.min.js"></script>
+<script>
+    const app = new Vue({
+        el:"#app",
+        data: {
+            msg: '',
+            systemTitle: '',
+            lineToken: '',
+            lineNotifyFlg: '1',
+            bgColor: 'white',
+            waitingFlgAutoUpdate: '1',
+            sendgridApiKey: '',
+            clientId: '',
+            clientSecret: '',
+            channelAccessToken: '',
+            channelSecret: '',
+            notifyOptions: [
+                {text: 'する', value: '1'},
+                {text: 'しない', value: '0'}
+            ],
+            colors: [
+                {text: '白', value: "white"},
+                {text: 'オレンジ', value: "orange"},
+                {text: 'ピンク', value: "pink"},
+            ],
+            waithingOptions: [
+                {text: '手動', value: '0'},
+                {text: '自動', value: '1'}
+            ]
+        },
+        methods: {
+            getConfig() {
+                params = new URLSearchParams();
+                params.append('tableName', 'config');
+                params.append('id', 1);
+                fetch('/api/data/selectById', {
+                    method: 'post',
+                    body: params
+                })
+                .then(res => res.json()
+                    .then(data => {
+                        this.systemTitle = data.system_title;
+                        this.lineToken = data.line_token;
+                        this.lineNotifyFlg = data.line_notify_flg;
+                        this.bgColor = data.bg_color;
+                        this.waitingFlgAutoUpdate = data.waiting_flg_auto_update;
+                        this.sendgridApiKey = data.sendgrid_api_key;
+                        this.clientId = data.client_id;
+                        this.clientSecret = data.client_secret;
+                        this.channelAccessToken = data.channel_access_token;
+                        this.channelSecret = data.channel_secret;
+                    })
+                )
+                .catch(errors => console.log(errors))
+            },
+            register() {
+                if (!confirm('登録してよろしいですか。')) return;
+                params = new URLSearchParams();
+                params.append('tableName', 'config');
+                params.append('type', 'update');
+                params.append('id', 1);
+                params.append('system_title', this.systemTitle);
+                params.append('line_token', this.lineToken);
+                params.append('line_notify_flg', this.lineNotifyFlg);
+                params.append('bg_color', this.bgColor);
+                params.append('waiting_flg_auto_update', this.waitingFlgAutoUpdate);
+                params.append('sendgrid_api_key', this.sendgridApiKey);
+                params.append('client_id', this.clientId);
+                params.append('client_secret', this.clientSecret);
+                params.append('channel_access_token', this.channelAccessToken);
+                params.append('channel_secret', this.channelSecret);
+                fetch('/api/data/updateRecord', {
+                    method: 'post',
+                    body: params
+                })
+                .then(res => {
+                    if(res.status !== 200) {
+                        console.log(res);
+                    } else {
+                        this.msg = '登録完了しました。'
+                    }
+                })
+            }
+        },
+        created: function() {
+            this.getConfig()
+        }
+    })
 </script>
 </body>
 </html>
