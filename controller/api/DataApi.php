@@ -1,10 +1,30 @@
 <?php
 namespace api;
+use dao\UsersDao;
 use ReflectionClass;
 use Exception;
 
 class DataApi
 {
+
+    /**
+     * @Route("/getLoginUser")
+     */
+    public function getLoginUser()
+    {
+        header('Content-type: application/json; charset= UTF-8');
+        session_start();
+
+        if(isset($_SESSION['user']) && !empty($_SESSION['user']['id'])) {
+            $userDao = new UsersDao();
+            $user = $userDao->selectById((int)$_SESSION['user']['id']);
+        } else {
+            $user = ['id' => '', 'name' => '', 'email' => '', 'occupation' => '', 'sex' => '', 'remark' => ''];
+        }
+
+        echo json_encode($user);
+        
+    }
 
     /**
      * @Route("/selectById") 

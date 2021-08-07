@@ -31,7 +31,7 @@ class InquiryController extends BaseController
 
         $errMsg = '';
         if(isset($_POST)) {
-            if (isset($_POST["csrf_token"]) && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
+            // if (isset($_POST["csrf_token"]) && $_POST["csrf_token"] === $_SESSION['csrf_token']) {
                 $gameId = (int)$_POST['game_id'];
                 $inquiry = [];
                 $inquiry['game_id'] = $gameId;
@@ -49,15 +49,14 @@ class InquiryController extends BaseController
             
                 unset($_SESSION['csrf_token']);
 
-            }
-    
+            // }
         }
-
-        $title = 'お問い合わせ完了';
-        $msg = 'お問い合わせが完了しました';
-        include('./view/common/head.php');
-        include('./view/common/header.php');
-        include('./view/complete.php');
+        echo json_encode('{}');
+        // $title = 'お問い合わせ完了';
+        // $msg = 'お問い合わせが完了しました';
+        // include('./view/common/head.php');
+        // include('./view/common/header.php');
+        // include('./view/complete.php');
     }
 }
 

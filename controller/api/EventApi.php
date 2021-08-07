@@ -10,6 +10,16 @@ use dao\InquiryDao;
 use dao\NoticeDao;
 
 class EventApi {
+
+    public function getGameInfoListByAfterDate() {
+
+        header('Content-type: application/json; charset= UTF-8');
+
+        $dao = new GameInfoDao();
+        $data = $dao->getGameInfoListByAfterDate(date('Y-m-d'));
+        echo json_encode($data);
+
+    }
     
     public function deleteParticipant() {
         header('Content-type: application/json; charset= UTF-8');
@@ -101,15 +111,15 @@ class EventApi {
         echo json_encode($info);
     }
 
-    public function updateInquiryStatusFlg() {
-        header('Content-type: application/json; charset= UTF-8');
+    // public function updateInquiryStatusFlg() {
+    //     header('Content-type: application/json; charset= UTF-8');
         
-        $inquiryDao = new InquiryDao();
-        // ステータスフラグの更新
-        $inquiryDao->updateStatusFlg((int)$_POST['id']);
-        $info = [];
-        echo json_encode($info);
-    }
+    //     $inquiryDao = new InquiryDao();
+    //     // ステータスフラグの更新
+    //     $inquiryDao->updateStatusFlg((int)$_POST['id']);
+    //     $info = [];
+    //     echo json_encode($info);
+    // }
 
     public function updateWaitingFlg() {
         header('Content-type: application/json; charset= UTF-8');
