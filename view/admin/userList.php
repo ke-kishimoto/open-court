@@ -1,6 +1,6 @@
 <div id="app">
     <h1>ユーザー一覧</h1>
-    <div v-for="user in userList" key="user.id">
+    <div v-for="user in userList" v-bind:key="user.id">
         ユーザー名：{{ user.name }} <br>
         職種：{{ user.occupation_name }} <br>
         性別：{{ user.sex_name }} <br>

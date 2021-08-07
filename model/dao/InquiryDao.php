@@ -24,6 +24,11 @@ class InquiryDao extends BaseDao
         return $prepare->fetchAll();
     }
 
+    public function updateFlg(int $id)
+    {
+        $this->updateStatusFlg($id);
+    }
+
     public function updateStatusFlg(int $id) 
     {
         $sql = 'update inquiry set status_flg = 
