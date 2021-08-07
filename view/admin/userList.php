@@ -1,23 +1,65 @@
-<?php if (!empty($userList)): ?>
+<div id="app">
     <h1>ユーザー一覧</h1>
-        <?php foreach($userList as $user): ?>
-            <?php if($user['id'] <> $_SESSION['user']['id']): ?>
-                        ユーザー名：<?php echo $user['name'] ?><br>
-                        職種：<?php echo $user['occupation_name'] ?><br>
-                        性別：<?php echo $user['sex_name'] ?><br>
-                        連絡先：<a href="mailto:<?php echo $user['email'] ?>"><?php echo $user['email'] ?></a><br>
-                        権限：<span id="authority-name-<?php echo $user['id'] ?>"><?php echo $user['authority_name'] ?></span><br>
-                        <p>状態：<span id="statud-<?php echo $user['id'] ?>"><?php echo $user['status'] ?></span><p>
-                        <p><button class="change-authority btn btn-info" type="button" value="<?php echo $user['id'] ?>">権限の変更</button></p>
-                    <hr>
-            <?php endif; ?>
-        <?php endforeach ?>
-
-<?php else: ?>
-    <p>現在登録したユーザーはいません</p>
-<?php endif ?>
+    <div v-for="user in userList" key="user.id">
+        ユーザー名：{{ user.name }} <br>
+        職種：{{ user.occupation_name }} <br>
+        性別：{{ user.sex_name }} <br>
+        メールアドレス：{{ user.email }} <br>
+        権限：{{ user.authority_name }} <br>
+        ステータス：{{ user.status }} <br>
+        <br>
+        <button class="change-authority btn btn-info" type="button" @click="changeAuthority(user)">権限の変更</button>
+        <hr>
+    </div>
+</div>
 <?php include('common/footer.php') ?>
-<script src="/resource/js/common_admin.js">
+<script src="/resource/js/common_admin.js"></script>
+<script src="/resource/js/vue.min.js"></script>
+<script>
+    const app = new Vue({
+        el:"#app",
+        data: {
+            userList: [],
+        },
+        methods: {
+            getUserList() {
+                params = new URLSearchParams();
+                params.append('tableName', 'users');
+                fetch('/api/data/selectAll', {
+                    method: 'post',
+                    body: params
+                })
+                .then(res => res.json()
+                    .then(data => {
+                        this.userList = data;
+                    })
+                )
+                .catch(errors => console.log(errors))
+            },
+            changeAuthority(user) {
+                params = new URLSearchParams();
+                params.append('tableName', 'users');
+                params.append('id', user.id);
+                fetch('/api/data/updateFlg', {
+                    method: 'post',
+                    body: params
+                })
+                .then(() => {
+                    params = new URLSearchParams();
+                    params.append('tableName', 'users');
+                    params.append('id', user.id);
+                    fetch('/api/data/selectById', {
+                        method: 'post',
+                        body: params
+                    }).then(res => res.json().then(data => user.authority_name = data.authority_name))
+                })
+                .catch(errors => console.log(errors))
+            }
+        },
+        created: function() {
+            this.getUserList()
+        }
+    })
 </script>
 </body>
 </html>

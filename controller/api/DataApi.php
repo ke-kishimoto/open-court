@@ -131,7 +131,6 @@ class DataApi
         header('Content-type: application/json; charset= UTF-8');
 
         $tableName = $_POST['tableName'] ?? '';
-        // $flgName = $_POST['flgName'] ?? '';
         // ステータスフラグの更新
         $rClass = new ReflectionClass("dao\\{$tableName}Dao");
         $dao = $rClass->newInstance();

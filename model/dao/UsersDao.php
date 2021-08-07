@@ -39,6 +39,47 @@ class UsersDao extends BaseDao
         return $info['id'];
     }
 
+    public function selectAll(int $deleteFlg = 0)
+    {
+        return $this->getUserList();
+    }
+
+    public function selectById(int $id)
+    {
+        $sql = "select 
+        id
+        , name 
+        , email
+        , occupation
+        , case 
+            when occupation =  1 then '社会人'
+            when occupation =  2 then '大学・専門学校'
+            when occupation =  3 then '高校'
+            else 'その他' 
+          end occupation_name
+        , sex
+        , case
+            when sex = 1 then '男性'
+            when sex = 2 then '女性'
+          end sex_name 
+        , case
+            when delete_flg = 1 then '有効'
+            when delete_flg = 9 then '削除済み' 
+            else ''
+          end status
+        , case 
+            when admin_flg = 1 then '管理者'
+            else '一般'
+          end authority_name
+        from users 
+        where id = :id
+        order by id";
+        $prepare = $this->getPdo()->prepare($sql);
+        $prepare->bindValue(':id', $id, PDO::PARAM_STR);
+        $prepare->execute();
+        return $prepare->fetch();
+    }
+
     public function getUserList()
     {
         $sql = "select 
@@ -105,6 +146,11 @@ class UsersDao extends BaseDao
         return $prepare->fetch();
     }
 
+    public function updateFlg(int $id)
+    {
+        $this->updateAdminFlg($id);
+    }
+
     // 権限更新
     public function updateAdminFlg(int $id) 
     {
@@ -117,6 +163,7 @@ class UsersDao extends BaseDao
         $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
+
         
     }
 }  
