@@ -76,7 +76,7 @@ class BaseDao
 
         $prepare = $this->pdo->prepare($sql);
         foreach($entity as $key => $value) {
-            if ($value === null) {
+            if ($key === 'id' || $key === 'register_date' || $value === null) {
                 continue;
             }
             $prepare->bindValue($key, $value);

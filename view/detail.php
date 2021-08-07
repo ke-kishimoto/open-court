@@ -131,5 +131,6 @@
 </div>
 <?php include('common/footer.php') ?>
 <script src="/resource/js/common.js"></script>
+<script src="/resource/js/vue.min.js"></script>
 </body>
 </html>

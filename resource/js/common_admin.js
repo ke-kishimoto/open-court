@@ -38,34 +38,34 @@ $(function() {
         });
     }
 
-    // テンプレのプルダウン選択時
-    $('#template').change(function() {
-        $.ajax({
-        url:'/api/event/getEventTemplate',
-        type:'POST',
-        data:{
-            'id':$('#template').val(),
-        }
-        })
-        // Ajaxリクエストが成功した時発動
-        .done( (data) => {
-            $('#template_name').val(data.template_name);
-            $('#title').val(data.title);
-            $('#short_title').val(data.short_title);
-            $('#place').val(data.place);
-            $('#limit_number').val(data.limit_number);
-            $('#detail').val(data.detail);
-            $('#price1').val(data.price1);
-            $('#price2').val(data.price2);
-            $('#price3').val(data.price3);
-        })
-        // Ajaxリクエストが失敗した時発動
-        .fail( (data) => {
-        })
-        // Ajaxリクエストが成功・失敗どちらでも発動
-        .always( (data) => {
-        })
-    });
+    // // テンプレのプルダウン選択時
+    // $('#template').change(function() {
+    //     $.ajax({
+    //     url:'/api/event/getEventTemplate',
+    //     type:'POST',
+    //     data:{
+    //         'id':$('#template').val(),
+    //     }
+    //     })
+    //     // Ajaxリクエストが成功した時発動
+    //     .done( (data) => {
+    //         $('#template_name').val(data.template_name);
+    //         $('#title').val(data.title);
+    //         $('#short_title').val(data.short_title);
+    //         $('#place').val(data.place);
+    //         $('#limit_number').val(data.limit_number);
+    //         $('#detail').val(data.detail);
+    //         $('#price1').val(data.price1);
+    //         $('#price2').val(data.price2);
+    //         $('#price3').val(data.price3);
+    //     })
+    //     // Ajaxリクエストが失敗した時発動
+    //     .fail( (data) => {
+    //     })
+    //     // Ajaxリクエストが成功・失敗どちらでも発動
+    //     .always( (data) => {
+    //     })
+    // });
 
     // キャンセル待ち⇔解除の処理
     $('.waiting').on('click', function() {
