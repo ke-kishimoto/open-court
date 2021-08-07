@@ -11,6 +11,23 @@ use dao\NoticeDao;
 
 class EventApi {
 
+    public function getParticipantEventList() {
+
+        header('Content-type: application/json; charset= UTF-8');
+        session_start();
+
+        $eventList = [];
+        if(isset($_SESSION['user'])) {
+            $detailDao = new DetailDao();
+            if(isset($_SESSION['user']['email']) && !empty($_SESSION['user']['email'])) {
+                $eventList = $detailDao->getEventListByEmail($_SESSION['user']['email']);
+            } elseif(isset($_SESSION['user']['line_id']) && !empty($_SESSION['user']['line_id'])) {
+                $eventList = $detailDao->getEventListByLineId($_SESSION['user']['line_id']);
+            }
+        } 
+        echo json_encode($eventList);
+    }
+
     public function getGameInfoListByAfterDate() {
 
         header('Content-type: application/json; charset= UTF-8');
