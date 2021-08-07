@@ -4,14 +4,11 @@
     <p style="color:red">{{ msg }}</p>
         <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
         <p>
-
             <select @change="selectTemplate($event)" v-model="selectedTemplate">
                 <option v-for="template in templateList" v-bind:key="template.id" v-bind:value="template.id">{{ template.template_name }}</option>
             </select>
-
             <input type="checkbox" id="isnew" v-model="isnew">
             <label for="isnew">コピーして新規作成</label> 
-
         </p>
         <p>
             テンプレート名<input class="form-control" type="text" v-model="template_name" required >
@@ -41,7 +38,6 @@
             <button class="btn btn-primary" type="button" @click="register">登録</button>
             <button id="btn-event-delete" class="btn btn-secondary" type="button" @click="deleteById">削除</button>
         </p>
-    </form>
 </div>
 <?php include('common/footer.php') ?>
 <script src="/resource/js/common_admin.js"></script>

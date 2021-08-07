@@ -250,40 +250,40 @@ $(function() {
         })
         
     });
-    // 問い合わせのステータス変更
-    $('.btn-inquiry-status').on('click', function() {
-        $.ajax({
-            url:'/api/event/updateInquiryStatusFlg',
-            type:'POST',
-            data:{
-                'id':$(this).val()
-            }
-        })
-        .done( (data) => {
-            $(this)[0].disabled = true;
-        })
-        .fail( (data) => {
-        })
-        .always( (data) => {
-        })
-    });
+    // // 問い合わせのステータス変更
+    // $('.btn-inquiry-status').on('click', function() {
+    //     $.ajax({
+    //         url:'/api/event/updateInquiryStatusFlg',
+    //         type:'POST',
+    //         data:{
+    //             'id':$(this).val()
+    //         }
+    //     })
+    //     .done( (data) => {
+    //         $(this)[0].disabled = true;
+    //     })
+    //     .fail( (data) => {
+    //     })
+    //     .always( (data) => {
+    //     })
+    // });
 
-    // お知らせのプルダウン選択時
-    $('#notice').change(function() {
-        $.ajax({
-        url:'/api/event/getNotice',
-        type:'POST',
-        data:{
-            'id':$('#notice').val(),
-        }
-        })
-        .done( (data) => {
-            $('#title').val(data.title);
-            $('#content').val(data.content);
-        })
-        .fail( (data) => {
-        })
-        .always( (data) => {
-        })
-    });
+    // // お知らせのプルダウン選択時
+    // $('#notice').change(function() {
+    //     $.ajax({
+    //     url:'/api/event/getNotice',
+    //     type:'POST',
+    //     data:{
+    //         'id':$('#notice').val(),
+    //     }
+    //     })
+    //     .done( (data) => {
+    //         $('#title').val(data.title);
+    //         $('#content').val(data.content);
+    //     })
+    //     .fail( (data) => {
+    //     })
+    //     .always( (data) => {
+    //     })
+    // });
 });

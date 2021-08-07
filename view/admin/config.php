@@ -2,73 +2,72 @@
     <h1>システム設定</h1>
     <p style="color:red">{{ msg }}</p>
     <hr>
-        <p>システム名設定</p>
-        <p>
-            システム名<input class="form-control" type="text" required v-model="systemTitle">
-        </p>
-        <hr>
-        <p>LINE通知設定</p>
-        <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
-        <p>
-            参加者からの予約があった際にLINEへ通知を送るための設定画面です。<br> 
-            1. <a href="https://notify-bot.line.me/ja/" target="_blank">LINE notify</a>へアクセスし、ログインしてください。<br>
-            2. ログイン後は「マイページ」⇒「トークンの発行」を選択します。<br>
-            3. 通知設定が来るようにしたいグループを選択し、トークン名を発行ボタンを押下します。<br>
-            4. 発行されたトークンをコピーし、入力フォームに貼り付けて更新を押下します。
-        </p>
-        <p>
-            LINE notify トークン<input class="form-control" type="text" required v-model="lineToken">
-        </p>
-        <p>
-            通知設定
-            <select class="form-control" v-model="lineNotifyFlg">
-            <option v-for="item in notifyOptions" v-bind:value="item.value">
-                {{ item.text }}
-            </option>
-            </select>
-        </p>
-        <hr>
-        <p>背景色</p>
-        <p>
-            <select id="bg_color" v-model="bgColor" class="custom-select mr-sm-2">
-            <option v-for="item in colors" v-bind:value="item.value">
-                {{ item.text }}
-            </option>
-            </select>
-        </p>
-        <hr>
-        <p>キャンセル待ちの更新</p>
-        <p>
-            <select id="waiting_flg_auto_update" v-model="waitingFlgAutoUpdate" class="custom-select mr-sm-2">
-            <option v-for="item in waithingOptions" v-bind:value="item.value">
-                {{ item.text }}
-            </option>
-            </select>
-        </p>
-        <hr>
-        <p>
-            SendGrid APIキー<input class="form-control"  type="text"  v-model="sendgridApiKey">
-        </p>
-        <hr>
-        <p>
-            LINE API用
-        </p>
-        <p>
-            LINE ログイン：クライアントID<input class="form-control"  type="text" v-model="clientId">
-        </p>
-        <p>
-            LINE ログイン：クライアントシークレット<input class="form-control"  type="text" v-model="clientSecret">
-        </p>
-        <p>
-            Messaging API：チャネルアクセストークン<input class="form-control"  type="text" v-model="channelAccessToken">
-        </p>
-        <p>
-            Messaging API：チャネルシークレット<input class="form-control"  type="text" v-model="channelSecret">
-        </p>
-        <p>
-            <button class="btn btn-primary" type="button" @click="register">登録</button>
-        </p>
-    </form>
+    <p>システム名設定</p>
+    <p>
+        システム名<input class="form-control" type="text" required v-model="systemTitle">
+    </p>
+    <hr>
+    <p>LINE通知設定</p>
+    <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
+    <p>
+        参加者からの予約があった際にLINEへ通知を送るための設定画面です。<br> 
+        1. <a href="https://notify-bot.line.me/ja/" target="_blank">LINE notify</a>へアクセスし、ログインしてください。<br>
+        2. ログイン後は「マイページ」⇒「トークンの発行」を選択します。<br>
+        3. 通知設定が来るようにしたいグループを選択し、トークン名を発行ボタンを押下します。<br>
+        4. 発行されたトークンをコピーし、入力フォームに貼り付けて更新を押下します。
+    </p>
+    <p>
+        LINE notify トークン<input class="form-control" type="text" required v-model="lineToken">
+    </p>
+    <p>
+        通知設定
+        <select class="form-control" v-model="lineNotifyFlg">
+        <option v-for="item in notifyOptions" v-bind:value="item.value">
+            {{ item.text }}
+        </option>
+        </select>
+    </p>
+    <hr>
+    <p>背景色</p>
+    <p>
+        <select id="bg_color" v-model="bgColor" class="custom-select mr-sm-2">
+        <option v-for="item in colors" v-bind:value="item.value">
+            {{ item.text }}
+        </option>
+        </select>
+    </p>
+    <hr>
+    <p>キャンセル待ちの更新</p>
+    <p>
+        <select id="waiting_flg_auto_update" v-model="waitingFlgAutoUpdate" class="custom-select mr-sm-2">
+        <option v-for="item in waithingOptions" v-bind:value="item.value">
+            {{ item.text }}
+        </option>
+        </select>
+    </p>
+    <hr>
+    <p>
+        SendGrid APIキー<input class="form-control"  type="text"  v-model="sendgridApiKey">
+    </p>
+    <hr>
+    <p>
+        LINE API用
+    </p>
+    <p>
+        LINE ログイン：クライアントID<input class="form-control"  type="text" v-model="clientId">
+    </p>
+    <p>
+        LINE ログイン：クライアントシークレット<input class="form-control"  type="text" v-model="clientSecret">
+    </p>
+    <p>
+        Messaging API：チャネルアクセストークン<input class="form-control"  type="text" v-model="channelAccessToken">
+    </p>
+    <p>
+        Messaging API：チャネルシークレット<input class="form-control"  type="text" v-model="channelSecret">
+    </p>
+    <p>
+        <button class="btn btn-primary" type="button" @click="register">登録</button>
+    </p>
 </div>
 <?php include('common/footer.php') ?>
 <script src="/resource/js/common_admin.js"></script>
