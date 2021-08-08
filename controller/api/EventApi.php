@@ -1,15 +1,28 @@
 <?php
 namespace api;
 
+use dao\CompanionDao;
 use dao\DetailDao;
 use dao\GameInfoDao;
 use dao\DefaultCompanionDao;
+use dao\ompanionDao;
 use dao\EventTemplateDao;
 use dao\UsersDao;
 use dao\NoticeDao;
 use service\EventService;
 
 class EventApi {
+
+    public function getCompanionList()
+    {
+        header('Content-type: application/json; charset= UTF-8');
+
+        $dao = new CompanionDao();
+        $id = $_POST['participant_id'];
+        $data = $dao->getCompanionList($id);
+        echo json_encode($data);
+
+    }
 
     public function getParticipantNameList()
     {
@@ -33,8 +46,7 @@ class EventApi {
         $email = $_POST['email'] ?? '';
         $lineId = $_POST['line_id'] ?? '';
         $data = $dao->existsCheck($gameId, $email, $lineId);
-        echo json_encode(['result' => $data]);
-        // echo json_encode('{}');
+        echo json_encode($data);
     }
 
     public function participantBatchRegist()
@@ -73,6 +85,7 @@ class EventApi {
         $participant['name'] = $data['user']['name'];
         $participant['email'] = $data['user']['email'] ?? '';
         $participant['remark'] = $data['user']['remark'] ?? '';
+        $participant['waiting_flg'] = 0;
 
         $companion = [];
         for($i = 0; $i < count($data['companion']); $i++) {
@@ -83,7 +96,7 @@ class EventApi {
             $companion[$i]['name'] = $data['companion'][$i]['name'];
         }
 
-        if(($data['id'] ?? '') !== '') {
+        if(($data['id'] ?? -1) != -1) {
             $participant['id'] = $data['id'];
             $service->participantUpdate($participant, $companion);
         } else {

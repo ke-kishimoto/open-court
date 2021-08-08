@@ -17,6 +17,8 @@ Vue.component('participate', {
             companions: [],
             user: {},
             adminFlg: '0',
+            registered: false,
+            editId: -1,
         }
     }, 
     methods: {
@@ -35,8 +37,45 @@ Vue.component('participate', {
                 method: 'post',
             }).then(res => res.json()
                 .then(data => {
-                        this.user = data;
-                        this.adminFlg = this.user.admin_flg;
+                    this.user = data;
+                    this.adminFlg = this.user.admin_flg;
+                    if (this.user.id == '') return 
+                    let params = new URLSearchParams();
+                    params.append('game_id', this.getParam('gameid'));
+                    if(this.user.email !== null && this.user.email !== '') {
+                        params.append('email', this.user.email);
+                    } else if (this.user.line_id !== null && this.user.line_id !== '') {
+                        params.append('line_id', this.user.line_id);
+                    }
+                    fetch('/api/event/existsCheck', {
+                        method: 'post',
+                        body: params
+                    }).then(res => {res.json()
+                            .then(data => {
+                                this.registered = data.result
+                                this.editId = data.id
+                                if(this.registered) {
+                                    params = new URLSearchParams();
+                                    params.append('tableName', 'Detail');
+                                    params.append('id', this.editId);
+                                    fetch('/api/data/selectById', {
+                                        method: 'post',
+                                        body: params
+                                    }).then(res => res.json().then(participant => {
+                                        this.user = participant;
+                                        params = new URLSearchParams();
+                                        params.append('participant_id', participant.id);
+                                        fetch('/api/event/getCompanionList', {
+                                            method: 'post',
+                                            body: params
+                                        }).then(res => res.json().then(companipn => {
+                                            this.companions = companipn
+                                        }))
+                                    }))
+                                }
+                            })
+                        }
+                    )
                 })
             )
         },
@@ -82,7 +121,6 @@ Vue.component('participate', {
         },
         deleteCompanion(index) {
             this.companions.splice(index, 1)
-            console.log(this.companions)
         },
         register() {
             
@@ -92,7 +130,8 @@ Vue.component('participate', {
                 gameid: this.getParam('gameid'),
                 csrf_token: this.csrf_token,
                 user: this.user,
-                companion: this.companions
+                companion: this.companions,
+                id: this.editId,
             }
             fetch('/api/event/participantRegist', {
                 headers:{
@@ -151,7 +190,7 @@ Vue.component('participate', {
             <p>メール<input class="form-control" type="email" v-model="user.email"></p>
             <p>備考<textarea class="form-control" v-model="user.remark"></textarea></p>
             
-            <button class="btn btn-secondary" type="button" @click="addCompanion">同伴者追加</button>
+            <p><button class="btn btn-secondary" type="button" @click="addCompanion">同伴者追加</button></p>
 
             <div v-for="(companion, index) in companions" v-bind:key="index">
                 {{ index + 1 }}人目 
@@ -172,8 +211,11 @@ Vue.component('participate', {
             </div>
             
             <p>
-                <button class="btn btn-primary" type="button" @click="register">登録</button>
-                <button id="btn-delete" class="btn btn-secondary" type="submit" name="delete">削除</button>
+                <button class="btn btn-primary" type="button" @click="register">
+                    <template v-if="registered">修正</template>
+                    <template v-else>登録</template>
+                </button>
+                <a v-if="registered" class="btn btn-danger" v-bind:href="'/participant/cancel?gameid=' + getParam('gameid')">参加のキャンセル</a>
             </p>
         
     </div>`
