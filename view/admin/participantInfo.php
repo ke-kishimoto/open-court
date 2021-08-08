@@ -141,24 +141,27 @@
             },
             deleteCompanion(index) {
                 this.companions.splice(index, 1)
-                console.log(this.companions)
             },
             register() {
                 
                 if (!confirm('登録してよろしいですか。')) return;
-                let params = new URLSearchParams();
-                params.append('game_id', this.getParam('game_id'));
-                params.append('register', true);
-                params.append('csrf_token', this.csrf_token);
-                params.append('name', this.name);
-                params.append('occupation', this.occupation);
-                params.append('sex', this.sex);
-                params.append('email', this.email);
-                params.append('remark', this.remark);
-                params.append('companion', this.companions);
-                fetch('/admin/participant/participantRegist', {
+                let data = {
+                    game_id: this.getParam('game_id'),
+                    register: true,
+                    csrf_token: this.csrf_token,
+                    name: this.name,
+                    occupation: this.occupation,
+                    sex: this.sex,
+                    email: this.email,
+                    remark: this.remark,
+                    companion: this.companions
+                }
+                fetch('/api/event/participantRegist', {
+                    headers:{
+                        'Content-Type': 'application/json',
+                    },
                     method: 'post',
-                    body: params
+                    body: JSON.stringify(data)
                 })
                 .then(() => {
                     this.msg = '登録完了しました。'

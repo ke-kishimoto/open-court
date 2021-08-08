@@ -38,77 +38,77 @@ $(function() {
         });
     }
 
-    // キャンセル待ち⇔解除の処理
-    $('.waiting').on('click', function() {
-        $.ajax({
-        url:'/api/event/updateWaitingFlg',
-        type:'POST',
-        data:{
-            'id':$(this).val(),
-            'game_id':$('#game_id').val(),
-        }
-        })
-        .done( (data) => {
-            $('#cnt').text(data.cnt);
-            $('#sya_all').text(data.sya_all);
-            $('#sya_women').text(data.sya_women);
-            $('#sya_men').text(data.sya_men);
-            $('#dai_all').text(data.dai_all);
-            $('#dai_women').text(data.dai_women);
-            $('#dai_men').text(data.dai_men);
-            $('#kou_all').text(data.kou_all);
-            $('#kou_women').text(data.kou_women);
-            $('#kou_men').text(data.kou_men);
-            $('#waiting_cnt').text(data.waiting_cnt);
-            if(data.waiting_flg == '0') {
-                $(this).attr('class', 'warning btn btn-success').text('キャンセル待ちに変更');
-            } else {
-                $(this).attr('class', 'warning btn btn-warning').text('キャンセル待ちを解除');
-            }
+    // // キャンセル待ち⇔解除の処理
+    // $('.waiting').on('click', function() {
+    //     $.ajax({
+    //     url:'/api/event/updateWaitingFlg',
+    //     type:'POST',
+    //     data:{
+    //         'id':$(this).val(),
+    //         'game_id':$('#game_id').val(),
+    //     }
+    //     })
+    //     .done( (data) => {
+    //         $('#cnt').text(data.cnt);
+    //         $('#sya_all').text(data.sya_all);
+    //         $('#sya_women').text(data.sya_women);
+    //         $('#sya_men').text(data.sya_men);
+    //         $('#dai_all').text(data.dai_all);
+    //         $('#dai_women').text(data.dai_women);
+    //         $('#dai_men').text(data.dai_men);
+    //         $('#kou_all').text(data.kou_all);
+    //         $('#kou_women').text(data.kou_women);
+    //         $('#kou_men').text(data.kou_men);
+    //         $('#waiting_cnt').text(data.waiting_cnt);
+    //         if(data.waiting_flg == '0') {
+    //             $(this).attr('class', 'warning btn btn-success').text('キャンセル待ちに変更');
+    //         } else {
+    //             $(this).attr('class', 'warning btn btn-warning').text('キャンセル待ちを解除');
+    //         }
 
-        })
-        // Ajaxリクエストが失敗した時発動
-        .fail( (data) => {
-        })
-        // Ajaxリクエストが成功・失敗どちらでも発動
-        .always( (data) => {
-        })
-    });
-    // 参加者削除処理
-    $('.btn-participant-delete').on('click', function() {
-        if(window.confirm('削除してもよろしいですか')) {
-            $.ajax({
-                url:'/api/event/deleteParticipant',
-                type:'POST',
-                data:{
-                    'participant_id':$(this).val(),
-                    'game_id':$('#game_id').val(),
-                }
-            })
-            .done( (data) => {
-                console.log('OK');
-                $('#cnt').text(data.cnt);
-                $('#sya_all').text(data.sya_all);
-                $('#sya_women').text(data.sya_women);
-                $('#sya_men').text(data.sya_men);
-                $('#dai_all').text(data.dai_all);
-                $('#dai_women').text(data.dai_women);
-                $('#dai_men').text(data.dai_men);
-                $('#kou_all').text(data.kou_all);
-                $('#kou_women').text(data.kou_women);
-                $('#kou_men').text(data.kou_men);
-                $('#waiting_cnt').text(data.waiting_cnt);
-                $('#participant-' + $(this).val()).remove();
-            })
-            // Ajaxリクエストが失敗した時発動
-            .fail( (data) => {
-                console.log('NG');
-            })
-            // Ajaxリクエストが成功・失敗どちらでも発動
-            .always( (data) => {
-            })
-        }
-    });
+    //     })
+    //     // Ajaxリクエストが失敗した時発動
+    //     .fail( (data) => {
+    //     })
+    //     // Ajaxリクエストが成功・失敗どちらでも発動
+    //     .always( (data) => {
+    //     })
+    // });
+    // // // 参加者削除処理
+    // $('.btn-participant-delete').on('click', function() {
+    //     if(window.confirm('削除してもよろしいですか')) {
+    //         $.ajax({
+    //             url:'/api/event/deleteParticipant',
+    //             type:'POST',
+    //             data:{
+    //                 'participant_id':$(this).val(),
+    //                 'game_id':$('#game_id').val(),
+    //             }
+    //         })
+    //         .done( (data) => {
+    //             console.log('OK');
+    //             $('#cnt').text(data.cnt);
+    //             $('#sya_all').text(data.sya_all);
+    //             $('#sya_women').text(data.sya_women);
+    //             $('#sya_men').text(data.sya_men);
+    //             $('#dai_all').text(data.dai_all);
+    //             $('#dai_women').text(data.dai_women);
+    //             $('#dai_men').text(data.dai_men);
+    //             $('#kou_all').text(data.kou_all);
+    //             $('#kou_women').text(data.kou_women);
+    //             $('#kou_men').text(data.kou_men);
+    //             $('#waiting_cnt').text(data.waiting_cnt);
+    //             $('#participant-' + $(this).val()).remove();
+    //         })
+    //         // Ajaxリクエストが失敗した時発動
+    //         .fail( (data) => {
+    //             console.log('NG');
+    //         })
+    //         // Ajaxリクエストが成功・失敗どちらでも発動
+    //         .always( (data) => {
+    //         })
+    //     }
+    // });
     // イベント削除
     $('#btn-event-delete').on('click', function() {
         return confirm('削除してもよろしいですか');

@@ -19,7 +19,7 @@ class DataApi
             $userDao = new UsersDao();
             $user = $userDao->selectById((int)$_SESSION['user']['id']);
         } else {
-            $user = ['id' => '', 'name' => '', 'email' => '', 'occupation' => '', 'sex' => '', 'remark' => ''];
+            $user = ['id' => '', 'name' => '', 'email' => '', 'occupation' => '', 'sex' => '', 'remark' => '', 'line_id' => ''];
         }
 
         echo json_encode($user);

@@ -62,11 +62,6 @@ class ParticipantController extends BaseController
             
             $companion = [];
             for($i = 1; $i <= $_POST['companion']; $i++) {
-                // $companion[$i-1] = new Companion();
-                // $companion[$i-1]->participationId = 0;
-                // $companion[$i-1]->occupation = $_POST['occupation-' . $i]; 
-                // $companion[$i-1]->sex = $_POST['sex-' . $i];
-                // $companion[$i-1]->name = $_POST['name-' . $i];
                 $companion[$i-1] = [];
                 $companion[$i-1]['participation_id'] = 0;
                 $companion[$i-1]['occupation'] = $_POST['occupation-' . $i]; 

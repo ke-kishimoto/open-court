@@ -67,6 +67,7 @@ class GameInfoDao extends BaseDao
     {
         $sql = $this->getGameInfoListSQL();
         $sql .= " where game_date >= :date and g.delete_flg = 1 ";
+        // メールとLINEIDがある場合はそのレコードを除外する
         if ($email !== '') {
             $sql .= " and not exists(select * from participant where game_id = g.id and email = :email)";
         }

@@ -1,89 +1,169 @@
-<h1>イベント一括登録</h1>
+<div id="app">
+    <p style="color:red">{{ msg }}</p>
+
+    <h1>イベント一括登録</h1>
     下記の内容で一括登録できます。
-    <form id="" action="/participant/eventBatchRegistComplete" method="post" class="form-group">
         <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
         <p>
             職種
-            <select id="occupation" name="occupation" class="custom-select mr-sm-2">
-                <option value="1" <?php echo $occupation == '1' ? 'selected' : '' ?>>社会人</option>
-                <option value="2" <?php echo $occupation == '2' ? 'selected' : '' ?>>大学・専門学校</option>
-                <option value="3" <?php echo $occupation == '3' ? 'selected' : '' ?>>高校</option>
+            <select v-model="user.occupation" class="custom-select mr-sm-2">
+                <option v-for="item in occupationOptions" v-bind:value="item.value">{{ item.text }}</option>
             </select>
         </p>
         <p>
             性別
-            <select id="sex" name="sex" class="custom-select mr-sm-2">
-                <option value="1" <?php echo $sex == '1' ? 'selected' : '' ?>>男性</option>
-                <option value="2" <?php echo $sex == '2' ? 'selected' : '' ?>>女性</option>
+            <select v-model="user.sex" class="custom-select mr-sm-2">
+                <option v-for="item in sexOptions" v-bind:value="item.value">{{ item.text }}</option>
             </select>
         </p>
-        <p>
-            名前
-            <input id="name" class="form-control" type="text" name="name" required maxlength="50" value="<?php echo !isset($_SESSION['user']) ? '' : $_SESSION['user']['name'] ?>">
-        </p>
+        <p>名前<input class="form-control" type="text" v-model="user.name" required></p>
         <?php if(!(isset($_SESSION['user']) && !empty($_SESSION['user']['line_id'] ?? ''))): ?>
-                    <p>
-                        メールアドレス ※必須
-                        <input id="email" class="form-control" type="email" name="email" maxlength="50" required value="<?php echo !isset($_SESSION['user']) ? '' : $_SESSION['user']['email'] ?>">
-                    </p>
-                <?php endif; ?>
-                <input type="hidden" id="line_id" name="line_id" value="<?php echo htmlspecialchars(!isset($_SESSION['user']) ? '' : $_SESSION['user']['line_id'] ?? '') ?>">
-        <p>
-            備考
-            <textarea class="form-control" name="remark" maxlength="200"><?php echo !isset($_SESSION['user']) ? '' : $_SESSION['user']['remark'] ?></textarea>
-        </p>
-        <p id="douhan-0">
-            <!-- 同伴者
-            <input class="form-control" type="number" name="companion" required min="0"> 
-            -->
-            <input id="companion" name="companion" type="hidden" value="<?php echo count($companions); ?>">
-            <p id="douhanErrMsg" style="color: red; display: none;">同伴者は10人までです</p>
-            <button class="btn btn-secondary" id="btn-companion-add" type="button">同伴者追加</button>
-            <button class="btn btn-danger" id="btn-companion-del" type="button">同伴者削除</button>
-        </p>
-        <?php for($i = 0;$i < count($companions); $i++): ?>
-            <div id="douhan-<?php echo $i + 1 ?>">
-            <select id="occupation-<?php echo $i + 1 ?>" name="occupation-<?php echo $i + 1 ?>" class="custom-select mr-sm-2">
-                <option value="1" <?php echo $companions[$i]['occupation'] == '1' ? 'selected' : ''; ?>>社会人</option>
-                <option value="2" <?php echo $companions[$i]['occupation'] == '2' ? 'selected' : ''; ?>>大学・専門学校</option>
-                <option value="3" <?php echo $companions[$i]['occupation'] == '3' ? 'selected' : ''; ?>>高校</option>
-            </select>
-            <select id="sex-<?php echo $i + 1 ?>" name="sex-<?php echo $i + 1 ?>" class="custom-select mr-sm-2">
-                <option value="1" <?php echo $companions[$i]['sex'] == '1' ? 'selected' : ''; ?>>男性</option>
-                <option value="2" <?php echo $companions[$i]['sex'] == '2' ? 'selected' : ''; ?>>女性</option>
-            </select>
-            <input id="name-<?php echo $i + 1 ?>" class="form-control" type="text" name="name-<?php echo $i + 1 ?>" required maxlength="50" value="<?php echo $companions[$i]['name']; ?>">
-            </div>
-        <?php endfor ?>
+            <p>
+                メールアドレス
+                <p>メール<input class="form-control" type="email" v-model="user.email"></p>
+            </p>
+        <?php endif; ?>
+        <p>備考<textarea class="form-control" v-model="user.remark"></textarea></p>
 
+        <button class="btn btn-secondary" type="button" @click="addCompanion">同伴者追加</button>
+
+        <div v-for="(companion, index) in companions" v-bind:key="index">
+            {{ index + 1 }}人目 
+            <button class="btn btn-danger" type="button" @click="deleteCompanion(index)">同伴者削除</button>
+            <p>名前<input class="form-control" type="text" v-model="companion.name" required></p>
+            <p>
+            職種
+            <select class="custom-select mr-sm-2" v-model="companion.occupation">
+                <option v-for="item in occupationOptions" v-bind:value="item.value">{{ item.text }}</option>
+            </select>
+            </p>
+            <p>
+            性別
+            <select class="custom-select mr-sm-2" v-model="companion.sex">
+                <option v-for="item in sexOptions" v-bind:value="item.value">{{ item.text }}</option>
+            </select>
+            </p>
+        </div>
+    
         <br>
         イベント一覧<br>
         ※予約済みのイベントは表示されません。<br>
         <hr>
 
-        <?php foreach($gameInfoList as $gameInfo): ?>
-
-            <div class="eventList-checkbox">
-                <div class="eventList-item">
-                    <input type="checkbox" class="form-check-input" id="check-<?php echo $gameInfo['id'] ?>" name="game_id[]" value="<?php echo $gameInfo['id'] ?>">
-                    <label class="form-check-label" for="check-<?php echo $gameInfo['id'] ?>">参加</label>
-                </div>
-                <div class="eventList-item">
-                    <?php echo htmlspecialchars($gameInfo['title']) ?><br>
-                    日付：<?php echo htmlspecialchars($gameInfo['game_date']) ?></br>
-                    時間：<?php echo htmlspecialchars($gameInfo['start_time']) ?>～<?php echo htmlspecialchars($gameInfo['end_time']) ?></br>
-                    場所：<?php echo htmlspecialchars($gameInfo['place']) ?></br>
-                </div>
+        <div v-for="event in eventList" class="eventList-checkbox">
+            <div class="eventList-item">
+                <input type="checkbox" class="form-check-input" v-model="idList" v-bind:value="event.id">
+                <label class="form-check-label">参加</label>
             </div>
-            <hr>
-        <?php endforeach; ?>
-
-        <button id="btn-partisipant-regist" class="btn btn-primary" type="submit">
+            <div class="eventList-item">
+                <br>
+                {{ event.title }} <br>
+                日付：{{ event.game_date }} </br>
+                時間：{{ event.start_time }} ～ {{ event.end_time }} </br>
+                場所：{{ event.place }}</br>
+            </div>
+        </div>
+    
+        <button class="btn btn-primary" type="button" @click="register">
             一括登録
         </button>
-    </form>
+</div>
 
-    <?php include('common/footer.php') ?>
-    <script src="/resource/js/common.js"></script>
+<?php include('common/footer.php') ?>
+<script src="/resource/js/common.js"></script>
+<script src="/resource/js/Vue.min.js"></script>
+<script>
+    'use strict'
+    const app = new Vue({
+        el: "#app",
+        data: {
+            msg: '',
+            user: {},
+            eventList: [],
+            occupationOptions: [
+                {text: '社会人', value: '1'},
+                {text: '大学生', value: '2'},
+                {text: '高校生', value: '3'},
+            ],
+            sexOptions: [
+                {text: '男性', value: '1'},
+                {text: '女性', value: '2'},
+            ],
+            companions: [],
+            idList: [],
+        },
+        methods: {
+            getEventList() {
+                let params = new URLSearchParams();
+                params.append('email', this.user.email);
+                params.append('line_id', this.user.line_id);
+                fetch('/api/event/getGameInfoListByAfterDate', {
+                    method: 'post',
+                    body: params
+                })
+                .then(res => res.json()
+                    .then(data => {
+                        this.eventList = data;
+                    })
+                )
+                .catch(errors => console.log(errors))
+            },
+            addCompanion() {
+                this.companions.push({name: '', occupation: '1', sex: '1'})
+            },
+            deleteCompanion(index) {
+                this.companions.splice(index, 1)
+            },
+            register() {
+                if (!confirm('登録してよろしいですか。')) return;
+                let data = {
+                    register: true,
+                    csrf_token: this.csrf_token,
+                    name: this.user.name,
+                    occupation: this.user.occupation,
+                    sex: this.user.sex,
+                    email: this.user.email,
+                    remark: this.user.remark,
+                    companion: this.companions,
+                    idList: this.idList
+                }
+                fetch('/api/event/participantBatchRegist', {
+                    headers:{
+                        'Content-Type': 'application/json',
+                    },
+                    method: 'post',
+                    body: JSON.stringify(data)
+                })
+                .then(() => {
+                    this.msg = '登録完了しました。'
+                    this.getEventList()
+                })
+                .catch(errors => console.log(errors))
+            }
+        },
+        created: function() {
+            fetch('/api/data/getLoginUser', {
+                    method: 'post',
+                })
+                .then(res => res.json()
+                    .then(data => {
+                        this.user = data;
+                        let params = new URLSearchParams();
+                        params.append('id', this.user.id);
+                        fetch('/api/user/getDefaultCompanion', {
+                            method: 'post',
+                            body: params
+                        })
+                        .then(response => response.json()
+                            .then(con => this.companions = con));
+
+                        this.getEventList()
+                    })
+                )
+                .catch(errors => console.log(errors))
+        }
+
+    })
+</script>
 </body>
 </html>

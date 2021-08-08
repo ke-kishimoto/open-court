@@ -123,7 +123,7 @@ class EventService
             // トランザクション開始
             $detailDao->getPdo()->beginTransaction();
             foreach($gameIds as $gameId) {
-                $paricipant->gameId = (int)$gameId;
+                $paricipant['game_id'] = (int)$gameId;
                 $errMsg = $this->participantRegist($detailDao, $gameInfoDao, $paricipant, $companions);
                 if(!$errMsg) {
                     $count++;
@@ -140,12 +140,12 @@ class EventService
         $api = new LineApi();
         // 管理者への通知
         if($count) {
-            $api->multiple_reserve($paricipant->name, $count);
+            $api->multiple_reserve($paricipant['name'], $count);
         }
         // 本人への通知
-        if(!empty($paricipant->lineId)) {
+        if(!empty($paricipant['line_id'])) {
             $msg = "{$count}件のイベントを予約しました。詳細は参加イベント一覧画面をご確認ください。";
-            $api->pushMessage($paricipant->lineId, $msg);
+            $api->pushMessage($paricipant['line_id'], $msg);
         }
         return $count;
     }
