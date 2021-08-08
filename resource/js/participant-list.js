@@ -3,9 +3,19 @@ Vue.component('participant-list', {
         return {
             id: -1,
             participantList: [],
+            user: {},
         }
     },
     methods: {
+        getLoginUser() {
+            fetch('/api/data/getLoginUser', {
+                method: 'post',
+            }).then(res => res.json()
+                .then(data => {
+                        this.user = data;
+                })
+            )
+        },
         getParticipantList() {
             if(this.getParam('gameid') !== null) {
                 this.id = this.getParam('gameid') 
@@ -35,7 +45,7 @@ Vue.component('participant-list', {
             fetch('/api/event/deleteParticipant', {
                 method: 'post',
                 body: params
-            }).then(res => res.json().then(data = this.participantList = data))
+            }).then(res => res.json().then(data => this.participantList = data))
         },
         getParam(name, url) {
             if (!url) url = window.location.href;
@@ -48,6 +58,7 @@ Vue.component('participant-list', {
         },
     },
     created: function() {
+        this.getLoginUser()
         this.getParticipantList()
     },
     template: `
@@ -55,7 +66,7 @@ Vue.component('participant-list', {
         <br>
         <div v-for="participant in participantList" v-bind:key="participant.id">
         <hr v-if="participant.main == 1">
-            <p v-if="participant.main == 1">
+            <p v-if="participant.main == 1 && user.admin_flg == '1'">
                 <a class="btn btn-secondary" v-bind:href="'/admin/participant/ParticipantInfo?id=' + participant.id + '&game_id=' + id ">修正</a>
                 <button type="button" v-bind:class="'waiting btn btn-' + (participant.waiting_flg == '1' ? 'warning' : 'success')" @click="changeWaitingFlg(participant)">
                     <template v-if="participant.waiting_flg == 1">
@@ -73,14 +84,9 @@ Vue.component('participant-list', {
                 {{ participant.occupation_name }} &nbsp;&nbsp;
                 {{ participant.sex_name }} &nbsp;&nbsp;
             </p>
-            <p v-if="participant.main == 1">
-                <p>
-                    連絡先：
-                    <a v-bind:href="'mailto:' + participant.email">{{ participant.email }}</a>
-                </p>
-                <p>
-                    {{ participant.remark }}
-                </p>
+            <p v-if="participant.main == 1 && user.admin_flg == '1'">
+                連絡先：<a v-bind:href="'mailto:' + participant.email">{{ participant.email }}</a>
+                {{ participant.remark }}
             </p>
         </div>
     </div>

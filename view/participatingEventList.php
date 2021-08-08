@@ -15,7 +15,7 @@
 
             <div v-for="event in eventList" v-bind:key="event.id">
                 <template v-if="event.game_date >= today">
-                    <a v-bind:href="'/participant/eventInfo?id=' + event.id">{{ event.title }}</a> <br>
+                    <a v-bind:href="'/participant/eventInfo?gameid=' + event.id">{{ event.title }}</a> <br>
                     日付：{{ event.game_date }} <br>
                     開始時間：{{ event.start_date }} <br>
                     終了時間：{{ event.end_date }} <br>
@@ -30,7 +30,7 @@
         
             <div v-for="event in eventList" v-bind:key="event.id">
                 <template v-if="event.game_date < today">
-                    <a v-bind:href="'/participant/eventInfo?id=' + event.id">{{ event.title }}</a> <br>
+                    <a v-bind:href="'/participant/eventInfo?gameid=' + event.id">{{ event.title }}</a> <br>
                     日付：{{ event.game_date }} <br>
                     開始時間：{{ event.start_date }} <br>
                     終了時間：{{ event.end_date }} <br>

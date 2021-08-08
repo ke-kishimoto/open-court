@@ -1,6 +1,7 @@
 Vue.component('participant-breakdown', {
     data: function() {
         return {
+            user: {},
             id: -1,
             all: 0,
             limit_number: 0,
@@ -17,6 +18,15 @@ Vue.component('participant-breakdown', {
         }
     },
     methods: {
+        getLoginUser() {
+            fetch('/api/data/getLoginUser', {
+                method: 'post',
+            }).then(res => res.json()
+                .then(data => {
+                        this.user = data;
+                })
+            )
+        },
         getParticipantBreakdown() {
             if(this.getParam('gameid') !== null) {
                 this.id = this.getParam('gameid') 
@@ -52,6 +62,7 @@ Vue.component('participant-breakdown', {
         },
     },
     created: function(){
+        this.getLoginUser()
         this.getParticipantBreakdown()
     },
     template: `
@@ -68,7 +79,7 @@ Vue.component('participant-breakdown', {
             <tr>
                 <th>社会人</th>
                 <th>                                   
-                    <a v-if="id != -1 && sya_men != 0" v-bind:href="'/admin/participant/ParticipantNameList?gameid=' + id + '&occupation=1&sex=1&waiting_flg=0'">
+                    <a v-if="id != -1 && sya_men != 0 && user.admin_flg == 1" v-bind:href="'/admin/participant/ParticipantNameList?gameid=' + id + '&occupation=1&sex=1&waiting_flg=0'">
                         {{ sya_men }}人
                     </a>
                     <template v-else>
@@ -76,7 +87,7 @@ Vue.component('participant-breakdown', {
                     </template>
                 </th>
                 <th>
-                    <a v-if="id != -1 && sya_women != 0" v-bind:href="'/admin/participant/ParticipantNameList?gameid=' + id + '&occupation=1&sex=2&waiting_flg=0'">
+                    <a v-if="id != -1 && sya_women != 0 && user.admin_flg == 1" v-bind:href="'/admin/participant/ParticipantNameList?gameid=' + id + '&occupation=1&sex=2&waiting_flg=0'">
                         {{ sya_women }}人
                     </a>
                     <template v-else>
@@ -84,7 +95,7 @@ Vue.component('participant-breakdown', {
                     </template>
                 </th>
                 <th>
-                    <a v-if="id != -1 && sya_all != 0" v-bind:href="'/admin/participant/ParticipantNameList?gameid=' + id + '&occupation=1&sex=0&waiting_flg=0'">
+                    <a v-if="id != -1 && sya_all != 0 && user.admin_flg == 1" v-bind:href="'/admin/participant/ParticipantNameList?gameid=' + id + '&occupation=1&sex=0&waiting_flg=0'">
                         {{ sya_all }}人
                     </a>
                     <template v-else>
@@ -95,7 +106,7 @@ Vue.component('participant-breakdown', {
             <tr>
                 <th>大学・専門</th>
                 <th>
-                    <a v-if="id != -1 && dai_men != 0" v-bind:href="'/admin/participant/ParticipantNameList?gameid=' + id + '&occupation=2&sex=1&waiting_flg=0'">
+                    <a v-if="id != -1 && dai_men != 0 && user.admin_flg == 1" v-bind:href="'/admin/participant/ParticipantNameList?gameid=' + id + '&occupation=2&sex=1&waiting_flg=0'">
                         {{ dai_men }}人
                     </a>
                     <template v-else>
@@ -103,7 +114,7 @@ Vue.component('participant-breakdown', {
                     </template>
                 </th>
                 <th>
-                    <a v-if="id != -1 && dai_women != 0" href="'/admin/participant/ParticipantNameList?gameid=' + id + '&occupation=2&sex=2&waiting_flg=0'">
+                    <a v-if="id != -1 && dai_women != 0 && user.admin_flg == 1" href="'/admin/participant/ParticipantNameList?gameid=' + id + '&occupation=2&sex=2&waiting_flg=0'">
                         {{ dai_women}}人
                     </a>
                     <template v-else>
@@ -111,7 +122,7 @@ Vue.component('participant-breakdown', {
                     </template>
                 </th>
                 <th>
-                    <a v-if="id != -1 && dai_all != 0" href="'/admin/participant/ParticipantNameList?gameid=' + id + '&occupation=2&sex=0&waiting_flg=0'">
+                    <a v-if="id != -1 && dai_all != 0 && user.admin_flg == 1" href="'/admin/participant/ParticipantNameList?gameid=' + id + '&occupation=2&sex=0&waiting_flg=0'">
                         {{ dai_all }}人
                     </a>
                     <template v-else>
@@ -122,7 +133,7 @@ Vue.component('participant-breakdown', {
             <tr>
                 <th>高校</th>
                 <th>
-                    <a v-if="id != -1 && kou_men != 0" href="'/admin/participant/ParticipantNameList?gameid=' + id + '&occupation=3&sex=1&waiting_flg=0'">
+                    <a v-if="id != -1 && kou_men != 0 && user.admin_flg == 1" href="'/admin/participant/ParticipantNameList?gameid=' + id + '&occupation=3&sex=1&waiting_flg=0'">
                         {{ kou_men}}人
                     </a>
                     <template v-else>
@@ -130,7 +141,7 @@ Vue.component('participant-breakdown', {
                     </template>
                 </th>
                 <th>
-                    <a v-if="id != -1 && kou_women != 0" href="'/admin/participant/ParticipantNameList?gameid=' + id + '&occupation=3&sex=2&waiting_flg=0'">
+                    <a v-if="id != -1 && kou_women != 0 && user.admin_flg == 1" href="'/admin/participant/ParticipantNameList?gameid=' + id + '&occupation=3&sex=2&waiting_flg=0'">
                         {{ kou_women}}人
                     </a>
                     <template v-else>
@@ -138,7 +149,7 @@ Vue.component('participant-breakdown', {
                     </template>
                 </th>
                 <th>
-                    <a v-if="id != -1 && kou_all != 0" href="'/admin/participant/ParticipantNameList?gameid=' + id + '&occupation=3&sex=0&waiting_flg=0'">
+                    <a v-if="id != -1 && kou_all != 0 && user.admin_flg == 1" href="'/admin/participant/ParticipantNameList?gameid=' + id + '&occupation=3&sex=0&waiting_flg=0'">
                         {{ kou_all }}人
                     </a>
                     <template v-else>
@@ -155,7 +166,7 @@ Vue.component('participant-breakdown', {
                     -
                 </th>
                 <th>
-                    <a v-if="id != -1 && waiting_cnt != 0" href="'/admin/participant/ParticipantNameList?gameid=' + id + '&occupation=0&sex=0&waiting_flg=1'">
+                    <a v-if="id != -1 && waiting_cnt != 0 && user.admin_flg == 1" href="'/admin/participant/ParticipantNameList?gameid=' + id + '&occupation=0&sex=0&waiting_flg=1'">
                         {{ waiting_cnt }}人
                     </a>
                     <template v-else>
