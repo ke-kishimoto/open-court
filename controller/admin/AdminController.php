@@ -30,11 +30,40 @@ class AdminController extends BaseController
 
     }
 
-    public function userList() {
+    public function config() {
         parent::adminHeader();
 
-        $userDao = new UsersDao();
-        $userList = $userDao->getUserList();
+        // 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
+        $toke_byte = openssl_random_pseudo_bytes(16);
+        $csrf_token = bin2hex($toke_byte);
+        // 生成したトークンをセッションに保存します
+        $_SESSION['csrf_token'] = $csrf_token;
+
+        $title = 'システム設定';
+        include('./view/admin/common/head.php');
+        include('./view/admin/common/header.php');
+        include('./view/admin/config.php');
+    }
+
+    public function notice()
+    {
+        parent::adminHeader();
+
+         // 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
+         $toke_byte = openssl_random_pseudo_bytes(16);
+         $csrf_token = bin2hex($toke_byte);
+         // 生成したトークンをセッションに保存します
+         $_SESSION['csrf_token'] = $csrf_token;
+ 
+         $title = 'お知らせ登録';
+         include('./view/admin/common/head.php');
+         include('./view/admin/common/header.php');
+         include('./view/admin/notice.php');
+
+    }
+
+    public function userList() {
+        parent::adminHeader();
 
         $title = 'ユーザー一覧';
         include('./view/admin/common/head.php');
@@ -44,9 +73,6 @@ class AdminController extends BaseController
 
     public function inquiryList() {
         parent::adminHeader();
-
-        $inquiryDao = new InquiryDao();
-        $inquiryList = $inquiryDao->getInquiryList();
 
         $title = 'お問い合わせ一覧';
         include('./view/admin/common/head.php');

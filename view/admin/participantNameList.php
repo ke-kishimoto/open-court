@@ -1,25 +1,59 @@
-<?php if (!empty($participantList)): ?>
+<div id="list">
+    <p>{{ msg }}</p>
     <h1>参加者リスト</h1>
     <table>
         <tr>
             <th>名前</th><th>職種</th><th>性別</th>
         </tr>
-        <?php foreach($participantList as $participant): ?>
+        <template v-for="participant in participantList" v-bind:key="participant.id">
             <tr>
-                <th><?php echo $participant['name'] ?></th>
-                <th><?php echo $participant['occupation_name'] ?></th>
-                <th><?php echo $participant['sex_name'] ?></th>
+                <th>{{ participant.name }}</th>
+                <th>{{ participant.occupation_name}}</th>
+                <th>{{ participant.sex_name }}</th>
             </tr>
-        <?php endforeach ?>
+        </template>
+
     </table>
-<?php else: ?>
-    <p>参加者はいません</p>
-<?php endif ?>
-<p>
-    <a href="/admin/event/eventInfo?gameid=<?php echo $gameId ?>">イベント詳細へ戻る</a>
-</p>
+</div>
+
 <?php include('common/footer.php') ?>
-<script src="/resource/js/common_admin.js">
+<script src="/resource/js/common_admin.js"></script>
+<script src="/resource/js/Vue.min.js"></script>
+<script>
+    'use strict'
+
+    const vue = new Vue({
+        el:'#list',
+        data: {
+            msg: '',
+            participantList: []
+        },
+        methods: {
+            getParticipantNameList() {
+                let params = new URLSearchParams();
+                params.append('game_id', this.getParam('gameid'));
+                params.append('occupation', this.getParam('occupation'));
+                params.append('sex', this.getParam('sex'));
+                params.append('waiting_flg', this.getParam('waiting_flg'));
+                fetch('/api/event/getParticipantNameList', {
+                    method: 'post',
+                    body: params
+                }).then(res => res.json().then(data => this.participantList = data))
+            },
+            getParam(name, url) {
+                if (!url) url = window.location.href;
+                name = name.replace(/[\[\]]/g, "\\$&");
+                var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                    results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, " "));
+            },
+        },
+        created: function() {
+            this.getParticipantNameList()
+        }
+    })
 </script>
 </body>
 </html>

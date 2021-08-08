@@ -36,7 +36,7 @@
         </p>
         <p>
             <button class="btn btn-primary" type="button" @click="register">登録</button>
-            <button id="btn-event-delete" class="btn btn-secondary" type="button" @click="deleteById">削除</button>
+            <button class="btn btn-secondary" type="button" @click="deleteById">削除</button>
         </p>
 </div>
 <?php include('common/footer.php') ?>
@@ -145,6 +145,7 @@
                         this.getTemplateList()
                         this.clear()
                         this.msg = '登録完了しました。'
+                        location.href = '#header'
                     }
                 })
             },
@@ -164,6 +165,7 @@
                         this.getTemplateList()
                         this.clear()
                         this.msg = '削除完了しました。'
+                        location.href = '#header'
                     }
                 })
             }

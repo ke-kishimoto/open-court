@@ -151,6 +151,7 @@
                         console.log(res);
                     } else {
                         this.msg = '登録完了しました。'
+                        location.href = '#header'
                     }
                 })
             }

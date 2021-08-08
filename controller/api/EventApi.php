@@ -11,6 +11,20 @@ use service\EventService;
 
 class EventApi {
 
+    public function getParticipantNameList()
+    {
+        header('Content-type: application/json; charset= UTF-8');
+
+        $detailDao = new DetailDao();
+        $gameId = $_POST['game_id'] ?? 0;
+        $occupation = $_POST['occupation'];
+        $sex = $_POST['sex'];
+        $waitingFlg = $_POST['waiting_flg'];
+        $participantList = $detailDao->getParticipantList($gameId, $occupation, $sex, $waitingFlg);
+
+        echo json_encode($participantList);
+    }
+
     public function existsCheck() 
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -44,6 +58,7 @@ class EventApi {
         echo json_encode(['count' => $count]);
     }
 
+    
     public function participantRegist()
     {
         header('Content-type: application/json; charset= UTF-8');

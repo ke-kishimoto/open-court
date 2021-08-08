@@ -1,4 +1,4 @@
-<header class="<?php echo $_SESSION['bgColor'] ?>" role="banner">
+<header id="header" class="<?php echo $_SESSION['bgColor'] ?>" role="banner">
      <!-- ハンバーガーボタン -->
      <button type="button" class="drawer-toggle drawer-hamburger">
       <span class="sr-only">toggle navigation</span>
@@ -12,9 +12,9 @@
         <li><a class="drawer-menu-item" href="/admin/event/eventInfo">新規イベント登録</a></li>
         <li><a class="drawer-menu-item" href="/admin/event/eventTemplate">テンプレート設定</a></li>
         <li><a class="drawer-menu-item" href="/admin/admin/userList">ユーザーリスト</a></li>
-        <li><a class="drawer-menu-item" href="/admin/config/config">システム設定</a></li>
+        <li><a class="drawer-menu-item" href="/admin/admin/config">システム設定</a></li>
         <li><a class="drawer-menu-item" href="/admin/admin/inquiryList">問い合わせ一覧</a></li>
-        <li><a class="drawer-menu-item" href="/admin/notice/index">お知らせ登録</a></li>
+        <li><a class="drawer-menu-item" href="/admin/admin/notice">お知らせ登録</a></li>
         <li><a class="drawer-menu-item" href="/admin/sales/index">売上管理</a></li>
         <li><a class="drawer-menu-item" href="/admin/delivery/index">セグメント配信</a></li>
         <li><a class="drawer-menu-item" href="/">一般利用者画面へ</a></li>
