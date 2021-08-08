@@ -14,13 +14,9 @@ Vue.component('participate', {
                 {text: '男性', value: '1'},
                 {text: '女性', value: '2'},
             ],
-            // name: '',
-            // occupation: '1',
-            // sex: '1',
-            // email: '',
-            // remark: '',
             companions: [],
             user: {},
+            adminFlg: '0',
         }
     }, 
     methods: {
@@ -39,9 +35,8 @@ Vue.component('participate', {
                 method: 'post',
             }).then(res => res.json()
                 .then(data => {
-                    if(data.admin_flg == '0') {
-                        this.user = data
-                    }
+                        this.user = data;
+                        this.adminFlg = this.user.admin_flg;
                 })
             )
         },
@@ -55,11 +50,6 @@ Vue.component('participate', {
             })
             .then(res => res.json()
                 .then(data => {
-                    // this.name = data.name;
-                    // this.occupation = data.occupation;
-                    // this.sex = data.sex;
-                    // this.remark = data.remark;
-                    // this.email = data.email;
                     this.user = data
                     params = new URLSearchParams();
                     params.append('id', event.target.value);
@@ -109,11 +99,12 @@ Vue.component('participate', {
                     'Content-Type': 'application/json',
                 },
                 method: 'post',
-                body: data,
+                body: JSON.stringify(data),
             })
             .then(() => {
                 this.msg = '登録完了しました。'
                 this.clear()
+                location.href = '#header'
             })
             .catch(errors => console.log(errors))
 
@@ -137,10 +128,7 @@ Vue.component('participate', {
         <p style="color:red">{{ msg }}</p>
 
         <p>参加者登録</p>
-            <input type="hidden" id="participant_id" name="id" value="<?php echo $participant['id'] ?>">
-            <input type="hidden" name="game_id" value="<?php echo $_GET['game_id'] ?>">
-            <input type="hidden" name="csrf_token" v-model="csrf_token" value="<?=$csrf_token?>">
-            <p v-if="user.admin_flg == '1'"> 
+            <p v-if="adminFlg == '1'"> 
                 <select v-model="selectedUser" @change="selectUser($event)">
                     <option v-for="user in userList" v-bind:key="user.id" v-bind:value="user.id">
                         {{ user.name }}
@@ -188,6 +176,5 @@ Vue.component('participate', {
                 <button id="btn-delete" class="btn btn-secondary" type="submit" name="delete">削除</button>
             </p>
         
-        <p><a href="/admin/event/eventInfo?gameid=<?php echo $_GET['game_id'] ?>">イベント情報ページに戻る</a></p>
     </div>`
 })

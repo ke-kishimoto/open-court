@@ -74,11 +74,20 @@ class EventApi {
         $participant['email'] = $data['user']['email'] ?? '';
         $participant['remark'] = $data['user']['remark'] ?? '';
 
+        $companion = [];
+        for($i = 0; $i < count($data['companion']); $i++) {
+            $companion[$i] = [];
+            $companion[$i]['participant_id'] = 0;
+            $companion[$i]['occupation'] = $data['companion'][$i]['occupation']; 
+            $companion[$i]['sex'] = $data['companion'][$i]['sex'];
+            $companion[$i]['name'] = $data['companion'][$i]['name'];
+        }
+
         if(($data['id'] ?? '') !== '') {
             $participant['id'] = $data['id'];
-            $service->participantUpdate($participant, $data['companion']);
+            $service->participantUpdate($participant, $companion);
         } else {
-            $service->oneParticipantRegist($participant, $data['companion'], EventService::MODE_ADMIN);
+            $service->oneParticipantRegist($participant, $companion, EventService::MODE_ADMIN);
         }
         echo json_encode('{}');
     }

@@ -2,11 +2,7 @@
     <p style="color:red">{{ msg }}</p>
 
     <p>参加者登録</p>
-        <input type="hidden" id="participant_id" name="id" value="<?php echo $participant['id'] ?>">
-        <input type="hidden" name="game_id" value="<?php echo $_GET['game_id'] ?>">
-        <input type="hidden" name="csrf_token" v-model="csrf_token" value="<?=$csrf_token?>">
-        <p class="<?php echo $userListClass ?>"> 
-
+        <p> 
             <select v-model="selectedUser" @change="selectUser($event)">
                 <option v-for="user in userList" v-bind:key="user.id" v-bind:value="user.id">
                     {{ user.name }}
@@ -54,8 +50,6 @@
             <button class="btn btn-primary" type="button" @click="register">登録</button>
             <button id="btn-delete" class="btn btn-secondary" type="submit" name="delete">削除</button>
         </p>
-    
-    <p><a href="/admin/event/eventInfo?gameid=<?php echo $_GET['game_id'] ?>">イベント情報ページに戻る</a></p>
 </div>
 <?php include('common/footer.php') ?>
 <script src="/resource/js/common_admin.js"></script>
