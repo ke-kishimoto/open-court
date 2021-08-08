@@ -47,10 +47,7 @@ class UsersDao extends BaseDao
     public function selectById(int $id)
     {
         $sql = "select 
-        id
-        , name 
-        , email
-        , occupation
+        *
         , case 
             when occupation =  1 then '社会人'
             when occupation =  2 then '大学・専門学校'

@@ -11,6 +11,18 @@ use service\EventService;
 
 class EventApi {
 
+    public function existsCheck() 
+    {
+        header('Content-type: application/json; charset= UTF-8');
+        $dao = new DetailDao();
+        $gameId = $_POST['game_id'] ?? 0;
+        $email = $_POST['email'] ?? '';
+        $lineId = $_POST['line_id'] ?? '';
+        $data = $dao->existsCheck($gameId, $email, $lineId);
+        echo json_encode(['result' => $data]);
+        // echo json_encode('{}');
+    }
+
     public function participantBatchRegist()
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -40,12 +52,12 @@ class EventApi {
         $service = new EventService();
 
         $participant = [];
-        $participant['game_id'] = (int)$data['game_id'];
-        $participant['occupation'] = (int)$data['occupation'];
-        $participant['sex'] = (int)$data['sex'];
-        $participant['name'] = $data['name'];
-        $participant['email'] = $data['email'] ?? '';
-        $participant['remark'] = $data['remark'] ?? '';
+        $participant['game_id'] = (int)$data['gameid'];
+        $participant['occupation'] = (int)$data['user']['occupation'];
+        $participant['sex'] = (int)$data['user']['sex'];
+        $participant['name'] = $data['user']['name'];
+        $participant['email'] = $data['user']['email'] ?? '';
+        $participant['remark'] = $data['user']['remark'] ?? '';
 
         if(($data['id'] ?? '') !== '') {
             $participant['id'] = $data['id'];

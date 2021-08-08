@@ -45,7 +45,7 @@
                             <?php if($adminFlg === '1'): ?>
                                 <a class="event <?php echo $availabilityClass; ?>" href="/admin/event/eventInfo?gameid=<?php echo htmlspecialchars($info['id']); ?>"><?php echo $info['short_title'] ?></a>
                             <?php else: ?>
-                                <a class="event <?php echo $availabilityClass; ?>" href="/participant/eventInfo?id=<?php echo htmlspecialchars($info['id']); ?>"><?php echo $info['short_title'] ?></a>
+                                <a class="event <?php echo $availabilityClass; ?>" href="/participant/eventInfo?gameid=<?php echo htmlspecialchars($info['id']); ?>"><?php echo $info['short_title'] ?></a>
                             <?php endif; ?>
                         <?php endforeach; ?>
                         </span>

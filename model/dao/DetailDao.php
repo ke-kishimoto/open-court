@@ -270,12 +270,13 @@ class DetailDao extends BaseDao
         return $this->getParticipant($id);
     }
 
-    // メールアドレスによる存在チェック
-    public function existsCheck(int $gameId, string $email) 
+    // 存在チェック
+    public function existsCheck(int $gameId, string $email = '', string $lineId = '') 
     {
         $participant = [];
         $participant['game_id'] = $gameId;
         $participant['email'] = $email;
+        $participant['line_id'] = $lineId;
         $id = $this->getParticipantId($participant);
         if (isset($id)) {
             return true;

@@ -53,7 +53,7 @@ Vue.component('participant-list', {
     template: `
     <div>
         <br>
-        <a class="btn btn-primary" v-bind:href="'/admin/participant/participantInfo?game_id=' + id">参加者追加</a>
+        <a class="btn btn-primary" v-bind:href="'/admin/participant/participantInfo?gameid=' + id">参加者追加</a>
         <a class="btn btn-info" href="<?php echo $mailto ?>">参加者全員に連絡</a>
 
         <div v-for="participant in participantList" v-bind:key="participant.id">

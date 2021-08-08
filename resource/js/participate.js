@@ -5,32 +5,45 @@ Vue.component('participate', {
             msg: '',
             selectedUser: '',
             userList: [],
-            occupation: '1',
             occupationOptions: [
                 {text: '社会人', value: '1'},
                 {text: '大学生', value: '2'},
                 {text: '高校生', value: '3'},
             ],
-            sex: '1',
             sexOptions: [
                 {text: '男性', value: '1'},
                 {text: '女性', value: '2'},
             ],
-            name: '',
-            email: '',
-            remark: '',
+            // name: '',
+            // occupation: '1',
+            // sex: '1',
+            // email: '',
+            // remark: '',
             companions: [],
+            user: {},
         }
     }, 
     methods: {
         clear() {
             this.selectedUser = ''
-            this.occupation = '1'
-            this.sex = '1'
-            this.name = ''
-            this.email = ''
-            this.remark = ''
+            this.user.occupation = '1'
+            this.user.sex = '1'
+            this.user.name = ''
+            this.user.email = ''
+            this.user.remark = ''
+            this.user.admin_flg = '0'
             this.companions = []
+        },
+        getLoginUser() {
+            fetch('/api/data/getLoginUser', {
+                method: 'post',
+            }).then(res => res.json()
+                .then(data => {
+                    if(data.admin_flg == '0') {
+                        this.user = data
+                    }
+                })
+            )
         },
         selectUser(event) {
             let params = new URLSearchParams();
@@ -42,11 +55,12 @@ Vue.component('participate', {
             })
             .then(res => res.json()
                 .then(data => {
-                    this.name = data.name;
-                    this.occupation = data.occupation;
-                    this.sex = data.sex;
-                    this.remark = data.remark;
-                    this.email = data.email;
+                    // this.name = data.name;
+                    // this.occupation = data.occupation;
+                    // this.sex = data.sex;
+                    // this.remark = data.remark;
+                    // this.email = data.email;
+                    this.user = data
                     params = new URLSearchParams();
                     params.append('id', event.target.value);
                     fetch('/api/user/getDefaultCompanion', {
@@ -83,19 +97,19 @@ Vue.component('participate', {
         register() {
             
             if (!confirm('登録してよろしいですか。')) return;
-            let params = new URLSearchParams();
-            params.append('game_id', this.getParam('game_id'));
-            params.append('register', true);
-            params.append('csrf_token', this.csrf_token);
-            params.append('name', this.name);
-            params.append('occupation', this.occupation);
-            params.append('sex', this.sex);
-            params.append('email', this.email);
-            params.append('remark', this.remark);
-            params.append('companion', this.companions);
-            fetch('/admin/participant/participantRegist', {
+            
+            let data = {
+                gameid: this.getParam('gameid'),
+                csrf_token: this.csrf_token,
+                user: this.user,
+                companion: this.companions
+            }
+            fetch('/api/event/participantRegist', {
+                headers:{
+                    'Content-Type': 'application/json',
+                },
                 method: 'post',
-                body: params
+                body: data,
             })
             .then(() => {
                 this.msg = '登録完了しました。'
@@ -115,6 +129,7 @@ Vue.component('participate', {
         },
     }, 
     created: function() {
+        this.getLoginUser()
         this.getUserList()
     }, 
     template: `
@@ -125,30 +140,28 @@ Vue.component('participate', {
             <input type="hidden" id="participant_id" name="id" value="<?php echo $participant['id'] ?>">
             <input type="hidden" name="game_id" value="<?php echo $_GET['game_id'] ?>">
             <input type="hidden" name="csrf_token" v-model="csrf_token" value="<?=$csrf_token?>">
-            <p class="<?php echo $userListClass ?>"> 
-
+            <p v-if="user.admin_flg == '1'"> 
                 <select v-model="selectedUser" @change="selectUser($event)">
                     <option v-for="user in userList" v-bind:key="user.id" v-bind:value="user.id">
                         {{ user.name }}
                     </option>
                 </select>
-
             </p>
             <p>
             職種
-            <select v-model="occupation" class="custom-select mr-sm-2">
+            <select v-model="user.occupation" class="custom-select mr-sm-2">
                 <option v-for="item in occupationOptions" v-bind:value="item.value">{{ item.text }}</option>
             </select>
             </p>
             <p>
             性別
-            <select v-model="sex" class="custom-select mr-sm-2">
+            <select v-model="user.sex" class="custom-select mr-sm-2">
                 <option v-for="item in sexOptions" v-bind:value="item.value">{{ item.text }}</option>
             </select>
             </p>
-            <p>名前<input class="form-control" type="text" v-model="name" required></p>
-            <p>メール<input class="form-control" type="email" v-model="email"></p>
-            <p>備考<textarea class="form-control" v-model="remark"></textarea></p>
+            <p>名前<input class="form-control" type="text" v-model="user.name" required></p>
+            <p>メール<input class="form-control" type="email" v-model="user.email"></p>
+            <p>備考<textarea class="form-control" v-model="user.remark"></textarea></p>
             
             <button class="btn btn-secondary" type="button" @click="addCompanion">同伴者追加</button>
 
