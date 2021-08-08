@@ -6,12 +6,51 @@ use dao\GameInfoDao;
 use dao\DefaultCompanionDao;
 use dao\EventTemplateDao;
 use dao\UsersDao;
-use dao\InquiryDao;
 use dao\NoticeDao;
 
 class EventApi {
 
-    public function getParticipantEventList() {
+    public function getParticipantList()
+    {
+        header('Content-type: application/json; charset= UTF-8');
+        $data = [];
+        $gameId = $_POST['game_id'] ?? 0;
+        if($gameId !== 0) {
+            $dao = new DetailDao();
+            $data = $dao->getParticipantList($gameId);
+        }
+        echo json_encode($data);
+    }
+
+    public function getParticipantBreakdown()
+    {
+        header('Content-type: application/json; charset= UTF-8');
+
+        $gameId = $_POST['game_id'] ?? 0;
+        $dao = new DetailDao();
+        $data = $dao->getDetail($gameId);
+        $gameInfoDao = new GameInfoDao();
+        $gameInfo = $gameInfoDao->selectById($gameId);
+        $data['limit_number'] = $gameInfo['limit_number'];
+        echo json_encode($data);
+
+    }
+
+    public function getEventListAtMonth() 
+    {
+
+        header('Content-type: application/json; charset= UTF-8');
+
+        $year = $_POST['year'] ?? date('Y');
+        $month = $_POST['month'] ?? date('M');
+        $gameInfoDao = new GameInfoDao();
+        $data = $gameInfoDao->getGameInfoList($year, $month);
+
+        echo json_encode($data);
+    }
+
+    public function getParticipantEventList() 
+    {
 
         header('Content-type: application/json; charset= UTF-8');
         session_start();
