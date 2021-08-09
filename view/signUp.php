@@ -123,17 +123,12 @@
             deleteCompanion(index) {
                 this.companions.splice(index, 1)
             },
-            getClientId() {
-                let params = new URLSearchParams();
-                params.append('tableName', 'config');
-                params.append('id', 1);
-                fetch('/api/data/selectById', {
-                    method: 'post',
-                    body: params
-                })
+            getLineParam() {
+                fetch('/api/user/getLineParam')
                 .then(res => res.json()
                     .then(data => {
-                        this.clientId = data.client_id;
+                        this.clientId = data.clientId;
+                        this.state = data.state
                     })
                 )
                 .catch(errors => console.log(errors))
@@ -175,8 +170,7 @@
         },
         created: function() {
             this.getLoginUser()
-            this.getClientId()
-            this.state = Math.random().toString(36).slice(-8)
+            this.getLineParam()
         }
     })
 </script>

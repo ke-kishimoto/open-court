@@ -2,11 +2,56 @@
 namespace api;
 use dao\DefaultCompanionDao;
 use dao\UsersDao;
+use dao\ConfigDao;
 use ReflectionClass;
 use Exception;
 
 class UserApi
 {
+
+    // ログインチェック
+    public function signInCheck() {
+
+        header('Content-type: application/json; charset= UTF-8');
+
+        session_start();
+        $signUpDao = new UsersDao();
+
+        $user = $signUpDao->getUserByEmail($_POST['email']);
+
+        $errMsg = '';
+        if($user) {
+            if(password_verify($_POST['password'], $user['password'])) {
+                $_SESSION['user'] = $user;
+            } else {
+                $errMsg = 'メールアドレス、またはパスワードが異なります';
+            }
+        } else {
+            $errMsg = 'メールアドレス、またはパスワードが異なります';
+        }
+
+        echo json_encode(['errMsg' => $errMsg]);
+    }
+
+    // LINEログイン用のパラメータ取得
+    public function getLineParam()
+    {
+        header('Content-type: application/json; charset= UTF-8');
+
+        session_start();
+        $configDao = new ConfigDao();
+        $config = $configDao->selectById(1);
+        // 10桁のランダム英数字
+        $state = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz'), 0, 10);
+        $_SESSION['state'] = $state;
+
+        $data = [
+            'state' => $state,
+            'clientId' => $config['client_id']
+        ];
+        echo json_encode($data);
+    }
+
     public function getDefaultCompanion()
     {
         header('Content-type: application/json; charset= UTF-8');
