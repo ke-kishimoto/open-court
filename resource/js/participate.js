@@ -131,7 +131,7 @@ Vue.component('participate', {
                 csrf_token: this.csrf_token,
                 user: this.user,
                 companion: this.companions,
-                id: this.editId,
+                editId: this.editId,
             }
             fetch('/api/event/participantRegist', {
                 headers:{

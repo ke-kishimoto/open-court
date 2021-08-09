@@ -22,7 +22,7 @@ class DataApi
             $user = [
                 'id' => '', 
                 'name' => '', 
-                'email' => '1', 
+                'email' => '', 
                 'occupation' => '1', 
                 'sex' => '', 
                 'remark' => '', 

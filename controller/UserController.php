@@ -6,7 +6,6 @@ use dao\DefaultCompanionDao;
 use dao\DetailDao;
 use dao\ConfigDao;
 use api\MailApi;
-// use api\LineApi;
 use service\UserService;
 use Exception;
 
@@ -58,8 +57,6 @@ class UserController extends BaseController
     // サインアップ
     public function signUp() {
         parent::userHeader();
-        $configDao = new ConfigDao();
-        $config = $configDao->selectById(1);
         // 10桁のランダム英数字
         $state = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz'), 0, 10);
         $_SESSION['state'] = $state;
@@ -104,7 +101,6 @@ class UserController extends BaseController
             }
 
             if(empty($errMsg)){
-                $adminFlg = 0;
                 if ($_POST['mode'] == 'new') {
                     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
                 } else {
