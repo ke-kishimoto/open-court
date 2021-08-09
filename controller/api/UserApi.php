@@ -9,6 +9,17 @@ use Exception;
 class UserApi
 {
 
+    public function changePassword()
+    {
+        header('Content-type: application/json; charset= UTF-8');
+
+        session_start();
+        $userDao = new UsersDao();
+        $userDao->updatePass($_SESSION['user']['id'], password_hash($_POST['password'], PASSWORD_DEFAULT));
+
+        echo json_encode(['errMsg' => '']);
+    }
+
     // ログインチェック
     public function signInCheck() {
 
