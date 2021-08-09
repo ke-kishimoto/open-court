@@ -1,4 +1,7 @@
 <div id="app">
+
+    <vue-header></vue-header>
+
     <p style="color:red">{{ msg }}</p>
 
     <h1>イベント一括登録</h1>
@@ -67,11 +70,15 @@
         <button class="btn btn-primary" type="button" @click="register">
             一括登録
         </button>
+
+    <vue-footer></vue-footer>
+
 </div>
 
-<?php include('common/footer.php') ?>
 <script src="/resource/js/common.js"></script>
 <script src="/resource/js/Vue.min.js"></script>
+<script src="/resource/js/header.js"></script>
+<script src="/resource/js/footer.js"></script>
 <script>
     'use strict'
     const app = new Vue({

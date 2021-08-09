@@ -1,6 +1,6 @@
 <h2></h2>
 <?php if (!empty($participantList)) : ?>
-    <form action="/admin/sales/update" method="post">
+    <form action="/sales/update" method="post">
         <table>
             <tr>
                 <td align="center">

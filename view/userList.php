@@ -1,4 +1,6 @@
 <div id="app">
+    <vue-header></vue-header>
+
     <h1>ユーザー一覧</h1>
     <div v-for="user in userList" v-bind:key="user.id">
         ユーザー名：{{ user.name }} <br>
@@ -11,10 +13,12 @@
         <button class="change-authority btn btn-info" type="button" @click="changeAuthority(user)">権限の変更</button>
         <hr>
     </div>
+    <vue-footer></vue-footer>
 </div>
-<?php include('common/footer.php') ?>
 <script src="/resource/js/common_admin.js"></script>
 <script src="/resource/js/vue.min.js"></script>
+<script src="/resource/js/header.js"></script>
+<script src="/resource/js/footer.js"></script>
 <script>
     const app = new Vue({
         el:"#app",

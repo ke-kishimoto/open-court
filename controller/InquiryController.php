@@ -21,7 +21,6 @@ class InquiryController extends BaseController
 
         $title = 'お問い合わせ';
         include('./view/common/head.php');
-        include('./view/common/header.php');
         include('./view/inquiry.php');
 
     }
@@ -55,7 +54,6 @@ class InquiryController extends BaseController
         // $title = 'お問い合わせ完了';
         // $msg = 'お問い合わせが完了しました';
         // include('./view/common/head.php');
-        // include('./view/common/header.php');
         // include('./view/complete.php');
     }
 }

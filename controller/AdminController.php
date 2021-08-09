@@ -1,9 +1,8 @@
 <?php
-namespace controller\admin;
+namespace controller;
 
 use controller\BaseController;
 use dao\GameInfoDao;
-use dao\ConfigDao;
 use controller\EventCalendar;
 
 class AdminController extends BaseController
@@ -21,9 +20,8 @@ class AdminController extends BaseController
 
         $title = 'イベントカレンダー';
         $adminFlg = '1';
-        include('./view/admin/common/head.php');
-        include('./view/admin/common/header.php');
-        include('./view/calendar.php');
+        include('./view/common/head.php');
+        // include('./view/calendar.php');
         include('./view/eventList.php');
 
     }
@@ -38,9 +36,8 @@ class AdminController extends BaseController
         $_SESSION['csrf_token'] = $csrf_token;
 
         $title = 'システム設定';
-        include('./view/admin/common/head.php');
-        include('./view/admin/common/header.php');
-        include('./view/admin/config.php');
+        include('./view/common/head.php');
+        include('./view/config.php');
     }
 
     public function notice()
@@ -54,9 +51,8 @@ class AdminController extends BaseController
          $_SESSION['csrf_token'] = $csrf_token;
  
          $title = 'お知らせ登録';
-         include('./view/admin/common/head.php');
-         include('./view/admin/common/header.php');
-         include('./view/admin/notice.php');
+         include('./view/common/head.php');
+         include('./view/notice.php');
 
     }
 
@@ -64,18 +60,16 @@ class AdminController extends BaseController
         parent::adminHeader();
 
         $title = 'ユーザー一覧';
-        include('./view/admin/common/head.php');
-        include('./view/admin/common/header.php');
-        include('./view/admin/userList.php');
+        include('./view/common/head.php');
+        include('./view/userList.php');
     }
 
     public function inquiryList() {
         parent::adminHeader();
 
         $title = 'お問い合わせ一覧';
-        include('./view/admin/common/head.php');
-        include('./view/admin/common/header.php');
-        include('./view/admin/inquiryList.php');
+        include('./view/common/head.php');
+        include('./view/inquiryList.php');
     }
 
 
@@ -83,7 +77,7 @@ class AdminController extends BaseController
         parent::adminHeader();
 
         session_destroy();
-        header('Location: /admin/admin/index');
+        header('Location: /index');
 
     }
 
@@ -92,9 +86,8 @@ class AdminController extends BaseController
 
         $gameId = $_GET['gameid'];
         $title = '参加者名一覧';
-        include('./view/admin/common/head.php');
-        include('./view/admin/common/header.php');
-        include('./view/admin/participantNameList.php');
+        include('./view/common/head.php');
+        include('./view/participantNameList.php');
     }
 
     public function participantInfo() {
@@ -107,9 +100,8 @@ class AdminController extends BaseController
         $_SESSION['csrf_token'] = $csrf_token;
 
         $title = '参加者情報登録';
-        include('./view/admin/common/head.php');
-        include('./view/admin/common/header.php');
-        include('./view/admin/participantInfo.php');
+        include('./view/common/head.php');
+        include('./view/participantInfo.php');
     }
 
     public function eventTemplate() 
@@ -123,9 +115,8 @@ class AdminController extends BaseController
         $_SESSION['csrf_token'] = $csrf_token;
 
         $title = 'テンプレート登録';
-        include('./view/admin/common/head.php');
-        include('./view/admin/common/header.php');
-        include('./view/admin/eventTemplate.php');
+        include('./view/common/head.php');
+        include('./view/eventTemplate.php');
     }
 
     public function eventInfo() 
@@ -139,8 +130,7 @@ class AdminController extends BaseController
         $_SESSION['csrf_token'] = $csrf_token;
 
         $title = 'イベント情報登録';
-        include('./view/admin/common/head.php');
-        include('./view/admin/common/header.php');
-        include('./view/admin/eventInfo.php');
+        include('./view/common/head.php');
+        include('./view/eventInfo.php');
     }
 }

@@ -141,7 +141,7 @@ Vue.component('event-regist', {
                 if(res.status !== 200) {
                     console.log(res);
                 } else {
-                    location.href = '/admin/admin/index'
+                    location.href = '/index'
                 }
             })
         },

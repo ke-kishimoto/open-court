@@ -20,7 +20,7 @@
     </tr>
 </table>
 <?php if (!empty($eventList)) : ?>
-    <form action="/admin/sales/updateExpenses" method="post">
+    <form action="/sales/updateExpenses" method="post">
         <table>
             <tr>
                 <th>日付</th>
@@ -67,7 +67,7 @@
     <p>対象月にイベントはありません。</p>
 <?php endif ?>
     <p>
-        <a href="/admin/admin/index">トップに戻る</a>
+        <a href="/admin/index">トップに戻る</a>
     </p>
     <?php include('common/footer.php') ?>
     <script src="/resource/js/common_admin.js">

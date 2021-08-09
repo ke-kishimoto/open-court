@@ -38,7 +38,6 @@ class ParticipantController extends BaseController
 
         $title = 'イベント詳細';
         include('./view/common/head.php');
-        include('./view/common/header.php');
         include('./view/eventBatchRegist.php');
     }
 
@@ -80,7 +79,6 @@ class ParticipantController extends BaseController
             unset($_SESSION['csrf_token']);
             $title = 'イベント参加登録完了';
             include('./view/common/head.php');
-            include('./view/common/header.php');
             include('./view/complete.php');
 
         } else {
@@ -185,7 +183,6 @@ class ParticipantController extends BaseController
 
         $title = 'イベント詳細';
         include('./view/common/head.php');
-        include('./view/common/header.php');
         include('./view/detail.php');
     }
 
@@ -234,13 +231,11 @@ class ParticipantController extends BaseController
                 $title = 'イベント参加登録完了';
                 $msg = 'イベント参加登録が完了しました。';
                 include('./view/common/head.php');
-                include('./view/common/header.php');
                 include('./view/complete.php');
             } else {
                 $title = 'イベント参加登録完了';
                 $msg = '入力されたメールアドレスで既に登録済みです。';
                 include('./view/common/head.php');
-                include('./view/common/header.php');
                 include('./view/complete.php');
             }
         } else {
@@ -262,7 +257,6 @@ class ParticipantController extends BaseController
 
         $title = 'キャンセル';
         include('./view/common/head.php');
-        include('./view/common/header.php');
         include('./view/cancelForm.php');
     }
 
@@ -292,7 +286,6 @@ class ParticipantController extends BaseController
             $title = 'キャンセル完了';
             $msg = '予約のキャンセルが完了しました';
             include('./view/common/head.php');
-            include('./view/common/header.php');
             include('./view/complete.php');
         } else {
             if(isset($_SESSION['user'])) {
@@ -305,7 +298,6 @@ class ParticipantController extends BaseController
             $gameId = $_POST['game_id'];
             $title = 'キャンセル';
             include('./view/common/head.php');
-            include('./view/common/header.php');
             include('./view/cancelForm.php');
         }
     }

@@ -18,7 +18,6 @@ class TroubleReportController extends BaseController
 
         $title = '改善目安箱';
         include('./view/common/head.php');
-        include('./view/common/header.php');
         include('./view/troubleReport.php');
 
     }
@@ -47,7 +46,6 @@ class TroubleReportController extends BaseController
         $title = 'お問い合わせ完了';
         $msg = 'お問い合わせが完了しました';
         include('./view/common/head.php');
-        include('./view/common/header.php');
         include('./view/complete.php');
     }
 }

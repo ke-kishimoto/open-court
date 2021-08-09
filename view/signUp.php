@@ -1,4 +1,7 @@
 <div id="app">
+    
+    <vue-header></vue-header>
+
     <p style="color:red">{{ msg }}</p>
 
     <div class="explain-box">
@@ -73,10 +76,14 @@
             </a>
         </div>
     </div>
+
+    <vue-footer></vue-footer>
+
 </div>
-<?php include('common/footer.php') ?>
 <script src="/resource/js/common.js"></script>
 <script src="/resource/js/Vue.min.js"></script>
+<script src="/resource/js/header.js"></script>
+<script src="/resource/js/footer.js"></script>
 <script>
     'use strict'
     const vue = new Vue({

@@ -27,7 +27,7 @@
                             <?php echo htmlspecialchars($value['day']); ?>
                         </a>
                         <?php if($adminFlg === '1' && $value['day'] !== ''): ?>
-                            <a class="link-add" href="/admin/admin/eventInfo?date=<?php echo $year . '-' . sprintf('%02d', $month) . '-' . sprintf('%02d', $value['day'])?>">
+                            <a class="link-add" href="/admin/eventInfo?date=<?php echo $year . '-' . sprintf('%02d', $month) . '-' . sprintf('%02d', $value['day'])?>">
                                 ＋
                             </a>
                         <?php endif; ?>
@@ -43,7 +43,7 @@
                                 }
                             ?>
                             <?php if($adminFlg === '1'): ?>
-                                <a class="event <?php echo $availabilityClass; ?>" href="/admin/admin/eventInfo?gameid=<?php echo htmlspecialchars($info['id']); ?>"><?php echo $info['short_title'] ?></a>
+                                <a class="event <?php echo $availabilityClass; ?>" href="/admin/eventInfo?gameid=<?php echo htmlspecialchars($info['id']); ?>"><?php echo $info['short_title'] ?></a>
                             <?php else: ?>
                                 <a class="event <?php echo $availabilityClass; ?>" href="/participant/eventInfo?gameid=<?php echo htmlspecialchars($info['id']); ?>"><?php echo $info['short_title'] ?></a>
                             <?php endif; ?>
@@ -55,7 +55,7 @@
                             <?php echo htmlspecialchars($value['day']); ?>
                         </span>
                         <?php if($adminFlg === '1' && $value['day'] !== ''): ?>
-                            <a class="link-add" href="/admin/event/eventInfo?date=<?php echo $year . '-' . sprintf('%02d', $month) . '-' . sprintf('%02d', $value['day'])?>">
+                            <a class="link-add" href="/admin/eventInfo?date=<?php echo $year . '-' . sprintf('%02d', $month) . '-' . sprintf('%02d', $value['day'])?>">
                                 ＋
                             </a>
                         <?php endif; ?>

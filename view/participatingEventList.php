@@ -1,4 +1,6 @@
 <div id="app">
+    <vue-header></vue-header>
+
     <h1>参加イベント一覧</h1>
     <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -40,11 +42,15 @@
             </div>
         </div>
     </div>
+
+    <vue-footer></vue-footer>
+
 </div>
 
-<?php include('common/footer.php') ?>
 <script src="/resource/js/common.js"></script>
 <script src="/resource/js/vue.min.js"></script>
+<script src="/resource/js/header.js"></script>
+<script src="/resource/js/footer.js"></script>
 <script>
     'use strict'
 

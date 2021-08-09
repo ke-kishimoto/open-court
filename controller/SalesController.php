@@ -32,9 +32,8 @@ class SalesController extends BaseController
         
         $title = '売上管理';
         $adminFlg = '0';
-        include('./view/admin/common/head.php');
-        include('./view/admin/common/header.php');
-        include('./view/admin/monthlysales.php');
+        include('./view/common/head.php');
+        include('./view/monthlysales.php');
     }
 
     public function month()
@@ -53,9 +52,8 @@ class SalesController extends BaseController
 
         $title = '売上管理';
         $adminFlg = '0';
-        include('./view/admin/common/head.php');
-        include('./view/admin/common/header.php');
-        include('./view/admin/monthlysales2.php');
+        include('./view/common/head.php');
+        include('./view/monthlysales2.php');
     }
 
     public function detail()
@@ -74,9 +72,8 @@ class SalesController extends BaseController
 
         $title = '売上管理（イベント単位）';
         $adminFlg = '0';
-        include('./view/admin/common/head.php');
-        include('./view/admin/common/header.php');
-        include('./view/admin/eventsales.php');
+        include('./view/common/head.php');
+        include('./view/eventsales.php');
     }
 
     public function update()
@@ -103,9 +100,8 @@ class SalesController extends BaseController
             $title = '売上更新完了';
             $msg = '売上の更新が完了しました。';
             $adminFlg = '0';
-            include('./view/admin/common/head.php');
-            include('./view/admin/common/header.php');
-            include('./view/admin/complete.php');
+            include('./view/common/head.php');
+            include('./view/complete.php');
         } else {
             header('Location: /index.php');
         }
@@ -135,9 +131,8 @@ class SalesController extends BaseController
             $title = '経費更新完了';
             $msg = '経費の更新が完了しました。';
             $adminFlg = '0';
-            include('./view/admin/common/head.php');
-            include('./view/admin/common/header.php');
-            include('./view/admin/complete.php');
+            include('./view/common/head.php');
+            include('./view/complete.php');
         } else {
             header('Location: /index.php');
         }
@@ -158,8 +153,7 @@ class SalesController extends BaseController
 
         $title = '売上管理（年単位）';
         $adminFlg = '0';
-        include('./view/admin/common/head.php');
-        include('./view/admin/common/header.php');
-        include('./view/admin/yearlysales.php');
+        include('./view/common/head.php');
+        include('./view//yearlysales.php');
     }
 }

@@ -1,4 +1,6 @@
 <div id="app">
+    <vue-header></vue-header>
+
     <h1>お知らせ登録</h1>
     <p style="color:red">{{ msg }}</p>
         <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
@@ -25,10 +27,12 @@
         <button class="btn btn-danger" type="button" @click="deleteNotice">
             削除
         </button>
+    <vue-footer></vue-footer>
 </div>
-    <?php include('common/footer.php') ?>
 <script src="/resource/js/common_admin.js"></script>
 <script src="/resource/js/vue.min.js"></script>
+<script src="/resource/js/header.js"></script>
+<script src="/resource/js/footer.js"></script>
 <script>
     const app = new Vue({
         el:"#app",

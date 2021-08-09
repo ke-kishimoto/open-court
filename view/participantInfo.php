@@ -1,4 +1,6 @@
 <div id="app">
+    <vue-header></vue-header>
+
     <p style="color:red">{{ msg }}</p>
 
     <p>参加者登録</p>
@@ -50,10 +52,12 @@
             <button class="btn btn-primary" type="button" @click="register">登録</button>
             <button id="btn-delete" class="btn btn-secondary" type="submit" name="delete">削除</button>
         </p>
+    <vue-footer></vue-footer>
 </div>
-<?php include('common/footer.php') ?>
 <script src="/resource/js/common_admin.js"></script>
 <script src="/resource/js/vue.min.js"></script>
+<script src="/resource/js/header.js"></script>
+<script src="/resource/js/footer.js"></script>
 <script>
     const app = new Vue({
         el:"#app",

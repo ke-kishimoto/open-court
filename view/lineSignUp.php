@@ -1,4 +1,6 @@
 <div>
+    <vue-header></vue-header>
+
     <div class="explain-box">
         <span class="explain-tit"><?php echo $title ?></span>
         <p>イベントへ応募時、以下の入力項目がデフォルトで設定されます</p>
@@ -38,8 +40,20 @@
         <button class="btn btn-primary" type="submit">登録</button>
     </form>
     <br>
+
+    <vue-footer></vue-footer>
+
 </div>
-<?php include('common/footer.php') ?>
 <script src="/resource/js/common.js"></script>
+<script src="/resource/js/Vue.min.js"></script>
+<script src="/resource/js/header.js"></script>
+<script src="/resource/js/footer.js"></script>
+<script>
+    'use strict'
+
+    const vue = new Vue({
+        el:"#app",
+    })
+</script>
 </body>
 </html>

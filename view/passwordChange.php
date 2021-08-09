@@ -1,7 +1,9 @@
 <div id="app">
+
+    <vue-header></vue-header>
+
     <p style="color:red">{{ msg }}</p>
 
-    <!-- <form id="signUp_form" action="/user/passwordchangecomplete" method="post" class="form-group"> -->
         <p style="color: red;"><?php if(!empty($errMsg)){echo $errMsg;};?></p>
         <div id="password-area">
             <p>
@@ -14,11 +16,14 @@
             </p>
         </div>
         <button class="btn btn-primary" type="button" @click="changePassword">登録</button>
-    <!-- </form> -->
+    
+    <vue-footer></vue-footer>
+    
 </div>
-<?php include('common/footer.php') ?>
 <script src="/resource/js/common.js"></script>
 <script src="/resource/js/Vue.min.js"></script>
+<script src="/resource/js/header.js"></script>
+<script src="/resource/js/footer.js"></script>
 <script>
     'use strict'
     const vue = new Vue({

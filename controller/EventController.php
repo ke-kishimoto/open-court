@@ -22,8 +22,7 @@ class EventController extends BaseController
         $title = 'イベントカレンダー';
         $adminFlg = '0';
         include('./view/common/head.php');
-        include('./view/common/header.php');
-        include('./view/calendar.php');
+        // include('./view/calendar.php');
         include('./view/eventList.php');
 
     }

@@ -22,7 +22,6 @@ class UserController extends BaseController
         $_SESSION['state'] = $state;
         $title = 'ログイン';
         include('./view/common/head.php');
-        include('./view/common/header.php');
         include('./view/signIn.php');
     }
 
@@ -47,7 +46,6 @@ class UserController extends BaseController
     //     if($errMsg !== '') {
     //         $title = 'ログイン';
     //         include('./view/common/head.php');
-    //         include('./view/common/header.php');
     //         include('./view/signIn.php');
     //     } else {
     //         header('Location: /index.php');
@@ -76,7 +74,6 @@ class UserController extends BaseController
         $id = '';
   
         include('./view/common/head.php');
-        include('./view/common/header.php');
         include('./view/signUp.php');
     }
 
@@ -175,13 +172,11 @@ class UserController extends BaseController
     //             $companions = [];
     //         }
     //         include('./view/common/head.php');
-    //         include('./view/common/header.php');
     //         include('./view/signup.php');
     //     } else {
     //         $title = 'ユーザー登録完了';
     //         $msg = 'ユーザー登録が完了しました。';
     //         include('./view/common/head.php');
-    //         include('./view/common/header.php');
     //         include('./view/complete.php');
     //     }
     // }
@@ -202,7 +197,6 @@ class UserController extends BaseController
             
         }
         include('./view/common/head.php');
-        include('./view/common/header.php');
         include('./view/signUp.php');
         
     }
@@ -213,7 +207,6 @@ class UserController extends BaseController
 
         $title = 'パスワード変更';
         include('./view/common/head.php');
-        include('./view/common/header.php');
         include('./view/passwordChange.php');
     }
 
@@ -236,13 +229,11 @@ class UserController extends BaseController
     //             $msg = 'パスワードを変更しました';
                 
     //             include('./view/common/head.php');
-    //             include('./view/common/header.php');
     //             include('./view/complete.php');
     //         } else {
     //             $title = 'パスワード変更';
                 
     //             include('./view/common/head.php');
-    //             include('./view/common/header.php');
     //             include('./view/passwordChange.php');
     //         }
     //     }
@@ -262,7 +253,6 @@ class UserController extends BaseController
         
             $title = '参加イベントリスト';
             include('./view/common/head.php');
-            include('./view/common/header.php');
             include('./view/participatingEventList.php');
         
         } else {
@@ -304,7 +294,6 @@ class UserController extends BaseController
     //     $title = '退会';
     //     $msg = '退会処理が完了しました。';
     //     include('./view/common/head.php');
-    //     include('./view/common/header.php');
     //     include('./view/complete.php');
     // }
 
@@ -315,7 +304,6 @@ class UserController extends BaseController
 
         $title = 'パスワードリセット';
         include('./view/common/head.php');
-        include('./view/common/header.php');
         include('./view/passwordForget.php');
     }
 
@@ -331,7 +319,6 @@ class UserController extends BaseController
             $errMsg = '入力されたメールアドレスによる登録がありません。';
             $title = 'パスワードリセット';
             include('./view/common/head.php');
-            include('./view/common/header.php');
             include('./view/passwordForget.php');
         } else {
             // 8文字で適当なパスワードを生成
@@ -346,14 +333,12 @@ class UserController extends BaseController
                 $title = 'パスワードリセット完了';
                 $msg = 'パスワードリセットのメールを送信しました。ご確認ください。';
                 include('./view/common/head.php');
-                include('./view/common/header.php');
                 include('./view/complete.php');
 
             } else {
                 $errMsg = 'メールの送信に失敗しました。';
                 $title = 'パスワードリセット';
                 include('./view/common/head.php');
-                include('./view/common/header.php');
                 include('./view/passwordForget.php');
             }
 
@@ -385,7 +370,6 @@ class UserController extends BaseController
             $id = $user['id'];
             // $companions = [];
             include('./view/common/head.php');
-            include('./view/common/header.php');
             include('./view/lineSignUp.php');
         } else {
             // 存在するなら、そのままセッションに保存してログイン状態に持っていきたい
@@ -437,7 +421,6 @@ class UserController extends BaseController
         $title = 'ユーザー登録完了';
         $msg = 'ユーザー登録が完了しました。';
         include('./view/common/head.php');
-        include('./view/common/header.php');
         include('./view/complete.php');
     }
 

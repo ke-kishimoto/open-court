@@ -41,7 +41,7 @@
     <p>イベントはありません。</p>
 <?php endif ?>
 <p>
-    <a href="/admin/admin/index">トップに戻る</a>
+    <a href="/admin/index">トップに戻る</a>
 </p>
 <?php include('common/footer.php') ?>
 <script src="/resource/js/common_admin.js">

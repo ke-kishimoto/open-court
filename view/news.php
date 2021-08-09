@@ -1,4 +1,6 @@
 <div id="app">
+    <vue-header></vue-header>
+
     <h1>お知らせ一覧</h1>
     <div id="notivce-list">
         <!-- <?php foreach ($noticeList as $notice): ?>
@@ -16,11 +18,12 @@
         </p>
         </template>
     </div>
-    <vue-footer />
+    <vue-footer></vue-footer>
 </div>
 
 <script src="/resource/js/common.js"></script>
 <script src="/resource/js/Vue.min.js"></script>
+<script src="/resource/js/header.js"></script>
 <script src="/resource/js/footer.js"></script>
 <script>
     'use strict'

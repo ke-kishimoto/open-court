@@ -1,4 +1,6 @@
 <div id="app">
+    <vue-header></vue-header>
+
     <h1>お問い合わせ</h1>
     <p style="color:red">{{ msg }}</p>
     <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
@@ -24,10 +26,13 @@
     <button class="btn btn-primary" type="button" @click="register">
         送信
     </button>
+    <vue-footer></vue-footer>
+
 </div>
-<?php include('common/footer.php') ?>
 <script src="/resource/js/common.js"></script>
 <script src="/resource/js/vue.min.js"></script>
+<script src="/resource/js/header.js"></script>
+<script src="/resource/js/footer.js"></script>
 <script>
     'use strict'
     const app = new Vue({

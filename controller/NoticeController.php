@@ -19,7 +19,6 @@ class NoticeController extends BaseController {
 
         $title = 'お知らせ一覧';
         include('./view/common/head.php');
-        include('./view/common/header.php');
         include('./view/news.php');
     }
 
@@ -41,7 +40,6 @@ class NoticeController extends BaseController {
 
         $title = 'お知らせ詳細';
         include('./view/common/head.php');
-        include('./view/common/header.php');
         include('./view/newsdetail.php');
     }
 }

@@ -1,4 +1,5 @@
 <div id="app">
+    <vue-header></vue-header>
 
 <p v-if="today > event.game_date" style="color: red;">※終了したイベントのため応募できません</p>
     
@@ -38,7 +39,7 @@
                     </span>
                 </p>
                 
-                <participate/>
+                <participate></participate>
 
                 <!-- <input type="hidden" name="title" value="<?php echo htmlspecialchars($gameInfo['title']) ?>">
                 <input type="hidden" name="date" value="<?php echo htmlspecialchars($gameInfo['game_date']) ?>">
@@ -49,14 +50,14 @@
         </div>
         
         <div class="tab-pane fade" id="status" role="tabpanel" aria-labelledby="status-tab">
-            <participant-breakdown/>
+            <participant-breakdown></participant-breakdown>
         </div>
     
         <div class="tab-pane fade" id="list" role="tabpanel" aria-labelledby="list-tab">
-            <participant-list/>
+            <participant-list></participant-list>
         </div>
     </div>
-    <vue-footer />
+    <vue-footer></vue-footer>
 </div>
 
 
@@ -65,6 +66,7 @@
 <script src="/resource/js/participate.js"></script>
 <script src="/resource/js/participant-breakdown.js"></script>
 <script src="/resource/js/participant-list.js"></script>
+<script src="/resource/js/header.js"></script>
 <script src="/resource/js/footer.js"></script>
 <script>
     'use strict'
