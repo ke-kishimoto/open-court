@@ -9,6 +9,34 @@ use Exception;
 class UserApi
 {
 
+    public function deleteUser()
+    {
+        header('Content-type: application/json; charset= UTF-8');
+
+        $msg = '';
+        if(isset($_SESSION['user'])) {
+            $usersDao = new UsersDao();
+            try {
+                // トランザクション開始
+                $usersDao->getPdo()->beginTransaction();
+                $defaultCompanionDao = new DefaultCompanionDao();
+                // 同伴者の削除
+                $defaultCompanionDao->deleteByuserId($_SESSION['user']['id']);
+                $usersDao->updateDeleteFlg($_SESSION['user']['id']);
+            
+                $usersDao->getPdo()->commit();
+            
+                // session_unset('user');
+                session_destroy();
+            
+            } catch(Exception $ex) {
+                $usersDao->getPdo()->rollBack();
+                $msg = '削除できませんでした。';
+            }
+        }
+        echo json_encode(['errMsg' => $msg]);
+    }
+
     public function changePassword()
     {
         header('Content-type: application/json; charset= UTF-8');

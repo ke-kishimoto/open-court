@@ -62,9 +62,7 @@
         <button class="btn btn-primary" type="button" @click="register">登録</button>
     <br>
     <div v-if="editId !== -1">
-        <form action="/user/delete">
-            <button class="btn btn-danger" type="submit">退会</button>
-        </form>
+        <button class="btn btn-danger" type="button" @click="deleteUser">退会</button>
     </div>
     <hr>
     <div v-if="editId === -1">
@@ -167,8 +165,20 @@
                     })
                 })
                 .catch(errors => console.log(errors))
+            },
+            deleteUser() {
+                if (!confirm('退会してよろしいですか。')) return;
 
-            }
+                fetch('/api/user/deleteUser')
+                .then(res => res.json().then(result => {
+                    if(result.errMsg !== '') {
+                        this.msg = errMsg
+                        return
+                    } else {
+                        this.msg = '退会処理が完了しました。'
+                    }
+                }))
+            },
         },
         created: function() {
             this.getLoginUser()
