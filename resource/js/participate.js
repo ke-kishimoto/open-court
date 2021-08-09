@@ -33,6 +33,7 @@ Vue.component('participate', {
             this.companions = []
         },
         getLoginUser() {
+            // ログインユーザーの取得
             fetch('/api/data/getLoginUser', {
                 method: 'post',
             }).then(res => res.json()
@@ -40,6 +41,8 @@ Vue.component('participate', {
                     this.user = data;
                     this.adminFlg = this.user.admin_flg;
                     if (this.user.id == '') return 
+                    
+                    // イベントに参加登録済みか
                     let params = new URLSearchParams();
                     params.append('game_id', this.getParam('gameid'));
                     if(this.user.email !== null && this.user.email !== '') {
@@ -55,14 +58,16 @@ Vue.component('participate', {
                                 this.registered = data.result
                                 this.editId = data.id
                                 if(this.registered) {
+                                    // 登録時の情報を取得
                                     params = new URLSearchParams();
-                                    params.append('tableName', 'Detail');
+                                    params.append('tableName', 'Participant');
                                     params.append('id', this.editId);
                                     fetch('/api/data/selectById', {
                                         method: 'post',
                                         body: params
                                     }).then(res => res.json().then(participant => {
                                         this.user = participant;
+                                        // 同伴者取得
                                         params = new URLSearchParams();
                                         params.append('participant_id', participant.id);
                                         fetch('/api/event/getCompanionList', {
@@ -72,6 +77,14 @@ Vue.component('participate', {
                                             this.companions = companipn
                                         }))
                                     }))
+                                } else {
+                                    // デフォルトの同伴者取得
+                                    let params = new URLSearchParams()
+                                    params.append('id', this.user.id)
+                                    fetch('/api/user/getDefaultCompanion', {
+                                        method: 'post',
+                                        body: params
+                                    }).then(res => res.json().then(companion => this.companions = companion))
                                 }
                             })
                         }

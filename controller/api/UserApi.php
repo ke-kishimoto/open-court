@@ -71,10 +71,12 @@ class UserApi
         
         // メールアドレスによる重複チェック
         $errMsg = '';
-        if(isset($data['user']['email']) && $usersDao->existsCheck($data['user']['email'])){
-            $errMsg = '入力されたメールアドレスは既に登録済みです。';
-            echo json_encode(['errMsg' => $errMsg]);
-            return;
+        if ((int)$data['editId'] === -1) {
+            if(isset($data['user']['email']) && $usersDao->existsCheck($data['user']['email'])){
+                $errMsg = '入力されたメールアドレスは既に登録済みです。';
+                echo json_encode(['errMsg' => $errMsg]);
+                return;
+            }
         }
 
         if ((int)$data['editId'] === -1) {
@@ -100,7 +102,7 @@ class UserApi
                 $usersDao->insert($user);
             } else {
                 // 更新
-                $users['id'] = $data['editId'];
+                $user['id'] = $data['editId'];
                 $usersDao->update($user);
                 // 同伴者の削除
                 $defaultCompanionDao->deleteByuserId($user['id']);

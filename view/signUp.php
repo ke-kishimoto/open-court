@@ -5,9 +5,11 @@
         <span class="explain-tit">新規登録</span>
         <p>イベントへ応募時、以下の入力項目がデフォルトで設定されます</p>
     </div>
-    <a v-if="editId !== -1 && (user.line_id === '' || user.line_id === null)" class="btn btn-sm btn-outline-dark" href="/user/passwordchange" role="button">
-      パスワード変更
-    </a>
+    <p>
+        <a v-if="editId !== -1 && (user.line_id === '' || user.line_id === null)" class="btn btn-sm btn-outline-dark" href="/user/passwordchange" role="button">
+        パスワード変更
+        </a>
+    </p>
         職種
         <select v-model="user.occupation" class="custom-select mr-sm-2">
             <option v-for="item in occupationOptions" v-bind:value="item.value">{{ item.text }}</option>
@@ -110,10 +112,10 @@
                         this.editId = this.user.id
                         let params = new URLSearchParams()
                         params.append('id', this.user.id)
-                        fetch('/api/user/getDefaultCompanionList', {
+                        fetch('/api/user/getDefaultCompanion', {
                             method: 'post',
                             body: params
-                        }).then(res => res.json().then(companion => this.companions))
+                        }).then(res => res.json().then(companion => this.companions = companion))
                     }
                 }))
             },
@@ -161,7 +163,7 @@
                         } else {
                             this.msg = data.errMsg
                         }
-                        location.href = '#header'
+                        location.href = '#app'
                     })
                 })
                 .catch(errors => console.log(errors))
