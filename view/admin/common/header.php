@@ -9,8 +9,8 @@
       <ul class="drawer-menu">
         <li><a class="drawer-brand" href="#">管理者メニュー</a></li>
         <li><a class="drawer-menu-item" href="/admin/admin/index">トップ</a></li>
-        <li><a class="drawer-menu-item" href="/admin/event/eventInfo">新規イベント登録</a></li>
-        <li><a class="drawer-menu-item" href="/admin/event/eventTemplate">テンプレート設定</a></li>
+        <li><a class="drawer-menu-item" href="/admin/admin/eventInfo">新規イベント登録</a></li>
+        <li><a class="drawer-menu-item" href="/admin/admin/eventTemplate">テンプレート設定</a></li>
         <li><a class="drawer-menu-item" href="/admin/admin/userList">ユーザーリスト</a></li>
         <li><a class="drawer-menu-item" href="/admin/admin/config">システム設定</a></li>
         <li><a class="drawer-menu-item" href="/admin/admin/inquiryList">問い合わせ一覧</a></li>
