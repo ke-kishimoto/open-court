@@ -1,51 +1,60 @@
 <div id="app">
     <vue-header></vue-header>
 
-<p v-if="today > event.game_date" style="color: red;">※終了したイベントのため応募できません</p>
+    <p v-if="today > event.game_date" style="color: red;">※終了したイベントのため応募できません</p>
+    <h3>イベント情報</h3>
+    <p>{{ event.title }}</p>
+    <p>日付：{{ event.game_date }}</p>
+    <p>時間：{{ event.start_time }} 〜 {{ event.end_time }}</p>
+    <p>場所：{{ event.place }}</p>
+    <p>詳細：{{ event.detail }}</p>
+    <p>参加費：
+        社会人：{{ event.price1 }}円 
+        大学・専門{{ event.price2 }}円 
+        高校生：{{ event.price3 }}円 
+    </p>
     
     <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" id="event-info-tab" data-toggle="tab" href="#event-info" role="tab" aria-controls="home" aria-selected="true">イベント</a>
+        <li v-if="admin" class="nav-item">
+            <a class="nav-link active" id="event-info-tab" data-toggle="tab" href="#event-info" role="tab" aria-controls="home" aria-selected="true">
+                イベント
+            </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="status-tab" data-toggle="tab" href="#status" role="tab" aria-controls="contact" aria-selected="false">現在の状況</a>
+            <a class="nav-link" id="add-tab" data-toggle="tab" href="#add" role="tab" aria-controls="contact" aria-selected="true">
+                <template v-if="admin">参加者追加</template>
+                <template v-else>参加申し込み</template>
+            </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="list-tab" data-toggle="tab" href="#list" role="tab" aria-controls="contact" aria-selected="false">参加者</a>
+            <a class="nav-link" id="status-tab" data-toggle="tab" href="#status" role="tab" aria-controls="contact" aria-selected="false">
+                参加者内訳
+            </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" id="list-tab" data-toggle="tab" href="#list" role="tab" aria-controls="contact" aria-selected="false">
+                参加者一覧
+            </a>
+        </li>
+        
     </ul>
     
     <div class="tab-content" id="nav-tabContent">
     
         <div class="tab-pane fade show active" id="event-info" role="tabpanel" aria-labelledby="event-info-tab">
-            <br>
+            <event-regist></event-regist>
+        </div>
 
-            <p>{{ event.title }}</p>
-            <p>日付：{{ event.game_date }}</p>
-            <p>時間：{{ event.start_time }} 〜 {{ event.end_time }}</p>
-            <p>場所：{{ event.place }}</p>
-            <p>詳細：{{ event.detail }}</p>
-            <p>参加費：<br>
-                社会人：{{ event.price1 }}円 <br>
-                大学・専門{{ event.price2 }}円 <br>
-                高校生：{{ event.price3 }}円 <br>
-            </p>
-    
+        <div class="tab-pane fade" id="add" role="tabpanel" aria-labelledby="add-tab">
             <div v-if="today <= event.game_date">
+                <br>
                 <p>【応募フォーム】
                     <span v-if="registered" class="text-danger">
-                    <!-- <?php echo $Registered ? '※参加登録済みです' : '' ?> -->
                     ※参加登録済みです
                     </span>
                 </p>
                 
                 <participate></participate>
-
-                <!-- <input type="hidden" name="title" value="<?php echo htmlspecialchars($gameInfo['title']) ?>">
-                <input type="hidden" name="date" value="<?php echo htmlspecialchars($gameInfo['game_date']) ?>">
-                <input type="hidden" name="participantId" value="<?php echo htmlspecialchars($participantId) ?>">
-                <button id="btn-partisipant-regist" name="<?php echo $Registered ? 'update' : 'insert' ?>" class="btn btn-primary" type="submit" value="regist"><?php echo $Registered ? '修正' : '登録' ?></button>
-                <a class="btn btn-danger <?php echo $Registered ? '' : 'hidden' ?>" href="/participant/cancel?gameid=<?php echo htmlspecialchars($gameInfo['id']) ?>">参加のキャンセル</a> -->
             </div>
         </div>
         
@@ -62,10 +71,11 @@
 
 
 <script src="/resource/js/common.js"></script>
-<script src="/resource/js/vue.min.js"></script>
+<script src="/resource/js/vue.js"></script>
 <script src="/resource/js/participate.js"></script>
 <script src="/resource/js/participant-breakdown.js"></script>
 <script src="/resource/js/participant-list.js"></script>
+<script src="/resource/js/event-regist.js"></script>
 <script src="/resource/js/header.js"></script>
 <script src="/resource/js/footer.js"></script>
 <script>
@@ -77,6 +87,7 @@
             registered: false,
             user: {},
             event: {},
+            admin: false,
         },
         methods: {
             getEventInfo() {
@@ -101,6 +112,9 @@
                     .then(data => {
                         this.user = data;
                         if (this.user.id == '') return 
+                        if(this.user.admin_flg == '1') {
+                            this.admin = true
+                        }
                         let params = new URLSearchParams();
                         params.append('tableName', 'Participant');
                         params.append('game_id', this.getParam('gameid'));

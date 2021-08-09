@@ -187,9 +187,9 @@ Vue.component('event-regist', {
         <p>詳細<textarea class="form-control" v-model="detail"></textarea></p>
         <p>
             参加費<br>
-            <label>社会人　<input type="text" type="number" class="form-control form-price" v-model="price1" required>円</label><br>
-            <label>大学・専門　<input type="text" type="number" class="form-control form-price" v-model="price2" required>円</label><br>
-            <label>高校　<input type="text" type="number" class="form-control form-price" v-model="price3" required>円</label>
+            <label>社会人　<input type="number" class="form-control form-price" v-model="price1" required>円</label><br>
+            <label>大学・専門　<input type="number" class="form-control form-price" v-model="price2" required>円</label><br>
+            <label>高校　<input type="number" class="form-control form-price" v-model="price3" required>円</label>
         </p>
         <p>
             <button class="btn btn-primary" type="button" @click="register">登録</button>

@@ -64,7 +64,7 @@ Vue.component('participant-list', {
     template: `
     <div>
         <br>
-        <div v-for="participant in participantList" v-bind:key="participant.id">
+        <div v-for="(participant, index) in participantList" v-bind:key="index">
         <hr v-if="participant.main == 1">
             <p v-if="participant.main == 1 && user.admin_flg == '1'">
                 <a class="btn btn-secondary" v-bind:href="'/admin/participant/ParticipantInfo?id=' + participant.id + '&game_id=' + id ">修正</a>

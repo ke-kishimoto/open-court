@@ -1,6 +1,18 @@
 <div id="app">
+    <vue-header></vue-header>
 
-    <p>対象イベント：<?php echo $gameInfo['title'] ?></p>
+    <!-- <p>対象イベント：<?php echo $gameInfo['title'] ?></p> -->
+
+            <!-- <p>{{ event.title }}</p>
+            <p>日付：{{ event.game_date }}</p>
+            <p>時間：{{ event.start_time }} 〜 {{ event.end_time }}</p>
+            <p>場所：{{ event.place }}</p>
+            <p>詳細：{{ event.detail }}</p>
+            <p>参加費：<br>
+                社会人：{{ event.price1 }}円 <br>
+                大学・専門{{ event.price2 }}円 <br>
+                高校生：{{ event.price3 }}円 <br>
+            </p> -->
     
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
@@ -44,10 +56,12 @@
             </div>
     
         </div>
+    <vue-footer></vue-footer>
 </div>
-<?php include('common/footer.php') ?>
-<script src="/resource/js/common_admin.js"></script>
+<script src="/resource/js/common.js"></script>
 <script src="/resource/js/vue.min.js"></script>
+<script src="/resource/js/header.js"></script>
+<script src="/resource/js/footer.js"></script>
 <script src="/resource/js/event-regist.js"></script>
 <script src="/resource/js/participant-breakdown.js"></script>
 <script src="/resource/js/participant-list.js"></script>

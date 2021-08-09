@@ -29,11 +29,6 @@
                             <a class="link <?php echo $value['today'] ?>" href="detail_date.php?date=<?php echo $year . '/' . sprintf('%02d', $month) . '/' . sprintf('%02d', $value['day']); ?>">
                                 <?php echo htmlspecialchars($value['day']); ?>
                             </a>
-                            <?php if($adminFlg === '1' && $value['day'] !== ''): ?>
-                                <a class="link-add" href="/admin/eventInfo?date=<?php echo $year . '-' . sprintf('%02d', $month) . '-' . sprintf('%02d', $value['day'])?>">
-                                    ＋
-                                </a>
-                            <?php endif; ?>
                         </div>
                             <?php foreach($value['info'] as $info): ?>
                                 <?php
@@ -45,11 +40,8 @@
                                         $availabilityClass = 'availability-NG';
                                     }
                                 ?>
-                                <?php if($adminFlg === '1'): ?>
-                                    <a class="event <?php echo $availabilityClass; ?>" href="/admin/eventInfo?gameid=<?php echo htmlspecialchars($info['id']); ?>"><?php echo $info['short_title'] ?></a>
-                                <?php else: ?>
-                                    <a class="event <?php echo $availabilityClass; ?>" href="/participant/eventInfo?gameid=<?php echo htmlspecialchars($info['id']); ?>"><?php echo $info['short_title'] ?></a>
-                                <?php endif; ?>
+                               
+                                <a class="event <?php echo $availabilityClass; ?>" href="/participant/eventInfo?gameid=<?php echo htmlspecialchars($info['id']); ?>"><?php echo $info['short_title'] ?></a>
                             <?php endforeach; ?>
                             </span>
                     <?php else: ?>
@@ -57,11 +49,6 @@
                             <span class="nolink <?php echo $value['today']?>">
                                 <?php echo htmlspecialchars($value['day']); ?>
                             </span>
-                            <?php if($adminFlg === '1' && $value['day'] !== ''): ?>
-                                <a class="link-add" href="/admin/eventInfo?date=<?php echo $year . '-' . sprintf('%02d', $month) . '-' . sprintf('%02d', $value['day'])?>">
-                                    ＋
-                                </a>
-                            <?php endif; ?>
                         </div>
                     <?php endif ?>
                 </div>
@@ -82,7 +69,6 @@
 
     <div v-for="event in eventList" v-bind:key="event.index">
         <a v-bind:href="'/participant/eventInfo?gameid=' + event.id">
-        <!-- <a v-bind:href="'/admin/eventInfo?gameid=' + event.id"> -->
             {{ event.title }} <br>
             日時：{{ event.game_date }} {{ event.start_time }} 〜 {{ event.end_time }} <br>
             参加状況：【参加予定：現在{{ event.participants_number }}名】定員：{{ event.limit_number }} 名 <br>
