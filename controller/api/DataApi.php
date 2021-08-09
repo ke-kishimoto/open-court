@@ -32,7 +32,6 @@ class DataApi
         }
 
         echo json_encode($user);
-        
     }
 
     /**

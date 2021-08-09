@@ -56,14 +56,16 @@
             <participant-list/>
         </div>
     </div>
+    <vue-footer />
 </div>
 
-<?php include('common/footer.php') ?>
+
 <script src="/resource/js/common.js"></script>
 <script src="/resource/js/vue.min.js"></script>
 <script src="/resource/js/participate.js"></script>
 <script src="/resource/js/participant-breakdown.js"></script>
 <script src="/resource/js/participant-list.js"></script>
+<script src="/resource/js/footer.js"></script>
 <script>
     'use strict'
     const vue = new Vue({
