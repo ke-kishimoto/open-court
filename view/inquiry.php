@@ -1,8 +1,8 @@
 <div id="app">
     <vue-header></vue-header>
+    <p style="color:red">{{ msg }}</p>
 
     <h1>お問い合わせ</h1>
-    <p style="color:red">{{ msg }}</p>
     <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
     <p>
         名前
