@@ -1,13 +1,12 @@
 <div id="app">
     
     <vue-header></vue-header>
-
-    <p style="color:red">{{ msg }}</p>
-
+ 
     <div class="explain-box">
         <span class="explain-tit">新規登録</span>
         <p>イベントへ応募時、以下の入力項目がデフォルトで設定されます</p>
     </div>
+    <p style="color:red; font-size:20px">{{ msg }}</p>
     <p>
         <a v-if="editId !== -1 && (user.line_id === '' || user.line_id === null)" class="btn btn-sm btn-outline-dark" href="/user/passwordchange" role="button">
         パスワード変更
@@ -125,7 +124,7 @@
                 }))
             },
             addCompanion() {
-                this.companions.push({name: '', occupation: '1', sex: '1'})
+                this.companions.push({name: '', occupation: this.user.occupation, sex: this.user.sex})
             },
             deleteCompanion(index) {
                 this.companions.splice(index, 1)
@@ -141,6 +140,28 @@
                 .catch(errors => console.log(errors))
             },
             register() {
+
+                if(this.user.occupation === '') {
+                    this.msg = '職種を選択してください。'
+                    return
+                }
+                if(this.user.sex === '') {
+                    this.msg = '性別を選択してください。'
+                    return
+                }
+                if(this.user.name === '') {
+                    this.msg = '名前を入力してください。'
+                    return
+                }
+                if(this.user.email === '') {
+                    this.msg = 'メールアドレスを入力してください。'
+                    return
+                }
+                if(this.user.password === '') {
+                    this.msg = 'パスワードを入力してください。'
+                    return
+                }
+
                 if (!confirm('登録してよろしいですか。')) return;
                 
                 if(this.editId === -1) {
@@ -164,7 +185,9 @@
                 .then(res => {
                     res.json().then(data => {
                         if(data.errMsg === '') {
-                            this.msg = '登録完了しました。'
+                            this.msg = '登録完了しました。ログイン画面からログインしてください。'
+                            this.user = {}
+                            this.companions = []
                         } else {
                             this.msg = data.errMsg
                         }

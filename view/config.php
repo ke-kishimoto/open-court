@@ -1,8 +1,10 @@
 <div id="app">
     <vue-header></vue-header>
 
+    <p style="color:red; font-size:20px">{{ msg }}</p>
+    
     <h1>システム設定</h1>
-    <p style="color:red">{{ msg }}</p>
+
     <hr>
     <p>システム名設定</p>
     <p>

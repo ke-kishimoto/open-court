@@ -23,7 +23,7 @@ class DataApi
                 'id' => '', 
                 'name' => '', 
                 'email' => '', 
-                'occupation' => '1', 
+                'occupation' => '', 
                 'sex' => '', 
                 'remark' => '', 
                 'line_id' => '',

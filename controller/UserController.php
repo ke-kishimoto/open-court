@@ -4,7 +4,6 @@ namespace controller;
 use dao\UsersDao;
 use dao\DefaultCompanionDao;
 use dao\ConfigDao;
-use api\MailApi;
 use service\UserService;
 use Exception;
 
