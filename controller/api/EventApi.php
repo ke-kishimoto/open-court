@@ -105,6 +105,30 @@ class EventApi {
         echo json_encode('{}');
     }
 
+    public function cancel()
+    {
+        header('Content-type: application/json; charset= UTF-8');
+        session_start();
+
+        $service = new EventService();
+        $participant = [];
+        $participant['game_id'] = (int)$_POST['game_id'];
+        $participant['email'] = $_POST['email'] ?? '';
+        if(isset($_POST['password']) && isset($_SESSION['user'])) {
+            $password = $_POST['password'];
+            $userId = $_SESSION['user']['id'];
+            $participant['line_id'] = $_SESSION['user']['line_id'] ?? '';
+        } else {
+            $password = '';
+            $userId = '';
+        }
+        $msg = $service->cancelComplete($participant, $password, $userId, EventService::MODE_USER);
+        if(empty($msg)) {
+            $msg = 'キャンセルしました。';
+        }
+        echo json_encode(['msg' => $msg]);
+    }
+
     // イベントに対しての参加者リスト取得
     public function getParticipantList()
     {

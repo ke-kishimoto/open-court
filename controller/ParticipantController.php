@@ -54,45 +54,4 @@ class ParticipantController extends BaseController
         include('./view/participantNameList.php');
     }
 
-    // キャンセル処理
-    public function cancelComplete() {
-
-        $errMsg = '';
-        if(isset($_POST)) {
-
-            $service = new EventService();
-            $participant = [];
-            $participant['game_id'] = (int)$_POST['game_id'];
-            $participant['email'] = $_POST['email'] ?? '';
-            $participant['line_id'] = $_POST['line_id'] ?? '';
-            if(isset($_POST['password']) && isset($_SESSION['user'])) {
-                $password = $_POST['password'];
-                $userId = $_SESSION['user']['id'];
-            } else {
-                $password = '';
-                $userId = '';
-            }
-            $errMsg = $service->cancelComplete($participant, $password, $userId, EventService::MODE_USER);
-        }
-        
-        if(empty($errMsg)) {
-            $title = 'キャンセル完了';
-            $msg = '予約のキャンセルが完了しました';
-            include('./view/common/head.php');
-            include('./view/complete.php');
-        } else {
-            if(isset($_SESSION['user'])) {
-                $email = $_SESSION['user']['email'];
-                $mode = 'login';
-            } else {
-                $email = '';
-                $mode = 'guest';
-            }
-            $gameId = $_POST['game_id'];
-            $title = 'キャンセル';
-            include('./view/common/head.php');
-            include('./view/cancelForm.php');
-        }
-    }
-
 }
