@@ -3,7 +3,6 @@ namespace controller;
 
 use controller\BaseController;
 use dao\DetailDao;
-use dao\GameInfoDao;
 use dao\SalesDao;
 
 class SalesController extends BaseController

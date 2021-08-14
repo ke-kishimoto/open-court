@@ -94,39 +94,39 @@ class SalesDao extends BaseDao
     public function getSalesDetail(int $gameId)
     {
         $sql = "select 
-        p.id
-        , name
-        , title
-        , attendance
-        , case
-            when attendance = 1 then '出席'
-            else '欠席'
-          end attendance_name
-        , p.amount
-        , amount_remark
-        from participant p
-        inner join game_info g
-        on p.game_id = g.id
-        where p.game_id = :game_id
-        and p.delete_flg = 1
-        union all
-        select  
-        participant_id 
-        , c.name 
-        , g.title
-        , c.attendance
-        , case
-            when c.attendance = 1 then '出席'
-            else '欠席'
-          end attendance_name
-        , c.amount
-        , c.amount_remark
-        from companion c
-        inner join participant p on  c.participant_id = p.id
-        inner join game_info g on g.id = p.game_id
-        where participant_id in (select id from participant where game_id = :game_id and delete_flg = 1)
-        and c.delete_flg = 1
-        order by id";
+p.id
+, name
+, title
+, attendance
+, case
+    when attendance = 1 then '出席'
+    else '欠席'
+    end attendance_name
+, p.amount
+, amount_remark
+from participant p
+inner join game_info g
+on p.game_id = g.id
+where p.game_id = :game_id
+and p.delete_flg = 1
+union all
+select  
+participant_id 
+, c.name 
+, g.title
+, c.attendance
+, case
+    when c.attendance = 1 then '出席'
+    else '欠席'
+    end attendance_name
+, c.amount
+, c.amount_remark
+from companion c
+inner join participant p on  c.participant_id = p.id
+inner join game_info g on g.id = p.game_id
+where participant_id in (select id from participant where game_id = :game_id and delete_flg = 1)
+and c.delete_flg = 1
+order by id";
         $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
         $prepare->execute();

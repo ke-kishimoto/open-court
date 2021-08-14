@@ -35,7 +35,7 @@
 
             <tr v-for="event in eventList">
                 <th>{{ event.date }}</th>
-                <th><a v-bind:href="'./detail?gameid=' + event.id">{{ event.title }}</a></th>
+                <th><a v-bind:href="'./detail?gameid=' + event.game_id">{{ event.title }}</a></th>
                 <th><input type="number" v-model="event.cnt" class="form-control"></th>
                 <th><input type="number" v-model="event.amount" class="form-control"></th>
                 <th><input type="number" v-model="event.expenses" class="form-control"></th>

@@ -2,6 +2,7 @@
 namespace api;
 use dao\SalesDao;
 use dao\GameInfoDao;
+use dao\DetailDao;
 
 class SalesApi
 {
@@ -55,6 +56,38 @@ class SalesApi
         $salesYearList = $salesDao->getYearSales();
 
         echo json_encode($salesYearList);
+    }
+
+    public function getParticipantList()
+    {
+        header('Content-type: application/json; charset= UTF-8');
+
+        $salesDao = new SalesDao();
+        $gameId = $_POST['gameid'] ?? 0;
+        $participantList = $salesDao->getSalesDetail($gameId);
+
+        echo json_encode($participantList);
+    }
+
+    public function updateParticipantAmount()
+    {
+        header('Content-type: application/json; charset= UTF-8');
+    
+        $participantList = json_decode(file_get_contents('php://input'), true);
+
+        $detailDao = new DetailDao();
+        for($i = 0; $i < count($participantList); $i++) {
+            $p = $detailDao->selectById((int)($participantList[$i]["id"]));
+            $participant = [];
+            $participant['id'] = $p['id'];
+            $participant['attendance'] = $participantList[$i]["attendance"];
+            $participant['amount'] = (int)($participantList[$i]["amount"]);
+            $participant['amount_remark'] = $participantList[$i]["amount_remark"];
+            $detailDao->update($participant);
+        }
+
+        echo json_encode([]);
+
     }
 
 }

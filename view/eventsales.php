@@ -1,50 +1,36 @@
 <div id="app">
 
-<vue-header></vue-header>
+    <vue-header></vue-header>
 
-    <?php if (!empty($participantList)) : ?>
-        <form action="/sales/update" method="post">
-            <table>
-                <tr>
-                    <td align="center">
-                        <p class="sales-event-title"><?php echo $participantList[0]['title'] ?></p>
-                    </td>
-                </tr>
-            </table>
-            <table>
-                <tr>
-                    <th>名前</th>
-                    <th>出欠</th>
-                    <th>回収金額</th>
-                    <th>備考</th>
-                </tr>
-                <?php $count = 0; ?>
-                <?php foreach ($participantList as $participant) : ?>
-                    <tr>
-                        <input type="hidden" name="id-<?php echo $count ?>" value="<?php echo $participant['id'] ?>">
-                        <th><?php echo $participant['name'] ?></th>
-                        <th>
-                            <select name="attendance-<?php echo $count ?>" class="form-control input-sm">
-                                <option value="1" <?php echo $participant['attendance'] == '1' ? 'selected' : '' ?>>出席</option>
-                                <option value="2" <?php echo $participant['attendance'] == '2' ? 'selected' : '' ?>>欠席</option>
-                            </select>
-                        </th>
-    
-                        <th><input type="number" name="amount-<?php echo $count ?>" value="<?php echo $participant['amount'] ?>" class="form-control"></th>
-                        <th><input type="text" name="amount_remark-<?php echo $count ?>" value="<?php echo $participant['amount_remark'] ?>" class="form-control"></th>
-                    </tr>
-                    <?php $count++; ?>
-                <?php endforeach ?>
-            </table>
-            <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
-            <input type="hidden" name="count" value="<?php echo $count ?>">
-            <p>
-                <button type="submit" class="btn btn-primary">更新</button>
-            </p>
-        </form>
-    <?php else : ?>
-        <p>参加者はいません。</p>
-    <?php endif ?>
+    <table>
+        <tr>
+            <td>
+                <p class="sales-event-title">{{ title }}</p>
+            </td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <th>名前</th>
+            <th>出欠</th>
+            <th>回収金額</th>
+            <th>備考</th>
+        </tr>
+
+        <tr v-for="(participant, index) in participantList" v-bind:key="index">
+            <th>{{ participant.name }}</th>
+            <th>
+                <select class="custom-select mr-sm-2" v-model="participant.attendance">
+                    <option v-for="item in attendanceOptions" v-bind:value="item.value">{{ item.text }}</option>
+                </select>
+            </th>
+            <th><input type="number" v-model="participant.amount"></th>
+            <th><input type="text" v-model="participant.amount_remark"></th>
+        </tr>
+    </table>
+    <p>
+        <button type="button" class="btn btn-primary" @click="updateAmount">更新</button>
+    </p>
     
     <vue-footer></vue-footer>
 </div>
@@ -58,6 +44,58 @@
     'use strict'
     const app = new Vue({
         el:"#app",
+        data: {
+            participantList: [],
+            title: '',
+            attendanceOptions: [
+                {text: '出席', value: '1'},
+                {text: '欠席', value: '2'},
+            ],
+
+        },
+        methods: {
+            getParticipantList() {
+                let params = new URLSearchParams()
+                params.append('gameid', this.getParam('gameid'))
+                fetch('/api/sales/getParticipantList', {
+                    method: 'post',
+                    body: params
+                }).then(res => res.json().then(data => {
+                    this.participantList = data
+                    if(this.participantList.length > 0) {
+                        this.title = this.participantList[0].title
+                    }
+                }))
+            }, 
+            getParam(name, url) {
+                if (!url) url = window.location.href;
+                name = name.replace(/[\[\]]/g, "\\$&");
+                var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                    results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, " "));
+            },
+            updateAmount() {
+                if (!confirm('更新してよろしいですか。')) return;
+
+                fetch('/api/sales/updateParticipantAmount', {
+                    headers:{
+                        'Content-Type': 'application/json',
+                    },
+                    method: 'post',
+                    body: JSON.stringify(this.participantList)
+                })
+                .then(() => {
+                    // this.msg = '登録完了しました。'
+                    this.getParticipantList()
+                })
+                .catch(errors => console.log(errors))
+                            }
+        },
+        created: function(){
+            this.getParticipantList()
+        }
     })
 </script>
 </body>
