@@ -25,32 +25,6 @@ class UserController extends BaseController
         include('./view/signIn.php');
     }
 
-    // // ログインチェック
-    // public function signInCheck() {
-    //     parent::userHeader();
-    //     $signUpDao = new UsersDao();
-
-    //     $user = $signUpDao->getUserByEmail($_POST['email']);
-
-    //     $errMsg = '';
-    //     if($user) {
-    //         if(password_verify($_POST['password'], $user['password'])) {
-    //             $_SESSION['user'] = $user;
-    //         } else {
-    //             $errMsg = 'メールアドレス、またはパスワードが異なります';
-    //         }
-    //     } else {
-    //         $errMsg = 'メールアドレス、またはパスワードが異なります';
-    //     }
-
-    //     if($errMsg !== '') {
-    //         $title = 'ログイン';
-    //         include('./view/common/head.php');
-    //         include('./view/signIn.php');
-    //     } else {
-    //         header('Location: /index.php');
-    //     }
-    // }
 
     // サインアップ
     public function signUp() {
@@ -76,110 +50,6 @@ class UserController extends BaseController
         include('./view/common/head.php');
         include('./view/signUp.php');
     }
-
-    // // ユーザー登録
-    // public function signUpComplete() {
-    //     parent::userHeader();
-        
-    //     // 更新処理
-    //     if (!empty($_POST)) {
-    //         $errMsg = '';
-    //         $usersDao = new UsersDao();
-
-    //         if($_POST['mode'] == 'new') {
-    //             //パスワードチェック
-    //             if (($_POST['password']) != ($_POST['rePassword'])) {
-    //                 $errMsg = 'パスワードが異なっています。';            
-    //             }
-    //             // メールアドレスによる重複チェック
-    //             if(isset($_POST['email']) && $usersDao->existsCheck($_POST['email'])){
-    //                 $errMsg = '入力されたメールアドレスは既に登録済みです。';
-    //             }
-    //         }
-
-    //         if(empty($errMsg)){
-    //             if ($_POST['mode'] == 'new') {
-    //                 $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    //             } else {
-    //                 $password = '';
-    //             }
-    //             $users = [];
-    //             $users['email'] = $_POST['email'] ?? '';
-    //             $users['name'] = $_POST['name'];
-    //             $users['password'] =  $password;
-    //             $users['occupation'] = $_POST['occupation'];
-    //             $users['sex'] = $_POST['sex'];
-    //             $users['remark'] = $_POST['remark'];
-    //             $users['admin_flg'] = 0;
-            
-    //             try {
-    //                 // トランザクション開始
-    //                 $usersDao->getPdo()->beginTransaction();
-    //                 $defaultCompanionDao = new DefaultCompanionDao();
-    //                 if($_POST['mode'] == 'new') {
-    //                     // 新規登録
-    //                     $usersDao->insert($users);
-    //                 } else {
-    //                     // 更新
-    //                     $users['id'] = $_POST['id'];
-    //                     $usersDao->update($users);
-    //                     // 同伴者の削除
-    //                     $defaultCompanionDao->deleteByuserId($users['id']);
-    //                 }
-            
-    //                 // 同伴者の登録
-    //                 if($_POST['companion'] > 0) {
-    //                     $id = $usersDao->getUsersId($users);
-    //                     $defaultCompanionDao->setPdo($usersDao->getPdo());
-    //                     for($i = 1; $i <= $_POST['companion']; $i++) {
-    //                         $defaultCompanion = [];
-    //                         $defaultCompanion['user_id'] = $id; 
-    //                         $defaultCompanion['occupation'] = $_POST['occupation-' . $i];
-    //                         $defaultCompanion['sex'] = $_POST['sex-' . $i];
-    //                         $defaultCompanion['name'] = $_POST['name-' . $i];
-                            
-    //                         $defaultCompanionDao->insert($defaultCompanion);
-    //                     }
-    //                 }
-    //                 $usersDao->getPdo()->commit();
-            
-    //             } catch(Exception $ex) {
-    //                 $usersDao->getPdo()->rollBack();
-    //             }
-    //         }
-    //     } 
-    //     if(!empty($errMsg)) {
-    //         $title = '新規登録';
-    //         $mode = 'new';
-    //         $user = array(
-    //             'name' => $_POST['name']
-    //             , 'occupation' => $_POST['occupation']
-    //             , 'sex' => $_POST['sex']
-    //             , 'email' => $_POST['email']
-    //             , 'password' => $_POST['password']
-    //             , 'ewPassword' => $_POST['password']
-    //             , 'remark' => $_POST['remark']
-    //         );
-    //         if($_POST['companion'] > 0) {
-    //             for($i = 1; $i <= $_POST['companion']; $i++) {
-    //                 $companions[$i-1] = array(
-    //                     'occupation' => $_POST['occupation-' . $i]
-    //                     , 'sex' => $_POST['sex-' . $i]
-    //                     , 'name' => $_POST['name-' . $i]
-    //                 );   
-    //             }
-    //         } else {
-    //             $companions = [];
-    //         }
-    //         include('./view/common/head.php');
-    //         include('./view/signup.php');
-    //     } else {
-    //         $title = 'ユーザー登録完了';
-    //         $msg = 'ユーザー登録が完了しました。';
-    //         include('./view/common/head.php');
-    //         include('./view/complete.php');
-    //     }
-    // }
 
     // アカウント編集
     public function edit() {
@@ -210,35 +80,6 @@ class UserController extends BaseController
         include('./view/passwordChange.php');
     }
 
-    // // パスワード変更処理
-    // public function passwordChangeComplete() {
-    //     parent::userHeader();
-        
-    //     if (!empty($_POST)) {
-    //         $errMsg = '';
-    //         $usersDao = new UsersDao();
-
-    //         //パスワードチェック
-    //         if (($_POST['password']) != ($_POST['rePassword'])) {
-    //             $errMsg = '入力されたパスワードが異なります。';
-    //         }
-
-    //         if(empty($errMsg)){
-    //             $usersDao->updatePass($_SESSION['user']['id'], password_hash($_POST['password'], PASSWORD_DEFAULT));
-    //             $title = 'パスワード変更完了';
-    //             $msg = 'パスワードを変更しました';
-                
-    //             include('./view/common/head.php');
-    //             include('./view/complete.php');
-    //         } else {
-    //             $title = 'パスワード変更';
-                
-    //             include('./view/common/head.php');
-    //             include('./view/passwordChange.php');
-    //         }
-    //     }
-    // }
-
     // 参加イベント一覧
     public function participatingEventList() {
         parent::userHeader();
@@ -268,34 +109,6 @@ class UserController extends BaseController
         unset($_SESSION['user']);
         header('Location: /index.php');
     }
-
-    // // 削除（退会）
-    // public function delete() {
-    //     session_start();
-    //     if(isset($_SESSION['user'])) {
-    //         $usersDao = new UsersDao();
-    //         try {
-    //             // トランザクション開始
-    //             $usersDao->getPdo()->beginTransaction();
-    //             $defaultCompanionDao = new DefaultCompanionDao();
-    //             // 同伴者の削除
-    //             $defaultCompanionDao->deleteByuserId($_SESSION['user']['id']);
-    //             $usersDao->updateDeleteFlg($_SESSION['user']['id']);
-            
-    //             $usersDao->getPdo()->commit();
-            
-    //             // session_unset('user');
-    //             session_destroy();
-            
-    //         } catch(Exception $ex) {
-    //             $usersDao->getPdo()->rollBack();
-    //         }
-    //     }
-    //     $title = '退会';
-    //     $msg = '退会処理が完了しました。';
-    //     include('./view/common/head.php');
-    //     include('./view/complete.php');
-    // }
 
     // パスワードを忘れた場合
     public function passwordForget()

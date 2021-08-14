@@ -9,9 +9,6 @@ class InquiryController extends BaseController
     public function inquiry() {
         parent::userHeader();
         
-        $gameInfoDao = new GameInfoDao();
-        $gameInfoList = $gameInfoDao->getGameInfoListByAfterDate(date('Y-m-d'));
-
         // CSFR対策
         // 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
         $toke_byte = openssl_random_pseudo_bytes(16);
