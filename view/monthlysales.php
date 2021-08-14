@@ -2,6 +2,8 @@
 
 <vue-header></vue-header>
 
+    <p style="color:red; font-size:20px">{{ msg }}</p>
+
     <table>
         <tr>
             <td colspan="4">
@@ -67,6 +69,7 @@
     const app = new Vue({
         el:"#app",
         data: {
+            msg: '',
             year: '',
             month: '',
             eventList: [],
@@ -111,7 +114,7 @@
                     body: JSON.stringify(this.eventList)
                 })
                 .then(() => {
-                    // this.msg = '登録完了しました。'
+                    this.msg = '更新完了しました。'
                     this.getMonthSales()
                 })
                 .catch(errors => console.log(errors))

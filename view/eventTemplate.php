@@ -1,46 +1,47 @@
 <div id="app">
     <vue-header></vue-header>
 
-    <h1>テンプレート設定</h1>
-    <p style="color:red">{{ msg }}</p>
-        <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
-        <p>
-            <select @change="selectTemplate($event)" v-model="selectedTemplate">
-                <option v-for="template in templateList" v-bind:key="template.id" v-bind:value="template.id">{{ template.template_name }}</option>
-            </select>
-            <input type="checkbox" id="isnew" v-model="isnew">
-            <label for="isnew">コピーして新規作成</label> 
-        </p>
-        <p>
-            テンプレート名<input class="form-control" type="text" v-model="template_name" required >
-        </p>
-        <p>
-            タイトル<input class="form-control" type="text" v-model="title" required >
-        </p>
-        <p>
-            タイトル略称<input class="form-control" type="text" v-model="short_title" required >
-        </p>
-        <p>
-            場所<input class="form-control" type="text" v-model="place" required >
-        </p>
-        <p>
-            人数上限<input class="form-control" type="number" v-model="limit_number" min="1" required>
-        </p>
-        <p>
-            詳細<textarea class="form-control" v-model="detail"></textarea>
-        </p>
-        <p>
-            参加費<br>
-            <label>社会人　<input type="text" type="number" class="form-control form-price" v-model="price1" required value="0">円</label><br>
-            <label>大学・専門　<input type="text" type="number" class="form-control form-price" v-model="price2"  required value="0">円</label><br>
-            <label>高校　<input type="text" type="number" class="form-control form-price" v-model="price3" required value="0">円</label>
-        </p>
-        <p>
-            <button class="btn btn-primary" type="button" @click="register">登録</button>
-            <button class="btn btn-secondary" type="button" @click="deleteById">削除</button>
-        </p>
+    <p style="color:red; font-size:20px">{{ msg }}</p>
 
-        <vue-footer></vue-footer>
+    <h1>テンプレート設定</h1>
+    <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
+    <p>
+        <select @change="selectTemplate($event)" v-model="selectedTemplate">
+            <option v-for="template in templateList" v-bind:key="template.id" v-bind:value="template.id">{{ template.template_name }}</option>
+        </select>
+        <input type="checkbox" id="isnew" v-model="isnew">
+        <label for="isnew">コピーして新規作成</label> 
+    </p>
+    <p>
+        テンプレート名<input class="form-control" type="text" v-model="template_name" required >
+    </p>
+    <p>
+        タイトル<input class="form-control" type="text" v-model="title" required >
+    </p>
+    <p>
+        タイトル略称<input class="form-control" type="text" v-model="short_title" required >
+    </p>
+    <p>
+        場所<input class="form-control" type="text" v-model="place" required >
+    </p>
+    <p>
+        人数上限<input class="form-control" type="number" v-model="limit_number" min="1" required>
+    </p>
+    <p>
+        詳細<textarea class="form-control" v-model="detail"></textarea>
+    </p>
+    <p>
+        参加費<br>
+        <label>社会人　<input type="text" type="number" class="form-control form-price" v-model="price1" required value="0">円</label><br>
+        <label>大学・専門　<input type="text" type="number" class="form-control form-price" v-model="price2"  required value="0">円</label><br>
+        <label>高校　<input type="text" type="number" class="form-control form-price" v-model="price3" required value="0">円</label>
+    </p>
+    <p>
+        <button class="btn btn-primary" type="button" @click="register">登録</button>
+        <button class="btn btn-secondary" type="button" @click="deleteById">削除</button>
+    </p>
+
+    <vue-footer></vue-footer>
 
 </div>
 <script src="/resource/js/common.js"></script>
@@ -121,6 +122,19 @@
                 .catch(errors => console.log(errors))
             },
             register() {
+                if(this.template_name === '') {
+                    this.msg = 'テンプレート名を入力してください。'
+                    return
+                }
+                if(this.title === '') {
+                    this.msg = 'タイトルを入力してください。'
+                    return
+                }
+                if(this.short_title === '') {
+                    this.msg = '略称を入力してください。'
+                    return
+                }
+
                 if (!confirm('登録してよろしいですか。')) return;
                 let type = 'insert';
                 if(this.templateId != -1 && this.isnew === false) {

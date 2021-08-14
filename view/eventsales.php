@@ -2,6 +2,8 @@
 
     <vue-header></vue-header>
 
+    <p style="color:red; font-size:20px">{{ msg }}</p>
+
     <table>
         <tr>
             <td>
@@ -45,6 +47,7 @@
     const app = new Vue({
         el:"#app",
         data: {
+            msg: '',
             participantList: [],
             title: '',
             attendanceOptions: [
@@ -87,7 +90,7 @@
                     body: JSON.stringify(this.participantList)
                 })
                 .then(() => {
-                    // this.msg = '登録完了しました。'
+                    this.msg = '更新完了しました。'
                     this.getParticipantList()
                 })
                 .catch(errors => console.log(errors))
