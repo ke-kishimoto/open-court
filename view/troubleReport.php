@@ -2,7 +2,7 @@
     
     <vue-header></vue-header>
 
-    <p style="color:red">{{ msg }}</p>
+    <p style="color:red; font-size:20px;">{{ msg }}</p>
 
     <h1>改善目安箱</h1>
     <p>システムに関する不具合・及び要望がありましたら、こちらからご報告ください。</p>
@@ -44,7 +44,12 @@
         el:"#app",
         data: {
             msg: '',
-            troubleReport: {},
+            troubleReport: {
+                    name: '', 
+                    category: '1',
+                    title: '',
+                    content: '',
+                },
             categories: [
                 {text: '障害・不具合', value: '1'},
                 {text: '要望', value: '2'},
@@ -63,13 +68,28 @@
                 }))
             },
             register() {
+                if(this.troubleReport.name === '') {
+                    this.msg = '名前を入力してください。'
+                    scrollTo(0, 0)
+                    return
+                }
+                if(this.troubleReport.title === '') {
+                    this.msg = 'タイトルを入力してください。'
+                    scrollTo(0, 0)
+                    return
+                }
+                if(this.troubleReport.content === '') {
+                    this.msg = '内容を入力してください。'
+                    scrollTo(0, 0)
+                    return
+                }
                 if (!confirm('送信してよろしいですか。')) return;
                 let params = new URLSearchParams();
                 params.append('name', this.troubleReport.name);
                 params.append('category', this.troubleReport.category);
                 params.append('title', this.troubleReport.title);
                 params.append('content', this.troubleReport.content);
-                fetch('/api/contact/', {
+                fetch('/api/contact/sendTroubleReport', {
                     method: 'post',
                     body: params
                 })

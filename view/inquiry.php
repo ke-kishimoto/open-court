@@ -1,16 +1,16 @@
 <div id="app">
     <vue-header></vue-header>
-    <p style="color:red">{{ msg }}</p>
+    <p style="color:red; font-size:20px">{{ msg }}</p>
 
     <h1>お問い合わせ</h1>
     <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
     <p>
         名前
-        <input id="name" class="form-control" type="text" v-model="name" required maxlength="50">
+        <input class="form-control" type="text" v-model="user.name" required maxlength="50">
     </p>
-    <p>
+    <p v-if="user.line_id === null || user.line_id === ''">
         メール
-        <input class="form-control" type="email" v-model="email" maxlength="50">
+        <input class="form-control" type="email" v-model="user.email" maxlength="50">
     </p>
     <p>
         対象イベント
@@ -41,8 +41,7 @@
             selectedevent: '',
             msg: '',
             eventList: [],
-            name: '',
-            email: '',
+            user: {},
             gameId: '',
             content: '',
         },
@@ -54,8 +53,7 @@
                 fetch('/api/data/getLoginUser', {
                     method: 'post',
                 }).then(res => res.json().then(data => {
-                    this.name = data.name;
-                    this.email = data.email;
+                    this.user = data;
                 }))
             },
             getEventList() {
@@ -71,11 +69,26 @@
                 .catch(errors => console.log(errors))
             },
             register() {
+                if(this.user.name === '') {
+                    this.msg = '名前を入力してください。'
+                    scrollTo(0, 0)
+                    return
+                }
+                if((this.user.line_id === null || this.user.line_id === '') && this.user.email === '') {
+                    this.msg = 'メールアドレスを入力してください。'
+                    scrollTo(0, 0)
+                    return
+                }
+                if(this.content === '') {
+                    this.msg = '問い合わせ内容を入力してください。'
+                    scrollTo(0, 0)
+                    return
+                }
                 if (!confirm('送信してよろしいですか。')) return;
                 let params = new URLSearchParams();
                 params.append('game_id', 'selectedevent');
-                params.append('name', this.name);
-                params.append('email', this.email);
+                params.append('name', this.user.name);
+                params.append('email', this.user.email);
                 params.append('content', this.content);
                 fetch('/api/contact/sendInquiry', {
                     method: 'post',

@@ -119,23 +119,25 @@
                         if(this.user.admin_flg == '1') {
                             this.admin = true
                         }
-                        let params = new URLSearchParams();
-                        params.append('tableName', 'Participant');
-                        params.append('game_id', this.getParam('gameid'));
-                        if(this.user.email !== null && this.user.email !== '') {
-                            params.append('email', this.user.email);
-                        } else if (this.user.line_id !== null && this.user.line_id !== '') {
-                            params.append('line_id', this.user.line_id);
-                        }
-                        fetch('/api/event/existsCheck', {
-                            method: 'post',
-                            body: params
-                        }).then(res => {res.json()
-                                .then(data => {
-                                    this.registered = data.result
-                                })
+                        if(this.mode !== 'new') {
+                            let params = new URLSearchParams();
+                            params.append('tableName', 'Participant');
+                            params.append('game_id', this.getParam('gameid'));
+                            if(this.user.email !== null && this.user.email !== '') {
+                                params.append('email', this.user.email);
+                            } else if (this.user.line_id !== null && this.user.line_id !== '') {
+                                params.append('line_id', this.user.line_id);
                             }
-                        )
+                            fetch('/api/event/existsCheck', {
+                                method: 'post',
+                                body: params
+                            }).then(res => {res.json()
+                                    .then(data => {
+                                        this.registered = data.result
+                                    })
+                                }
+                            )
+                        }
 
                 }))
             },
@@ -150,14 +152,14 @@
             },
         },
         created: function() {
-            this.getLoginUser()
-            this.getEventInfo()
-            let date = new Date()
-            this.today = date.getFullYear() + '-' + ('00' + (date.getMonth()+1)).slice(-2) + '-' + ('00' + date.getDate()).slice(-2)
             this.mode = this.getParam('mode')
             if(this.mode === 'new') {
                 this.event.game_date = this.getParam('date')
             }
+            this.getLoginUser()
+            this.getEventInfo()
+            let date = new Date()
+            this.today = date.getFullYear() + '-' + ('00' + (date.getMonth()+1)).slice(-2) + '-' + ('00' + date.getDate()).slice(-2)
         }
     })
 </script>

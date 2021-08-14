@@ -96,6 +96,31 @@ Vue.component('event-regist', {
             .catch(errors => console.log(errors))
         },
         register() {
+            if(this.title === '') {
+                this.msg = 'タイトルを入力してください。'
+                // location.href = '#header'
+                return
+            }
+            if(this.short_title === '') {
+                this.msg = '略称を入力してください。'
+                return 
+            }
+            if(this.game_date === '') {
+                this.msg = '日付を入力してください。'
+                return
+            }
+            if(this.start_time === '') {
+                this.msg = '開始時間を入力してください。'
+                return
+            }
+            if(this.end_time === '') {
+                this.msg = '終了時間を入力してください。'
+                return
+            }
+            if(this.place === '') {
+                this.msg = '場所を入力してください。'
+                return
+            }
             if (!confirm('登録してよろしいですか。')) return;
             let type = 'insert';
             if(this.getParam('gameid') !== null) {

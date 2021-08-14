@@ -2,7 +2,7 @@
 
     <vue-header></vue-header>
 
-    <p style="color:red">{{ msg }}</p>
+    <p style="color:red; font-size:20px">{{ msg }}</p>
 
     <h1>イベント一括登録</h1>
     下記の内容で一括登録できます。
@@ -67,9 +67,11 @@
             </div>
         </div>
     
-        <button class="btn btn-primary" type="button" @click="register">
-            一括登録
-        </button>
+        <p>
+            <button class="btn btn-primary" type="button" @click="register">
+                一括登録
+            </button>
+        </p>
 
     <vue-footer></vue-footer>
 
@@ -122,6 +124,31 @@
                 this.companions.splice(index, 1)
             },
             register() {
+                if(this.user.occupation === '') {
+                    this.msg = '職種を入力してください。'
+                    scrollTo(0, 0)
+                    return 
+                }
+                if(this.user.sex === '') {
+                    this.msg = '性別を入力してください。'
+                    scrollTo(0, 0)
+                    return 
+                }
+                if(this.user.name === '') {
+                    this.msg = '名前を入力してください。'
+                    scrollTo(0, 0)
+                    return 
+                }
+                if(this.user.email === '' && this.user.line_id === '') {
+                    this.msg = 'メールアドレスを入力してください。'
+                    scrollTo(0, 0)
+                    return 
+                }
+                if(this.idList.length === 0) {
+                    this.msg = '参加するイベントにチェックを入れてください。'
+                    scrollTo(0, 0)
+                    return
+                }
                 if (!confirm('登録してよろしいですか。')) return;
                 let data = {
                     register: true,
@@ -144,6 +171,7 @@
                 .then(() => {
                     this.msg = '登録完了しました。'
                     this.getEventList()
+                    scrollTo(0, 0)
                 })
                 .catch(errors => console.log(errors))
             }
