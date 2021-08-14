@@ -29,14 +29,16 @@
                     </div>
                     <template v-if="day !== ''">
                         <template v-for="e in calData[day]">
-                            <a v-bind:href="'/participant/eventInfo?gameid=' + e.id" v-bind:class="'event ' + e.class_name">{{ e.short_title }}</a>
+                            <a v-bind:href="'/participant/eventInfo?gameid=' + e.id" v-bind:class="'event ' + e.class_name + ' event-apply-' + e.apply ">{{ e.short_title }}</a>
                         </template> 
                     </template>
                 </div>
             </td>
         </tr>
         
-    </table>    
+    </table>
+    参加状況
+    <span class="guide event-apply-Yes">参加登録済み</span>
     空き状況
     <span class="guide availability-OK">空きあり</span>
     <span class="guide availability-COUTION">残り僅か</span>
@@ -66,6 +68,8 @@
     const app = new Vue({
         el:"#app",
         data: {
+            user: {},
+            admin: false,
             year: '',
             month: '',
             date: '',
@@ -79,6 +83,12 @@
                 let params = new URLSearchParams();
                 params.append('year', this.year);
                 params.append('month', this.month + 1);
+                if(this.user.email !== null && this.user.email !== '') {
+                    params.append('email', this.user.email);
+                }
+                if(this.user.line_id !== null && this.user.line_id !== '') {
+                    params.append('line_id', this.user.line_id);
+                }
                 fetch('/api/event/getEventListAtMonth', {
                     method: 'post',
                     body: params
@@ -156,14 +166,27 @@
             },
             newEvent(day) {
                 location.href = "/participant/eventInfo?date=" + this.year + (this.month + 1) + day
-            }
+            },
+            getLoginUser() {
+                fetch('/api/data/getLoginUser', {
+                    method: 'post',
+                }).then(res => res.json()
+                    .then(data => {
+                        this.user = data
+                        this.getEventList()
+                        if (this.user.id == '') return 
+                        if(this.user.admin_flg == '1') {
+                            this.admin = true
+                        }
+                }))
+            },
         },
 
         created: function(){
             let date = new Date()
             this.year = date.getFullYear()
             this.month = date.getMonth()
-            this.getEventList()
+            this.getLoginUser()
         }
 
     })

@@ -35,28 +35,21 @@ class GameInfoDao extends BaseDao
     }
    
     // 一覧表示用
-    public function getGameInfoList($year, $month) 
+    public function getGameInfoList($year, $month, $email = '', $lineId = '') 
     {
-        $sql = $this->getGameInfoListSQL();
+        $sql = $this->getGameInfoListSQL($email, $lineId);
         $sql .= DaoFactory::getGameInfoListSQL();
         $sql .= " and g.delete_flg = 1 ";
         $sql .= " group by g.id order by max(g.game_date)";
         $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':year', $year);
         $prepare->bindValue(':month', $month);
-        $prepare->execute();
-
-        return $prepare->fetchAll();
-    }
-
-    // カレンダー表示用
-    public function getGameInfoListByDate($date) 
-    {
-        $sql = $this->getGameInfoListSQL();
-        $sql .= " where game_date = :date and g.delete_flg = 1 ";
-        $sql .= " group by g.id order by max(g.game_date), max(g.start_time)";
-        $prepare = $this->getPdo()->prepare($sql);
-        $prepare->bindValue(':date', $date);
+        if(!empty($email)) {
+            $prepare->bindValue(':email', $email);
+        }
+        if(!empty($lineId)) {
+            $prepare->bindValue(':line_id', $lineId);
+        }
         $prepare->execute();
 
         return $prepare->fetchAll();
@@ -88,7 +81,7 @@ class GameInfoDao extends BaseDao
         return $prepare->fetchAll();
     }
 
-    private function getGameInfoListSQL() 
+    private function getGameInfoListSQL($email = '', $lineId = '') 
     {
         $sql = "select 
 g.id 
@@ -105,18 +98,27 @@ g.id
 , case 
     when max(g.limit_number) <= coalesce(count(*), 0) + coalesce(sum(cnt), 0) then '定員に達しました' 
     else concat('残り', max(g.limit_number) - coalesce(count(p.id), 0) - coalesce(sum(cnt), 0), '人') 
-    end current_status
+  end current_status
 , case 
     when max(g.limit_number) <= (coalesce(count(*), 0) + coalesce(sum(cnt), 0)) then '✖️'
     when ceil(max(g.limit_number) / 4) > (max(g.limit_number) - coalesce(count(*), 0) - coalesce(sum(cnt), 0)) then '△'
     else '○'
-    end mark
+  end mark
 , case 
     when max(g.limit_number) <= (coalesce(count(*), 0) + coalesce(sum(cnt), 0)) then 'availability-NG'
     when ceil(max(g.limit_number) / 4) > (max(g.limit_number) - coalesce(count(*), 0) - coalesce(sum(cnt), 0)) then 'availability-COUTION'
     else 'availability-OK'
-    end class_name
-from game_info g 
+  end class_name
+";
+if(!empty($email)) {
+    $sql .= ", coalesce((select 'Yes' from participant where game_id = g.id and email = :email), 'No') apply ";
+} else if(!empty($lineId)) {
+    $sql .= ", coalesce((select 'Yes' from participant where game_id = g.id and line_id = :line_id), 'No') apply ";
+} else {
+    $sql .= ", 'No' apply ";
+
+}
+$sql .= "from game_info g 
 left join (select *
             , (select count(*) from companion where participant_id = participant.id) cnt
             from participant

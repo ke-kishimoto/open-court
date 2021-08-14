@@ -226,20 +226,6 @@ class ConfigDaoTest extends TestCase
         $this->assertSame(9, count($list));
     }
 
-    public function testGetGameInfoListByDate()
-    {
-        $dataSet = $this->getConnection()->createDataSet();
-        $dao = new GameInfoDao();
-
-        $list = $dao->getGameInfoListByDate('2020-01-01');
-        $this->assertSame(2, count($list));
-        $list = $dao->getGameInfoListByDate('2020-01-02');
-        $this->assertSame(3, count($list));
-        $list = $dao->getGameInfoListByDate('2020-01-03');
-        $this->assertSame(4, count($list));
-
-    }
-
     public function testGetGameInfoListByAfterDate()
     {
         $dataSet = $this->getConnection()->createDataSet();

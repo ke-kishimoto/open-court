@@ -67,6 +67,7 @@ table tr.weekTit{
     transition: .2s;
 }
 
+
 .availability-OK {
     background-color: #00CC99;
 }
@@ -84,6 +85,9 @@ table tr.weekTit{
 }
 .availability-NG:hover {
     background-color: #ff3680c5;
+}
+.event-apply-Yes {
+    background-color: #007bff;
 }
 
 .sunday {
