@@ -8,7 +8,6 @@ class EventController extends BaseController
 {
 
     public function index() {
-        parent::userHeader();
 
         $title = 'イベントカレンダー';
         $adminFlg = '0';

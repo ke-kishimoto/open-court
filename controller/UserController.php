@@ -3,7 +3,6 @@ namespace controller;
 
 use dao\UsersDao;
 use dao\DefaultCompanionDao;
-use dao\DetailDao;
 use dao\ConfigDao;
 use api\MailApi;
 use service\UserService;
@@ -30,17 +29,7 @@ class UserController extends BaseController
         // 10桁のランダム英数字
         $state = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz'), 0, 10);
         $_SESSION['state'] = $state;
-        $user = [
-            'id' => ''
-            , 'name' => ''
-            , 'occupation' => '1'
-            , 'sex' => '1'
-            , 'email' => ''
-            , 'line_id' => ''
-            , 'password' => ''
-            , 'remark' =>''
-        ];
-        $companions = [];
+        
         $title = '新規登録';
         $mode = 'new';
         $id = '';
@@ -51,18 +40,8 @@ class UserController extends BaseController
 
     // アカウント編集
     public function edit() {
-        if(!empty($_GET) && !empty($_SESSION['user'])) {
-            $usersDao = new UsersDao();
-            $defultCompanionDao = new DefaultCompanionDao();
-            $user = $usersDao->selectById((int)$_GET['id']);
-            $companions = $defultCompanionDao->getDefaultCompanionList($user['id']);
-            $title = 'アカウント情報修正';
-            $mode = 'update';
-            $id = $_GET['id'];
-            $passChange = '';
-        } else {
-            
-        }
+
+        $title = 'アカウント情報修正';
         include('./view/common/head.php');
         include('./view/signUp.php');
         
@@ -79,28 +58,14 @@ class UserController extends BaseController
     // 参加イベント一覧
     public function participatingEventList() {
 
-        if(isset($_SESSION['user'])) {
-            $detailDao = new DetailDao();
-            if(isset($_SESSION['user']['email']) && !empty($_SESSION['user']['email'])) {
-                $eventList = $detailDao->getEventListByEmail($_SESSION['user']['email'], date('Y-m-d'));
-            } elseif(isset($_SESSION['user']['line_id']) && !empty($_SESSION['user']['line_id'])) {
-                $eventList = $detailDao->getEventListByLineId($_SESSION['user']['line_id'], date('Y-m-d'));
-            }
-        
-            $title = '参加イベントリスト';
-            include('./view/common/head.php');
-            include('./view/participatingEventList.php');
-        
-        } else {
-            header('Location: /index.php');
-        }
+        $title = '参加イベントリスト';
+        include('./view/common/head.php');
+        include('./view/participatingEventList.php');
     }
 
     // サインアウト
     public function signout() {
         session_start();
-        // session_unset();
-        // session_destroy();
         unset($_SESSION['user']);
         header('Location: /index.php');
     }

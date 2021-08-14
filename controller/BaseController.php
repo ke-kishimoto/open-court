@@ -16,29 +16,5 @@ class BaseController {
         }
     }
 
-    public function userHeader() {
-        session_start();
-
-
-        if(!isset($_SESSION['user'])) {
-            $_SESSION['loginClass'] = 'hidden';
-            $_SESSION['noLoginClass'] = '';
-            $_SESSION['user_name'] = 'ゲスト';
-            $_SESSION['user_id'] = '';
-            $_SESSION['adminMenuFlg'] = '0';
-        } else {
-            $_SESSION['loginClass'] = '';
-            $_SESSION['noLoginClass'] = 'hidden';
-            $_SESSION['user_name'] = $_SESSION['user']['name'];
-            $_SESSION['user_id'] = $_SESSION['user']['id'];
-            if($_SESSION['user']['admin_flg'] == '1') {
-                $_SESSION['adminMenuFlg'] = '1';
-            } else {
-                $_SESSION['adminMenuFlg'] = '0';
-            }
-        }
-
-    }
-
 }
 
