@@ -73,15 +73,6 @@ class AdminController extends BaseController
 
     }
 
-    public function participantNameList() {
-        parent::adminHeader();
-
-        $gameId = $_GET['gameid'];
-        $title = '参加者名一覧';
-        include('./view/common/head.php');
-        include('./view/participantNameList.php');
-    }
-
     public function participantInfo() {
         parent::adminHeader();
 

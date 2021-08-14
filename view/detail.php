@@ -1,18 +1,20 @@
 <div id="app">
     <vue-header></vue-header>
 
-    <p v-if="today > event.game_date" style="color: red;">※終了したイベントのため応募できません</p>
-    <h3>イベント情報</h3>
-    <p>{{ event.title }}</p>
-    <p>日付：{{ event.game_date }}</p>
-    <p>時間：{{ event.start_time }} 〜 {{ event.end_time }}</p>
-    <p>場所：{{ event.place }}</p>
-    <p>詳細：{{ event.detail }}</p>
-    <p>参加費：
-        社会人：{{ event.price1 }}円 
-        大学・専門{{ event.price2 }}円 
-        高校生：{{ event.price3 }}円 
-    </p>
+    <div v-if="mode !== 'new'">
+        <p v-if="today > event.game_date" style="color: red;">※終了したイベントのため応募できません</p>
+        <h3>イベント情報</h3>
+        <p>{{ event.title }}</p>
+        <p>日付：{{ event.game_date }}</p>
+        <p>時間：{{ event.start_time }} 〜 {{ event.end_time }}</p>
+        <p>場所：{{ event.place }}</p>
+        <p>詳細：{{ event.detail }}</p>
+        <p>参加費：
+            社会人：{{ event.price1 }}円 
+            大学・専門{{ event.price2 }}円 
+            高校生：{{ event.price3 }}円 
+        </p>
+    </div>
     
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li v-if="admin" class="nav-item">
@@ -20,18 +22,18 @@
                 イベント
             </a>
         </li>
-        <li class="nav-item">
+        <li v-if="mode !== 'new'" class="nav-item">
             <a class="nav-link" id="add-tab" data-toggle="tab" href="#add" role="tab" aria-controls="contact" aria-selected="true">
                 <template v-if="admin">参加者追加</template>
                 <template v-else>参加申し込み</template>
             </a>
         </li>
-        <li class="nav-item">
+        <li v-if="mode !== 'new'" class="nav-item">
             <a class="nav-link" id="status-tab" data-toggle="tab" href="#status" role="tab" aria-controls="contact" aria-selected="false">
                 参加者内訳
             </a>
         </li>
-        <li class="nav-item">
+        <li v-if="mode !== 'new'" class="nav-item">
             <a class="nav-link" id="list-tab" data-toggle="tab" href="#list" role="tab" aria-controls="contact" aria-selected="false">
                 参加者一覧
             </a>
@@ -45,7 +47,7 @@
             <event-regist></event-regist>
         </div>
 
-        <div class="tab-pane fade" id="add" role="tabpanel" aria-labelledby="add-tab">
+        <div v-if="mode !== 'new'" class="tab-pane fade" id="add" role="tabpanel" aria-labelledby="add-tab">
             <div v-if="today <= event.game_date">
                 <br>
                 <p>【応募フォーム】
@@ -58,11 +60,11 @@
             </div>
         </div>
         
-        <div class="tab-pane fade" id="status" role="tabpanel" aria-labelledby="status-tab">
+        <div v-if="mode !== 'new'" class="tab-pane fade" id="status" role="tabpanel" aria-labelledby="status-tab">
             <participant-breakdown></participant-breakdown>
         </div>
     
-        <div class="tab-pane fade" id="list" role="tabpanel" aria-labelledby="list-tab">
+        <div v-if="mode !== 'new'" class="tab-pane fade" id="list" role="tabpanel" aria-labelledby="list-tab">
             <participant-list></participant-list>
         </div>
     </div>
@@ -83,6 +85,7 @@
     const vue = new Vue({
         el:"#app",
         data: {
+            mode: '',
             today: '',
             registered: false,
             user: {},
@@ -91,6 +94,7 @@
         },
         methods: {
             getEventInfo() {
+                if (this.getParam('gameid') === null) return
                 let params = new URLSearchParams();
                 params.append('tableName', 'gameInfo');
                 params.append('id', this.getParam('gameid'));
@@ -128,7 +132,6 @@
                             body: params
                         }).then(res => {res.json()
                                 .then(data => {
-                                    console.log(data)
                                     this.registered = data.result
                                 })
                             }
@@ -151,6 +154,10 @@
             this.getEventInfo()
             let date = new Date()
             this.today = date.getFullYear() + '-' + ('00' + (date.getMonth()+1)).slice(-2) + '-' + ('00' + date.getDate()).slice(-2)
+            this.mode = this.getParam('mode')
+            if(this.mode === 'new') {
+                this.event.game_date = this.getParam('date')
+            }
         }
     })
 </script>

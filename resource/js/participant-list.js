@@ -4,6 +4,7 @@ Vue.component('participant-list', {
             id: -1,
             participantList: [],
             user: {},
+            admin: false,
         }
     },
     methods: {
@@ -12,7 +13,10 @@ Vue.component('participant-list', {
                 method: 'post',
             }).then(res => res.json()
                 .then(data => {
-                        this.user = data;
+                    this.user = data;
+                    if(this.user.admin_flg == '1') {
+                        this.admin = true
+                    }
                 })
             )
         },

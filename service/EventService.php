@@ -153,44 +153,49 @@ class EventService
     // 登録共通処理
     private function participantRegist(DetailDao $detailDao, GameInfoDao $gameInfoDao, $participant, array $companions) {
         $errMsg = '';
-        if(!empty($participant['email']) && $detailDao->existsCheck($participant['game_id'], $participant['email'])) {
-            $errMsg = '既に登録済みのため登録できません。';
+        if(!empty($participant['email'])) {
+            $result = $detailDao->existsCheck($participant['game_id'], $participant['email']);
+            if($result['result']) {
+                $errMsg = '既に登録済みのため登録できません。';
+                return $errMsg;
+            }
+        } 
+        
+        // キャンセル待ちになるかどうかのチェック
+        if($detailDao->limitCheck($participant['game_id'], 1 + count($companions))) {
+            $waitingFlg = 1;
         } else {
-            // キャンセル待ちになるかどうかのチェック
-            if($detailDao->limitCheck($participant['game_id'], 1 + count($companions))) {
-                $waitingFlg = 1;
-            } else {
-                $waitingFlg = 0;
-            }
-            $participant['waiting_flg'] = $waitingFlg;
-            if ($waitingFlg === 0) {
-                $participant['attendance'] = 1;
-            } else {
-                // キャンセル待ちの場合はデフォルトで欠席
-                $participant['attendance'] = 2;
-            }
-            // イベント情報取得
-            $gameInfo = $gameInfoDao->selectById($participant['game_id']);
-            // 参加費の取得
-            if(!empty($participant['occupation'])) {
-                $participant['amount'] = $this->getAmount($participant['occupation'], $gameInfo);
-            }
-            // 登録
-            $detailDao->insert($participant);
-            
-            // 同伴者の登録
-            if(count($companions) > 0) {
-                $id = $detailDao->getParticipantId($participant);
-                $companionDao = new CompanionDao();
-                $companionDao->setPdo($detailDao->getPdo());
-                foreach($companions as $companion) {
-                    $companion['participant_id'] = (int)$id;
-                    $companion['attendance'] = $participant['attendance'];
-                    $companion['amount'] = $this->getAmount($companion['occupation'],$gameInfo);
-                    $companionDao->insert($companion);
-                }
+            $waitingFlg = 0;
+        }
+        $participant['waiting_flg'] = $waitingFlg;
+        if ($waitingFlg === 0) {
+            $participant['attendance'] = 1;
+        } else {
+            // キャンセル待ちの場合はデフォルトで欠席
+            $participant['attendance'] = 2;
+        }
+        // イベント情報取得
+        $gameInfo = $gameInfoDao->selectById($participant['game_id']);
+        // 参加費の取得
+        if(!empty($participant['occupation'])) {
+            $participant['amount'] = $this->getAmount($participant['occupation'], $gameInfo);
+        }
+        // 登録
+        $detailDao->insert($participant);
+        
+        // 同伴者の登録
+        if(count($companions) > 0) {
+            $id = $detailDao->getParticipantId($participant);
+            $companionDao = new CompanionDao();
+            $companionDao->setPdo($detailDao->getPdo());
+            foreach($companions as $companion) {
+                $companion['participant_id'] = (int)$id;
+                $companion['attendance'] = $participant['attendance'];
+                $companion['amount'] = $this->getAmount($companion['occupation'],$gameInfo);
+                $companionDao->insert($companion);
             }
         }
+    
         return $errMsg;
     }
 

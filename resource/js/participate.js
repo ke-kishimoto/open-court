@@ -130,13 +130,29 @@ Vue.component('participate', {
             .catch(errors => console.log(errors))
         },
         addCompanion() {
-            this.companions.push({name: '', occupation: '1', sex: '1'})
+            this.companions.push({name: '', occupation: this.user.occupation, sex: this.user.sex})
         },
         deleteCompanion(index) {
             this.companions.splice(index, 1)
         },
         register() {
-            
+            if(this.user.occupation === '') {
+                this.msg = '職種を入力してください。'
+                return 
+            }
+            if(this.user.sex === '') {
+                this.msg = '性別を入力してください。'
+                return 
+            }
+            if(this.user.name === '') {
+                this.msg = '名前を入力してください。'
+                return 
+            }
+            if(this.user.line_id === '' && this.user.email === '') {
+                this.msg = 'メールアドレスを入力してください。'
+                return
+            }
+
             if (!confirm('登録してよろしいですか。')) return;
             
             let data = {

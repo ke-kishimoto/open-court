@@ -1,4 +1,5 @@
 <div id="list">
+    <vue-header></vue-header>
     <p>{{ msg }}</p>
     <h1>参加者リスト</h1>
     <table>
@@ -12,13 +13,16 @@
                 <th>{{ participant.sex_name }}</th>
             </tr>
         </template>
-
     </table>
+
+    <vue-footer></vue-footer>
+
 </div>
 
-<?php include('common/footer.php') ?>
 <script src="/resource/js/common.js"></script>
-<script src="/resource/js/Vue.min.js"></script>
+<script src="/resource/js/vue.min.js"></script>
+<script src="/resource/js/header.js"></script>
+<script src="/resource/js/footer.js"></script>
 <script>
     'use strict'
 

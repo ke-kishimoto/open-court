@@ -1,6 +1,7 @@
 Vue.component('event-regist', {
     data: function() {
         return {
+            mode: '',
             msg: '',
             selectedTemplate: '',
             templateList: [],
@@ -125,6 +126,7 @@ Vue.component('event-regist', {
                 } else {
                     this.clear()
                     this.msg = '登録完了しました。'
+                    location.href = "#header"
                 }
             })
         },
@@ -162,14 +164,17 @@ Vue.component('event-regist', {
         }
         if(this.getParam('gameid') !== null) {
             this.getGameInfo(this.getParam('gameid'))
+            this.mode = 'edit'
+        } else {
+            this.mode = 'new'
         }
     },
     template: 
     `
     <div>
         <br>
-        <p style="color:red">{{ msg }}</p>
-        <div>
+        <p style="color:red; font-size:20px">{{ msg }}</p>
+        <div v-if="mode === 'new'">
             <p>
                 テンプレート：
                 <select @change="selectTemplate($event)" v-model="selectedTemplate">
@@ -192,8 +197,11 @@ Vue.component('event-regist', {
             <label>高校　<input type="number" class="form-control form-price" v-model="price3" required>円</label>
         </p>
         <p>
-            <button class="btn btn-primary" type="button" @click="register">登録</button>
-            <button class="btn btn-secondary" type="button" @click="deleteGame">削除</button>
+            <button class="btn btn-primary" type="button" @click="register">
+                <template v-if="mode === 'new'">登録</template>
+                <template v-else>更新</template>
+            </button>
+            <button v-if="mode !== 'new'" class="btn btn-danger" type="button" @click="deleteGame">削除</button>
         </p>
     </div>
     `

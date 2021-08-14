@@ -165,7 +165,8 @@
                 this.getEventList();
             },
             newEvent(day) {
-                location.href = "/participant/eventInfo?date=" + this.year + (this.month + 1) + day
+                if(!this.admin) return
+                location.href = "/participant/eventInfo?date=" + this.year + '-' + ('00' + (this.month+1)).slice(-2) + '-' + ('00' + day).slice(-2) + "&mode=new"
             },
             getLoginUser() {
                 fetch('/api/data/getLoginUser', {
