@@ -43,7 +43,7 @@
         <vue-footer></vue-footer>
 
 </div>
-<script src="/resource/js/common_admin.js"></script>
+<script src="/resource/js/common.js"></script>
 <script src="/resource/js/vue.min.js"></script>
 <script src="/resource/js/header.js"></script>
 <script src="/resource/js/footer.js"></script>
