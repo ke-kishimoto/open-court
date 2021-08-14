@@ -1,5 +1,5 @@
 <?php
-namespace controller\admin;
+namespace controller;
 
 use controller\BaseController;
 use dao\DetailDao;
