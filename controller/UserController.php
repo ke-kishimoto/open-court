@@ -14,7 +14,6 @@ class UserController extends BaseController
 
     // サインイン（ログイン）
     public function signIn() {
-        parent::userHeader();
         $configDao = new ConfigDao();
         $config = $configDao->selectById(1);
         // 10桁のランダム英数字
@@ -28,7 +27,6 @@ class UserController extends BaseController
 
     // サインアップ
     public function signUp() {
-        parent::userHeader();
         // 10桁のランダム英数字
         $state = substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz'), 0, 10);
         $_SESSION['state'] = $state;
@@ -53,7 +51,6 @@ class UserController extends BaseController
 
     // アカウント編集
     public function edit() {
-        parent::userHeader();
         if(!empty($_GET) && !empty($_SESSION['user'])) {
             $usersDao = new UsersDao();
             $defultCompanionDao = new DefaultCompanionDao();
@@ -73,7 +70,6 @@ class UserController extends BaseController
 
     // パスワード変更画面への遷移
     public function passwordChange() {
-        parent::userHeader();
 
         $title = 'パスワード変更';
         include('./view/common/head.php');
@@ -82,7 +78,6 @@ class UserController extends BaseController
 
     // 参加イベント一覧
     public function participatingEventList() {
-        parent::userHeader();
 
         if(isset($_SESSION['user'])) {
             $detailDao = new DetailDao();
@@ -113,7 +108,6 @@ class UserController extends BaseController
     // パスワードを忘れた場合
     public function passwordForget()
     {
-        parent::userHeader();
 
         $title = 'パスワードリセット';
         include('./view/common/head.php');
@@ -123,7 +117,6 @@ class UserController extends BaseController
     // パスワードリセット
     public function passReset()
     {
-        parent::userHeader();
         $userDao = new UsersDao();
         $email = $_POST['email'] ?? '';
         $user = $userDao->getUserByEmail($email);
@@ -160,7 +153,6 @@ class UserController extends BaseController
     // LINEでログイン
     public function lineLogin()
     {
-        parent::userHeader();
 
         // アクセストークン取得用認可コード
         $code = $_GET['code'];
@@ -193,7 +185,6 @@ class UserController extends BaseController
     // LINEで初回ログイン時
     public function lineSignupComplete()
     {
-        parent::userHeader();
         $usersDao = new UsersDao();
 
         $user = [];

@@ -62,8 +62,8 @@ Vue.component('vue-header', {
                     <li v-if="logind"><a class="drawer-menu-item" href="/participant/eventBatchRegist">イベント一括参加</a></li>
                     <li v-if="!logind"><a class="drawer-menu-item" href="/user/signup">新規登録</a></li>
                     <li v-if="!logind"><a class="drawer-menu-item" href="/user/signin">ログイン</a></li>
-                    <li><a class="drawer-menu-item" href="/inquiry/inquiry">お問い合わせ</a></li>
-                    <li><a class="drawer-menu-item" href="/troubleReport/index">障害報告・要望</a></li>
+                    <li><a class="drawer-menu-item" href="/help/inquiry">お問い合わせ</a></li>
+                    <li><a class="drawer-menu-item" href="/help/troubleReport">障害報告・要望</a></li>
                     <li v-if="logind"><a class="drawer-menu-item" v-bind:href="'/user/edit?id=' + user.id">アカウント情報</a></li>
                     <li v-if="logind"><a class="drawer-menu-item" href="/user/signout">ログアウト</a></li>
                 </ul>

@@ -1,9 +1,5 @@
 <?php
 namespace controller;
-use dao\DetailDao;
-use dao\GameInfoDao;
-use dao\CompanionDao;
-use dao\DefaultCompanionDao;
 use service\EventService;
 
 class ParticipantController extends BaseController
@@ -11,7 +7,6 @@ class ParticipantController extends BaseController
 
     // 参加一括登録画面
     public function eventBatchRegist() {
-        parent::userHeader();
 
         // CSFR対策
         // 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
@@ -27,7 +22,6 @@ class ParticipantController extends BaseController
 
     // イベント詳細画面
     public function eventInfo() {
-        parent::userHeader();
 
         $title = 'イベント詳細';
         include('./view/common/head.php');
@@ -36,7 +30,6 @@ class ParticipantController extends BaseController
 
     
     public function cancel() {
-        parent::userHeader();
         
         if(isset($_SESSION['user'])) {
             $email = $_SESSION['user']['email'];
@@ -54,7 +47,6 @@ class ParticipantController extends BaseController
 
     // キャンセル処理
     public function cancelComplete() {
-        parent::userHeader();
 
         $errMsg = '';
         if(isset($_POST)) {

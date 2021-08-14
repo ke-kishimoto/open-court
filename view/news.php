@@ -6,7 +6,7 @@
         <template v-for="notice in noticeList" v-bind:key="notice.id">
             <p>
             {{ notice.date }} &nbsp;&nbsp;&nbsp;
-            <a v-bind:href="'/notice/detail?id=' + notice.id">{{notice.title}}</a>
+            <a v-bind:href="'/help/noticeDetail?id=' + notice.id">{{notice.title}}</a>
         </p>
         </template>
     </div>

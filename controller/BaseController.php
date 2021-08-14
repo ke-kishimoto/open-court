@@ -7,8 +7,6 @@ class BaseController {
     public function adminHeader() {
         session_start();
 
-        $this->headerCommon();
-
         //セッションに'user'が無ければログイン画面へ
         if (isset($_SESSION['user']) == null) {
             header('Location: /signIn');
@@ -21,7 +19,6 @@ class BaseController {
     public function userHeader() {
         session_start();
 
-        $this->headerCommon();
 
         if(!isset($_SESSION['user'])) {
             $_SESSION['loginClass'] = 'hidden';
@@ -43,21 +40,5 @@ class BaseController {
 
     }
 
-    private function headerCommon() {
-        $configDao = new ConfigDao();
-        $config = $configDao->selectById(1);
-        if ($config['system_title'] !== null) {
-            $_SESSION['system_title'] = $config['system_title'];
-        } else {
-            $_SESSION['system_title'] = 'system_title';
-        }
-        if ($config['bg_color'] === 'white') {
-            $_SESSION['bgColor'] = 'bg-color-white';
-        } elseif ($config['bg_color'] == 'orange') {
-            $_SESSION['bgColor'] = 'bg-color-orange';
-        } else {
-            $_SESSION['bgColor'] = 'bg-color-white';
-        }
-    }
 }
 

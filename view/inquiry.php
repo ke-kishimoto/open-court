@@ -77,7 +77,7 @@
                 params.append('name', this.name);
                 params.append('email', this.email);
                 params.append('content', this.content);
-                fetch('/inquiry/inquiryComplete', {
+                fetch('/api/contact/sendInquiry', {
                     method: 'post',
                     body: params
                 })
