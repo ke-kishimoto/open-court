@@ -91,33 +91,39 @@ class GameInfoDao extends BaseDao
     private function getGameInfoListSQL() 
     {
         $sql = "select 
-        g.id 
-        , max(g.delete_flg) delete_flg
-        , max(g.title) title
-        , max(g.short_title) short_title
-        , max(g.game_date) game_date
-        , max(g.start_time) start_time
-        , max(g.end_time) end_time
-        , max(g.place) place
-        , max(g.limit_number) limit_number
-        , count(p.id) + coalesce(sum(cnt), 0) participants_number
-        , case 
-            when max(g.limit_number) <= coalesce(count(*), 0) + coalesce(sum(cnt), 0) then '定員に達しました' 
-            else concat('残り', max(g.limit_number) - coalesce(count(p.id), 0) - coalesce(sum(cnt), 0), '人') 
-          end current_status
-        , case 
-            when max(g.limit_number) <= (coalesce(count(*), 0) + coalesce(sum(cnt), 0)) then '✖️'
-            when ceil(max(g.limit_number) / 4) > (max(g.limit_number) - coalesce(count(*), 0) - coalesce(sum(cnt), 0)) then '△'
-            else '○'
-          end mark
-        from game_info g 
-        left join (select *
-                    , (select count(*) from companion where participant_id = participant.id) cnt
-                    from participant
-                    where waiting_flg = 0
-                    and delete_flg = 1) p
-        on g.id = p.game_id 
-        ";
+g.id 
+, max(g.delete_flg) delete_flg
+, max(g.title) title
+, max(g.short_title) short_title
+, max(g.game_date) game_date
+, max(date_format(g.game_date, '%e')) day
+, max(g.start_time) start_time
+, max(g.end_time) end_time
+, max(g.place) place
+, max(g.limit_number) limit_number
+, count(p.id) + coalesce(sum(cnt), 0) participants_number
+, case 
+    when max(g.limit_number) <= coalesce(count(*), 0) + coalesce(sum(cnt), 0) then '定員に達しました' 
+    else concat('残り', max(g.limit_number) - coalesce(count(p.id), 0) - coalesce(sum(cnt), 0), '人') 
+    end current_status
+, case 
+    when max(g.limit_number) <= (coalesce(count(*), 0) + coalesce(sum(cnt), 0)) then '✖️'
+    when ceil(max(g.limit_number) / 4) > (max(g.limit_number) - coalesce(count(*), 0) - coalesce(sum(cnt), 0)) then '△'
+    else '○'
+    end mark
+, case 
+    when max(g.limit_number) <= (coalesce(count(*), 0) + coalesce(sum(cnt), 0)) then 'availability-NG'
+    when ceil(max(g.limit_number) / 4) > (max(g.limit_number) - coalesce(count(*), 0) - coalesce(sum(cnt), 0)) then 'availability-COUTION'
+    else 'availability-OK'
+    end class_name
+from game_info g 
+left join (select *
+            , (select count(*) from companion where participant_id = participant.id) cnt
+            from participant
+            where waiting_flg = 0
+            and delete_flg = 1) p
+on g.id = p.game_id 
+";
         return $sql;
     }
 

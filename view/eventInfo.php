@@ -1,18 +1,5 @@
 <div id="app">
     <vue-header></vue-header>
-
-    <!-- <p>対象イベント：<?php echo $gameInfo['title'] ?></p> -->
-
-            <!-- <p>{{ event.title }}</p>
-            <p>日付：{{ event.game_date }}</p>
-            <p>時間：{{ event.start_time }} 〜 {{ event.end_time }}</p>
-            <p>場所：{{ event.place }}</p>
-            <p>詳細：{{ event.detail }}</p>
-            <p>参加費：<br>
-                社会人：{{ event.price1 }}円 <br>
-                大学・専門{{ event.price2 }}円 <br>
-                高校生：{{ event.price3 }}円 <br>
-            </p> -->
     
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">

@@ -5,9 +5,9 @@
         <tr>
             <td colspan= 7>
                 <div class="month">
-                    <a href="./index?year=<?php echo htmlspecialchars($eventCalendar->lastYear); ?>&month=<?php echo htmlspecialchars($eventCalendar->lastmonth); ?>" class="lastMonthLink"><i class="fas fa-chevron-left"></i></a>
-                    <a href="./index?year=<?php echo htmlspecialchars($eventCalendar->year); ?>&month=<?php echo htmlspecialchars($eventCalendar->month); ?>" class="MonthLink"><span id="year"><?php echo htmlspecialchars($eventCalendar->year); ?></span>年<span id="this-month"><?php echo htmlspecialchars($eventCalendar->month); ?></span>月</a>
-                    <a href="./index?year=<?php echo htmlspecialchars($eventCalendar->nextYear); ?>&month=<?php echo htmlspecialchars($eventCalendar->nextmonth); ?>"class="nextMonthLink"><i class="fas fa-chevron-right"></i></a>
+                    <a href="#" class="lastMonthLink" @click="lastMonth"><i class="fas fa-chevron-left"></i></a>
+                    <a href="#" class="MonthLink"><span id="year">{{ year }}</span>年<span id="this-month">{{ month + 1 }}</span>月</a>
+                    <a href="#"class="nextMonthLink" @click="nextMonth"><i class="fas fa-chevron-right"></i></a>
                 </div>
             </td>
         </tr>
@@ -20,45 +20,22 @@
             <th>金</th>
             <th class="saturday">土</th>
         </tr>
-        <tr>
-        <?php foreach ($eventCalendar->calendar as $key => $value): ?>
-            <td class="<?php echo $value['weekName']; ?>">
-                <div class="day">
-                    <?php if($value['link']): ?>    
-                        <div class="day-header">   
-                            <a class="link <?php echo $value['today'] ?>" href="detail_date.php?date=<?php echo $year . '/' . sprintf('%02d', $month) . '/' . sprintf('%02d', $value['day']); ?>">
-                                <?php echo htmlspecialchars($value['day']); ?>
-                            </a>
-                        </div>
-                            <?php foreach($value['info'] as $info): ?>
-                                <?php
-                                    if($info['mark'] === '○') {
-                                        $availabilityClass = 'availability-OK';
-                                    } elseif($info['mark'] === '△') {
-                                        $availabilityClass = 'availability-COUTION';
-                                    } elseif($info['mark'] === '✖️') {
-                                        $availabilityClass = 'availability-NG';
-                                    }
-                                ?>
-                               
-                                <a class="event <?php echo $availabilityClass; ?>" href="/participant/eventInfo?gameid=<?php echo htmlspecialchars($info['id']); ?>"><?php echo $info['short_title'] ?></a>
-                            <?php endforeach; ?>
-                            </span>
-                    <?php else: ?>
-                        <div class="day-header">
-                            <span class="nolink <?php echo $value['today']?>">
-                                <?php echo htmlspecialchars($value['day']); ?>
-                            </span>
-                        </div>
-                    <?php endif ?>
+        
+        <tr v-for="weekDay in days">
+            <td v-for="day in weekDay">
+                <div class="day" @click="newEvent(day)">
+                    <div class="day-header">
+                        <span class="nolink">{{ day }}</span>
+                    </div>
+                    <template v-if="day !== ''">
+                        <template v-for="e in calData[day]">
+                            <a v-bind:href="'/participant/eventInfo?gameid=' + e.id" v-bind:class="'event ' + e.class_name">{{ e.short_title }}</a>
+                        </template> 
+                    </template>
                 </div>
             </td>
-    
-        <?php if ($value['weekName'] === 'saturday'): ?>
-            </tr>
-        <?php endif; ?>
-    
-        <?php endforeach; ?>
+        </tr>
+        
     </table>    
     空き状況
     <span class="guide availability-OK">空きあり</span>
@@ -91,13 +68,17 @@
         data: {
             year: '',
             month: '',
+            date: '',
+            lastDate: -1,
+            days: [],
+            calData: [], // 日付ごとのイベントを格納する２次元配列
             eventList: [],
         },
         methods: {
             getEventList() {
                 let params = new URLSearchParams();
                 params.append('year', this.year);
-                params.append('month', this.month);
+                params.append('month', this.month + 1);
                 fetch('/api/event/getEventListAtMonth', {
                     method: 'post',
                     body: params
@@ -105,15 +86,83 @@
                 .then(res => res.json()
                     .then(data => {
                         this.eventList = data;
+                        this.createCalendar(this.year, this.month);
+                        this.createCalData();
                     })
                 )
                 .catch(errors => console.log(errors))
+            },
+            createCalendar(year, month) {
+                const start = new Date(year, month, 1);     // 月初
+                const last = new Date(year, month + 1, 0);  // 月末
+                const startDate = start.getDate();          // 月初
+                const lastDate = last.getDate();            // 月末
+                const startDay = start.getDay();            // 月初の曜日
+                const lastDay = last.getDay();
+                
+                this.lastDate = lastDate;
+                this.days = [];
+                let weekDay = [];
+                let dayCount = 0; // 曜日カウント用
+
+                for (let i = startDate; i <= lastDate; i++) {
+                    if (i === startDate) {
+                        for (let j = 0; j < startDay; j++) {
+                            weekDay.push('');
+                            dayCount++;
+                        }
+                    }
+                    weekDay.push(i);
+                    dayCount++;
+                    if (dayCount === 7) {
+                        this.days.push(weekDay);
+                        dayCount = 0;
+                        weekDay = [];
+                    }
+                }
+                for (let i = lastDay; i < 6; i++) {
+                    weekDay.push('');
+                }
+                this.days.push(weekDay);
+            },
+            createCalData() {
+                let index = 0;
+                this.calData = {};
+                for(let i=1; i<=this.lastDate; i++) {
+                    this.calData[i] = [];
+                    for(let j=index; j<=this.eventList.length; j++) {
+                        if(this.eventList[index] === undefined) {
+                            break;
+                        } else if(i < Number(this.eventList[index].day)) {
+                            break;
+                        } else if (i === Number(this.eventList[index].day)) {
+                            this.calData[i].push(this.eventList[index]);
+                            index++;
+                        } else {
+                            index++;
+                        }
+                    }
+                }
+            },
+            lastMonth() {
+                this.year = this.month === 0 ? this.year - 1 : this.year;
+                this.month = this.month === 0 ? 11 : this.month - 1;
+                this.getEventList();
+            },
+            nextMonth() {
+                this.year = this.month === 11 ? this.year + 1 : this.year;
+                this.month = this.month === 11 ? 0 : this.month + 1;
+                this.getEventList();
+            },
+            newEvent(day) {
+                location.href = "/participant/eventInfo?date=" + this.year + (this.month + 1) + day
             }
         },
+
         created: function(){
             let date = new Date()
             this.year = date.getFullYear()
-            this.month = date.getMonth() + 1
+            this.month = date.getMonth()
             this.getEventList()
         }
 
