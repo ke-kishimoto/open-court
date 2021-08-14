@@ -17,6 +17,7 @@ class SalesApi
 
         echo json_encode($eventList);
     }
+
     public function updateExpenses()
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -33,6 +34,27 @@ class SalesApi
             $GameInfoDao->update($gameInfo);
         }
         echo json_encode([]);
+    }
+
+    public function getYearSales()
+    {
+        header('Content-type: application/json; charset= UTF-8');
+
+        $salesDao = new SalesDao();
+        $year = (int)$_POST['year'] ?? date('Y');
+        $salesMonthList = $salesDao->getYearMonthSales($year);
+
+        echo json_encode($salesMonthList);
+    }
+
+    public function getAllSales()
+    {
+        header('Content-type: application/json; charset= UTF-8');
+
+        $salesDao = new SalesDao();
+        $salesYearList = $salesDao->getYearSales();
+
+        echo json_encode($salesYearList);
     }
 
 }
