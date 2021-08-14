@@ -1,26 +1,28 @@
-<table>
-    <tr>
-        <td colspan="4">
-            <div class="sales-head">
-                <a href="./index?year=<?php echo htmlspecialchars($lastYear); ?>&month=<?php echo htmlspecialchars($lastmonth); ?>" class="lastMonthLink"><i class="fas fa-chevron-left"></i></a>
-                <a href="./index?year=<?php echo htmlspecialchars($year); ?>&month=<?php echo htmlspecialchars($month); ?>" class="MonthLink"><span id="year"><?php echo htmlspecialchars($year); ?></span>年<span id="this-month"><?php echo htmlspecialchars($month); ?></span>月</a>
-                <a href="./index?year=<?php echo htmlspecialchars($nextYear); ?>&month=<?php echo htmlspecialchars($nextmonth); ?>" class="nextMonthLink"><i class="fas fa-chevron-right"></i></a>
-            </div>
-        </td>
-        <td>
-            <div class="sales-head">
-                <a href="./month" class="sales-link">月別</a>
-            </div>
-        </td>
-        <td>
-            <div class="sales-head">
-                <a href="./year" class="sales-link">年別</a>
-            </div>
-        </td>
-    </tr>
-</table>
-<?php if (!empty($eventList)) : ?>
-    <form action="/sales/updateExpenses" method="post">
+<div id="app">
+
+<vue-header></vue-header>
+
+    <table>
+        <tr>
+            <td colspan="4">
+                <div class="sales-head">
+                    <a href="#" class="lastMonthLink" @click="lastMonth"><i class="fas fa-chevron-left"></i></a>
+                    <a href="#" class="MonthLink"><span id="year">{{ year }}</span>年<span id="this-month">{{ month + 1 }}</span>月</a>
+                    <a href="#" class="nextMonthLink" @click="nextMonth"><i class="fas fa-chevron-right"></i></a>
+                </div>
+            </td>
+            <td>
+                <div class="sales-head">
+                    <a href="./month" class="sales-link">月別</a>
+                </div>
+            </td>
+            <td>
+                <div class="sales-head">
+                    <a href="./year" class="sales-link">年別</a>
+                </div>
+            </td>
+        </tr>
+    </table>
         <table>
             <tr>
                 <th>日付</th>
@@ -30,47 +32,99 @@
                 <th>経費</th>
                 <th>粗利</th>
             </tr>
-            <?php $count = 0; 
-                  $total_cnt = 0;
-                  $total_amount = 0;
-                  $total_expenses = 0; ?>
-            <?php foreach ($eventList as $event) : ?>
-                <tr>
-                    <input type="hidden" name="id-<?php echo $count ?>" value="<?php echo $event['game_id'] ?>">
-                    <th><?php echo $event['date'] ?></th>
-                    <th><a href="./detail?gameid=<?php echo $event['game_id'] ?>"><?php echo $event['title'] ?></a></th>
-                    <th><input type="number" name="cnt-<?php echo $count ?>" value="<?php echo $event['cnt'] ?>" class="form-control"></th>
-                    <th><input type="number" name="amount-<?php echo $count ?>" value="<?php echo $event['amount'] ?>" class="form-control"></th>
-                    <th><input type="number" name="expenses-<?php echo $count ?>" value="<?php echo $event['expenses'] ?>" class="form-control"></th>
-                    <th><?php echo ($event['amount']-$event['expenses']) ?></th>
-                </tr>
-                <?php $count++; 
-                      $total_cnt += (int)$event['cnt'];
-                      $total_amount += (int)$event['amount'];
-                      $total_expenses += (int)$event['expenses']; ?>
-            <?php endforeach ?>
+
+            <tr v-for="event in eventList">
+                <th>{{ event.date }}</th>
+                <th><a v-bind:href="'./detail?gameid=' + event.id">{{ event.title }}</a></th>
+                <th><input type="number" v-model="event.cnt" class="form-control"></th>
+                <th><input type="number" v-model="event.amount" class="form-control"></th>
+                <th><input type="number" v-model="event.expenses" class="form-control"></th>
+                <th>{{ event.amount - event.expenses }}</th>
+            </tr>
             <tr>
                 <th colspan="2">合計</th>
-                <th><?php echo $total_cnt ?></th>
-                <th><?php echo $total_amount ?></th>
-                <th><?php echo $total_expenses ?></th>
-                <th><?php echo $total_amount - $total_expenses ?></th>
+                <th>{{ totals.total_cnt }}</th>
+                <th>{{ totals.total_amount }}</th>
+                <th>{{ totals.total_expenses }}</th>
+                <th>{{ totals.total_amount - totals.total_expenses}}</th>
             </tr>
+
         </table>
-        <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
-        <input type="hidden" name="count" value="<?php echo $count ?>">
         <p>
-            <button type="submit" class="btn btn-primary">経費更新</button>
+            <button type="button" class="btn btn-primary" @click="updateExpenses">更新</button>
         </p>
-    </form>
-<?php else : ?>
-    <p>対象月にイベントはありません。</p>
-<?php endif ?>
-    <p>
-        <a href="/admin/index">トップに戻る</a>
-    </p>
-    <?php include('common/footer.php') ?>
-    <script src="/resource/js/common_admin.js">
+
+        <vue-footer></vue-footer>
+
+</div>
+
+<script src="/resource/js/common.js"></script>
+<script src="/resource/js/Vue.js"></script>
+<script src="/resource/js/header.js"></script>
+<script src="/resource/js/footer.js"></script>
+<script>
+    'use strict'
+    const app = new Vue({
+        el:"#app",
+        data: {
+            year: '',
+            month: '',
+            eventList: [],
+            totals: [],
+        },
+        methods: {
+            getMonthSales() {
+                let params = new URLSearchParams()
+                params.append('year', this.year)
+                params.append('month', this.month + 1)
+                fetch('/api/sales/getMonthSales', {
+                    method: 'post',
+                    body: params
+                }).then(res => res.json().then(data => {
+                    this.eventList = data
+                    this.totals = this.eventList.reduce((sum, event) => {
+                         sum['total_cnt'] += Number(event.cnt)
+                         sum['total_amount'] += Number(event.amount)
+                         sum['total_expenses'] += Number(event.expenses)
+                         return sum
+                    }, {total_cnt: 0, total_amount: 0, total_expenses:0})
+                }))
+            },
+            lastMonth() {
+                this.year = this.month === 0 ? this.year - 1 : this.year;
+                this.month = this.month === 0 ? 11 : this.month - 1;
+                this.getMonthSales();
+            },
+            nextMonth() {
+                this.year = this.month === 11 ? this.year + 1 : this.year;
+                this.month = this.month === 11 ? 0 : this.month + 1;
+                this.getMonthSales();
+            },
+            updateExpenses() {
+                if (!confirm('更新してよろしいですか。')) return;
+
+                fetch('/api/sales/updateExpenses', {
+                    headers:{
+                        'Content-Type': 'application/json',
+                    },
+                    method: 'post',
+                    body: JSON.stringify(this.eventList)
+                })
+                .then(() => {
+                    // this.msg = '登録完了しました。'
+                    this.getMonthSales()
+                })
+                .catch(errors => console.log(errors))
+            }
+            
+        },
+        created: function() {
+            let date = new Date()
+            this.year = date.getFullYear()
+            this.month = date.getMonth()
+            this.getMonthSales()
+        }
+    })
 </script>
 </body>
 </html>
