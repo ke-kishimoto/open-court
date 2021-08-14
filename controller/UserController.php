@@ -79,42 +79,6 @@ class UserController extends BaseController
         include('./view/passwordForget.php');
     }
 
-    // パスワードリセット
-    public function passReset()
-    {
-        $userDao = new UsersDao();
-        $email = $_POST['email'] ?? '';
-        $user = $userDao->getUserByEmail($email);
-
-        if(!$user) {
-            $errMsg = '入力されたメールアドレスによる登録がありません。';
-            $title = 'パスワードリセット';
-            include('./view/common/head.php');
-            include('./view/passwordForget.php');
-        } else {
-            // 8文字で適当なパスワードを生成
-            $pass = substr(base_convert(md5(uniqid()), 16, 36), 0, 8);
-            $mailApi = new MailApi();
-            $responseCode = $mailApi->passreset_mail($email, $pass);
-            if($responseCode == 202 || $responseCode == 201) {
-                // ハッシュ化されたパスワード
-                $password = password_hash($pass, PASSWORD_DEFAULT);
-                $userDao->updatePass((int)$user['id'], $password);
-
-                $title = 'パスワードリセット完了';
-                $msg = 'パスワードリセットのメールを送信しました。ご確認ください。';
-                include('./view/common/head.php');
-                include('./view/complete.php');
-
-            } else {
-                $errMsg = 'メールの送信に失敗しました。';
-                $title = 'パスワードリセット';
-                include('./view/common/head.php');
-                include('./view/passwordForget.php');
-            }
-
-        }
-    }
     // LINEでログイン
     public function lineLogin()
     {

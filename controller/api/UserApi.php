@@ -48,6 +48,33 @@ class UserApi
         echo json_encode(['errMsg' => '']);
     }
 
+    // パスワードリセット
+    public function passReset()
+    {
+        $userDao = new UsersDao();
+        $email = $_POST['email'] ?? '';
+        $user = $userDao->getUserByEmail($email);
+
+        if(!$user) {
+            $msg = '入力されたメールアドレスによる登録がありません。';
+        } else {
+            // 8文字で適当なパスワードを生成
+            $pass = substr(base_convert(md5(uniqid()), 16, 36), 0, 8);
+            $mailApi = new MailApi();
+            $responseCode = $mailApi->passreset_mail($email, $pass);
+            if($responseCode == 202 || $responseCode == 201) {
+                // ハッシュ化されたパスワード
+                $password = password_hash($pass, PASSWORD_DEFAULT);
+                $userDao->updatePass((int)$user['id'], $password);
+                $msg = 'パスワードリセットのメールを送信しました。メールをご確認ください。';
+    
+            } else {
+                $msg = 'メールの送信に失敗しました。申し訳ありませんが管理者にご連絡ください。';
+            }
+        }
+        echo json_encode(['msg' => $msg]);
+    }
+
     // ログインチェック
     public function signInCheck() {
 
