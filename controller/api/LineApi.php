@@ -158,7 +158,7 @@ class LineApi
         $data = array(
             'grant_type' => 'authorization_code',
             'code' => $code,
-            'redirect_uri' => 'https://opencourt.eventmanc.com/user/linelogin',
+            'redirect_uri' => $config['callback_url'],
             'client_id' => $config['client_id'],
             'client_secret' => $config['client_secret']
         );
@@ -284,7 +284,7 @@ class LineApi
         $data = array(
             'grant_type' => 'authorization_code',
             'code' => $code,
-            'redirect_uri' => 'https://opencourt.eventmanc.com/',
+            'redirect_uri' => $config['callback_url'],
             'client_id' => $config['client_id'],
             'client_secret' => $config['client_secret']
         );

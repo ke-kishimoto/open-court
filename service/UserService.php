@@ -15,7 +15,7 @@ class UserService
         $idToken = $response->id_token;
 
         // IDの検証
-        $response = $lineApi->tokenVerify($idToken);
+        $result = $lineApi->tokenVerify($idToken);
 
         // プロフィール取得
         // $response = $lineApi->getLineProfile($accessToken);
