@@ -67,6 +67,7 @@
                     body: params
                 }).then(res => res.json().then(data => {
                     this.msg = data.msg
+                    this.user.password = ''
                     scrollTo(0, 0)
                 }))
             },

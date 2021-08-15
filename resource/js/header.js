@@ -4,7 +4,7 @@ Vue.component('vue-header', {
             user:{},
             logind: false,
             admin: false,
-            systemTitle: 'systemTitle',
+            systemTitle: '',
             bgColor: 'white',
         }
     },

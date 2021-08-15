@@ -96,8 +96,8 @@ class EventApi {
             $companion[$i]['name'] = $data['companion'][$i]['name'];
         }
 
-        if(($data['id'] ?? -1) != -1) {
-            $participant['id'] = $data['id'];
+        if(($data['editId'] ?? -1) != -1) {
+            $participant['id'] = $data['editId'];
             $service->participantUpdate($participant, $companion);
         } else {
             $service->oneParticipantRegist($participant, $companion, EventService::MODE_ADMIN);
