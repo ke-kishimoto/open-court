@@ -7,7 +7,6 @@
         <span class="explain-tit">新規登録</span>
         <p>イベントへ応募時、以下の入力項目がデフォルトで設定されます</p>
     </div>
-        <input type="hidden" v-model="user.id" value="<?php echo $user['id'] ?>">
         職種
         <select v-model="user.occupation" class="custom-select mr-sm-2">
             <option v-for="item in occupationOptions" v-bind:value="item.value">{{ item.text }}</option>
@@ -21,7 +20,7 @@
         </p>
         <p>
             名前
-            <input class="form-control" type="text" v-model="user.name" required maxlength="50" value="<?php echo $user['name'] ?>">
+            <input class="form-control" type="text" v-model="user.name" required maxlength="50">
         </p>
         <p>
             備考
@@ -44,7 +43,13 @@
         el:"#app",
         data: {
             msg: '',
-            user: {},
+            user: {
+                id: '',
+                name: '',
+                occupation: '',
+                sex: '',
+                remark: '',
+            },
             occupationOptions: [
                 {text: '社会人', value: '1'},
                 {text: '大学生', value: '2'},
@@ -56,6 +61,14 @@
             ],
         },
         methods: {
+            getLoginUser() {
+            fetch('/api/data/getLoginUser', {
+                method: 'post',
+            }).then(res => res.json()
+                .then(data => {
+                    this.user = data
+                }))
+            },
             userUpdate() {
                 let params = new URLSearchParams()
                 params.append('id', this.user.id)
@@ -76,7 +89,10 @@
                         location.href = '/'
                     }
                 })
-            }
+            },
+        },
+        created: function() {
+
         }
     })
 </script>

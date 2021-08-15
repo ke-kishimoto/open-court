@@ -99,8 +99,7 @@ class UserController extends BaseController
         // 名前・職種・性別が設定されていない場合は登録画面に遷移
         if(empty($user['name']) || empty($user['occupation']) || empty($user['sex'])) {
             $title = '新規登録';
-            $id = $user['id'];
-            // $companions = [];
+            $_SESSION['user'] = $user;
             include('./view/common/head.php');
             include('./view/lineSignUp.php');
         } else {
