@@ -63,7 +63,10 @@
                 params.append('occupation', this.user.occupation)
                 params.append('sex', this.user.sex)
                 params.append('remark', this.user.remark)
-                fetch('/api/user/lineSignupComplete')
+                fetch('/api/user/lineSignupComplete', {
+                    method: 'post',
+                    body: params
+                })
                 .then(res => {
                     if(res.status !== 200) {
                         console.log(res);
