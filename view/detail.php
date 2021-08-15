@@ -96,7 +96,7 @@
             getEventInfo() {
                 if (this.getParam('gameid') === null) return
                 let params = new URLSearchParams();
-                params.append('tableName', 'gameInfo');
+                params.append('tableName', 'GameInfo');
                 params.append('id', this.getParam('gameid'));
                 fetch('/api/data/selectById', {
                     method: 'post',
