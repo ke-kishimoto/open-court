@@ -200,11 +200,12 @@ class LineApi
         $httpcode = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);  // ステータスコードを受け取る
         curl_close($ch);
 
-        if($httpcode === 200) {
-            return true;
-        } else {
-            return false;
-        }
+        // if($httpcode === 200) {
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+        return $result;
     }
 
     // access_tokenの更新
