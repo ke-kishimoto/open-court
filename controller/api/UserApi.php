@@ -199,4 +199,34 @@ class UserApi
         echo json_encode(['errMsg' => $errMsg]);
 
     }
+
+    // LINEで初回ログイン時
+    public function lineSignupComplete()
+    {
+        $usersDao = new UsersDao();
+
+        $user = [];
+        $user['name'] = $_POST['name'];
+        $user['occupation'] = $_POST['occupation'];
+        $user['sex'] = $_POST['sex'];
+        $user['remark'] = $_POST['remark'];
+        try {
+            // トランザクション開始
+            $usersDao->getPdo()->beginTransaction();
+            // 更新
+            $user['id'] = $_POST['id'];
+            $usersDao->update($user);
+    
+            $usersDao->getPdo()->commit();
+            $msg = '登録が完了しました。';
+    
+        } catch(Exception $ex) {
+            $usersDao->getPdo()->rollBack();
+            $msg = '登録に失敗しました。';
+        }
+        $user = $usersDao->selectById($user['id']);
+        $_SESSION['user'] = $user;
+
+        echo json_encode(['msg' => $msg]);
+    }
 }

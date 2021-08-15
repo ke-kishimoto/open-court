@@ -58,14 +58,12 @@
         methods: {
             userUpdate() {
                 let params = new URLSearchParams()
-                params.append('tableName', 'Users')
-                params.append('type', 'update')
                 params.append('id', this.user.id)
                 params.append('name', this.user.name)
                 params.append('occupation', this.user.occupation)
                 params.append('sex', this.user.sex)
                 params.append('remark', this.user.remark)
-                fetch('/api/data/updateRecord')
+                fetch('/api/user/lineSignupComplete')
                 .then(res => {
                     if(res.status !== 200) {
                         console.log(res);
