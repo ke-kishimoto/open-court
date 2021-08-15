@@ -62,12 +62,12 @@
         },
         methods: {
             getLoginUser() {
-            fetch('/api/data/getLoginUser', {
-                method: 'post',
-            }).then(res => res.json()
-                .then(data => {
-                    this.user = data
-                }))
+                fetch('/api/data/getLoginUser', {
+                    method: 'post',
+                }).then(res => res.json()
+                    .then(data => {
+                        this.user = data
+                    }))
             },
             userUpdate() {
                 if(this.user.occupation === '') {
@@ -107,7 +107,7 @@
             },
         },
         created: function() {
-
+            this.getLoginUser()
         }
     })
 </script>
