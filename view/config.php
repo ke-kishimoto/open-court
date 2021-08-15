@@ -64,6 +64,9 @@
         LINE ログイン：クライアントシークレット<input class="form-control"  type="text" v-model="clientSecret">
     </p>
     <p>
+        LINE ログイン：コールバックURL<input class="form-control"  type="text" v-model="callbackURL">
+    </p>
+    <p>
         Messaging API：チャネルアクセストークン<input class="form-control"  type="text" v-model="channelAccessToken">
     </p>
     <p>
@@ -94,6 +97,7 @@
             clientSecret: '',
             channelAccessToken: '',
             channelSecret: '',
+            callbackURL: '',
             notifyOptions: [
                 {text: 'する', value: '1'},
                 {text: 'しない', value: '0'}
@@ -129,6 +133,7 @@
                         this.clientSecret = data.client_secret;
                         this.channelAccessToken = data.channel_access_token;
                         this.channelSecret = data.channel_secret;
+                        this.callbackURL = data.callback_url;
                     })
                 )
                 .catch(errors => console.log(errors))
@@ -149,6 +154,7 @@
                 params.append('client_secret', this.clientSecret);
                 params.append('channel_access_token', this.channelAccessToken);
                 params.append('channel_secret', this.channelSecret);
+                params.append('callback_url', this.callbackURL);
                 fetch('/api/data/updateRecord', {
                     method: 'post',
                     body: params

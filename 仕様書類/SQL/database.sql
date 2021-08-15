@@ -7,7 +7,6 @@
 
 -- イベント情報　
 -- テーブル名game_infoじゃなくて、event_infoとかにすればよかったかな.
--- そのうちリファクタリング対象
 -- drop table game_info; 
 create table game_info (
     id serial primary key
@@ -109,6 +108,9 @@ create table config(
     , register_date timestamp null default null
     , update_date timestamp null default null
 );
+
+alter table config add column callback_url varchar(255);
+
 
 -- ユーザー
 -- drop table users;

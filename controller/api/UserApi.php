@@ -113,7 +113,8 @@ class UserApi
 
         $data = [
             'state' => $state,
-            'clientId' => $config['client_id']
+            'clientId' => $config['client_id'],
+            'callbackURL' => $config['callback_url']
         ];
         echo json_encode($data);
     }
