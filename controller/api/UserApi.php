@@ -203,6 +203,9 @@ class UserApi
     // LINEで初回ログイン時
     public function lineSignupComplete()
     {
+        header('Content-type: application/json; charset= UTF-8');
+        session_start();
+        
         $usersDao = new UsersDao();
 
         $user = [];
