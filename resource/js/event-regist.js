@@ -98,27 +98,32 @@ Vue.component('event-regist', {
         register() {
             if(this.title === '') {
                 this.msg = 'タイトルを入力してください。'
-                // location.href = '#header'
+                scrollTo(0, 0)
                 return
             }
             if(this.short_title === '') {
                 this.msg = '略称を入力してください。'
+                scrollTo(0, 0)
                 return 
             }
             if(this.game_date === '') {
                 this.msg = '日付を入力してください。'
+                scrollTo(0, 0)
                 return
             }
             if(this.start_time === '') {
                 this.msg = '開始時間を入力してください。'
+                scrollTo(0, 0)
                 return
             }
             if(this.end_time === '') {
                 this.msg = '終了時間を入力してください。'
+                scrollTo(0, 0)
                 return
             }
             if(this.place === '') {
                 this.msg = '場所を入力してください。'
+                scrollTo(0, 0)
                 return
             }
             if (!confirm('登録してよろしいですか。')) return;
@@ -151,7 +156,7 @@ Vue.component('event-regist', {
                 } else {
                     this.clear()
                     this.msg = '登録完了しました。'
-                    location.href = "#header"
+                    scrollTo(0, 0)                    
                 }
             })
         },

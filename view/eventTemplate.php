@@ -124,14 +124,17 @@
             register() {
                 if(this.template_name === '') {
                     this.msg = 'テンプレート名を入力してください。'
+                    scrollTo(0, 0)
                     return
                 }
                 if(this.title === '') {
                     this.msg = 'タイトルを入力してください。'
+                    scrollTo(0, 0)
                     return
                 }
                 if(this.short_title === '') {
                     this.msg = '略称を入力してください。'
+                    scrollTo(0, 0)
                     return
                 }
 
@@ -164,7 +167,7 @@
                         this.getTemplateList()
                         this.clear()
                         this.msg = '登録完了しました。'
-                        location.href = '#header'
+                        scrollTo(0, 0)
                     }
                 })
             },
@@ -184,7 +187,7 @@
                         this.getTemplateList()
                         this.clear()
                         this.msg = '削除完了しました。'
-                        location.href = '#header'
+                        scrollTo(0, 0)
                     }
                 })
             }

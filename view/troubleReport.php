@@ -99,6 +99,7 @@
                     } else {
                         this.clear()
                         this.msg = '送信完了しました。'
+                        scrollTo(0, 0)
                     }
                 })
             }

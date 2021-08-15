@@ -143,22 +143,27 @@
 
                 if(this.user.occupation === '') {
                     this.msg = '職種を選択してください。'
+                    scrollTo(0, 0)
                     return
                 }
                 if(this.user.sex === '') {
                     this.msg = '性別を選択してください。'
+                    scrollTo(0, 0)
                     return
                 }
                 if(this.user.name === '') {
                     this.msg = '名前を入力してください。'
+                    scrollTo(0, 0)
                     return
                 }
                 if(this.user.email === '') {
                     this.msg = 'メールアドレスを入力してください。'
+                    scrollTo(0, 0)
                     return
                 }
                 if(this.user.password === '') {
                     this.msg = 'パスワードを入力してください。'
+                    scrollTo(0, 0)
                     return
                 }
 
@@ -167,6 +172,7 @@
                 if(this.editId === -1) {
                     if(this.rePassword !== this.user.password) {
                         this.msg = '入力されたパスワードが異なります'
+                        scrollTo(0, 0)
                         return
                     }
                 }
@@ -191,7 +197,7 @@
                         } else {
                             this.msg = data.errMsg
                         }
-                        location.href = '#app'
+                        scrollTo(0, 0)
                     })
                 })
                 .catch(errors => console.log(errors))
@@ -206,6 +212,8 @@
                         return
                     } else {
                         this.msg = '退会処理が完了しました。'
+                        this.user = {}
+                        scrollTo(0, 0)
                     }
                 }))
             },

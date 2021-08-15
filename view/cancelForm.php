@@ -48,10 +48,12 @@
                 if(this.user.line_id === null || this.user.line_id === '') {
                     if(this.user.email === '') {
                         this.msg = 'メールアドレスを入力してください。'
+                        scrollTo(0, 0)
                         return
                     }
                     if(this.user.password === '') {
                         this.msg = 'パスワードを入力してください。'
+                        scrollTo(0, 0)
                         return
                     }
                 }
@@ -63,7 +65,10 @@
                 fetch('/api/event/cancel', {
                     method: 'post',
                     body: params
-                }).then(res => res.json().then(data => this.msg = data.msg))
+                }).then(res => res.json().then(data => {
+                    this.msg = data.msg
+                    scrollTo(0, 0)
+                }))
             },
             getParam(name, url) {
                 if (!url) url = window.location.href;
