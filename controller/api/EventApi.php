@@ -52,6 +52,7 @@ class EventApi {
     public function participantBatchRegist()
     {
         header('Content-type: application/json; charset= UTF-8');
+        session_start();
 
         $data = json_decode(file_get_contents('php://input'), true);
         $participant = [];
@@ -60,9 +61,11 @@ class EventApi {
         $participant['sex'] = (int)$data['sex'];
         $participant['name'] = $data['name'];
         $participant['email'] = $data['email'] ?? '';
+        if(empty($participant['email'])) {
+            $participant['line_id'] = $_SESSION['user']['line_id'];
+        }
         $participant['waiting_flg'] = 0;
         $participant['remark'] = $data['remark'] ?? '';
-        $participant['line_id'] = $data['line_id'] ?? '';
 
         $service = new EventService();
         $count = $service->multipleParticipantRegist($data['idList'], $participant, $data['companion']);
