@@ -107,7 +107,11 @@ class EventApi {
             $participant['id'] = $data['editId'];
             $service->participantUpdate($participant, $companion);
         } else {
-            $service->oneParticipantRegist($participant, $companion, EventService::MODE_ADMIN);
+            if($_SESSION['user']['admin_flg'] == '1') {
+                $service->oneParticipantRegist($participant, $companion, EventService::MODE_ADMIN);
+            } else {
+                $service->oneParticipantRegist($participant, $companion, EventService::MODE_USER);
+            }
         }
         echo json_encode('{}');
     }
