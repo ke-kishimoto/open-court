@@ -35,7 +35,7 @@ Vue.component('event-regist', {
         },
         getGameInfo(id) {
             let params = new URLSearchParams();
-            params.append('tableName', 'gameInfo');
+            params.append('tableName', 'GameInfo');
             params.append('id', id);
             fetch('/api/data/selectById', {
                 method: 'post',
@@ -60,7 +60,7 @@ Vue.component('event-regist', {
         },
         getTemplateList() {
             let params = new URLSearchParams();
-            params.append('tableName', 'eventTemplate');
+            params.append('tableName', 'EventTemplate');
             fetch('/api/data/selectAll', {
                 method: 'post',
                 body: params
@@ -75,7 +75,7 @@ Vue.component('event-regist', {
         },
         selectTemplate(){
             let params = new URLSearchParams();
-            params.append('tableName', 'eventTemplate');
+            params.append('tableName', 'EventTemplate');
             params.append('id', event.target.value);
             fetch('/api/data/selectById', {
                 method: 'post',
@@ -132,7 +132,7 @@ Vue.component('event-regist', {
                 type = 'update'
             }
             let params = new URLSearchParams();
-            params.append('tableName', 'gameInfo');
+            params.append('tableName', 'GameInfo');
             params.append('type', type);
             params.append('id', this.getParam('gameid'));
             params.append('title', this.title);
@@ -163,7 +163,7 @@ Vue.component('event-regist', {
         deleteGame() {
             if (!confirm('削除してよろしいですか。')) return;
             let params = new URLSearchParams();
-            params.append('tableName', 'gameInfo');
+            params.append('tableName', 'GameInfo');
             params.append('id', this.getParam('gameid'));
             fetch('/api/data/deleteById', {
                 method: 'post',

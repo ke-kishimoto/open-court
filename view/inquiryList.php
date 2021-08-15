@@ -55,7 +55,7 @@
         methods: {
             getInquiryList() {
                 let params = new URLSearchParams();
-                params.append('tableName', 'inquiry');
+                params.append('tableName', 'Inquiry');
                 fetch('/api/data/selectAll', {
                     method: 'post',
                     body: params
@@ -69,7 +69,7 @@
             },
             changeFlg(data) {
                 let params = new URLSearchParams();
-                params.append('tableName', 'inquiry');
+                params.append('tableName', 'Inquiry');
                 params.append('id', data.id);
                 fetch('/api/data/updateFlg', {
                     method: 'post',

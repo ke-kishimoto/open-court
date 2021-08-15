@@ -84,7 +84,7 @@
             },
             getTemplateList() {
                 let params = new URLSearchParams();
-                params.append('tableName', 'eventTemplate');
+                params.append('tableName', 'EventTemplate');
                 fetch('/api/data/selectAll', {
                     method: 'post',
                     body: params
@@ -99,7 +99,7 @@
             },
             selectTemplate(){
                 let params = new URLSearchParams();
-                params.append('tableName', 'eventTemplate');
+                params.append('tableName', 'EventTemplate');
                 params.append('id', event.target.value);
                 fetch('/api/data/selectById', {
                     method: 'post',
@@ -144,7 +144,7 @@
                     type = 'update'
                 }
                 let params = new URLSearchParams();
-                params.append('tableName', 'eventTemplate');
+                params.append('tableName', 'EventTemplate');
                 params.append('type', type);
                 params.append('id', this.templateId);
                 params.append('template_name', this.template_name);
@@ -174,7 +174,7 @@
             deleteById() {
                 if (!confirm('削除してよろしいですか。')) return;
                 let params = new URLSearchParams();
-                params.append('tableName', 'eventTemplate');
+                params.append('tableName', 'EventTemplate');
                 params.append('id', this.templateId);
                 fetch('/api/data/deleteById', {
                     method: 'post',

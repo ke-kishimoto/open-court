@@ -94,7 +94,7 @@ Vue.component('participate', {
         },
         selectUser(event) {
             let params = new URLSearchParams();
-            params.append('tableName', 'users');
+            params.append('tableName', 'Users');
             params.append('id', event.target.value);
             fetch('/api/data/selectById', {
                 method: 'post',
@@ -117,7 +117,7 @@ Vue.component('participate', {
         },
         getUserList() {
             let params = new URLSearchParams();
-            params.append('tableName', 'users');
+            params.append('tableName', 'Users');
             fetch('/api/data/selectAll', {
                 method: 'post',
                 body: params

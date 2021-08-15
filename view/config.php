@@ -115,7 +115,7 @@
         methods: {
             getConfig() {
                 let params = new URLSearchParams();
-                params.append('tableName', 'config');
+                params.append('tableName', 'Config');
                 params.append('id', 1);
                 fetch('/api/data/selectById', {
                     method: 'post',
@@ -141,7 +141,7 @@
             register() {
                 if (!confirm('登録してよろしいですか。')) return;
                 let params = new URLSearchParams();
-                params.append('tableName', 'config');
+                params.append('tableName', 'Config');
                 params.append('type', 'update');
                 params.append('id', 1);
                 params.append('system_title', this.systemTitle);
