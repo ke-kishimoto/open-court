@@ -23,7 +23,7 @@ class UserService
 
         // DBにそのLINE IDのユーザーがいるかどうか確認
         $userDao = new UsersDao();
-        $user = $userDao->getUserByLineId($response->sub);
+        $user = $userDao->getUserByLineId($result->sub);
 
         if($user) {
             // 存在する場合
@@ -49,7 +49,7 @@ class UserService
         }
 
         // 再取得
-        $user = $userDao->getUserByLineId($response->sub);
+        $user = $userDao->getUserByLineId($result->sub);
         return $user;
 
     }
