@@ -1,44 +1,33 @@
 <div id="app" v-cloak>
     <vue-header></vue-header>
 
+    <p style="color:red; font-size:20px">{{ msg }}</p>
+
     <div class="explain-box">
-        <span class="explain-tit"><?php echo $title ?></span>
+        <span class="explain-tit">新規登録</span>
         <p>イベントへ応募時、以下の入力項目がデフォルトで設定されます</p>
     </div>
-    <form id="signUp_form" action="/user/linesignupcomplete" method="post" class="form-group">
-        <input type="hidden" id="id" name="id" value="<?php echo $id ?>">
-        <p style="color: red;"><?php if(!empty($errMsg)){echo $errMsg;};?></p>
-        <p>
-            職種
-            <select id="occupation" name="occupation" class="custom-select mr-sm-2">
-                <option value="1" <?php echo $user['occupation'] == '1' ? 'selected' : '' ?>>社会人</option>
-                <option value="2" <?php echo $user['occupation'] == '2' ? 'selected' : '' ?>>大学・専門学校</option>
-                <option value="3" <?php echo $user['occupation'] == '3' ? 'selected' : '' ?>>高校</option>
-            </select>
+        <input type="hidden" v-model="user.id" value="<?php echo $user['id'] ?>">
+        職種
+        <select v-model="user.occupation" class="custom-select mr-sm-2">
+            <option v-for="item in occupationOptions" v-bind:value="item.value">{{ item.text }}</option>
+        </select>
         </p>
         <p>
-            性別
-            <select id="sex" name="sex" class="custom-select mr-sm-2">
-                <option value="1" <?php echo $user['sex'] == '1' ? 'selected' : '' ?>>男性</option>
-                <option value="2" <?php echo $user['sex'] == '2' ? 'selected' : '' ?>>女性</option>
-            </select>
+        性別
+        <select v-model="user.sex" class="custom-select mr-sm-2">
+            <option v-for="item in sexOptions" v-bind:value="item.value">{{ item.text }}</option>
+        </select>
         </p>
         <p>
             名前
-            <input id="name" class="form-control" type="text" name="name" required maxlength="50" value="<?php echo $user['name'] ?>">
+            <input class="form-control" type="text" v-model="user.name" required maxlength="50" value="<?php echo $user['name'] ?>">
         </p>
         <p>
             備考
-            <textarea class="form-control" name="remark" maxlength="200"><?php echo $user['remark'] ?></textarea>
+            <textarea class="form-control" v-model="user.remark" maxlength="200"></textarea>
         </p>
-        <p id="douhan-0">
-            <input id="companion" name="companion" type="hidden" value="<?php echo count($companions); ?>">
-            <p id="douhanErrMsg" style="color: red; display: none;">同伴者は10人までです</p>
-            <button class="btn btn-secondary" id="btn-companion-add" type="button">同伴者追加</button>
-            <button class="btn btn-danger" id="btn-companion-del" type="button">同伴者削除</button>
-        </p>
-        <button class="btn btn-primary" type="submit">登録</button>
-    </form>
+        <button class="btn btn-primary" type="button" @click="userUpdate">登録</button>
     <br>
 
     <vue-footer></vue-footer>
@@ -53,6 +42,41 @@
 
     const vue = new Vue({
         el:"#app",
+        data: {
+            msg: '',
+            user: {},
+            occupationOptions: [
+                {text: '社会人', value: '1'},
+                {text: '大学生', value: '2'},
+                {text: '高校生', value: '3'},
+            ],
+            sexOptions: [
+                {text: '男性', value: '1'},
+                {text: '女性', value: '2'},
+            ],
+        },
+        methods: {
+            userUpdate() {
+                let params = new URLSearchParams()
+                params.append('tableName', 'Users')
+                params.append('type', 'update')
+                params.append('id', this.user.id)
+                params.append('name', this.user.name)
+                params.append('occupation', this.user.occupation)
+                params.append('sex', this.user.sex)
+                params.append('remark', this.user.remark)
+                fetch('/api/data/updateRecord')
+                .then(res => {
+                    if(res.status !== 200) {
+                        console.log(res);
+                        this.msg = 'エラーが発生しました。'
+                        scrollTo(0, 0)
+                    } else {
+                        location.href = '/'
+                    }
+                })
+            }
+        }
     })
 </script>
 </body>
