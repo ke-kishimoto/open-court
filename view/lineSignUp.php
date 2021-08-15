@@ -1,4 +1,4 @@
-<div>
+<div id="app" v-cloak>
     <vue-header></vue-header>
 
     <div class="explain-box">

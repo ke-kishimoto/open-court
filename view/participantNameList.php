@@ -1,4 +1,4 @@
-<div id="list">
+<div id="list" v-cloak>
     <vue-header></vue-header>
     <p>{{ msg }}</p>
     <h1>参加者リスト</h1>

@@ -1,6 +1,17 @@
-<div id="app">
+<div id="app" v-cloak>
     
     <vue-header></vue-header>
+
+    <div v-if="editId === -1">
+        <p>LINEでログイン</p>
+        <div class="line-login">
+            <a v-bind:href="'https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=' + clientId + '&redirect_uri=https%3A%2F%2Fopencourt.eventmanc.com%2Fuser%2Flinelogin&state=' + state + '&bot_prompt=aggressive&scope=profile%20openid'">
+                <img id="btn-line" src="/resource/images/DeskTop/2x/20dp/btn_login_base.png">
+            </a>
+        </div>
+    </div>
+    
+    <hr>
  
     <div class="explain-box">
         <span class="explain-tit">新規登録</span>
@@ -67,14 +78,7 @@
         <button class="btn btn-danger" type="button" @click="deleteUser">退会</button>
     </div>
     <hr>
-    <div v-if="editId === -1">
-        <p>LINEでログイン</p>
-        <div class="line-login">
-            <a v-bind:href="'https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=' + clientId + '&redirect_uri=https%3A%2F%2Fopencourt.eventmanc.com%2Fuser%2Flinelogin&state=' + state + '&bot_prompt=aggressive&scope=profile%20openid'">
-                <img id="btn-line" src="/resource/images/DeskTop/2x/20dp/btn_login_base.png">
-            </a>
-        </div>
-    </div>
+    
 
     <vue-footer></vue-footer>
 

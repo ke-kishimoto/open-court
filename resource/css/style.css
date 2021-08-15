@@ -355,6 +355,10 @@ footer a{
     margin: 0 auto;
 }
 
+[v-cloak] {
+    display: none;
+}
+
 /* .login {
     display: flex;
 } */

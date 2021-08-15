@@ -40,7 +40,7 @@ Vue.component('vue-header', {
         this.getLoginUser()
     },
     template: `
-        <header id="header" v-bind:class="bgColor" role="banner">
+        <header v-bind:class="bgColor" role="banner">
             <!-- ハンバーガーボタン -->
             <button type="button" class="drawer-toggle drawer-hamburger">
                 <span class="sr-only">toggle navigation</span>
@@ -76,7 +76,7 @@ Vue.component('vue-header', {
                     <a class="logo" href="/">{{ systemTitle }}</a>
                 </div>
                 <div class="user-name">
-                    <span>{{ user.name }}さん</span>
+                    <span v-if="logind">{{ user.name }}さん</span>
                     <span class="participant-header-menu">
                         <a v-if="!logind" class="btn btn-sm btn-outline-dark" href="/user/signup" role="button" style="margin-right:5px;">新規登録</a>
                         <a v-if="!logind" class="btn btn-sm btn-outline-dark" href="/user/signin" role="button">ログイン</a>
