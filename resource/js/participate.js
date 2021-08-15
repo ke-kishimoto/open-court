@@ -220,7 +220,9 @@ Vue.component('participate', {
             </select>
             </p>
             <p>名前<input class="form-control" type="text" v-model="user.name" required></p>
-            <p>メール<input class="form-control" type="email" v-model="user.email"></p>
+            <p v-if="(user.line_id === null || user.line_id === '')">
+                メール<input class="form-control" type="email" v-model="user.email">
+            </p>
             <p>備考<textarea class="form-control" v-model="user.remark"></textarea></p>
             
             <p><button class="btn btn-secondary" type="button" @click="addCompanion">同伴者追加</button></p>
