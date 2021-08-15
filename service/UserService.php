@@ -33,6 +33,7 @@ class UserService
                 $user['line_id'] = $result->sub;
                 $user['access_token'] = $accessToken;
                 $user['refresh_token'] = $refreshToken;
+                $user['remark'] = '';
                 $userDao->update($user);
             } else {
                 return $user;
@@ -45,6 +46,7 @@ class UserService
             $user['line_id'] = $result->sub;
             $user['access_token'] = $accessToken;
             $user['refresh_token'] = $refreshToken;
+            $user['remark'] = '';
             $userDao->insert($user);
         }
 

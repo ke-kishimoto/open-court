@@ -74,6 +74,7 @@ class EventApi {
     public function participantRegist()
     {
         header('Content-type: application/json; charset= UTF-8');
+        session_start();
 
         $data = json_decode(file_get_contents('php://input'), true);
         $service = new EventService();
@@ -84,6 +85,9 @@ class EventApi {
         $participant['sex'] = (int)$data['user']['sex'];
         $participant['name'] = $data['user']['name'];
         $participant['email'] = $data['user']['email'] ?? '';
+        if(empty($participant['email'])) {
+            $participant['line_id'] = $_SESSION['user']['line_id'];
+        }
         $participant['remark'] = $data['user']['remark'] ?? '';
         $participant['waiting_flg'] = 0;
 
