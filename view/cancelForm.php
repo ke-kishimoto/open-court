@@ -60,8 +60,10 @@
                 if (!confirm('キャンセルしてよろしいですか？')) return
                 let params = new URLSearchParams()
                 params.append('game_id', this.getParam('gameid'))
-                params.append('email', this.user.email)
-                params.append('password', this.user.password)
+                if(this.user.line_id === null || this.user.line_id === '') {
+                    params.append('email', this.user.email)
+                    params.append('password', this.user.password)
+                }
                 fetch('/api/event/cancel', {
                     method: 'post',
                     body: params
