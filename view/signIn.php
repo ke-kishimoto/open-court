@@ -33,7 +33,7 @@
 
 </div>
 <script src="/resource/js/common.js"></script>
-<script src="/resource/js/Vue.min.js"></script>
+<script src="/resource/js/vue.min.js"></script>
 <script src="/resource/js/header.js"></script>
 <script src="/resource/js/footer.js"></script>
 <script>

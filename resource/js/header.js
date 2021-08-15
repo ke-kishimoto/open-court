@@ -33,6 +33,7 @@ Vue.component('vue-header', {
                 this.systemTitle = data.system_title
                 this.bgColor = data.bg_color
             }))
+            .catch(errors => console.log(errors))
         },
     },
     created: function() {

@@ -17,7 +17,7 @@
 
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="/resource/js/Vue.min.js"></script>
+<script src="/resource/js/vue.min.js"></script>
 <script src="/resource/js/header.js"></script>
 <script src="/resource/js/footer.js"></script>
 <script>
