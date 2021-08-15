@@ -80,6 +80,7 @@ class UserController extends BaseController
     public function lineLogin()
     {
 
+        session_start();
         // アクセストークン取得用認可コード
         $code = $_GET['code'];
         $state = $_GET['state'];
