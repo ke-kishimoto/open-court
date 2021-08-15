@@ -61,7 +61,7 @@
 </div>
 
 <script src="/resource/js/common.js"></script>
-<script src="/resource/js/Vue.js"></script>
+<script src="/resource/js/vue.js"></script>
 <script src="/resource/js/header.js"></script>
 <script src="/resource/js/footer.js"></script>
 <script>
