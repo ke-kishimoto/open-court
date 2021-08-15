@@ -28,9 +28,9 @@ class UserService
         if($user) {
             // 存在する場合
             if(empty($user['name'])) {
-                $user['name'] = $response->name;
+                $user['name'] = $result->name;
                 $user['admin_flg'] = 0;
-                $user['line_id'] = $response->sub;
+                $user['line_id'] = $result->sub;
                 $user['access_token'] = $accessToken;
                 $user['refresh_token'] = $refreshToken;
                 $userDao->update($user);
@@ -40,9 +40,9 @@ class UserService
         } else {
             // 存在しない場合
             $user = [];
-            $user['name'] = $response->name;
+            $user['name'] = $result->name;
             $user['admin_flg'] = 0;
-            $user['line_id'] = $response->sub;
+            $user['line_id'] = $result->sub;
             $user['access_token'] = $accessToken;
             $user['refresh_token'] = $refreshToken;
             $userDao->insert($user);

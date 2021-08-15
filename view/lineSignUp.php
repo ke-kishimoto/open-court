@@ -70,6 +70,21 @@
                 }))
             },
             userUpdate() {
+                if(this.user.occupation === '') {
+                    this.msg = '職種を選択してください。'
+                    scrollTo(0, 0)
+                    return
+                }
+                if(this.user.sex === '') {
+                    this.msg = '性別を選択してください。'
+                    scrollTo(0, 0)
+                    return
+                }
+                if(this.user.name === '') {
+                    this.msg = '名前を入力してください。'
+                    scrollTo(0, 0)
+                    return
+                }
                 let params = new URLSearchParams()
                 params.append('id', this.user.id)
                 params.append('name', this.user.name)
