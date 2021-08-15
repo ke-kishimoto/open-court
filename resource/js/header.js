@@ -23,7 +23,7 @@ Vue.component('vue-header', {
         },
         getConfig() {
             let params = new URLSearchParams();
-            params.append('tableName', 'config');
+            params.append('tableName', 'Config');
             params.append('id', 1);
             fetch('/api/data/selectById', {
                 method: 'post',
