@@ -99,7 +99,7 @@
                         console.log(res);
                     } else {
                         this.clear()
-                        this.msg = '送信完了しました。'
+                        this.msg = 'お問い合わせ内容を送信しました。連絡があるまでしばらくお待ちください。'
                         scrollTo(0, 0)
                     }
                 })

@@ -30,8 +30,6 @@ class UserController extends BaseController
         $_SESSION['state'] = $state;
         
         $title = '新規登録';
-        $mode = 'new';
-        $id = '';
   
         include('./view/common/head.php');
         include('./view/signUp.php');

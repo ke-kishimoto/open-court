@@ -2,7 +2,6 @@
 namespace controller;
 
 use controller\BaseController;
-use dao\GameInfoDao;
 
 class AdminController extends BaseController
 {
@@ -12,7 +11,6 @@ class AdminController extends BaseController
 
 
         $title = 'イベントカレンダー';
-        $adminFlg = '1';
         include('./view/common/head.php');
         include('./view/eventList.php');
 

@@ -18,14 +18,14 @@
     
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li v-if="admin" class="nav-item">
-            <a class="nav-link active" id="event-info-tab" data-toggle="tab" href="#event-info" role="tab" aria-controls="home" aria-selected="true">
+            <a class="nav-link active" id="event-info-tab" data-toggle="tab" href="#event-info" role="tab" aria-controls="home" v-bind:aria-selected="admin">
                 イベント
             </a>
         </li>
         <li v-if="mode !== 'new'" class="nav-item">
-            <a class="nav-link" id="add-tab" data-toggle="tab" href="#add" role="tab" aria-controls="contact" aria-selected="true">
+            <a class="nav-link" id="add-tab" data-toggle="tab" href="#add" role="tab" aria-controls="contact" v-bind:aria-selected="!admin">
                 <template v-if="admin">参加者追加</template>
-                <template v-else>参加申し込み</template>
+                <template v-else>参加登録</template>
             </a>
         </li>
         <li v-if="mode !== 'new'" class="nav-item">
@@ -43,7 +43,7 @@
     
     <div class="tab-content" id="nav-tabContent">
     
-        <div class="tab-pane fade show active" id="event-info" role="tabpanel" aria-labelledby="event-info-tab">
+        <div v-if="admin" class="tab-pane fade show active" id="event-info" role="tabpanel" aria-labelledby="event-info-tab">
             <event-regist></event-regist>
         </div>
 
@@ -115,7 +115,9 @@
                 }).then(res => res.json()
                     .then(data => {
                         this.user = data;
-                        if (this.user.id == '') return 
+                        if (this.user.id == '') {
+                            location.href = '/user/signIn'
+                        } 
                         if(this.user.admin_flg == '1') {
                             this.admin = true
                         }
