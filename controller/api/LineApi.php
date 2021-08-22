@@ -355,6 +355,17 @@ class LineApi
         curl_close($ch);
         // $response = json_decode($result);
 
+        // ログ出力
+        $apiLog = [];
+        $apiLog['api_name'] = 'line';
+        $apiLog['method_name'] = 'pushMessage';
+        $apiLog['request_name'] = 'pushMessage';
+        $apiLog['detail'] = '';
+        $apiLog['status_code'] = (int)$httpcode;
+        $apiLog['result_message'] = $msg;
+        $apiLogDao = new ApiLogDao();
+        $apiLogDao->insert($apiLog);
+
         return (int)$httpcode;
     }
 
@@ -452,8 +463,14 @@ class LineApi
 
     public function sendMessage()
     {
+        session_start();
         header('Content-type: application/json; charset= UTF-8');
         $data = json_decode(file_get_contents('php://input'), true);
+
+        $csrfToken = $data['csrfToken'] ?? '';
+        if($_SESSION['csrf_token'] !== $csrfToken) {
+            new Exception("CSRFエラー");
+        }
 
         $users = $data['users'] ?? [];
         $message = $data['message'] ?? '';
@@ -461,7 +478,13 @@ class LineApi
             $this->pushMessage($user['line_id'], $message);
         }
 
-        echo json_encode([]);
+        try {
+            echo json_encode([]);
+        } catch(Exception $e) {
+            http_response_code(202);
+            $data = ['errMsg' => $e->getMessage()];
+            echo json_encode($data);
+        }
 
     }
 }

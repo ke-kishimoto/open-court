@@ -63,9 +63,15 @@
             eventList: [],
             content: '',
             targetUser: [],
-            
+            csrfToken: '',
         },
         methods: {
+            getCsrfToken() {
+                fetch('/api/data/getCsrfToken',{
+                    method: 'post',
+                }).then(res => res.json().then(data => this.csrfToken = data.csrfToken))
+                .catch(errors => console.log(errors))
+            },
             clear() {
                 this.occupation = ''
                 this.sex = ''
@@ -106,6 +112,7 @@
                 let data = {
                     users: this.targetUser,
                     message: this.content,
+                    csrfToken: this.csrfToken,
                 }
                 fetch('/api/line/sendMessage', {
                     headers:{
@@ -122,6 +129,7 @@
         },
         created: function() {
             this.getEventList()
+            this.getCsrfToken()
         }
     })
 </script>

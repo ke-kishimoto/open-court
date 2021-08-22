@@ -132,7 +132,7 @@ class DataApi
         session_start();
         header('Content-type: application/json; charset= UTF-8');
 
-        $csrfToken = $_SESSION['csrfToken'] ?? '';
+        $csrfToken = $_POST['csrfToken'] ?? '';
         if($_SESSION['csrf_token'] !== $csrfToken) {
             new Exception("CSRFエラー");
         }
