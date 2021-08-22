@@ -110,9 +110,16 @@
             waithingOptions: [
                 {text: '手動', value: '0'},
                 {text: '自動', value: '1'}
-            ]
+            ],
+            csrfToken: '',
         },
         methods: {
+            getCsrfToken() {
+                fetch('/api/data/getCsrfToken',{
+                    method: 'post',
+                }).then(res => res.json().then(data => this.csrfToken = data.csrfToken))
+                .catch(errors => console.log(errors))
+            },
             getConfig() {
                 let params = new URLSearchParams();
                 params.append('tableName', 'Config');
@@ -144,6 +151,7 @@
                 params.append('tableName', 'Config');
                 params.append('type', 'update');
                 params.append('id', 1);
+                params.append('csrfToken', this.csrfToken);
                 params.append('system_title', this.systemTitle);
                 params.append('line_token', this.lineToken);
                 params.append('line_notify_flg', this.lineNotifyFlg);
@@ -161,7 +169,7 @@
                 })
                 .then(res => {
                     if(res.status !== 200) {
-                        console.log(res);
+                        res.json(data => console.log(data))
                     } else {
                         this.msg = '登録完了しました。'
                         scrollTo(0, 0)
@@ -171,6 +179,7 @@
         },
         created: function() {
             this.getConfig()
+            this.getCsrfToken()
         }
     })
 </script>

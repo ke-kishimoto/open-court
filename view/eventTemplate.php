@@ -66,8 +66,15 @@
             price1: 0,
             price2: 0,
             price3: 0,
+            csrfToken: '',
         },
         methods: {
+            getCsrfToken() {
+                fetch('/api/data/getCsrfToken',{
+                    method: 'post',
+                }).then(res => res.json().then(data => this.csrfToken = data.csrfToken))
+                .catch(errors => console.log(errors))
+            },
             clear() {
                 this.isnew = false;
                 this.templateId = -1;
@@ -147,6 +154,7 @@
                 params.append('tableName', 'EventTemplate');
                 params.append('type', type);
                 params.append('id', this.templateId);
+                params.append('csrfToken', this.csrfToken);
                 params.append('template_name', this.template_name);
                 params.append('title', this.title);
                 params.append('short_title', this.short_title);
@@ -176,6 +184,7 @@
                 let params = new URLSearchParams();
                 params.append('tableName', 'EventTemplate');
                 params.append('id', this.templateId);
+                params.append('csrfToken', this.csrfToken);
                 fetch('/api/data/deleteById', {
                     method: 'post',
                     body: params
@@ -194,6 +203,7 @@
         },
         created: function(){
             this.getTemplateList()
+            this.getCsrfToken()
         }
     })
 </script>

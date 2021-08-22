@@ -9,7 +9,6 @@ class AdminController extends BaseController
     public function index() {
         parent::adminHeader();
 
-
         $title = 'イベントカレンダー';
         include('./view/common/head.php');
         include('./view/eventList.php');
@@ -19,10 +18,9 @@ class AdminController extends BaseController
     public function config() {
         parent::adminHeader();
 
-        // 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
+        // CSRF対策
         $toke_byte = openssl_random_pseudo_bytes(16);
         $csrf_token = bin2hex($toke_byte);
-        // 生成したトークンをセッションに保存します
         $_SESSION['csrf_token'] = $csrf_token;
 
         $title = 'システム設定';
@@ -34,16 +32,14 @@ class AdminController extends BaseController
     {
         parent::adminHeader();
 
-         // 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
+         // CSRF対策
          $toke_byte = openssl_random_pseudo_bytes(16);
          $csrf_token = bin2hex($toke_byte);
-         // 生成したトークンをセッションに保存します
          $_SESSION['csrf_token'] = $csrf_token;
  
          $title = 'お知らせ登録';
          include('./view/common/head.php');
          include('./view/notice.php');
-
     }
 
     public function userList() {
@@ -74,10 +70,9 @@ class AdminController extends BaseController
     public function participantInfo() {
         parent::adminHeader();
 
-        // 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
+        // CSRF対策
         $toke_byte = openssl_random_pseudo_bytes(16);
         $csrf_token = bin2hex($toke_byte);
-        // 生成したトークンをセッションに保存します
         $_SESSION['csrf_token'] = $csrf_token;
 
         $title = '参加者情報登録';
@@ -89,10 +84,9 @@ class AdminController extends BaseController
     {
         parent::adminHeader();
 
-        // 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
+        // CSRF対策
         $toke_byte = openssl_random_pseudo_bytes(16);
         $csrf_token = bin2hex($toke_byte);
-        // 生成したトークンをセッションに保存します
         $_SESSION['csrf_token'] = $csrf_token;
 
         $title = 'テンプレート登録';
@@ -104,10 +98,9 @@ class AdminController extends BaseController
     {
         parent::adminHeader();
 
-        // 暗号学的的に安全なランダムなバイナリを生成し、それを16進数に変換することでASCII文字列に変換します
+        // CSRF対策
         $toke_byte = openssl_random_pseudo_bytes(16);
         $csrf_token = bin2hex($toke_byte);
-        // 生成したトークンをセッションに保存します
         $_SESSION['csrf_token'] = $csrf_token;
 
         $title = 'セグメント配信';

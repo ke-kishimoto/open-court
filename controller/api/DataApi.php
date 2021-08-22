@@ -7,6 +7,14 @@ use Exception;
 class DataApi
 {
 
+    public function getCsrfToken()
+    {
+        header('Content-type: application/json; charset= UTF-8');
+        session_start();
+
+        echo json_encode(['csrfToken' => $_SESSION['csrf_token'] ?? '']);
+    }
+
     /**
      * @Route("/getLoginUser")
      */
@@ -84,16 +92,23 @@ class DataApi
 
         $tableName = '';
         $type = '';
+        $csrfToken = '';
         $entity = [];
         foreach($_POST as $key => $value) {
             if($key === 'tableName') {
                 $tableName = $value;
             } elseif($key === 'type') {
                 $type = $value;
+            } elseif ($key === 'csrfToken') {
+                $csrfToken = $value;
             } else {
                 $entity[$key] = $value;
             }
         }
+        if($_SESSION['csrf_token'] !== $csrfToken) {
+            new Exception("CSRFエラー");
+        }
+
         $entity['delete_flg'] = 1;
         $rClass = new ReflectionClass("dao\\{$tableName}Dao");
         $dao = $rClass->newInstance();
@@ -114,7 +129,13 @@ class DataApi
      */
     public function deleteById()
     {
+        session_start();
         header('Content-type: application/json; charset= UTF-8');
+
+        $csrfToken = $_SESSION['csrfToken'] ?? '';
+        if($_SESSION['csrf_token'] !== $csrfToken) {
+            new Exception("CSRFエラー");
+        }
 
         $tableName = $_POST['tableName'] ?? '';
         $rClass = new ReflectionClass("dao\\{$tableName}Dao");
