@@ -1,5 +1,6 @@
 <?php 
 use controller\EventController;
+use controller\ErrorController;
 
 spl_autoload_register(function($class) {
     $pathArray = explode("\\", $class);
@@ -29,11 +30,15 @@ if(count($url) > 2 && strlen($url[1]) > 0 && strlen($url[2])) {
         $req = explode("?", $url[2]);
     }
     
-    
-    $rClass = new ReflectionClass($controllerName);
-    $controller = $rClass->newInstance();
-    $method = $rClass->getMethod($req[0]);
-    $method->invoke($controller);
+    try {
+        $rClass = new ReflectionClass($controllerName);
+        $controller = $rClass->newInstance();
+        $method = $rClass->getMethod($req[0]);
+        $method->invoke($controller);
+    } catch (Exception $e) {
+        $error = new ErrorController();
+        $error->index();
+    }
 } else {
     $controller = new EventController;
     $controller->index();

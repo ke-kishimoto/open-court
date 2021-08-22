@@ -66,6 +66,12 @@
             
         },
         methods: {
+            clear() {
+                this.occupation = ''
+                this.sex = ''
+                this.selectedevent = ''
+                this.content = ''
+            },
             getEventList() {
                 fetch('/api/event/getGameInfoListByAfterDate', {
                     method: 'post',
@@ -97,9 +103,6 @@
                     this.msg = '配信対象者が存在しません。'
                     return
                 }
-                // let params = new URLSearchParams()
-                // params.append('users', this.targetUser)
-                // params.append('message', this.content)
                 let data = {
                     users: this.targetUser,
                     message: this.content,
@@ -110,9 +113,11 @@
                     },
                     method: 'post',
                     body: JSON.stringify(data)
-                }).then(() => this.msg = 'メッセージを送信しました。')
+                }).then(() => {
+                    this.msg = 'メッセージを送信しました。'
+                    this.clear()
+                })
                 .catch(errors => console.log(errors))
-                
             }
         },
         created: function() {

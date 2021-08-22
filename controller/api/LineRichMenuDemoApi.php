@@ -7,6 +7,16 @@ use CURLFile;
 
 class LineRichMenuDemoApi 
 {
+
+    public $channelAccessToken;
+
+    public function __construct()
+    {
+        $configDao = new ConfigDao();
+        $config = $configDao->selectById(1);
+        $this->channelAccessToken = $config['channel_access_token'];
+    }
+
     public function createRichMenuAll()
     {
         // 一旦メニューを全て削除
@@ -32,18 +42,18 @@ class LineRichMenuDemoApi
         $eventMenuId = $richMenu->richMenuId;
         var_dump($eventMenuId);
         // // コンタクトメニュー
-        // $data = $this->contactMenu();
-        // $richMenu = $this->createRichMenu($data);
-        // $contactMenuId = $richMenu->richMenuId;
-        // var_dump($contactMenuId);
+        $data = $this->contactMenu();
+        $richMenu = $this->createRichMenu($data);
+        $contactMenuId = $richMenu->richMenuId;
+        var_dump($contactMenuId);
 
 
         // 画像のアップロード
         // index.phpと同じフォルダに画像ファイルがある必要がある。
-        var_dump($this->uploadRichImg($mainMenuId, 'richmenu_main.jpg'));
-        var_dump($this->uploadRichImg($profileMenuId, 'richmenu_profile.jpg'));
-        var_dump($this->uploadRichImg($eventMenuId, 'richmenu_event.jpg'));
-        // var_dump($this->uploadRichImg($contactMenuId, 'richmenu_contact.jpg'));
+        var_dump($this->uploadRichImg($mainMenuId, 'richmenu_main.png'));
+        var_dump($this->uploadRichImg($profileMenuId, 'richmenu_profile.png'));
+        var_dump($this->uploadRichImg($eventMenuId, 'richmenu_event.png'));
+        var_dump($this->uploadRichImg($contactMenuId, 'richmenu_contact.png'));
 
         // デフォルトの設定  // 画像の設定ができないとうまくいかない
         var_dump($this->setDefaultLiMenu($mainMenuId));
@@ -52,14 +62,14 @@ class LineRichMenuDemoApi
         var_dump($this->deleteLichMenuAiliasId('richmenu-alias-main'));
         var_dump($this->deleteLichMenuAiliasId('richmenu-alias-profile'));
         var_dump($this->deleteLichMenuAiliasId('richmenu-alias-event'));
-        // var_dump($this->deleteLichMenuAiliasId('richmenu-alias-contact'));
+        var_dump($this->deleteLichMenuAiliasId('richmenu-alias-contact'));
 
         // 削除してから実行しても、コンフリクトでエラーが出ることがある。。
         // エイリアスの作成 // ここも、画像がアップされていないとうまくいかない
         var_dump($this->createRichMenuAlias('richmenu-alias-main', $mainMenuId));
         var_dump($this->createRichMenuAlias('richmenu-alias-profile', $profileMenuId));
         var_dump($this->createRichMenuAlias('richmenu-alias-event', $eventMenuId));
-        // var_dump($this->createRichMenuAlias('richmenu-alias-contact', $contactMenuId));
+        var_dump($this->createRichMenuAlias('richmenu-alias-contact', $contactMenuId));
 
         // // エイリアスの更新 // 作成でコンフリクトのエラーが出た時はここで更新処理を実行
         // $this->updateRichMenuAiliasId('richmenu-alias-main', $mainMenuId);
@@ -71,13 +81,11 @@ class LineRichMenuDemoApi
 
     public function getRichMenus()
     {
-        $configDao = new ConfigDao();
-        $config = $configDao->selectById(1);
-
+    
         $url = "https://api.line.me/v2/bot/richmenu/list";
         $ch = curl_init($url);
         $headers = array(
-            "Authorization: Bearer {$config['channel_access_token']}",
+            "Authorization: Bearer {$this->channelAccessToken}",
             "Content-Type: application/json",
         );
        
@@ -93,13 +101,11 @@ class LineRichMenuDemoApi
         if(empty($richMenuId)) {
             $richMenuId = $_GET['richMenuId'] ?? '';
         }
-        $configDao = new ConfigDao();
-        $config = $configDao->selectById(1);
-
+    
         $url = "https://api.line.me/v2/bot/richmenu/{$richMenuId}";
         $ch = curl_init($url);
         $headers = array(
-            "Authorization: Bearer {$config['channel_access_token']}",
+            "Authorization: Bearer {$this->channelAccessToken}",
         );
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");  //POSTで送信
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -111,14 +117,12 @@ class LineRichMenuDemoApi
 
     public function createRichMenu($data) 
     {
-        $configDao = new ConfigDao();
-        $config = $configDao->selectById(1);
-
+    
         $url = 'https://api.line.me/v2/bot/richmenu';
         $ch = curl_init($url);
         $headers = array(
             "Content-Type: application/json",
-            "Authorization: Bearer {$config['channel_access_token']}"
+            "Authorization: Bearer {$this->channelAccessToken}"
         );
     
         curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
@@ -139,7 +143,7 @@ class LineRichMenuDemoApi
             ],
             'selected' => false,
             'name' => 'main menu',
-            'chatBarText' => 'メインメニュー',
+            'chatBarText' => 'ホーム',
             'areas' => [
                 [
                 'bounds' => [
@@ -163,14 +167,11 @@ class LineRichMenuDemoApi
                     "height" => 843,
                 ],
                 'action' => [
-                    'type' => 'uri',
-                    'label' => 'コンタクト',
-                    'uri' => 'https://lin.ee/gi7g67H/',
-                    // 'type' => 'message',
-                    // 'label' => 'コンタクト',
-                    // 'text' => 'コンタクト',
+                    'type' => 'richmenuswitch',
+                    'label' => 'アカウント情報',
+                    'richMenuAliasId' => 'richmenu-alias-profile',
+                    'data' => 'richmenu-changed-to-profile',
                 ],
-                
             ],
             [
                 'bounds' => [
@@ -195,9 +196,9 @@ class LineRichMenuDemoApi
                 ],
                 'action' => [
                     'type' => 'richmenuswitch',
-                    'label' => 'プロフィール',
-                    'richMenuAliasId' => 'richmenu-alias-profile',
-                    'data' => 'richmenu-changed-to-profile',
+                    'label' => 'コンタクト',
+                    'richMenuAliasId' => 'richmenu-alias-contact',
+                    'data' => 'richmenu-changed-to-event',
                 ],
             ],
             ]
@@ -213,63 +214,88 @@ class LineRichMenuDemoApi
             ],
             'selected' => false,
             'name' => 'event menu',
-            'chatBarText' => 'イベントメニュー',
+            'chatBarText' => 'イベント',
             'areas' => [
                 [
-                'bounds' => [
-                    "x" => 0,
-                    "y" => 0,
-                    "width" => 1250,
-                    "height" => 843,
+                    'bounds' => [
+                        "x" => 0,
+                        "y" => 0,
+                        "width" => 833,
+                        "height" => 843,
+                    ],
+                    'action' => [
+                        'type' => 'uri',
+                        'label' => '予約システム',
+                        'uri' => 'https://demo.eventmanc.com/',
+                    ],  
                 ],
-                'action' => [
-                    'type' => 'richmenuswitch',
-                    'label' => 'メインメニュー',
-                    'richMenuAliasId' => 'richmenu-alias-main',
-                    'data' => 'richmenu-changed-to-main',
+                [
+                    'bounds' => [
+                        "x" => 0,
+                        "y" => 844,
+                        "width" => 833,
+                        "height" => 843,
+                    ],
+                    'action' => [
+                        'type' => 'richmenuswitch',
+                        'label' => 'ホーム',
+                        'richMenuAliasId' => 'richmenu-alias-main',
+                        'data' => 'richmenu-changed-to-main',
+                    ],  
                 ],
-                
-            ],
-            [
-                'bounds' => [
-                    "x" => 1251,
-                    "y" => 0,
-                    "width" => 1250,
-                    "height" => 843,
+                [
+                    'bounds' => [
+                        "x" => 834,
+                        "y" => 0,
+                        "width" => 833,
+                        "height" => 843,
+                    ],
+                    'action' => [
+                        'type' => 'message',
+                        'label' => '予約',
+                        'text' => '予約',
+                    ],
                 ],
-                'action' => [
-                    'type' => 'message',
-                    'label' => '予約確認',
-                    'text' => '予約確認',
+                [
+                    'bounds' => [
+                        "x" => 834,
+                        "y" => 844,
+                        "width" => 833,
+                        "height" => 843,
+                    ],
+                    'action' => [
+                        'type' => 'message',
+                        'label' => '一括予約（開発中）',
+                        'text' => '一括予約（開発中）',
+                    ],
                 ],
-            ],
-            [
-                'bounds' => [
-                    "x" => 0,
-                    "y" => 844,
-                    "width" => 1250,
-                    "height" => 843,
+                [
+                    'bounds' => [
+                        "x" => 1669,
+                        "y" => 0,
+                        "width" => 833,
+                        "height" => 843,
+                    ],
+                    'action' => [
+                        'type' => 'message',
+                        'label' => '予約確認',
+                        'text' => '予約確認',
+                    ],
                 ],
-                'action' => [
-                    'type' => 'message',
-                    'label' => '予約',
-                    'text' => '予約',
+                [
+                    'bounds' => [
+                        "x" => 1669,
+                        "y" => 844,
+                        "width" => 833,
+                        "height" => 843,
+                    ],
+                    'action' => [
+                        'type' => 'message',
+                        'label' => 'キャンセル',
+                        'text' => 'キャンセル',
+                    ],
+                    
                 ],
-            ],
-            [
-                'bounds' => [
-                    "x" => 1251,
-                    "y" => 844,
-                    "width" => 1250,
-                    "height" => 843,
-                ],
-                'action' => [
-                    'type' => 'message',
-                    'label' => 'キャンセル',
-                    'text' => 'キャンセル',
-                ],
-                
-            ],
             ]
         ]);
     }
@@ -286,59 +312,85 @@ class LineRichMenuDemoApi
             'chatBarText' => 'プロフィールメニュー',
             'areas' => [
                 [
-                'bounds' => [
-                    "x" => 0,
-                    "y" => 0,
-                    "width" => 1250,
-                    "height" => 843,
+                    'bounds' => [
+                        "x" => 0,
+                        "y" => 0,
+                        "width" => 833,
+                        "height" => 843,
+                    ],
+                    'action' => [
+                        'type' => 'uri',
+                        'label' => '予約システム',
+                        'uri' => 'https://demo.eventmanc.com/',
+                    ],  
                 ],
-                'action' => [
-                    'type' => 'richmenuswitch',
-                    'label' => 'メインメニュー',
-                    'richMenuAliasId' => 'richmenu-alias-main',
-                    'data' => 'richmenu-changed-to-main',
+                [
+                    'bounds' => [
+                        "x" => 0,
+                        "y" => 844,
+                        "width" => 833,
+                        "height" => 843,
+                    ],
+                    'action' => [
+                        'type' => 'richmenuswitch',
+                        'label' => 'メインメニュー',
+                        'richMenuAliasId' => 'richmenu-alias-main',
+                        'data' => 'richmenu-changed-to-main',
+                    ],
+                    
                 ],
-                
-            ],
-            [
-                'bounds' => [
-                    "x" => 1251,
-                    "y" => 0,
-                    "width" => 1250,
-                    "height" => 843,
+                [
+                    'bounds' => [
+                        "x" => 834,
+                        "y" => 0,
+                        "width" => 833,
+                        "height" => 843,
+                    ],
+                    'action' => [
+                        'type' => 'message',
+                        'label' => '職種設定',
+                        'text' => '職種',
+                    ],
                 ],
-                'action' => [
-                    'type' => 'message',
-                    'label' => 'プロフィール確認',
-                    'text' => 'プロフィール確認',
+                [
+                    'bounds' => [
+                        "x" => 834,
+                        "y" => 844,
+                        "width" => 833,
+                        "height" => 843,
+                    ],
+                    'action' => [
+                        'type' => 'message',
+                        'label' => '性別設定',
+                        'text' => '性別',
+                    ],
                 ],
-            ],
-            [
-                'bounds' => [
-                    "x" => 0,
-                    "y" => 844,
-                    "width" => 1250,
-                    "height" => 843,
+                [
+                    'bounds' => [
+                        "x" => 1669,
+                        "y" => 0,
+                        "width" => 833,
+                        "height" => 843,
+                    ],
+                    'action' => [
+                        'type' => 'message',
+                        'label' => 'プロフィール確認',
+                        'text' => 'プロフィール確認',
+                    ],
                 ],
-                'action' => [
-                    'type' => 'message',
-                    'label' => '職種設定',
-                    'text' => '職種',
+                [
+                    'bounds' => [
+                        "x" => 1669,
+                        "y" => 844,
+                        "width" => 833,
+                        "height" => 843,
+                    ],
+                    'action' => [
+                        'type' => 'message',
+                        'label' => '通知設定（開発中）',
+                        'text' => '通知設定（開発中）',
+                    ],
                 ],
-            ],
-            [
-                'bounds' => [
-                    "x" => 1251,
-                    "y" => 844,
-                    "width" => 1250,
-                    "height" => 843,
-                ],
-                'action' => [
-                    'type' => 'message',
-                    'label' => '性別設定',
-                    'text' => '性別',
-                ],
-            ],
             ]
         ]);
     }
@@ -355,126 +407,84 @@ class LineRichMenuDemoApi
             'chatBarText' => 'コンタクトメニュー',
             'areas' => [
                 [
-                'bounds' => [
-                    "x" => 0,
-                    "y" => 0,
-                    "width" => 1250,
-                    "height" => 843,
+                    'bounds' => [
+                        "x" => 0,
+                        "y" => 0,
+                        "width" => 833,
+                        "height" => 843,
+                    ],
+                    'action' => [
+                        'type' => 'uri',
+                        'label' => '予約システム',
+                        'uri' => 'https://demo.eventmanc.com/',
+                    ],  
                 ],
-                'action' => [
-                    'type' => 'richmenuswitch',
-                    'label' => 'メインメニュー',
-                    'richMenuAliasId' => 'richmenu-alias-main',
-                    'data' => 'richmenu-changed-to-main',
-                ],
-                
-            ],
-            [
-                'bounds' => [
-                    "x" => 1251,
-                    "y" => 0,
-                    "width" => 1250,
-                    "height" => 843,
-                ],
-                'action' => [
-                    'type' => 'message',
-                    'label' => 'お問い合わせ',
-                    'text' => 'お問い合わせ',
-                ],
-            ],
-            [
-                'bounds' => [
-                    "x" => 0,
-                    "y" => 844,
-                    "width" => 1250,
-                    "height" => 843,
-                ],
-                'action' => [
-                    'type' => 'message',
-                    'label' => 'ご意見・ご要望',
-                    'text' => 'ご意見・ご要望',
-                ],
-            ],
-            [
-                'bounds' => [
-                    "x" => 1251,
-                    "y" => 844,
-                    "width" => 1250,
-                    "height" => 843,
-                ],
-                'action' => [
-                    'type' => 'message',
-                    'label' => 'XXXX',
-                    'text' => 'XXXX',
-                ],
-            ],
-            ]
-        ]);
-    }
-
-    private function firstMenu()
-    {
-        return json_encode([
-            'size' => [
-                "width" => 800,
-                "height" => 540,
-            ],
-            'selected' => false,
-            'name' => 'first menu',
-            'chatBarText' => 'menu',
-            'areas' => [
                 [
-                'bounds' => [
-                    "x" => 0,
-                    "y" => 0,
-                    "width" => 267,
-                    "height" => 270,
+                    'bounds' => [
+                        "x" => 0,
+                        "y" => 844,
+                        "width" => 833,
+                        "height" => 843,
+                    ],
+                    'action' => [
+                        'type' => 'richmenuswitch',
+                        'label' => 'メインメニュー',
+                        'richMenuAliasId' => 'richmenu-alias-main',
+                        'data' => 'richmenu-changed-to-main',
+                    ],
                 ],
-                'action' => [
-                    'type' => 'message',
-                    'label' => '予約',
-                    'text' => '予約',
+                [
+                    'bounds' => [
+                        "x" => 834,
+                        "y" => 0,
+                        "width" => 833,
+                        "height" => 843,
+                    ],
+                    'action' => [
+                        'type' => 'message',
+                        'label' => '障害報告（開発中）',
+                        'text' => '障害報告（開発中）',
+                    ],
                 ],
-            ],
-            [
-                'bounds' => [
-                    "x" => 267,
-                    "y" => 0,
-                    "width" => 267,
-                    "height" => 270,
+                [
+                    'bounds' => [
+                        "x" => 834,
+                        "y" => 844,
+                        "width" => 833,
+                        "height" => 843,
+                    ],
+                    'action' => [
+                        'type' => 'message',
+                        'label' => 'お問い合わせ',
+                        'text' => 'お問い合わせ',
+                    ],
                 ],
-                'action' => [
-                    'type' => 'message',
-                    'label' => 'キャンセル',
-                    'text' => 'キャンセル',
+                [
+                    'bounds' => [
+                        "x" => 1669,
+                        "y" => 0,
+                        "width" => 833,
+                        "height" => 843,
+                    ],
+                    'action' => [
+                        'type' => 'uri',
+                        'label' => 'コンタクト',
+                        'uri' => 'https://lin.ee/gi7g67H/',
+                    ],
                 ],
-            ],
-            [
-                'bounds' => [
-                    "x" => 534,
-                    "y" => 0,
-                    "width" => 267,
-                    "height" => 270,
+                [
+                    'bounds' => [
+                        "x" => 1669,
+                        "y" => 844,
+                        "width" => 833,
+                        "height" => 843,
+                    ],
+                    'action' => [
+                        'type' => 'uri',
+                        'label' => 'ネットショップ',
+                        'uri' => 'https://lin.ee/gi7g67H/',
+                    ],
                 ],
-                'action' => [
-                    'type' => 'message',
-                    'label' => '予約確認',
-                    'text' => '予約確認',
-                ],
-            ],
-            [
-                'bounds' => [
-                    "x" => 0,
-                    "y" => 270,
-                    "width" => 800,
-                    "height" => 270,
-                ],
-                'action' => [
-                    'type' => 'uri',
-                    'label' => '予約システム',
-                    'text' => 'https://demo.eventmanc.com/',
-                ],
-            ]
             ]
         ]);
     }
@@ -487,13 +497,11 @@ class LineRichMenuDemoApi
         if(empty($fileName)) {
             $fileName = $_GET['fileName'] ?? '';
         }
-        $configDao = new ConfigDao();
-        $config = $configDao->selectById(1);
-
+    
         $url = "https://api-data.line.me/v2/bot/richmenu/{$richMenuId}/content";
         $ch = curl_init($url);
         $headers = array(
-            "Authorization: Bearer {$config['channel_access_token']}",
+            "Authorization: Bearer {$this->channelAccessToken}",
             "Content-Type: image/jpeg",
         );
 
@@ -530,13 +538,11 @@ class LineRichMenuDemoApi
         if(empty($richMenuId)) {
             $richMenuId = $_GET['richMenuId'] ?? '';
         }
-        $configDao = new ConfigDao();
-        $config = $configDao->selectById(1);
-
+    
         $url = "https://api.line.me/v2/bot/user/all/richmenu/{$richMenuId}";
         $ch = curl_init($url);
         $headers = array(
-            "Authorization: Bearer {$config['channel_access_token']}"
+            "Authorization: Bearer {$this->channelAccessToken}"
         );
        
         curl_setopt($ch, CURLOPT_POST, TRUE);  //POSTで送信
@@ -556,13 +562,11 @@ class LineRichMenuDemoApi
         if(empty($richMenuId)) {
             $richMenuId = $_GET['richMenuId'] ?? '';
         }
-        $configDao = new ConfigDao();
-        $config = $configDao->selectById(1);
-
+    
         $url = "https://api.line.me/v2/bot/richmenu/alias";
         $ch = curl_init($url);
         $headers = array(
-            "Authorization: Bearer {$config['channel_access_token']}",
+            "Authorization: Bearer {$this->channelAccessToken}",
             "Content-Type: application/json",
         );
         $data = json_encode([
@@ -584,13 +588,11 @@ class LineRichMenuDemoApi
         if(empty($richMenuAliasId)) {
             $richMenuAliasId = $_GET['richMenuAliasId'] ?? '';
         }
-        $configDao = new ConfigDao();
-        $config = $configDao->selectById(1);
-
+    
         $url = "https://api.line.me/v2/bot/richmenu/alias/{$richMenuAliasId}";
         $ch = curl_init($url);
         $headers = array(
-            "Authorization: Bearer {$config['channel_access_token']}",
+            "Authorization: Bearer {$this->channelAccessToken}",
             "Content-Type: application/json",
         );
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");  //POSTで送信    
@@ -610,13 +612,11 @@ class LineRichMenuDemoApi
         if(empty($richMenuId)) {
             $richMenuId = $_GET['richMenuId'] ?? '';
         }
-        $configDao = new ConfigDao();
-        $config = $configDao->selectById(1);
-
+    
         $url = "https://api.line.me/v2/bot/richmenu/alias/{$richMenuAliasId}";
         $ch = curl_init($url);
         $headers = array(
-            "Authorization: Bearer {$config['channel_access_token']}",
+            "Authorization: Bearer {$this->channelAccessToken}",
             "Content-Type: application/json",
         );
         $data = json_encode([
