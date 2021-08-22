@@ -163,5 +163,25 @@ class UsersDao extends BaseDao
 
         
     }
+
+    public function getLineUser($occupation, $sex)
+    {
+        $sql = "select * from users where delete_flg = 1 and line_id is not null and line_id <> ''";
+        if(!empty($occupation)) {
+          $sql .= " and occupation = :occupation";
+        }
+        if(!empty($sex)) {
+          $sql .= " and sex = :sex";
+        }
+        $prepare = $this->getPdo()->prepare($sql);
+        if(!empty($occupation)) {
+          $prepare->bindValue(':occupation', $occupation);
+        }
+        if(!empty($sex)) {
+          $prepare->bindValue(':sex', $sex);
+        }
+        $prepare->execute();
+        return $prepare->fetchAll();
+    }
 }  
 

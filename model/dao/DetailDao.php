@@ -384,4 +384,27 @@ class DetailDao extends BaseDao
         $prepare->execute();
         return $this->getParticipant($id);
     }
+
+    // LINE ユーザー取得
+    public function getLineUser($occupation, $sex, $eventId)
+    {
+        $sql = "select * from participant where line_id is not null and line_id <> ''
+        and game_id = :game_id";
+        if(!empty($occupation)) {
+            $sql .= " and occupation = :occupation";
+        }
+        if(!empty($sex)) {
+            $sql .= " and sex = :sex";
+        }
+        $prepare = $this->getPdo()->prepare($sql);
+        $prepare->bindValue(':game_id', $eventId);
+        if(!empty($occupation)) {
+            $prepare->bindValue(':occupation', $occupation);
+        }
+        if(!empty($sex)) {
+            $prepare->bindValue(':sex', $sex);
+        }
+        $prepare->execute();
+        return $prepare->fetchAll();
+    }
 }

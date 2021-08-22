@@ -57,7 +57,7 @@ Vue.component('vue-header', {
                     <li v-if="admin"><a class="drawer-menu-item" href="/admin/inquiryList">問い合わせ管理</a></li>
                     <li v-if="admin"><a class="drawer-menu-item" href="/admin/notice">お知らせ登録</a></li>
                     <li v-if="admin"><a class="drawer-menu-item" href="/sales/index">売上管理</a></li>
-                    <li v-if="admin"><a class="drawer-menu-item" href="/admin/delivery/index">セグメント配信</a></li>
+                    <li v-if="admin"><a class="drawer-menu-item" href="/admin/segmentDelivery">セグメント配信</a></li>
                     <li><a class="drawer-brand" href="#">ユーザーメニュー</a></li>
                     <li v-if="logind"><a class="drawer-menu-item" href="/user/participatingEventList">参加イベント一覧</a></li>
                     <li v-if="logind"><a class="drawer-menu-item" href="/participant/eventBatchRegist">イベント一括参加</a></li>

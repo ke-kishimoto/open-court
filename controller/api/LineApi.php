@@ -5,6 +5,7 @@ use api\LineApiWebhook;
 use dao\ConfigDao;
 use dao\ApiLogDao;
 use Exception;
+use service\LineService;
 
 // LINE通知用
 class LineApi 
@@ -432,6 +433,36 @@ class LineApi
         }
 
         echo json_encode('{}');
+    }
+
+    // セグメント配信用の対象者取得
+    public function getTargetUser()
+    {
+        header('Content-type: application/json; charset= UTF-8');
+
+        $occupation = $_POST['occupation'] ?? '';
+        $sex = $_POST['sex'] ?? '';
+        $eventId = $_POST['eventId'] ?? '';
+
+        $service = new LineService();
+        $users = $service->getTargetUser($occupation, $sex, $eventId);
+
+        echo json_encode($users);
+    }
+
+    public function sendMessage()
+    {
+        header('Content-type: application/json; charset= UTF-8');
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        $users = $data['users'] ?? [];
+        $message = $data['message'] ?? '';
+        foreach($users as $user) {
+            $this->pushMessage($user['line_id'], $message);
+        }
+
+        echo json_encode([]);
+
     }
 }
 
