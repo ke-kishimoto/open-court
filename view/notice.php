@@ -1,9 +1,8 @@
 <div id="app" v-cloak>
     <vue-header></vue-header>
 
+    <p style="color:red; font-size:20px">{{ msg }}</p>
     <h1>お知らせ登録</h1>
-    <p style="color:red">{{ msg }}</p>
-        <input type="hidden" name="csrf_token" value="<?=$csrf_token?>">
         <p>
             <select @change="selectNotice($event)" v-model="selectedNotice">
                 <option v-for="notice in noticeList" v-bind:key="notice.id" v-bind:value="notice.id">{{ notice.title }}</option>
@@ -44,8 +43,15 @@
             noticeList: [],
             title: '',
             content: '',
+            csrfToken: '',
         },
         methods: {
+            getCsrfToken() {
+                fetch('/api/data/getCsrfToken',{
+                    method: 'post',
+                }).then(res => res.json().then(data => this.csrfToken = data.csrfToken))
+                .catch(errors => console.log(errors))
+            },
             getNoticeList() {
                 let params = new URLSearchParams();
                 params.append('tableName', 'Notice');
@@ -95,6 +101,7 @@
                 params.append('tableName', 'Notice');
                 params.append('type', type);
                 params.append('id', this.noticeId);
+                params.append('csrfToken', this.csrfToken);
                 params.append('title', this.title);
                 params.append('content', this.content);
                 fetch('/api/data/updateRecord', {
@@ -116,6 +123,7 @@
                 let params = new URLSearchParams();
                 params.append('tableName', 'Notice');
                 params.append('id', this.noticeId);
+                params.append('csrfToken', this.csrfToken);
                 fetch('/api/data/deleteById', {
                     method: 'post',
                     body: params
@@ -133,6 +141,7 @@
         },
         created: function() {
             this.getNoticeList()
+            this.getCsrfToken()
         }
     })
 </script>
