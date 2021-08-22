@@ -14,7 +14,7 @@
     </p>
     <p>
         対象イベント
-        <select v-model="selectedevent">
+        <select v-model="selectedevent" class="custom-select mr-sm-2">
             <option v-for="event in eventList" v-bind:key="event.id" v-bind:value="event.id">{{ event.title }}</option>
         </select>
     </p>
@@ -44,8 +44,15 @@
             user: {},
             gameId: '',
             content: '',
+            csrfToken: '',
         },
         methods: {
+            getCsrfToken() {
+                fetch('/api/data/getCsrfToken',{
+                    method: 'post',
+                }).then(res => res.json().then(data => this.csrfToken = data.csrfToken))
+                .catch(errors => console.log(errors))
+            },
             clear() {
                 this.content = ''
             },
@@ -90,6 +97,7 @@
                 params.append('name', this.user.name);
                 params.append('email', this.user.email);
                 params.append('content', this.content);
+                params.append('csrfToken', this.csrfToken);
                 fetch('/api/contact/sendInquiry', {
                     method: 'post',
                     body: params
@@ -108,6 +116,7 @@
         created: function() {
             this.getEventList()
             this.getLoginUser()
+            this.getCsrfToken()
         }
     });
 

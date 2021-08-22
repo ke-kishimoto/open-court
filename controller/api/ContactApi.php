@@ -3,6 +3,7 @@ namespace api;
 
 use dao\TroubleReportDao;
 use service\InquiryService;
+use \Exception;
 
 class ContactApi
 {
@@ -28,9 +29,17 @@ class ContactApi
         echo json_encode([]);
     }
 
-    public function sendInquiry() {
+    public function sendInquiry() 
+    {
 
-        $errMsg = '';
+        session_start();
+        header('Content-type: application/json; charset= UTF-8');
+
+        $csrfToken = $_POST['csrfToken'] ?? '';
+        if($_SESSION['csrf_token'] !== $csrfToken) {
+            new Exception("CSRFエラー");
+        }
+
         if(isset($_POST)) {
             $gameId = (int)$_POST['game_id'];
             $inquiry = [];
@@ -47,8 +56,13 @@ class ContactApi
             $service = new InquiryService();
             $service->sendInquiry($inquiry);
             
-
         }
-        echo json_encode('{}');
+        try {
+            echo json_encode([]);
+        } catch(Exception $e) {
+            http_response_code(202);
+            $data = ['msg' => $e->getMessage()];
+            echo json_encode($data);
+        }
     }
 }
