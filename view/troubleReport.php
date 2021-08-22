@@ -55,8 +55,15 @@
                 {text: '要望', value: '2'},
                 {text: 'その他', value: '3'},
             ],
+            csrfToken: '',
         },
         methods: {
+            getCsrfToken() {
+                fetch('/api/data/getCsrfToken',{
+                    method: 'post',
+                }).then(res => res.json().then(data => this.csrfToken = data.csrfToken))
+                .catch(errors => console.log(errors))
+            },
             clear() {
                 this.troubleReport = {}
             },
@@ -85,6 +92,7 @@
                 }
                 if (!confirm('送信してよろしいですか。')) return;
                 let params = new URLSearchParams();
+                params.append('csrfToken', this.csrfToken);
                 params.append('name', this.troubleReport.name);
                 params.append('category', this.troubleReport.category);
                 params.append('title', this.troubleReport.title);
@@ -106,6 +114,7 @@
         },
         created: function() {
             this.getLoginUser()
+            this.getCsrfToken()
         }
     })
 </script>

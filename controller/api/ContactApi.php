@@ -9,7 +9,13 @@ class ContactApi
 {
     public function sendTroubleReport()
     {
+        session_start();
         header('Content-type: application/json; charset= UTF-8');
+
+        $csrfToken = $_POST['csrfToken'] ?? '';
+        if($_SESSION['csrf_token'] !== $csrfToken) {
+            new Exception("CSRFエラー");
+        }
 
         if(isset($_POST)) {
             $troubleReportDao = new TroubleReportDao();
@@ -26,12 +32,17 @@ class ContactApi
             $api = new LineApi();
             $api->troubleReport($troubleReport);
         }
-        echo json_encode([]);
+        try {
+            echo json_encode([]);
+        } catch(Exception $e) {
+            http_response_code(202);
+            $data = ['msg' => $e->getMessage()];
+            echo json_encode($data);
+        }
     }
 
     public function sendInquiry() 
     {
-
         session_start();
         header('Content-type: application/json; charset= UTF-8');
 
