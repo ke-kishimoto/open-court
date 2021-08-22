@@ -10,6 +10,7 @@ use dao\EventTemplateDao;
 use dao\UsersDao;
 use dao\NoticeDao;
 use service\EventService;
+use Exception;
 
 class EventApi {
 
@@ -55,6 +56,12 @@ class EventApi {
         session_start();
 
         $data = json_decode(file_get_contents('php://input'), true);
+
+        $csrfToken = $data['csrfToken'] ?? '';
+        if($_SESSION['csrf_token'] !== $csrfToken) {
+            new Exception("CSRFエラー");
+        }
+
         $participant = [];
         $participant['game_id'] = 0;
         $participant['occupation'] = (int)$data['occupation'];
@@ -70,7 +77,13 @@ class EventApi {
         $service = new EventService();
         $count = $service->multipleParticipantRegist($data['idList'], $participant, $data['companion']);
 
-        echo json_encode(['count' => $count]);
+        try {
+            echo json_encode(['count' => $count]);
+        } catch(Exception $e) {
+            http_response_code(202);
+            $data = ['errMsg' => $e->getMessage()];
+            echo json_encode($data);
+        }
     }
 
     

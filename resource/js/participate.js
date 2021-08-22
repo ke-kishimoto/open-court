@@ -1,7 +1,6 @@
 Vue.component('participate', {
     data: function() {
         return {
-            csrf_token: '',
             msg: '',
             selectedUser: '',
             userList: [],
@@ -19,9 +18,16 @@ Vue.component('participate', {
             adminFlg: '0',
             registered: false,
             editId: -1,
+            csrfToken: '',
         }
     }, 
     methods: {
+        getCsrfToken() {
+            fetch('/api/data/getCsrfToken',{
+                method: 'post',
+            }).then(res => res.json().then(data => this.csrfToken = data.csrfToken))
+            .catch(errors => console.log(errors))
+        },
         clear() {
             this.selectedUser = ''
             this.user.occupation = '1'
@@ -165,6 +171,7 @@ Vue.component('participate', {
                 user: this.user,
                 companion: this.companions,
                 editId: this.editId,
+                csrfToken: this.csrfToken,
             }
             fetch('/api/event/participantRegist', {
                 headers:{
@@ -194,6 +201,7 @@ Vue.component('participate', {
     created: function() {
         this.getLoginUser()
         this.getUserList()
+        this.getCsrfToken()
     }, 
     template: `
     <div id="app">
