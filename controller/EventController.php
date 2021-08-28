@@ -1,7 +1,6 @@
 <?php
 namespace controller;
 
-use dao\GameInfoDao;
 use controller\BaseController;
 
 class EventController extends BaseController

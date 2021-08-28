@@ -33,8 +33,15 @@
         data: {
             msg: '',
             user: {},
+            csrfToken: '',
         },
         methods: {
+            getCsrfToken() {
+                fetch('/api/data/getCsrfToken',{
+                    method: 'post',
+                }).then(res => res.json().then(data => this.csrfToken = data.csrfToken))
+                .catch(errors => console.log(errors))
+            },
             getLoginUser() {
                 fetch('/api/data/getLoginUser', {
                     method: 'post',
@@ -60,6 +67,7 @@
                 if (!confirm('キャンセルしてよろしいですか？')) return
                 let params = new URLSearchParams()
                 params.append('game_id', this.getParam('gameid'))
+                params.append('csrfToken', this.csrfToken);
                 if(this.user.line_id === null || this.user.line_id === '') {
                     params.append('email', this.user.email)
                     params.append('password', this.user.password)
@@ -85,6 +93,7 @@
         },
         created: function() {
             this.getLoginUser()
+            this.getCsrfToken()
         }
     })
 </script>

@@ -93,6 +93,12 @@ class EventApi {
         session_start();
 
         $data = json_decode(file_get_contents('php://input'), true);
+
+        $csrfToken = $data['csrfToken'] ?? '';
+        if($_SESSION['csrf_token'] !== $csrfToken) {
+            new Exception("CSRFエラー");
+        }
+        
         $service = new EventService();
 
         $participant = [];
@@ -133,6 +139,11 @@ class EventApi {
     {
         header('Content-type: application/json; charset= UTF-8');
         session_start();
+
+        $csrfToken = $_POST['csrfToken'] ?? '';
+        if($_SESSION['csrf_token'] !== $csrfToken) {
+            new Exception("CSRFエラー");
+        }
 
         $service = new EventService();
         $participant = [];
