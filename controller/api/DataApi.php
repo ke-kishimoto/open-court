@@ -7,6 +7,9 @@ use Exception;
 class DataApi
 {
 
+    /**
+     * @Route("/getCsrfToken")
+     */
     public function getCsrfToken()
     {
         header('Content-type: application/json; charset= UTF-8');

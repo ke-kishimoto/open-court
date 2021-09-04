@@ -5,7 +5,6 @@ use dao\CompanionDao;
 use dao\DetailDao;
 use dao\GameInfoDao;
 use dao\DefaultCompanionDao;
-use dao\ompanionDao;
 use dao\EventTemplateDao;
 use dao\UsersDao;
 use dao\NoticeDao;
@@ -14,6 +13,9 @@ use Exception;
 
 class EventApi {
 
+    /**
+     * @Route("/getCompanionList")
+     */
     public function getCompanionList()
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -25,6 +27,9 @@ class EventApi {
 
     }
 
+    /**
+     * @Route("/getParticipantNameList")
+     */
     public function getParticipantNameList()
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -39,6 +44,9 @@ class EventApi {
         echo json_encode($participantList);
     }
 
+    /**
+     * @Route("/existsCheck")
+     */
     public function existsCheck() 
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -50,6 +58,9 @@ class EventApi {
         echo json_encode($data);
     }
 
+    /**
+     * @Route("/participantBatchRegist")
+     */
     public function participantBatchRegist()
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -86,7 +97,9 @@ class EventApi {
         }
     }
 
-    
+    /**
+     * @Route("/participantRegist")
+     */
     public function participantRegist()
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -135,6 +148,9 @@ class EventApi {
         echo json_encode('{}');
     }
 
+    /**
+     * @Route("/cancel")
+     */
     public function cancel()
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -164,7 +180,9 @@ class EventApi {
         echo json_encode(['msg' => $msg]);
     }
 
-    // イベントに対しての参加者リスト取得
+    /**
+     * Route("/getParticipantList")
+     */
     public function getParticipantList()
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -177,7 +195,9 @@ class EventApi {
         echo json_encode($data);
     }
 
-    // イベントの参加者の内訳情報取得
+    /**
+     * @Route("/getParticipantBreakdown")
+     */
     public function getParticipantBreakdown()
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -192,7 +212,9 @@ class EventApi {
 
     }
 
-    // 一月分のイベント一覧の取得
+    /**
+     * @Route("/getEventListAtMonth")
+     */
     public function getEventListAtMonth() 
     {
 
@@ -208,7 +230,9 @@ class EventApi {
         echo json_encode($data);
     }
 
-    // 参加済み・参加予定のイベント一覧の取得
+    /**
+     * @Route("/getParticipantEventList")
+     */
     public function getParticipantEventList() 
     {
 
@@ -227,6 +251,9 @@ class EventApi {
         echo json_encode($eventList);
     }
 
+    /**
+     * @Route("/getGameInfoListByAfterDate")
+     */
     public function getGameInfoListByAfterDate() {
 
         header('Content-type: application/json; charset= UTF-8');
@@ -239,7 +266,9 @@ class EventApi {
 
     }
     
-    // 参加者削除
+    /**
+     * @Route("/deleteParticipant")
+     */
     public function deleteParticipant() {
         header('Content-type: application/json; charset= UTF-8');
         $detailDao = new DetailDao();
@@ -251,7 +280,9 @@ class EventApi {
         echo json_encode($info);
     }
 
-    
+    /**
+     * @Route("/getDefaultCompanionList")
+     */
     public function getDefaultCompanionList() {
         header('Content-type: application/json; charset= UTF-8');
     
@@ -261,6 +292,9 @@ class EventApi {
         echo json_encode($companionList);
     }
 
+    /**
+     * @Route("/getEventTemplate")
+     */
     public function getEventTemplate() {
         header('Content-type: application/json; charset= UTF-8');
     
@@ -270,6 +304,9 @@ class EventApi {
         echo json_encode($eventTemplate);
     }
 
+    /**
+     * @Route("/getUserInfo")
+     */
     public function getUserInfo() {
         header('Content-type: application/json; charset= UTF-8');
 
@@ -279,6 +316,9 @@ class EventApi {
         echo json_encode($user);
     }
 
+    /**
+     * @Route("/updateAdminFlg")
+     */
     public function updateAdminFlg() {
         header('Content-type: application/json; charset= UTF-8');
      
@@ -307,6 +347,9 @@ class EventApi {
     //     echo json_encode($info);
     // }
 
+    /**
+     * @Route("/updateWaitingFlg")
+     */
     public function updateWaitingFlg() {
         header('Content-type: application/json; charset= UTF-8');
     
@@ -320,6 +363,9 @@ class EventApi {
         echo json_encode($info);
     }
 
+    /**
+     * @Route("/getNotice")
+     */
     public function getNotice() {
         header('Content-type: application/json; charset= UTF-8');
     

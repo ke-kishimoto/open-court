@@ -7,6 +7,9 @@ use \Exception;
 
 class ContactApi
 {
+    /**
+     * @Route("/sendTroubleReport")
+     */
     public function sendTroubleReport()
     {
         session_start();
@@ -41,6 +44,9 @@ class ContactApi
         }
     }
 
+    /**
+     * @Route("/sendInquiry")
+     */
     public function sendInquiry() 
     {
         session_start();

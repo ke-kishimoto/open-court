@@ -11,7 +11,9 @@ use service\LineService;
 class LineApi 
 {
 
-    // 個人の予約通知
+    /**
+     * @Route("/reserveNotify")
+     */
     public function reserve_notify($participant, $title, $date, $companion = 0)
     {   
         
@@ -48,7 +50,9 @@ class LineApi
         return $this->line_notify($message);
     }
 
-    // キャンセル通知
+    /**
+     * @Route("/cancelNotify")
+     */
     public function cancel_notify($name, $title, $date)
     {
         $message = "予約がキャンセルされました\n";
@@ -61,7 +65,9 @@ class LineApi
         return $this->line_notify($message);
     }  
 
-    // 複数人予約
+    /**
+     * @Route("/multipleReserve")
+     */
     public function multiple_reserve($name, int $count) 
     {
         $message = "予約が入りました\n";
@@ -70,7 +76,9 @@ class LineApi
         return $this->line_notify($message);
     }
 
-    // お問い合わせ
+    /**
+     * @Route("/inquiry")
+     */
     public function inquiry($inquiry) 
     {
         $message = "お問い合わせが入りました\n";
@@ -82,7 +90,9 @@ class LineApi
         return $this->line_notify($message);
     }
 
-    // 不具合・要望報告
+    /**
+     * @Route("/troubleReport")
+     */
     public function troubleReport($troubleReport)
     {
         $categoryName = '';
@@ -145,13 +155,15 @@ class LineApi
     //////////////////////////////
     // LINE ログイン用
     //////////////////////////////
+
+    /**
+     * @Route("/getAccessToken")
+     */
     public function getAccessToken($code) 
     {
         // config取得
         $configDao = new ConfigDao();
         $config = $configDao->selectById(1);
-
-        $CURLERR = NULL;
 
         $headers = array(
             'Content-Type: application/x-www-form-urlencoded'
@@ -187,7 +199,9 @@ class LineApi
         return json_decode($result);
     }
 
-    // access_tokenの検証
+    /**
+     * @Route("/accessTokenVerify")
+     */
     public function accessTokenVerify($accessToken)
     {
         $url = 'https://api.line.me/oauth2/v2.1/verify';
@@ -209,7 +223,9 @@ class LineApi
         return $result;
     }
 
-    // access_tokenの更新
+    /**
+     * @Route("/updateToken")
+     */
     public function updateToken($refreshToken)
     {
         $configDao = new ConfigDao();
@@ -235,7 +251,9 @@ class LineApi
         return json_decode($result);
     }
 
-    // id_tokenの検証
+    /**
+     * @Route("/tokenVerify")
+     */
     public function tokenVerify($idToken)
     {
         // config取得
@@ -257,6 +275,9 @@ class LineApi
         return json_decode($result);
     }
     
+    /**
+     * @Route("/getLineProfile")
+     */
     public function getLineProfile($accessToken)
     {
         $url = 'https://api.line.me/v2/profile';
@@ -271,7 +292,9 @@ class LineApi
         return json_decode($result);
     }
 
-    // アクセストークンの取得からプロフィールの取得まで
+    /**
+     * @Route("/getLineProfileByCode")
+     */
     public function getLineProfileByCode($code) 
     {
         // config取得
@@ -324,6 +347,10 @@ class LineApi
     //////////////////////////////
     // LINE Messaging
     //////////////////////////////
+
+    /**
+     * @Route("/pushMessage")
+     */
     public function pushMessage($userId, $msg = '')
     {
         // config取得
@@ -446,7 +473,9 @@ class LineApi
         echo json_encode('{}');
     }
 
-    // セグメント配信用の対象者取得
+    /**
+     * @Route("/getTargetUser")
+     */
     public function getTargetUser()
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -461,6 +490,9 @@ class LineApi
         echo json_encode($users);
     }
 
+    /**
+     * @Route("/sendMessage")
+     */
     public function sendMessage()
     {
         session_start();

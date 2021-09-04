@@ -6,7 +6,9 @@ use Exception;
 
 class MailApi
 {
-    // パスワードリセットメール送信
+    /**
+     * @Route("/passresetMail")
+     */
     public function passreset_mail(string $email, string $pass)
     {
         $subject = "【FromStreet】パスワードリセットのお知らせ";
@@ -21,7 +23,9 @@ class MailApi
         return $this->send_mail($email, '', $subject, $msg);
     }
 
-    // 問い合わせ確認メール送信
+    /**
+     * @Route("/inquiryMail")
+     */
     public function inquiry_mail($inquiry) 
     {
         $subject = "【FromStreet】お問い合わせ確認";
@@ -43,6 +47,9 @@ class MailApi
 
     }
 
+    /**
+     * @Route("/sendMail")
+     */
     private function send_mail($mailTo, $userName, $subject, $message)
     {
         $email = new \SendGrid\Mail\Mail(); 

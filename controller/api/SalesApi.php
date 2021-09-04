@@ -6,6 +6,9 @@ use dao\DetailDao;
 
 class SalesApi
 {
+    /**
+     * @Route("/getMonthSales")
+     */
     public function getMonthSales()
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -19,6 +22,9 @@ class SalesApi
         echo json_encode($eventList);
     }
 
+    /**
+     * @Route("/updateExpenses")
+     */
     public function updateExpenses()
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -37,6 +43,9 @@ class SalesApi
         echo json_encode([]);
     }
 
+    /**
+     * @Route("/getYearSales")
+     */
     public function getYearSales()
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -48,6 +57,9 @@ class SalesApi
         echo json_encode($salesMonthList);
     }
 
+    /**
+     * @Route("/getAllSales")
+     */
     public function getAllSales()
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -58,6 +70,9 @@ class SalesApi
         echo json_encode($salesYearList);
     }
 
+    /**
+     * @Route("/getParticipantList")
+     */
     public function getParticipantList()
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -69,6 +84,9 @@ class SalesApi
         echo json_encode($participantList);
     }
 
+    /**
+     * @Route("/updateParticipantAmount")
+     */
     public function updateParticipantAmount()
     {
         header('Content-type: application/json; charset= UTF-8');
