@@ -3,9 +3,16 @@ namespace api;
 use dao\UsersDao;
 use ReflectionClass;
 use Exception;
+use Logging\Logger;
 
 class DataApi
 {
+
+    private $log;
+    public function __construct()
+    {
+        $this->log = Logger::getInstance();
+    }
 
     /**
      * @Route("/getCsrfToken")
@@ -121,6 +128,7 @@ class DataApi
             $method->invoke($dao, $entity);
             echo json_encode($entity);
         } catch(Exception $e) {
+            $this->log->error($e->getMessage());
             http_response_code(202);
             $data = ['errMsg' => $e->getMessage()];
             echo json_encode($data);
@@ -148,6 +156,7 @@ class DataApi
             $dao->delete($id);
             echo json_encode('{}');
         } catch(Exception $e) {
+            $this->log->error($e->getMessage());
             http_response_code(202);
             $data = ['errMsg' => $e->getMessage()];
             echo json_encode($data);
@@ -169,6 +178,7 @@ class DataApi
             $stmt = $dao->bulkDelete($idList);
             echo json_encode('{}');
         } catch(Exception $e) {
+            $this->log->error($e->getMessage());
             http_response_code(202);
             $data = ['errMsg' => $e->getMessage()];
             echo json_encode($data);
@@ -190,6 +200,7 @@ class DataApi
             $data = $dao->updateFlg((int)$_POST['id']);
             echo json_encode($data);
         } catch(Exception $e) {
+            $this->log->error($e->getMessage());
             http_response_code(202);
             $data = ['errMsg' => $e->getMessage()];
             echo json_encode($data);
@@ -212,6 +223,7 @@ class DataApi
             $data = $dao->getCalData($month);
             echo json_encode($data);
         } catch (Exception $e) {
+            $this->log->error($e->getMessage());
             http_response_code(202);
             $data = ['errMsg' => $e->getMessage()];
             echo json_encode($data);
@@ -233,6 +245,7 @@ class DataApi
             $data = $dao->getSelectboxList($accountId);
             echo json_encode($data);
         } catch (Exception $e) {
+            $this->log->error($e->getMessage());
             http_response_code(202);
             $data = ['errMsg' => $e->getMessage()];
             echo json_encode($data);

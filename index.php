@@ -1,6 +1,9 @@
 <?php 
+require('Logging/Logger.php');
+require('Logging/Config.php');
 use controller\EventController;
 use controller\ErrorController;
+use Logging\Logger;
 
 spl_autoload_register(function($class) {
     $pathArray = explode("\\", $class);
@@ -14,6 +17,7 @@ spl_autoload_register(function($class) {
     }
 });
 
+$log = Logger::getInstance();
 $url = explode("/", $_SERVER['REQUEST_URI']);
 if(count($url) > 2 && strlen($url[1]) > 0 && strlen($url[2])) {
 
@@ -36,10 +40,15 @@ if(count($url) > 2 && strlen($url[1]) > 0 && strlen($url[2])) {
         $method = $rClass->getMethod($req[0]);
         $method->invoke($controller);
     } catch (Exception $e) {
+        $log->error($e->getMessage());
         $error = new ErrorController();
         $error->index();
     }
 } else {
-    $controller = new EventController;
-    $controller->index();
+    try {
+        $controller = new EventController;
+        $controller->index();
+    } catch (Exception $e) {
+        $log->error($e->getMessage());
+    }
 }
