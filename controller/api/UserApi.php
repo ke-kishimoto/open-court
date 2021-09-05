@@ -3,12 +3,14 @@ namespace api;
 use dao\DefaultCompanionDao;
 use dao\UsersDao;
 use dao\ConfigDao;
-use ReflectionClass;
 use Exception;
 
 class UserApi
 {
 
+    /**
+     * @Route("/deleteUser")
+     */
     public function deleteUser()
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -37,6 +39,9 @@ class UserApi
         echo json_encode(['errMsg' => $msg]);
     }
 
+    /**
+     * @Route("/changePassword")
+     */
     public function changePassword()
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -48,7 +53,9 @@ class UserApi
         echo json_encode(['errMsg' => '']);
     }
 
-    // パスワードリセット
+    /**
+     * @Route("/passReset")
+     */
     public function passReset()
     {
         $userDao = new UsersDao();
@@ -75,7 +82,9 @@ class UserApi
         echo json_encode(['msg' => $msg]);
     }
 
-    // ログインチェック
+    /**
+     * @Route("/signInCheck")
+     */
     public function signInCheck() {
 
         header('Content-type: application/json; charset= UTF-8');
@@ -99,7 +108,9 @@ class UserApi
         echo json_encode(['errMsg' => $errMsg]);
     }
 
-    // LINEログイン用のパラメータ取得
+    /**
+     * @Route("/getLineParam")
+     */
     public function getLineParam()
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -119,6 +130,9 @@ class UserApi
         echo json_encode($data);
     }
 
+    /**
+     * @Route("/getDefaultCompanion")
+     */
     public function getDefaultCompanion()
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -128,6 +142,9 @@ class UserApi
         echo json_encode($data);
     }
 
+    /**
+     * @Route("/userRegist")
+     */
     public function userRegist()
     {
         header('Content-type: application/json; charset= UTF-8');
@@ -200,7 +217,9 @@ class UserApi
 
     }
 
-    // LINEで初回ログイン時
+    /**
+     * @Route("/lineSignupComplete")
+     */
     public function lineSignupComplete()
     {
         header('Content-type: application/json; charset= UTF-8');
