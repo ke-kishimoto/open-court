@@ -39,6 +39,7 @@
     </table>
     参加状況
     <span class="guide event-apply-Yes">参加登録済み</span>
+    <span class="guide event-apply-Yes-cancel">参加登録済み（キャンセル待ち）</span>
     空き状況
     <span class="guide availability-OK">空きあり</span>
     <span class="guide availability-COUTION">残り僅か</span>

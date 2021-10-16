@@ -52,7 +52,10 @@
                 <br>
                 <p>【応募フォーム】
                     <span v-if="registered" class="text-danger">
-                    ※参加登録済みです
+                        ※参加登録済みです
+                        <span v-if="waitingFlg" class="text-danger">
+                            （キャンセル待ち）
+                        </span>
                     </span>
                 </p>
                 
@@ -88,6 +91,7 @@
             mode: '',
             today: '',
             registered: false,
+            waitingFlg: false,
             user: {},
             event: {},
             admin: false,
@@ -136,6 +140,7 @@
                             }).then(res => {res.json()
                                     .then(data => {
                                         this.registered = data.result
+                                        this.waitingFlg = data.waiting_flg
                                     })
                                 }
                             )

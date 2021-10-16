@@ -279,9 +279,11 @@ class DetailDao extends BaseDao
         $participant['line_id'] = $lineId;
         $id = $this->getParticipantId($participant);
         if (isset($id)) {
-            return ['result' => true, 'id' => $id];
+            $info = $this->getParticipant($id);
+            $waitingFlg = $info['waiting_flg'] == '0' ? false : true; 
+            return ['result' => true, 'id' => $id, 'waiting_flg' => $waitingFlg];
         }
-        return ['result' => false, 'id' => -1];
+        return ['result' => false, 'id' => -1, 'waiting_flg' => false];
     }
 
     // メールアドレスによる削除処理

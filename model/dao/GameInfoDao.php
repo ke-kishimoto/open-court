@@ -111,9 +111,23 @@ g.id
   end class_name
 ";
 if(!empty($email)) {
-    $sql .= ", coalesce((select 'Yes' from participant where game_id = g.id and email = :email and delete_flg = 1), 'No') apply ";
+    $sql .= ", coalesce((
+        select case 
+            when waiting_flg = 0 then 'Yes'
+            when waiting_flg = 1 then 'Yes-cancel'
+        end 
+    from participant
+    where game_id = g.id 
+    and email = :email and delete_flg = 1), 'No') apply ";
 } else if(!empty($lineId)) {
-    $sql .= ", coalesce((select 'Yes' from participant where game_id = g.id and line_id = :line_id and delete_flg = 1), 'No') apply ";
+    $sql .= ", coalesce((
+        select case 
+            when waiting_flg = 0 then 'Yes'
+            when waiting_flg = 1 then 'Yes-cancel'
+        end 
+        from participant 
+        where game_id = g.id 
+        and line_id = :line_id and delete_flg = 1), 'No') apply ";
 } else {
     $sql .= ", 'No' apply ";
 
