@@ -89,6 +89,9 @@ table tr.weekTit{
 .event-apply-Yes {
     background-color: #007bff;
 }
+.event-apply-Yes-cancel {
+    background-color: #DE5021;
+}
 
 .sunday {
     background-color: #FFD5EC;
