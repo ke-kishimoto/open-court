@@ -22,6 +22,10 @@
                     開始時間：{{ event.start_date }} <br>
                     終了時間：{{ event.end_date }} <br>
                     場所：{{ event.place }} <br>
+                    <span v-if="event.waiting_flg == 1" class="text-danger">
+                    ※キャンセル待ち
+                    <br>
+                    </span>
                     <hr>
                 </template>
             </div>
