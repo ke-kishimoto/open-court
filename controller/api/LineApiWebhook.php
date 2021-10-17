@@ -639,7 +639,7 @@ class LineApiWebhook
         } else {
             if($data['action'] === 'reserve') {
                 if($data['douhan'] === 'no') {
-                    $eventService->oneParticipantRegist($participant, [], EventService::MODE_LINE);
+                $eventService->oneParticipantRegist($participant, [] /* , EventService::MODE_LINE*/);
                     $lineApi = new LineApi();
                     $text = $lineApi->createReservationMessage($gameInfo['title'], $gameInfo['game_date'], $gameInfo['start_time']);
                 } elseif($data['douhan'] === 'yes' && !isset($data['num'])) {
@@ -656,7 +656,7 @@ class LineApiWebhook
                             'name' => "同伴{$i}({$participant['name']})"
                         ];
                     }
-                    $eventService->oneParticipantRegist($participant, $companion, EventService::MODE_LINE);
+                $eventService->oneParticipantRegist($participant, $companion /*, EventService::MODE_LINE */);
                     $lineApi = new LineApi();
                     $text = $lineApi->createReservationMessage($gameInfo['title'], $gameInfo['game_date'], $gameInfo['start_time']);
                 }

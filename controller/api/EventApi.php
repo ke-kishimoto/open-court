@@ -139,11 +139,13 @@ class EventApi {
             $participant['id'] = $data['editId'];
             $service->participantUpdate($participant, $companion);
         } else {
-            if($_SESSION['user']['admin_flg'] == '1') {
-                $service->oneParticipantRegist($participant, $companion, EventService::MODE_ADMIN);
-            } else {
-                $service->oneParticipantRegist($participant, $companion, EventService::MODE_USER);
-            }
+            // if($_SESSION['user']['admin_flg'] == '1') {
+            // $service->oneParticipantRegist($participant, $companion /*, EventService::MODE_ADMIN */);
+            // } else {
+            //     $service->oneParticipantRegist($participant, $companion, EventService::MODE_USER);
+            // }
+            $service->oneParticipantRegist($participant, $companion);
+
         }
         echo json_encode('{}');
     }
