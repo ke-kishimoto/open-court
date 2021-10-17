@@ -49,11 +49,11 @@ class EventService
         
             $api = new LineApi();
             // 管理者への通知
-            if(!$errMsg && $config['line_notify_flg'] == '1' && $mode !== self::MODE_ADMIN) {
+            if(!$errMsg && $config['line_notify_flg'] == '1' /* && $mode !== self::MODE_ADMIN */) {
                 $api->cancel_notify($participant['name'], $gameInfo['title'], $gameInfo['game_date']);
             }
             // 本人への通知
-            if(!empty($participant['line_id']) && $mode === self::MODE_USER) {
+            if(!empty($participant['line_id']) /* && $mode === self::MODE_USER */) {
                 $msg = $api->createCancelMessage($gameInfo['title'], $gameInfo['game_date']);
                 $api->pushMessage($participant['line_id'], $msg);
             }

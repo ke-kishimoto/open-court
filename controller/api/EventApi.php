@@ -175,7 +175,7 @@ class EventApi {
             $password = '';
             $userId = '';
         }
-        $msg = $service->cancelComplete($participant, $password, $userId, EventService::MODE_USER);
+    $msg = $service->cancelComplete($participant, $password, $userId /*, EventService::MODE_USER */);
         if(empty($msg)) {
             $msg = 'キャンセルしました。';
         }
