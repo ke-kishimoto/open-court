@@ -99,8 +99,8 @@ p.id
 , title
 , attendance
 , case
-    when attendance = 1 then '出席'
-    else '欠席'
+    when attendance = 1 then '○'
+    else '×'
     end attendance_name
 , p.amount
 , amount_remark
@@ -116,8 +116,8 @@ participant_id
 , g.title
 , c.attendance
 , case
-    when c.attendance = 1 then '出席'
-    else '欠席'
+    when c.attendance = 1 then '○'
+    else '×'
     end attendance_name
 , c.amount
 , c.amount_remark

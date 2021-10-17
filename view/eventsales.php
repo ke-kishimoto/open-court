@@ -51,8 +51,8 @@
             participantList: [],
             title: '',
             attendanceOptions: [
-                {text: '出席', value: '1'},
-                {text: '欠席', value: '2'},
+                {text: '○', value: '1'},
+                {text: '×', value: '2'},
             ],
 
         },
