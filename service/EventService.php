@@ -53,7 +53,7 @@ class EventService
                 $api->cancel_notify($participant['name'], $gameInfo['title'], $gameInfo['game_date']);
             }
             // 本人への通知
-            if(!empty($participant['line_id']) /* && $mode === self::MODE_USER */) {
+            if(!empty($participant['line_id'])  && $mode === self::MODE_USER ) {
                 $msg = $api->createCancelMessage($gameInfo['title'], $gameInfo['game_date']);
                 $api->pushMessage($participant['line_id'], $msg);
             }
@@ -107,7 +107,7 @@ class EventService
             $api->reserve_notify($participant, $gameInfo['title'], $gameInfo['game_date'], count($companions) ?? '0');
         }
         // 本人への通知
-        if(!empty($participant['line_id']) /* && $mode === self::MODE_USER */) {
+        if(!empty($participant['line_id'])  && $mode === self::MODE_USER ) {
             $msg = $api->createReservationMessage($gameInfo['title'], $gameInfo['game_date'], $gameInfo['start_time']);
             $api->pushMessage($participant['line_id'], $msg);
         }
@@ -160,6 +160,7 @@ class EventService
                 return $errMsg;
             }
         } 
+        // TODO LINEユーザーの場合も考慮
         
         // キャンセル待ちになるかどうかのチェック
         if($detailDao->limitCheck($participant['game_id'], 1 + count($companions))) {
