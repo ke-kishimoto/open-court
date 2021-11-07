@@ -304,21 +304,22 @@ class DetailDao extends BaseDao
         $prepare->bindValue(':participant_id', $id, PDO::PARAM_INT);
         $prepare->execute();
         // 参加者削除
-        $sql = 'delete from participant where game_id = :game_id ';
-        if(!empty($participant['email'])) {
-            $sql .= ' and email = :email ';
-        }
-        if(!empty($participant['line_id'])) {
-            $sql .= ' and line_id = :lineId ';
-        }
+        $sql = 'delete from participant where game_id = :game_id and id = :id';
+        // if(!empty($participant['email'])) {
+        //     $sql .= ' and email = :email ';
+        // }
+        // if(!empty($participant['line_id'])) {
+        //     $sql .= ' and line_id = :lineId ';
+        // }
         $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':game_id', $gameId, PDO::PARAM_INT);
-        if(!empty($participant['email'])) {
-            $prepare->bindValue(':email', $email, PDO::PARAM_STR);
-        }
-        if(!empty($participant['line_id'])) {
-            $prepare->bindValue(':lineId', $lineId, PDO::PARAM_STR);
-        }
+        $prepare->bindValue(':id', $id, PDO::PARAM_INT);
+        // if(!empty($participant['email'])) {
+        //     $prepare->bindValue(':email', $email, PDO::PARAM_STR);
+        // }
+        // if(!empty($participant['line_id'])) {
+        //     $prepare->bindValue(':lineId', $lineId, PDO::PARAM_STR);
+        // }
         $prepare->execute();
         return $prepare->rowCount();
     }
