@@ -234,7 +234,7 @@ class DetailDao extends BaseDao
     // 参加者idの取得
     public function getParticipantId($participant) 
     {
-        $sql = "select max(id) id
+        $sql = "select id
                 from participant 
                 where game_id = :game_id
                 and delete_flg = '1'";
