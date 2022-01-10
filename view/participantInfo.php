@@ -14,18 +14,18 @@
         </p>
         <p>
         職種
-        <select v-model="occupation" class="custom-select mr-sm-2">
+        <select v-model="occupation" class="custom-select mr-sm-2" disabled>
             <option v-for="item in occupationOptions" v-bind:value="item.value">{{ item.text }}</option>
         </select>
         </p>
         <p>
         性別
-        <select v-model="sex" class="custom-select mr-sm-2">
+        <select v-model="sex" class="custom-select mr-sm-2" disabled>
             <option v-for="item in sexOptions" v-bind:value="item.value">{{ item.text }}</option>
         </select>
         </p>
-        <p>名前<input class="form-control" type="text" v-model="name" required></p>
-        <p>メール<input class="form-control" type="email" v-model="email"></p>
+        <p>名前<input class="form-control" type="text" v-model="name" required disabled></p>
+        <p>メール<input class="form-control" type="email" v-model="email" disabled></p>
         <p>備考<textarea class="form-control" v-model="remark"></textarea></p>
         
         <button class="btn btn-secondary" type="button" @click="addCompanion">同伴者追加</button>

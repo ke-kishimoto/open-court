@@ -217,19 +217,19 @@ Vue.component('participate', {
             </p>
             <p>
             職種
-            <select v-model="user.occupation" class="custom-select mr-sm-2">
+            <select v-model="user.occupation" class="custom-select mr-sm-2" disabled>
                 <option v-for="item in occupationOptions" v-bind:value="item.value">{{ item.text }}</option>
             </select>
             </p>
             <p>
             性別
-            <select v-model="user.sex" class="custom-select mr-sm-2">
+            <select v-model="user.sex" class="custom-select mr-sm-2" disabled>
                 <option v-for="item in sexOptions" v-bind:value="item.value">{{ item.text }}</option>
             </select>
             </p>
-            <p>名前<input class="form-control" type="text" v-model="user.name" required></p>
+            <p>名前<input class="form-control" type="text" v-model="user.name" required disabled></p>
             <p v-if="(user.line_id === null || user.line_id === '')">
-                メール<input class="form-control" type="email" v-model="user.email">
+                メール<input class="form-control" type="email" v-model="user.email" disabled>
             </p>
             <p>備考<textarea class="form-control" v-model="user.remark"></textarea></p>
             
