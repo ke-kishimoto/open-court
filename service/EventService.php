@@ -20,6 +20,9 @@ class EventService
     {
         $detailDao = new DetailDao();
         $id = $detailDao->getParticipantId($participant);
+        if($id === null) {
+            return '参加者IDを取得できませんでした。申し訳ありませんが管理者にご連絡するか、Web画面上からのキャンセルをお試しください。';
+        }
         $configDao = new ConfigDao();
         $config = $configDao->selectById(1);
         
@@ -45,7 +48,10 @@ class EventService
             $gameInfo = $gameInfoDao->selectById($participant['game_id']);
         
             // メールアドレスかLINE IDで削除する
-            $detailDao->deleteByMailAddress($participant['game_id'], $participant['email'] ?? '', $participant['line_id'] ?? '');
+            $result = $detailDao->deleteByMailAddress($participant['game_id'], $participant['email'] ?? '', $participant['line_id'] ?? '');
+            if($result === 0) {
+                return '削除できませんでした。';
+            }
         
             $api = new LineApi();
             // 管理者への通知

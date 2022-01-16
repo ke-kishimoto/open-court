@@ -661,9 +661,13 @@ class LineApiWebhook
                     $text = $lineApi->createReservationMessage($gameInfo['title'], $gameInfo['game_date'], $gameInfo['start_time']);
                 }
             } elseif ($data['action'] === 'cancel') {
-                $eventService->cancelComplete($participant, '', $user['id'] , EventService::MODE_LINE );
+                $msg = $eventService->cancelComplete($participant, '', $user['id'] , EventService::MODE_LINE );
                 $lineApi = new LineApi();
-                $text = $lineApi->createCancelMessage($gameInfo['title'], $gameInfo['game_date']);
+                if(!empty($msg)) {
+                    $text = $msg;
+                } else {  
+                    $text = $lineApi->createCancelMessage($gameInfo['title'], $gameInfo['game_date']);
+                }
             }
         }
         // 完了メッセージ送信

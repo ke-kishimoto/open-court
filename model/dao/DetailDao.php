@@ -234,6 +234,9 @@ class DetailDao extends BaseDao
     // 参加者idの取得
     public function getParticipantId($participant) 
     {
+        if(empty($participant['email']) && empty($participant['line_id'])) {
+            return null;
+        }
         $sql = "select id
                 from participant 
                 where game_id = :game_id
@@ -295,7 +298,7 @@ class DetailDao extends BaseDao
         $participant['email'] = $email;
         $participant['line_id'] = $lineId;
         $id = $this->getParticipantId($participant);
-        if ($id == null) {
+        if ($id === null) {
             return 0;
         }
         // 同伴者削除
