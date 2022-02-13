@@ -11,7 +11,7 @@
 create table game_info (
     id serial primary key
     , title varchar(50)
-    , short_title varchar(20)
+    , short_title varchar(50)
     , game_date date
     , start_time varchar(10)
     , end_time varchar(10)
@@ -35,7 +35,7 @@ create table event_template (
     id serial primary key
     , template_name varchar(30)
     , title varchar(50)
-    , short_title varchar(20)
+    , short_title varchar(50)
     , place varchar(100)
     , limit_number int
     , detail varchar(1000)
