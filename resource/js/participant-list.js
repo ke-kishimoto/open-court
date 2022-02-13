@@ -71,7 +71,7 @@ Vue.component('participant-list', {
         <div v-for="(participant, index) in participantList" v-bind:key="index">
         <hr v-if="participant.main == 1">
             <p v-if="participant.main == 1 && user.admin_flg == '1'">
-                <a class="btn btn-secondary" v-bind:href="'/admin/participant/ParticipantInfo?id=' + participant.id + '&game_id=' + id ">修正</a>
+                <a class="btn btn-secondary" v-bind:href="'/admin/ParticipantInfo?editId=' + participant.id + '&game_id=' + id ">修正</a>
                 <button type="button" v-bind:class="'waiting btn btn-' + (participant.waiting_flg == '1' ? 'warning' : 'success')" @click="changeWaitingFlg(participant)">
                     <template v-if="participant.waiting_flg == 1">
                         キャンセル待ちを解除

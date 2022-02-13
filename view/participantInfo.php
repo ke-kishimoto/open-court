@@ -4,31 +4,33 @@
     <p style="color:red">{{ msg }}</p>
 
     <p>参加者登録</p>
-        <p> 
+        <!-- <p> 
             <select v-model="selectedUser" @change="selectUser($event)">
                 <option v-for="user in userList" v-bind:key="user.id" v-bind:value="user.id">
                     {{ user.name }}
                 </option>
             </select>
 
-        </p>
+        </p> -->
         <p>
         職種
-        <select v-model="occupation" class="custom-select mr-sm-2" disabled>
+        <select v-model="user.occupation" class="custom-select mr-sm-2" disabled>
             <option v-for="item in occupationOptions" v-bind:value="item.value">{{ item.text }}</option>
         </select>
         </p>
         <p>
         性別
-        <select v-model="sex" class="custom-select mr-sm-2" disabled>
+        <select v-model="user.sex" class="custom-select mr-sm-2" disabled>
             <option v-for="item in sexOptions" v-bind:value="item.value">{{ item.text }}</option>
         </select>
         </p>
-        <p>名前<input class="form-control" type="text" v-model="name" required disabled></p>
-        <p>メール<input class="form-control" type="email" v-model="email" disabled></p>
-        <p>備考<textarea class="form-control" v-model="remark"></textarea></p>
+        <p>名前<input class="form-control" type="text" v-model="user.name" required></p>
+        <p>メール<input class="form-control" type="email" v-model="user.email" disabled></p>
+        <p>備考<textarea class="form-control" v-model="user.remark"></textarea></p>
         
-        <button class="btn btn-secondary" type="button" @click="addCompanion">同伴者追加</button>
+        <p>
+            <button class="btn btn-secondary" type="button" @click="addCompanion">同伴者追加</button>
+        </p>
 
         <div v-for="(companion, index) in companions" v-bind:key="index">
             {{ index + 1 }}人目 
@@ -49,8 +51,8 @@
         </div>
         
         <p>
-            <button class="btn btn-primary" type="button" @click="register">登録</button>
-            <button id="btn-delete" class="btn btn-secondary" type="submit" name="delete">削除</button>
+            <button class="btn btn-primary" type="button" @click="register">更新</button>
+            <button id="btn-delete" class="btn btn-danger" type="button" @click="deleteParticipant">削除</button>
         </p>
     <vue-footer></vue-footer>
 </div>
@@ -66,20 +68,21 @@
             msg: '',
             selectedUser: '',
             userList: [],
-            occupation: '1',
+            // occupation: '1',
             occupationOptions: [
                 {text: '社会人', value: '1'},
                 {text: '大学生', value: '2'},
                 {text: '高校生', value: '3'},
             ],
-            sex: '1',
+            // sex: '1',
             sexOptions: [
                 {text: '男性', value: '1'},
                 {text: '女性', value: '2'},
             ],
-            name: '',
-            email: '',
-            remark: '',
+            // name: '',
+            // email: '',
+            // remark: '',
+            user: {},
             companions: [],
 
         },
@@ -120,39 +123,34 @@
                 )
                 .catch(errors => console.log(errors))
             },
-            getUserList() {
-                let params = new URLSearchParams();
-                params.append('tableName', 'Users');
-                fetch('/api/data/selectAll', {
-                    method: 'post',
-                    body: params
-                })
-                .then(res => res.json()
-                    .then(data => {
-                        this.userList = data;
-                    })
-                )
-                .catch(errors => console.log(errors))
-            },
+            // getUserList() {
+            //     let params = new URLSearchParams();
+            //     params.append('tableName', 'Users');
+            //     fetch('/api/data/selectAll', {
+            //         method: 'post',
+            //         body: params
+            //     })
+            //     .then(res => res.json()
+            //         .then(data => {
+            //             this.userList = data;
+            //         })
+            //     )
+            //     .catch(errors => console.log(errors))
+            // },
             addCompanion() {
                 this.companions.push({name: '', occupation: '1', sex: '1'})
             },
             deleteCompanion(index) {
                 this.companions.splice(index, 1)
             },
-            register() {
-                
+            register() {                
                 if (!confirm('登録してよろしいですか。')) return;
                 let data = {
-                    game_id: this.getParam('game_id'),
-                    register: true,
+                    gameid: this.getParam('game_id'),
                     csrf_token: this.csrf_token,
-                    name: this.name,
-                    occupation: this.occupation,
-                    sex: this.sex,
-                    email: this.email,
-                    remark: this.remark,
-                    companion: this.companions
+                    user: this.user,
+                    companion: this.companions,
+                    editId: this.getParam('editId')
                 }
                 fetch('/api/event/participantRegist', {
                     headers:{
@@ -168,6 +166,16 @@
                 .catch(errors => console.log(errors))
 
             },
+            deleteParticipant() {
+                if (!confirm('削除してよろしいですか。')) return
+                let params = new URLSearchParams();
+                params.append('participant_id', this.getParam('editId'));
+                params.append('game_id', this.getParam('game_id'));
+                fetch('/api/event/deleteParticipant', {
+                    method: 'post',
+                    body: params
+                }).then(res => res.json().then(data => {location.href="/participant/eventInfo?gameid=" + this.getParam('game_id')}))
+            },
             getParam(name, url) {
                 if (!url) url = window.location.href;
                 name = name.replace(/[\[\]]/g, "\\$&");
@@ -179,7 +187,27 @@
             },
         },
         created: function() {
-            this.getUserList()
+            // this.getUserList()
+            let params = new URLSearchParams();
+            // 登録時の情報を取得
+            params.append('tableName', 'Participant');
+            params.append('id', this.getParam('editId'));
+            fetch('/api/data/selectById', {
+                method: 'post',
+                body: params
+            }).then(res => res.json().then(participant => {
+                this.user = participant;
+                // 同伴者取得
+                params = new URLSearchParams();
+                params.append('participant_id', participant.id);
+                fetch('/api/event/getCompanionList', {
+                    method: 'post',
+                    body: params
+                }).then(res => res.json().then(companipn => {
+                    this.companions = companipn
+                }))
+            }))
+            .catch(errors => console.log(errors))
         }
     })
 </script>

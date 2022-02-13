@@ -227,7 +227,7 @@ Vue.component('participate', {
                 <option v-for="item in sexOptions" v-bind:value="item.value">{{ item.text }}</option>
             </select>
             </p>
-            <p>名前<input class="form-control" type="text" v-model="user.name" required disabled></p>
+            <p>名前<input class="form-control" type="text" v-model="user.name" required></p>
             <p v-if="(user.line_id === null || user.line_id === '')">
                 メール<input class="form-control" type="email" v-model="user.email" disabled>
             </p>
