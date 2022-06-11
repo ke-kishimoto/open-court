@@ -622,6 +622,7 @@ class LineApiWebhook
         $eventService = new EventService();
         $userDao = new UsersDao();
         $gameInfoDao = new GameInfoDao();
+        $detailDao = new DetailDao();
         $gameInfo = $gameInfoDao->selectById((int)$data['id']);
         $user = $userDao->getUserByLineId($event['source']['userId']);
         $participant = [];
@@ -638,27 +639,33 @@ class LineApiWebhook
             $text = 'プロフィールに未設定の項目があるため更新できません。プロフィール設定から設定を行ってください。';
         } else {
             if($data['action'] === 'reserve') {
-                if($data['douhan'] === 'no') {
-                $eventService->oneParticipantRegist($participant, [] , EventService::MODE_LINE);
-                    $lineApi = new LineApi();
-                    $text = $lineApi->createReservationMessage($gameInfo['title'], $gameInfo['game_date'], $gameInfo['start_time']);
-                } elseif($data['douhan'] === 'yes' && !isset($data['num'])) {
-                    $this->addDouhan($event, $channelAccessToken, $data['id']);
-                    return ;
-                } elseif($data['douhan'] === 'yes' && isset($data['num'])) {
-                    $num = (int)$data['num'];
-                    $companion = [];
-                    for($i = 1; $i <= $num; $i++) {
-                        $companion[] = 
-                        [
-                            'occupation' => $participant['occupation'],
-                            'sex' => $participant['sex'],
-                            'name' => "同伴{$i}({$participant['name']})"
-                        ];
+                // 予約の場合
+                $result = $detailDao->existsCheck($gameInfo['id'], '', $user['line_id']);
+                if($result['result']) {
+                    $text = '既に予約済みのため予約できません。';
+                } else {
+                    if($data['douhan'] === 'no') {
+                    $eventService->oneParticipantRegist($participant, [] , EventService::MODE_LINE);
+                        $lineApi = new LineApi();
+                        $text = $lineApi->createReservationMessage($gameInfo['title'], $gameInfo['game_date'], $gameInfo['start_time']);
+                    } elseif($data['douhan'] === 'yes' && !isset($data['num'])) {
+                        $this->addDouhan($event, $channelAccessToken, $data['id']);
+                        return ;
+                    } elseif($data['douhan'] === 'yes' && isset($data['num'])) {
+                        $num = (int)$data['num'];
+                        $companion = [];
+                        for($i = 1; $i <= $num; $i++) {
+                            $companion[] = 
+                            [
+                                'occupation' => $participant['occupation'],
+                                'sex' => $participant['sex'],
+                                'name' => "同伴{$i}({$participant['name']})"
+                            ];
+                        }
+                        $eventService->oneParticipantRegist($participant, $companion , EventService::MODE_LINE );
+                        $lineApi = new LineApi();
+                        $text = $lineApi->createReservationMessage($gameInfo['title'], $gameInfo['game_date'], $gameInfo['start_time']);
                     }
-                    $eventService->oneParticipantRegist($participant, $companion , EventService::MODE_LINE );
-                    $lineApi = new LineApi();
-                    $text = $lineApi->createReservationMessage($gameInfo['title'], $gameInfo['game_date'], $gameInfo['start_time']);
                 }
             } elseif ($data['action'] === 'cancel') {
                 $msg = $eventService->cancelComplete($participant, '', $user['id'] , EventService::MODE_LINE );
