@@ -15,61 +15,68 @@
             高校生：{{ event.price3 }}円 
         </p>
     </div>
-    
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li v-if="admin" class="nav-item">
-            <a class="nav-link active" id="event-info-tab" data-toggle="tab" href="#event-info" role="tab" aria-controls="home" v-bind:aria-selected="admin">
-                イベント
-            </a>
-        </li>
-        <li v-if="mode !== 'new'" class="nav-item">
-            <a class="nav-link" id="add-tab" data-toggle="tab" href="#add" role="tab" aria-controls="contact" v-bind:aria-selected="!admin">
-                <template v-if="admin">参加者追加</template>
-                <template v-else>参加登録</template>
-            </a>
-        </li>
-        <li v-if="mode !== 'new'" class="nav-item">
-            <a class="nav-link" id="status-tab" data-toggle="tab" href="#status" role="tab" aria-controls="contact" aria-selected="false">
-                参加者内訳
-            </a>
-        </li>
-        <li v-if="mode !== 'new'" class="nav-item">
-            <a class="nav-link" id="list-tab" data-toggle="tab" href="#list" role="tab" aria-controls="contact" aria-selected="false">
-                参加者一覧
-            </a>
-        </li>
-        
-    </ul>
-    
-    <div class="tab-content" id="nav-tabContent">
-    
-        <div v-if="admin" class="tab-pane fade show active" id="event-info" role="tabpanel" aria-labelledby="event-info-tab">
-            <event-regist></event-regist>
-        </div>
 
-        <div v-if="mode !== 'new'" class="tab-pane fade" id="add" role="tabpanel" aria-labelledby="add-tab">
-            <div v-if="today <= event.game_date">
-                <br>
-                <p>【応募フォーム】
-                    <span v-if="registered" class="text-danger">
-                        ※参加登録済みです
-                        <span v-if="waitingFlg" class="text-danger">
-                            （キャンセル待ち）
-                        </span>
-                    </span>
-                </p>
-                
-                <participate></participate>
-            </div>
-        </div>
-        
-        <div v-if="mode !== 'new'" class="tab-pane fade" id="status" role="tabpanel" aria-labelledby="status-tab">
-            <participant-breakdown></participant-breakdown>
-        </div>
+    <div v-if="user.black_flg == '9'" style="color: red">
+      ※アカウントがロックされているため参加予約できません。<br>
+      解除されるまで待つか、管理者に問い合わせてください。
+    </div>
     
-        <div v-if="mode !== 'new'" class="tab-pane fade" id="list" role="tabpanel" aria-labelledby="list-tab">
-            <participant-list></participant-list>
-        </div>
+    <div v-if="user.black_flg != '9'">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li v-if="admin" class="nav-item">
+              <a class="nav-link active" id="event-info-tab" data-toggle="tab" href="#event-info" role="tab" aria-controls="home" v-bind:aria-selected="admin">
+                  イベント
+              </a>
+          </li>
+          <li v-if="mode !== 'new'" class="nav-item">
+              <a class="nav-link" id="add-tab" data-toggle="tab" href="#add" role="tab" aria-controls="contact" v-bind:aria-selected="!admin">
+                  <template v-if="admin">参加者追加</template>
+                  <template v-else>参加登録</template>
+              </a>
+          </li>
+          <li v-if="mode !== 'new'" class="nav-item">
+              <a class="nav-link" id="status-tab" data-toggle="tab" href="#status" role="tab" aria-controls="contact" aria-selected="false">
+                  参加者内訳
+              </a>
+          </li>
+          <li v-if="mode !== 'new'" class="nav-item">
+              <a class="nav-link" id="list-tab" data-toggle="tab" href="#list" role="tab" aria-controls="contact" aria-selected="false">
+                  参加者一覧
+              </a>
+          </li>
+          
+      </ul>
+      
+      <div class="tab-content" id="nav-tabContent">
+      
+          <div v-if="admin" class="tab-pane fade show active" id="event-info" role="tabpanel" aria-labelledby="event-info-tab">
+              <event-regist></event-regist>
+          </div>
+
+          <div v-if="mode !== 'new'" class="tab-pane fade" id="add" role="tabpanel" aria-labelledby="add-tab">
+              <div v-if="today <= event.game_date">
+                  <br>
+                  <p>【応募フォーム】
+                      <span v-if="registered" class="text-danger">
+                          ※参加登録済みです
+                          <span v-if="waitingFlg" class="text-danger">
+                              （キャンセル待ち）
+                          </span>
+                      </span>
+                  </p>
+                  
+                  <participate></participate>
+              </div>
+          </div>
+          
+          <div v-if="mode !== 'new'" class="tab-pane fade" id="status" role="tabpanel" aria-labelledby="status-tab">
+              <participant-breakdown></participant-breakdown>
+          </div>
+      
+          <div v-if="mode !== 'new'" class="tab-pane fade" id="list" role="tabpanel" aria-labelledby="list-tab">
+              <participant-list></participant-list>
+          </div>
+      </div>
     </div>
     <vue-footer></vue-footer>
 </div>
@@ -119,6 +126,8 @@
                 }).then(res => res.json()
                     .then(data => {
                         this.user = data;
+                        console.log(this.user)
+                        console.log(this.user.black_flg)
                         if (this.user.id == '') {
                             location.href = '/user/signIn'
                         } 

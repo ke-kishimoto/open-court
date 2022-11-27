@@ -203,3 +203,5 @@ create table api_log(
 
 -- テストデータ
 insert into config(system_title) values('イベント予約デモ');
+
+alter table users add column black_flg int default 1;

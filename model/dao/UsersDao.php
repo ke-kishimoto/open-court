@@ -60,7 +60,8 @@ class UsersDao extends BaseDao
             when sex = 2 then '女性'
           end sex_name 
         , case
-            when delete_flg = 1 then '有効'
+            when delete_flg = 1 and black_flg = 1 then '有効'
+            when delete_flg = 1 and black_flg = 9 then 'ロック'
             when delete_flg = 9 then '削除済み' 
             else ''
           end status
@@ -84,6 +85,7 @@ class UsersDao extends BaseDao
         , name 
         , email
         , occupation
+        , black_flg
         , case 
             when occupation =  1 then '社会人'
             when occupation =  2 then '大学・専門学校'
@@ -96,7 +98,8 @@ class UsersDao extends BaseDao
             when sex = 2 then '女性'
           end sex_name 
         , case
-            when delete_flg = 1 then '有効'
+            when delete_flg = 1 and black_flg = 1 then '有効'
+            when delete_flg = 1 and black_flg = 9 then 'ロック'
             when delete_flg = 9 then '削除済み' 
             else ''
           end status
@@ -160,8 +163,6 @@ class UsersDao extends BaseDao
         $prepare = $this->getPdo()->prepare($sql);
         $prepare->bindValue(':id', $id, PDO::PARAM_INT);
         $prepare->execute();
-
-        
     }
 
     public function getLineUser($occupation, $sex)
@@ -182,6 +183,20 @@ class UsersDao extends BaseDao
         }
         $prepare->execute();
         return $prepare->fetchAll();
+    }
+
+    // ロックフラグ更新
+    public function updateLockFlg(int $id) 
+    {
+        $sql = 'update users set black_flg = 
+                case 
+                  when black_flg = 1 then 9
+                  else 1
+                end
+                where id = :id';
+        $prepare = $this->getPdo()->prepare($sql);
+        $prepare->bindValue(':id', $id, PDO::PARAM_INT);
+        $prepare->execute();
     }
 }  
 

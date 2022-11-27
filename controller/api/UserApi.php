@@ -251,4 +251,18 @@ class UserApi
 
         echo json_encode(['msg' => $msg]);
     }
+
+    /**
+     * @Route("/updateLockFlg")
+     */
+    public function updateLockFlg()
+    {
+      header('Content-type: application/json; charset= UTF-8');
+      
+      $usersDao = new UsersDao();
+      $usersDao->updateLockFlg($_POST['id'] ?? 0);
+
+      echo json_encode([]);
+
+    }
 }

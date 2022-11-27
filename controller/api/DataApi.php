@@ -46,6 +46,7 @@ class DataApi
                 'remark' => '', 
                 'line_id' => '',
                 'admin_flg' => '0',
+                'black_flg' => '1'
             ];
         }
 

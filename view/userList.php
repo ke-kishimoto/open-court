@@ -11,6 +11,9 @@
         ステータス：{{ user.status }} <br>
         <br>
         <button class="change-authority btn btn-info" type="button" @click="changeAuthority(user)">権限の変更</button>
+        <button v-if="user.status == '有効' || user.status == 'ロック'" class="change-authority btn btn-info" type="button" @click="changeLockStatus(user)">
+          {{ user.status == '有効' ? 'ロックする' : 'ロック解除' }}
+        </button>
         <hr>
     </div>
     <vue-footer></vue-footer>
@@ -56,6 +59,24 @@
                         method: 'post',
                         body: params
                     }).then(res => res.json().then(data => user.authority_name = data.authority_name))
+                })
+                .catch(errors => console.log(errors))
+            },
+            changeLockStatus(user) {
+              let params = new URLSearchParams();
+                params.append('id', user.id);
+                fetch('/api/user/updateLockFlg', {
+                    method: 'post',
+                    body: params
+                })
+                .then(() => {
+                    params = new URLSearchParams();
+                    params.append('tableName', 'Users');
+                    params.append('id', user.id);
+                    fetch('/api/data/selectById', {
+                        method: 'post',
+                        body: params
+                    }).then(res => res.json().then(data => user.status = data.status))
                 })
                 .catch(errors => console.log(errors))
             }
