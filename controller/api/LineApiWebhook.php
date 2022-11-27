@@ -643,6 +643,8 @@ class LineApiWebhook
                 $result = $detailDao->existsCheck($gameInfo['id'], '', $user['line_id']);
                 if($result['result']) {
                     $text = '既に予約済みのため予約できません。';
+                } elseif ($user['black_flg'] == '9') {
+                  $text = 'アカウントがロックされているため予約できません。解除されるまで待つか管理者に問い合わせてください。';
                 } else {
                     if($data['douhan'] === 'no') {
                     $eventService->oneParticipantRegist($participant, [] , EventService::MODE_LINE);

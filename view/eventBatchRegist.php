@@ -48,6 +48,12 @@
             </p>
         </div>
     
+        <div v-if="user.black_flg == '9'" style="color: red">
+          ※アカウントがロックされているため参加予約できません。<br>
+          解除されるまで待つか、管理者に問い合わせてください。
+        </div>
+
+      <div v-if="user.black_flg != '9'">
         <br>
         イベント一覧<br>
         ※予約済みのイベントは表示されません。<br>
@@ -72,6 +78,7 @@
                 一括登録
             </button>
         </p>
+      </div>
 
     <vue-footer></vue-footer>
 
